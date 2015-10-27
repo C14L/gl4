@@ -16,9 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 import stonedb.urls
+import tradeshowdb.urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-
     url(r'^stone/', include(stonedb.urls)),
+    url(r'^tradeshows/', include(tradeshowdb.urls)),
 ]
