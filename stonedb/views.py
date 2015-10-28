@@ -7,6 +7,7 @@ from django.http import HttpResponse  # HttpResponseNotFound
 
 
 def home(request):
+    template_file = 'stonedb/home.html'
     return HttpResponse('Homepage')
 
 
@@ -15,6 +16,7 @@ def simple_filter(request, f, q):
 
     Example: /stone/color/blue
     """
+    template_file = 'stonedb/simple_filter.html'
     return HttpResponse('Simple Filter: {} > {}'.format(f, q))
 
 
@@ -23,4 +25,5 @@ def filter(request, q):
 
     Exampe: /stone/blue-sandstone-from-france
     """
+    template_file = 'stonedb/filter.html'
     return HttpResponse('Simple Filter: {}'.format(q))
