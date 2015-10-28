@@ -9,8 +9,11 @@ class Stone(models.Model):
     CLASSIF_CH = getattr(settings, 'CLASSIFICATION_CHOICES', ())
     SIMPLETYPE_CH = getattr(settings, 'SIMPLETYPE_CHOICES', ())
 
-    name = models.CharField(max_length=100)
-    urlname = models.SlugField(max_length=100, db_index=True)
+    name = models.CharField(max_length=100, default='', unique=True)
+    slug = models.SlugField(max_length=100, default='',
+                            db_index=True, unique=True)
+    # OLD urlname value, for redir only.
+    urlname = models.CharField(max_length=100, db_index=True, default='')
     created = models.DateTimeField(default=now)
     updated = models.DateTimeField(default=now)  # --> update_time
 
@@ -33,7 +36,7 @@ class Stone(models.Model):
     # but also use cities geo database to lookup proximity to larger cities.
     country_name = models.CharField(max_length=100)
     city_name = models.CharField(max_length=50)
-    country = models.PositiveIntegerField()
+    country = models.PositiveIntegerField(default=0)
     # country = models.ForeignKey(Country, null=True, default=None)
     lat = models.FloatField(null=True, default=None)
     lng = models.FloatField(null=True, default=None)
@@ -46,13 +49,13 @@ class Stone(models.Model):
     color = models.PositiveIntegerField(
         choices=COLOR_CH, null=True, default=None)
     secondary_colors = models.CommaSeparatedIntegerField(
-        choices=COLOR_CH, null=True, default=None)
+        choices=COLOR_CH, null=True, default=None, max_length=250)
     classification = models.PositiveIntegerField(
         choices=CLASSIF_CH, null=True, default=None)
     texture = models.PositiveIntegerField(
         choices=TEXTURE_CH, null=True, default=None)
     simpletype = models.CharField(
-        choices=SIMPLETYPE_CH, null=True, default=None)
+        choices=SIMPLETYPE_CH, null=True, default=None, max_length=50)
 
     application = models.TextField(default='')
     availability = models.TextField(default='')

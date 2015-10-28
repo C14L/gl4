@@ -2,11 +2,11 @@
 Collection of random simple general-purpose helper functions.
 """
 
-from datetime import date, datetime
 import dateutil.parser
 import math
 import pytz
 import re
+from datetime import date, datetime
 
 
 def to_iso8601(when=None):
