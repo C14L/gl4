@@ -1,0 +1,523 @@
+/*
+
+2012-03-12: Changed color #faf1d7 to #eee
+2012-03-12: Changed color #6AD97B to #ccc
+2012-03-12: Changed color #EFD078 to #6AD97B
+2012-03-12: Color combos from http://wrapbootstrap.com/preview/WB00T81AK
+            and color number #20.
+
+ */
+
+/* HTML tags */
+html, body { height:100%; margin:0; padding:0; }
+
+body { font-family:sans-serif; font-size:small; color:black; background-color:white; text-align:center; }
+a, a:link { outline-style: none; }
+table { border-spacing:0; }
+img  { border:0; margin:0; padding:0; }
+form { border:0; margin:0; padding:0; }
+input[type="checkbox"] { vertical-align: middle; border:1px solid #999; }
+input[type="text"], 
+input[type="password"] { border: 1px solid #999; padding:2px 3px; }
+
+select { border: 1px solid #999; padding: 2px 0px; background: url(/img/input-box-bg.png) bottom repeat-x #FFF; }
+
+textarea { border: 1px solid #999; background: url(/img/input-box-bg.png) bottom repeat-x #FFF; }
+
+input[type="checkbox"]:focus, input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus { border-color: #000; background:#FFF; }
+
+h1 { padding:0; margin:0; font-size:2em; color:#666; }
+h2 { padding:0; margin:10px 0; font-size:1.25em; }
+h2:first-child { margin-top:0; }
+h3 { padding: 0; margin:10px 0; font-size: 1.1em; }
+
+
+
+/* Template page elements */
+
+#tpl-wrap { padding:0; margin:0 auto 500px auto; border:0; text-align:left; width:920px; background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 0 12px -2px #000; }
+
+#tpl-login { width:800px; box-shadow:inset 0 -10px 10px -5px #aaa; border-radius:10px 10px 0 0; padding:10px; margin:0 auto; background:#fff; color:#666; }
+#tpl-login a { color:#00F; text-decoration:underline; }
+#tpl-login form { margin:0; }
+#tpl-login table { border:0; margin:0 auto; padding:0; }
+
+#tpl-title { background:#ccc; padding:15px 0 5px 0; margin:0; border:0; border-radius:15px; box-shadow:inset 0 20px 25px -10px rgba(255,255,255,0.5), inset 0 -20px 25px -10px rgba(0,0,0,0.1), 0 3px 5px #888; }
+
+#tpl-lema { display:block; white-space:nowrap; font-family:tahoma,serif; padding:1px; margin:0; text-align:center; color:#fff; text-shadow:0 0 3px #000; }
+
+#tpl-search table { padding:0; margin:0 20px; }
+#tpl-search table tr td:first-child { padding-right:10px; }
+#tpl-search table tr td select[name="color"] { width:100px; }
+#tpl-search table tr td select[name="country"] { width:150px; }
+#tpl-search table tr td input[type="text"] { width:200px; }
+
+#tpl-menu { margin:0 20px; display:inline-block; text-align:left; }
+#tpl-menu .menu-link { display:inline-block; padding:5px 10px; margin:5px; background:rgba(255,255,255,0.2); border-radius:15px; font-weight:bold; text-decoration:none; box-shadow:inset 1px 1px 1px rgba(255,255,255,0.5), -1px -1px 1px rgba(0,0,0,0.2), inset -1px -1px 1px rgba(0,0,0,0.2), 1px 1px 1px rgba(255,255,255,0.5); color:#555; }
+#tpl-menu .menu-link:hover { background:rgba(255,255,255,0.3); color:#222; }
+#tpl-menu .menu-link:active { box-shadow:-1px -1px 1px rgba(0,0,0,0.2), 1px 1px 1px rgba(255,255,255,0.5); padding:5px 9px 4px 11px; }
+#tpl-menu .menu-link.home-link { display: none; }
+
+#tpl-msg { display:block; position:fixed; top:0; left:0; right:0; height:0; background:#000; text-align:center; }
+
+#tpl-msg span { display:inline-block;  padding:15px; margin:0; text-align:center; background:#FF0; color:#F00; font-weight:bold;  border:2px solid #F00; border-top:0;  border-radius:0 0 10px 10px; box-shadow:0 5px 10px rgba(0,0,0,0.4); }
+
+#tpl-breadcrumb { padding:10px 20px 0 20px; font-size:100%; color:#999; }
+#tpl-breadcrumb a { text-decoration:none; color:#666; font-size:85%; }
+#tpl-breadcrumb a:hover { text-decoration:underline; color:#333; }
+#tpl-breadcrumb table { width: 100%; margin: 0; padding: 0; }
+#tpl-breadcrumb table tr td { vertical-align:middle; padding:0; height:24px; }
+#tpl-breadcrumb table tr td:nth-child(1) { width: 600px; }
+#tpl-breadcrumb table tr td:nth-child(2) { width: 380px; text-align: right; }
+#tpl-breadcrumb table tr td:nth-child(2) .addthis_toolbox { float: right; max-height: 20px !important; }
+#tpl-breadcrumb table tr td:nth-child(2) .addthis_toolbox > a { float: right; }
+
+#tpl-content { overflow:auto; padding:0 20px 20px 20px; margin:0; text-align:left; background:#fff; }
+
+#tpl-footer { clear:both; overflow:hidden; padding:5px 20px; border-top:1px #ccc solid; background:#eee; color:#aaa; border-radius:0 0 15px 15px; }
+#tpl-footer img { vertical-align:middle; margin-right:5px; }
+#tpl-footer p { padding:0; margin:5px 0; font-size:85%; text-align:left; }
+#tpl-footer p a { color:#aaa; text-decoration:none; }
+#tpl-footer p a:hover { color:#555; }
+
+#sysstat { position:fixed; bottom:0; right:0; font-size:85%; color:transparent; }
+
+#ajax-loading { position:fixed; top:1px; right:1px; padding:3px 5px; margin:0; background:red; color:white; }
+
+
+/* List of small preview fotos. */
+/* Example: /naturstein/branco-ipanema/fotos */
+
+.fotoslist { padding:5px; background:#000; overflow:hidden; }
+.fotoslist .count { margin:-5px; margin-bottom:5px; padding:15px; background:#ccc; overflow:hidden; }
+.fotoslist .list .item { float:left; margin:5px; }
+.fotoslist .list .item img { height:150px; }
+.fotoslist .list .loading { width:150px; height:150px; background:url(/img/loading1.gif) center center no-repeat rgba(255,255,255,0.7); float:left; margin:5px; }
+
+/* Generic stock items listings */
+
+div.stock-list { margin:20px 0; padding:0; border:1px solid #999; }
+div.stock-list div.header-line { margin:0;padding:5px;border:0;background:#EEE; }
+div.stock-list div.header-line table.stock-table-header-table {  }
+div.stock-list div.header-line table.stock-table-header-table td { padding:5px; }
+div.stock-list div.header-line table.stock-table-header-table td.pic { width:200px; vertical-align:middle; text-align:center; font-size:120%; font-weight:bold; }
+div.stock-list div.header-line table.stock-table-header-table td.pic a { text-decoration:none; }
+div.stock-list div.header-line table.stock-table-header-table td.pic a:hover { text-decoration:underline; }
+div.stock-list div.header-line table.stock-table-header-table td.title { padding-left:10px; font-weight:bold; color:#999; }
+div.stock-list div.header-line table.stock-table-header-table td.data {  }
+div.stock-list div.content-line { margin:0;padding:5px;border:0; }
+
+
+/* Comments: The table for the standard comment list */
+
+table.box-comment { margin:0 0 15px 0; width:100%; border:2px solid #C0C0C0; }
+table.box-comment td.about { vertical-align:top; width:100px; padding:5px; background:#FFF; border-right:1px solid #C0C0C0; }
+table.box-comment td.about a.foto { display:block; width:100px; height:100px; overflow:hidden; text-align:center; margin:0 auto; }
+table.box-comment td.about div.info { text-align:center; font-size:.85em; }
+table.box-comment td.about ul { list-style-type:none; margin:0; padding:0; }
+table.box-comment td.about ul li { margin:0; padding:0; }
+table.box-comment td.title { padding:0 0 5px 5px; margin:0; background:#F0F0F0; height:100%; }
+table.box-comment td.title h2.titleline { padding:0; margin:0; font-weight:bold; font-size:1em; }
+table.box-comment td.title div.fromline { padding:0; margin:0; }
+table.box-comment td.msg { padding:0 5px; vertical-align:top; }
+table.box-comment td.msg p { padding:5px; }
+
+
+/* General style helpers */
+.none { display:none; }
+.centered { text-align:center; }
+.small { font-size:85%; }
+.light { color:#999; }
+.err { color:#F00; font-weight:bold; background:#FF0; }
+table.wide { width:100%; }
+table.top td { vertical-align:top; }
+
+
+/* List with linked page numbers */
+
+.list-pages, .prevnext { margin:15px 0; padding:4px 0 6px 0; border:1px solid #c0c0c0; border-width:1px 0; text-align:center; font-size:1.15em; line-height:1.15em; }
+.list-pages > a, .prevnext > a {  }
+.list-pages > b, .prevnext > b {  }
+
+
+/* Star to flag good stuff */
+
+div.star-on-off { background-repeat:no-repeat; background-position:center center; background-image:url(/img/star_off.png); width:15px; height:15px; border:0; margin:0; padding:0; }
+
+
+/* Advertisements */
+
+.sponsor-ad { width:200px; float:right; text-align:right; margin:-10px 15px 0 0; padding:0; }
+.sponsor-ad > div:nth-child(1) { font-size:0.85em; opacity:0.5; }
+.sponsor-ad > div:nth-child(2) { width:200px; height:50px; margin-top:3px;}
+.sponsor-ad > div:nth-child(2) img { width:200px; height:50px; border:0; }
+
+
+/* Display a group of button style links of which only one is active. */
+
+.switchgroup { display:table; overflow:hidden; background:#ddd; border:1px solid #888; border-radius:5px; font-size:1em; }
+.switchgroup .item { display:table-cell; padding:0.35em 0.70em; border-left:1px solid #888; text-decoration:none; color:#555; box-shadow:inset 0 0.70em 0.70em -0.35em #fff, inset 0 -0.70em 0.70em -0.35em #aaa; text-shadow:1px 1px 1px #fff; }
+.switchgroup .item:hover { color:#333; }
+.switchgroup .item:first-child { border-left:0; }
+.switchgroup .item:last-child { }
+.switchgroup .item.active { box-shadow:inset 0 0.5em 0.35em -0.225em #aaa, inset 0 -0.5em 0.35em -0.225em #eee; background:#ddd; color:#333; font-weight:bold; }
+.switchgroup .item > img { opacity:0.7; }
+.switchgroup .item:hover > img { opacity:1; }
+
+
+/* Stone Search: The standard search results table for stones */
+
+table.stone-index-wrapper-table { padding:0; border-spacing:0; width:100%; }
+table.stone-index-wrapper-table td { vertical-align:top; }
+table.stone-index-search-table { padding:0; border-spacing:0; }
+table.stone-index-search-table td {padding:5px; border:0; vertical-align:middle; }
+td.stone-index-search-table-star { }
+td.stone-index-search-table-stone { width:200px; height:40px; }
+td.stone-index-search-table-stone a { display:block; width:200px; height:40px; }
+td.stone-index-search-table-desc { }
+
+
+/* Company signup form, list of groups */
+
+#register-form-company .groupitem:hover { background:#ccc; }
+#register-form-company .groupitem .checkbox { float:left; padding:10px 5px; }
+#register-form-company .groupitem label { display:block; margin:0 0 0 35px; padding:0; }
+
+
+/* Overlay box for editing item data. */
+
+.overlay-input-box {  display:none; position:fixed; top:100px; left:1px; width:700px; padding:20px; margin:0; background:#e0e0e0; border:2px solid #c0c0c0; text-align:left; }
+.overlay-input-box label { font-weight:bold; color:#000; }
+
+
+/* Display a semi-transparent box with a link to the stone in the background. */
+
+div#showbginfo {  margin:100px 0 0 0; text-align:center; }
+div#showbginfo a { margin:0; padding:5px 10px; color:#fff; background:#000;  opacity:0.5; }
+
+
+/* Moderators can edit content link */
+
+div.moderator-edit-links, div.modbox { background:#FF9; margin:0; padding:2px; border:2px solid #cc6; text-align:center; }
+div.moderator-edit-links:before, div.modbox:before { content:'Moderator: '; color:#993; }
+div.moderator-edit-links a, div.modbox a { color:#66F; }
+div.moderator-edit-links a:hover, div.modbox a:hover { color:#00C; }
+
+
+/* Users can edit content link */
+
+div.user-edit-links, div.userbox { background:#FF9; padding:2px; border:0; text-align:center; }
+div.user-edit-links a, div.userbox a { color:#66F; }
+div.user-edit-links a:hover, div.userbox a:hover { color:#00C; }
+
+.user-edit {  }
+.user-edit.link {  }
+.user-edit.btn { display:inline-block; background:#009; padding:5px 15px; margin:5px; text-align:center; text-decoration:none; font-weight:bold; color:#fff; border-radius:7px; opacity:0.3; }
+.user-edit.btn:hover { opacity:1; box-shadow:inset 0 10px 10px -5px rgba(255,255,255,0.4), inset 0 -10px 10px -5px rgba(0,0,0,0.2), 1px 1px 3px rgba(0,0,0,0.4); }
+.user-edit.btn:active { opacity:1; box-shadow:inset -1px -1px 2px -1px rgba(255,255,255,0.5), inset 2px 2px 3px -2px rgba(0,0,0,0.7), 1px 1px 1px rgba(0,0,0,0.0); }
+
+/* Standard elements like boxes and bottons */
+
+/* Simple box with a title and some text. */
+div.greybox { border:1px solid #c0c0c0; padding:0; margin:0; overflow:auto; }
+div.greybox div.greybox-title { background: #e0e0e0; padding:5px; text-align:center; font-weight: bold; color: #909090; }
+div.greybox div.greybox-content { padding:5px; text-align:left; }
+
+/* Standard box for any extra content. */
+div.tbox { margin:10px 0; padding:0; background:#eee; overflow:hidden; border-radius:7px; }
+div.tbox div.title { padding:5px 6px; background:#ccc; text-align:center; font-weight:bold; border-radius:7px; box-shadow:inset 0 10px 12px -5px rgba(255,255,255,0.5), inset 0 -10px 12px -5px rgba(0,0,0,0.1); text-shadow:1px 1px 1px rgba(255,255,255,.5); }
+div.tbox>div.title a { color:#000; text-decoration:none; }
+div.tbox>div.content { padding:5px; overflow:hidden; }
+
+div.tbox ul { margin:0 0 0 20px; padding:0; /* list-style-type:bullet; */ }
+div.tbox ul li { margin:0; padding:2px 0; }
+div.tbox ul.nobullet { list-style-type:none; margin:0; padding:0; }
+div.tbox ul.nobullet li { margin:0 0 .6em 0; padding:0; }
+div.tbox ul.nobullet li strong { font-weight:bold; }
+div.tbox ul.imglink { list-style-type:none; margin:0; padding:0; }
+div.tbox ul.imglink li { clear:left; margin:0 0 .6em 0; padding:0; }
+div.tbox ul.imglink li a.img-link { display:block; width:80px; height:80px; float:left; margin:0 5px 0 0; border:1px solid #FFF; }
+div.tbox ul.imglink li a.main-link { display:block; font-weight:bold; }
+div.tbox ul.imglink li a.sub-link { display:block; color:#666; font-size:85%; text-decoration:none; }
+div.tbox ul.imglink li span.content { display:block; }
+div.tbox>div.content>img.right { float:right; margin:0 0 0 10px; padding:0; }
+div.tbox>div.content>img.left { float:left; margin:0 10px 0 0; padding:0; }
+div.tbox>div.content>img.center { margin:5px 0; padding:0; }
+
+
+/* A 200x30px image of a stone linking to the stone's info page. */
+
+a.stared-stone-link { color:#000; display:block; margin:5px 0; padding:7px 0 0 0; width:200px; height:23px; text-align:center; font-size:85%;  text-decoration:none; }
+a.stared-stone-link span { background:#fff; opacity:0.4; padding:0 2px; margin:0; }
+a.stared-stone-link:hover span { color:#00f; opacity:1; }
+
+
+/* This is a large icon left to a link and an explaining text. */
+
+table.link-table { margin:0; padding:0; border-spacing:0; }
+table.link-table td { margin:0; padding:20px; vertical-align:top; }
+table.link-table td a { font-weight:bold; display:block; padding:0; margin:0 0 5px 0; }
+img.link-icon { width:64px; height:64px; border:0; float:left; padding:0; margin:0 10px 10px 0; }
+
+
+/* This is based on the idea of ".stared-stone-link" and displays a stone picture in the background of every line of the <ul>-list. */
+
+ul.enhanced-stone-list { clear:left; list-style-type:none; padding:0; margin:0; }
+ul.enhanced-stone-list li { padding:0; margin:5px 10px; width:200px; float:left; }
+ul.enhanced-stone-list li a { border-radius:5px 5px 0 0; border:1px solid #909090; display: block; color:#000; background:top left repeat; padding:30px 0 0 0; margin:0; color:#000; text-decoration:none; overflow:hidden; }
+ul.enhanced-stone-list li a:hover { border-color:#606060; }
+ul.enhanced-stone-list li a span.capt { display: block; height:2.5em; padding:2px 5px; margin:0; background:#fff; opacity:.7; overflow:hidden; }
+ul.enhanced-stone-list li a span.capt span.name { color:#00f; text-decoration:underline; }
+ul.enhanced-stone-list li a span.capt span.pseu { display:none; }
+
+
+/* Browse photos in table overview. */
+
+table.browse-photos-table td { width:190px; height:190px; margin:0; padding:5px; }
+table.browse-photos-table td a.browse-photos-photo-link { display:block; width:200px; height:200px; border:1px solid #c0c0c0;  margin:0; padding:0; color:#000; text-decoration:none; font-size:85%; font-weight:bold; }
+table.browse-photos-table td div.moderator-edit-links { width:194px; margin:0; font-size:85%; border-bottom:0; }
+table.browse-photos-table td div.browse-photos-upload-by { overflow:hidden; margin:80px 0 0 0; padding:2px; width:196px; background:#fff; opacity:.2; text-align:center; }
+
+
+/* The standard area around a user input form */
+
+div.box-input { /*width:810px;*/ margin:0 0 10px 0; padding:20px; border:0;background:#EEE; }
+div.box-input>div.title { font-weight:bold; font-size:1.2em; margin:0 0 10px 0; }
+div.box-input table { padding:0; margin:0; }
+div.box-input table td { padding:5px; }
+div.box-input label { font-weight:bold; color:#666; }
+
+div.list2 { margin:10px 0; }
+div.list2 table { margin:0; padding:0; border-spacing:2px; }
+div.list2 table td { vertical-align:top; padding:5px; }
+div.list2 table td.description { width:50%; border-top:1px solid #CCC; }
+div.list2 table td.picture { width:100px; text-align:center; background:#EEE; border-top:1px solid #CCC; }
+
+
+/* Standard projects list item */
+.projects-list { overflow:hidden; background:#ddd; margin:25px 0; padding:0; }
+.projects-list .header { margin-right:410px; padding:10px; }
+.projects-list .header table { width:100%; }
+.projects-list .header table td { vertical-align:middle; padding:5px; }
+.projects-list .header table td.title { color:#888; text-align:right; }
+.projects-list .header table td.data { font-size:1.15em; font-weight:bold; }
+.projects-list .header table td.pic {  }
+.projects-list .header table td.pic a { overflow:hidden; display:block; width:350px; height:50px; background-attachment:repeat; color:transparent; text-align:center; text-decoration:none; }
+.projects-list .header table tr.pub_date td.title {  }
+.projects-list .header table tr.pub_date td.data {  }
+.projects-list .header table tr.stone td.title {  }
+.projects-list .header table tr.stone td.data {  }
+.projects-list .header table tr.user td.title {  }
+.projects-list .header table tr.user td.data {  }
+.projects-list .content { margin-right:410px; padding:0 15px; }
+.projects-list .fotoslist { width:400px; float:right; }
+
+
+/* Tradeshow */
+
+body.tradeshow-index .switchgroup { font-size:1.75em; }
+body.tradeshow-index .list { margin:25px 0; }
+body.tradeshow-index .list h2 { margin:15px 0; font-size:1.5em; }
+body.tradeshow-index .list table { margin:15px 0; width:100%; table-layout:fixed; border-bottom:1px dotted #ccc; }
+body.tradeshow-index .list .item { vertical-align:top; width:50%; margin:0; padding:0; }
+body.tradeshow-index .list .item a { display:block; padding:10px; text-decoration:none; overflow:hidden; border-top:1px dotted #ccc; }
+body.tradeshow-index .list .item img { width:50px; height:50px; float:left; border-radius:5px; }
+body.tradeshow-index .list .item span { display:block; margin:0 0 0 60px; }
+body.tradeshow-index .list .item .name { font-size:1.15em; font-weight:bold; }
+body.tradeshow-index .list .item .aka { color:#888; }
+body.tradeshow-index .list .item .dateplace { color:#000; }
+
+body.tradeshow-item { margin:10px 0; padding:0; }
+body.tradeshow-item .item-title { margin:0; padding:10px; font-size:1.25em; overflow:hidden; border:1px solid #ccc; border-width:1px 0; line-height:1.5em; }
+body.tradeshow-item .item-title > img { width:75px; height:75px; margin:0 10px 0 0; vertical-align:middle; float:left; background:#888; box-shadow:0 0 10px #fff; border-radius:5px; }
+body.tradeshow-item .item-title > strong { display:block; font-weight:strong; }
+body.tradeshow-item .item-title > em { display:block; font-style:normal; color:#999; }
+body.tradeshow-item .item-data { }
+body.tradeshow-item .item-data th { text-align:right; padding:5px; font-weight:normal; color:#999; }
+body.tradeshow-item .item-data td { padding:5px; }
+
+
+/* Groups */
+
+body.groups-home h1 { margin-bottom:15px; }
+body.groups-home .layout { width:100%; }
+body.groups-home .layout td { vertical-align:top; padding:0; }
+body.groups-home .layout .leftcol { width:300px; padding-right:10px; }
+body.groups-home .layout .leftcol p { margin:10px 0; }
+body.groups-home .layout .leftcol p.about {  }
+body.groups-home .layout .leftcol p.logo { margin-top:0; }
+body.groups-home .layout .leftcol p.logo img { width:300px; }
+body.groups-home .layout .leftcol p.info { color:#888; }
+body.groups-home .layout .leftcol p.ad {  }
+body.groups-home .layout .rightcol { border-left:1px solid  #999; padding-left:10px; }
+body.groups-home .layout .rightcol .switches { overflow:hidden; }
+body.groups-home .layout .rightcol .switchgroup.left { float:left; }
+body.groups-home .layout .rightcol .switchgroup.right { float:right; }
+
+
+/* Stones */
+
+body.stones-home .layout { width:100%; margin:10px 0; }
+body.stones-home .layout .leftcol { vertical-align:middle; }
+body.stones-home .layout .leftcol form { padding:0; }
+body.stones-home .layout .leftcol form table { margin:0 auto; border-spacing:5px; }
+body.stones-home .layout .leftcol form td { padding:5px 10px; background-color:rgba(255,255,255,0.6); }
+body.stones-home .layout .leftcol form td:first-child label { display:block; text-align:right; font-weight:bold; }
+body.stones-home .layout .leftcol form td:last-child select { font-size:1.15em; width:220px; }
+body.stones-home .layout .leftcol form td:last-child input[type="text"] { padding-left:5px; padding-right:5px; width:210px; font-size:1.15em; }
+body.stones-home .layout .rightcol { vertical-align:top; width:300px; padding:0 0 0 10px; }
+
+body.stones-home .layout2 { margin:10px 0; width:100% table-layout:fixed; border-spacing:0; }
+body.stones-home .layout2 td { width:33%; vertical-align:top; background:#ddd; }
+body.stones-home .layout2 td h2 { padding:0 10px; margin:10px; color:#666; text-shadow:0 -1px 1px rgba(255,255,255,0.6), 0 1px 1px rgba(0,0,0,0.3); }
+body.stones-home .layout2 td ul { padding:0 10px; margin:10px; list-style:none; }
+body.stones-home .layout2 td ul li {  }
+body.stones-home .layout2 td ul li a { text-decoration:none; display:block; padding:3px 0 3px 10px; margin:0 0 0 -10px; }
+body.stones-home .layout2 td ul li a:hover { background:rgba(255,255,255,0.4); border-radius:9px; }
+
+body.stones-home .layout2 td.leftcol {  }
+body.stones-home .layout2 td.middlecol {  }
+body.stones-home .layout2 td.rightcol {  }
+
+
+/* Pages */
+
+body.pages .topics { padding:0; margin:0; float:right; width:300px; }
+body.pages .topics .title { font-size:1.5em; font-weight:bold; color:#666; padding:0; margin:0; }
+body.pages .topics .info { font-weight:bold; }
+body.pages .topics .intro {  }
+body.pages .topics ul { margin:0; padding:0; list-style:none; }
+body.pages .topics ul li { margin:10px 0; padding:15px; background:#eee; }
+body.pages .topics ul strong { display:block; font-size:1.5em;}
+body.pages .topics ul span { display:block; color:#666; }
+body.pages .topics .ad { padding:10px 0; }
+body.pages h1 { padding:0 0 15px 0; margin:15px 0; }
+body.pages .index { margin-right:320px; }
+body.pages .index > h1 { padding:0; margin:15px 0; }
+body.pages .index > .intro { padding:0; margin:15px 0; }
+body.pages .index .item { border-top:1px solid #ccc; padding:15px 0; }
+body.pages .index .topic { display:block; color:#666; font-style:italic; }
+body.pages .index a { text-decoration:none; }
+body.pages .index h2 { padding:0; margin:5px 0; }
+body.pages .index h2 a { text-decoration:underline; }
+body.pages .index .list .intro { padding:0; margin:0; }
+
+body.pages.page h1 { color:#333; }
+body.pages.page .layout { width:100%; }
+body.pages.page .layout td { vertical-align:top; }
+body.pages.page .leftcol { font-size:1.15em; line-height:1.5em; padding:0 20px 0 0; text-align:justify; }
+body.pages.page .leftcol > p:first-child { margin-top:0; }
+body.pages.page .leftcol .ad { margin:20px 0; padding:10px 0; text-align:center; }
+body.pages.page .rightcol { width:300px; }
+body.pages.page .rightcol > div > a > img { width:300px; }
+
+body.pages.page .author { background:#ddd; margin:20px 0; padding:15px; text-align:left; }
+body.pages.page .author .title { font-weight:bold; color:#666; }
+body.pages.page .author .content { margin-top:10px; }
+body.pages.page .author .name { display:block; font-size:1.5em; }
+body.pages.page .author .about { display:block; }
+
+
+/* Profiles of users */
+
+body.profile #about-company-title { text-align:center;  font-size:250%; }
+body.profile #about-company-slogan { text-align:center; }
+body.profile #about-company-about { margin:20px 0; overflow:hidden; }
+body.profile #about-company-about p { line-height:1.5em; margin:1em 0; text-align: left; }
+body.profile .profile-contact-info { width:100%; padding:10px; background:#ddd; }
+body.profile .profile-contact-info td { padding:5px; }
+body.profile .profile-contact-info td:first-child { color:#666; text-align:right; white-space:nowrap; }
+
+body.profile-home .layout { margin:10px 0; padding:0; width:100%; table-layout:fixed; }
+body.profile-home .layout .leftcol { vertical-align:top; }
+body.profile-home .layout .middlecol { vertical-align:top; width:230px; }
+body.profile-home .layout .middlecol div { width:200px; margin:0 auto; overflow:hidden; }
+body.profile-home .layout .rightcol { vertical-align:top; width:200px; }
+body.profile-home .layout .rightcol > div:first-child { margin-top:0; }
+
+/* Tab Navigations on top of user profiles */
+body.profile #tabnavi2 { list-style:none; margin:10px 0; padding:0; border-bottom:1px solid #C00; font-weight:bold; text-align:center; white-space:nowrap; }
+body.profile #tabnavi2 li { display:inline-block; margin:0 5px; padding:0; }
+body.profile #tabnavi2 a { display:inline-block; text-decoration:none; padding:10px; color:#888; background:#ddd; border-radius:7px 7px 0 0; box-shadow:inset 0 -10px 10px -5px #bbb; }
+body.profile #tabnavi2 a#current { color:#000; background:#ccc; box-shadow:inset 0 10px 12px -5px rgba(255,255,255,0.5), inset 0 -10px 12px -5px rgba(0,0,0,0.1); }
+body.profile #tabnavi2 a:hover { color:#666; }
+
+
+/* Home page */
+
+body.sitehome .leftcol { width:520px; margin:0; padding:0; float:left; }
+body.sitehome .leftcol .top-pic { background:url(/img/fotos/wand.jpg) center center no-repeat; width:520px; height:125px; margin:0 0 15px 0; }
+body.sitehome .leftcol .left-ad { width:160px; float:left; margin:0 0 10px 0; }
+body.sitehome .leftcol .sectionlinks { margin:0 0 10px 170px; padding:0; }
+body.sitehome .leftcol .currstock { clear:left; }
+
+body.sitehome .rightcol { width:336px; margin:0; padding:0; float:right; }
+body.sitehome .rightcol div:first-child { margin-top:0; }
+
+body.sitehome .rightcol .colors table { width:100%; }
+body.sitehome .rightcol .colors table td { vertical-align:top; width:50%; }
+body.sitehome .rightcol .colors ul { list-style:none; margin:0; }
+body.sitehome .rightcol .colors ul li { padding:3px 0; }
+body.sitehome .rightcol .colors ul li a { display:block; }
+body.sitehome .rightcol .colors ul li a span { display:inline-block; vertical-align:middle; margin-right:5px; width:20px; height:20px; overflow:hidden; box-shadow:1px 1px 2px rgba(0,0,0,0.3); }
+
+body.sitehome .rightcol .login table { margin:5px auto; width:220px; }
+body.sitehome .rightcol .login input[type="text"],
+body.sitehome .rightcol .login input[type="password"] { width:100%; }
+body.sitehome .rightcol .login .links { text-align:center; margin:0; padding:10px 0; }
+
+body.sitehome .companies p:first-child { padding:0; margin:0 0 20px 0; }
+body.sitehome .companies ul { margin:0; list-style:none; }
+body.sitehome .companies ul li { margin:10px 0; padding:0; overflow:hidden; }
+body.sitehome .companies ul li img { width:50px; height:50px; float:left; margin-right:10px; }
+
+
+/* Fotos pages. */
+
+body.fotos {  }
+body.fotos #display-foto { margin-bottom:20px; }
+body.fotos #display-foto .fotoitem { text-align:center; background:#000; padding:10px 0; }
+body.fotos #display-foto .fotoitem > .ctrl { text-align:center; color:#888; }
+body.fotos #display-foto .fotoitem > .ctrl a { color:#888; text-decoration:none; }
+body.fotos #display-foto .fotoitem > .ctrl a:hover { color:#eee; }
+body.fotos #display-foto .fotoitem > .pic { margin:15px 0; }
+body.fotos #display-foto #view-caption { background:#ccc; padding:0 15px; overflow:hidden; }
+
+
+/* Stone homepage */
+
+body.stones-item h2 a { color:#000; text-decoration:none; }
+body.stones-item .stone1 { width:100%; }
+body.stones-item .stone1 td { vertical-align:top; }
+body.stones-item .stone1 .about { width:400px; padding-right:10px; }
+body.stones-item .stone1 .about .ad2 { max-width: 400px; max-height: 400px; }
+body.stones-item .stone1 .about .img { width:400px; height:300px; border:1px solid #666; }
+body.stones-item .stone1 .about .comment { padding:10px 0; margin:0; }
+body.stones-item .stone1 .info { padding-left:10px; border-left:1px solid #666; }
+
+body.stones-item .datalist { width:100%; margin-bottom:10px; }
+body.stones-item .datalist td { vertical-align:top; padding:5px 0; }
+body.stones-item .datalist .title { white-space:nowrap; text-align:right; color:#888; }
+body.stones-item .datalist .data { padding-left:10px; }
+
+body.stones-item .fotos { margin:20px 0; overflow:hidden; }
+body.stones-item .fotos .list { background:#000; padding:5px; text-align:center; overflow:hidden; }
+body.stones-item .fotos .list a.item { display:inline-block; margin:10px; }
+body.stones-item .fotos .list a.item img { vertical-align:middle; }
+
+body.stones-item .stock { margin:20px 0; overflow:hidden; }
+body.stones-item .stock .user-edit { float:right; }
+body.stones-item .projects {  }
+body.stones-item .projects .user-edit { float:right; }
+
+body.stones-item .ad1 { text-align:left; margin:10px 0; }
+body.stones-item .ad2 { text-align:left; margin:0; padding:0; border:0; }
+body.stones-item .ads125x125 { overflow:hidden; }
+body.stones-item .ads125x125 > div.item { float:left; width:125px; height:125px; background:#eee; margin:0 10px 10px 0; }
+body.stones-item .ads125x125 > div.item > a.filler { display:block; padding:50px 0 0 0; width:125px; height:75px; text-align:center; color:#999; font-weight:bold; text-decoration:none; }
+
+
+/* Stone item's fotos page */
+
+body.stones-fotos h1 { margin:5px 0 15px 0; }
+

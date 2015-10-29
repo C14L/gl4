@@ -9,9 +9,8 @@ class Stone(models.Model):
     CLASSIF_CH = getattr(settings, 'CLASSIFICATION_CHOICES', ())
     SIMPLETYPE_CH = getattr(settings, 'SIMPLETYPE_CHOICES', ())
 
-    name = models.CharField(max_length=100, default='', unique=True)
-    slug = models.SlugField(max_length=100, default='',
-                            db_index=True, unique=True)
+    name = models.CharField(max_length=100, default='')
+    slug = models.SlugField(max_length=100, default='', db_index=True)
     # OLD urlname value, for redir only.
     urlname = models.CharField(max_length=100, db_index=True, default='')
     created = models.DateTimeField(default=now)
@@ -85,7 +84,7 @@ class Stone(models.Model):
 class StoneName(models.Model):
     stone = models.ForeignKey(Stone, related_name='pseu')
     name = models.CharField(max_length=100)
-    urlname = models.SlugField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=100, default='', db_index=True)
 
     class Meta:
         verbose_name = "StoneName"

@@ -1,0 +1,392 @@
+/* Style fixes for display on screen sizes <500px */
+
+body {
+    margin: 0; margin-top: 56px; padding: 0;
+    font-size: 16px;
+}
+#tpl-lema {
+    display: none;
+}
+#tpl-wrap {
+    width: 100vw;
+    overflow: hidden;
+    border-radius: 0;
+}
+
+/* -- #tpl-title ------------------------------------------------------------ */
+
+#tpl-title { 
+    display: block;
+    margin: 0; padding: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+#tpl-title > div {
+    margin: 0; padding: 0;
+}
+#tpl-title .sponsor-ad {
+    display: none;
+}
+#tpl-title #tpl-search {
+    display: block;
+    margin: 0; padding: 0;
+}
+#tpl-title #tpl-search > form {
+    display: block;
+    margin: 0; padding: 0;
+}
+#tpl-title #tpl-search > form > table {
+    display: block;
+    margin: 0; padding: 0;
+}
+#tpl-title #tpl-search > form > table tr {
+    display: block;
+    width: 100vw;
+    margin: 0; padding: 0;
+    overflow: hidden;
+}
+#tpl-title #tpl-search > form > table tr td {
+    display: block;
+    margin: 0; padding: 16px;
+    border-top: 1px solid rgba(0,0,0,0.12);
+    text-align: center;
+    display: none;
+}
+#tpl-title #tpl-search > form > table tr td:first-child {
+    display: block;
+    margin: 0; padding: 0;
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    background: #CCCCCC;
+    box-shadow: inset 0 20px 25px -10px rgba(255,255,255,0.5), 
+                inset 0 -20px 25px -10px rgba(0,0,0,0.1), 0 3px 5px #888;
+    text-align: center;
+    z-index: 1000;
+}
+#tpl-title #tpl-search > form > table tr td:first-child img {
+    height: 22px;
+    margin: 0; padding: 0; padding: 17px 16px;
+}
+#tpl-title #tpl-search > form > table tr td:last-child { /* hide login/logout */
+    display: none;
+}
+
+/* Nope: searches should only be done from search page, no additional overlay!
+#tpl-title.open { 
+    background: #D9D9D9;
+}
+#tpl-title.open #tpl-search > form > table tr td {
+    display: block; 
+} */
+
+
+#tpl-menu {
+    display: none;
+    margin: 0; padding: 0;
+    z-index: 999;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.62);
+}
+#tpl-menu.open {
+    display: block;
+    position: fixed; top: 57px; left: 0; right: 0; 
+    background: #D9D9D9;
+}
+#tpl-menu.open .menu-link {
+    display: block;
+    border-radius: 0;
+    margin: 0; padding: 16px 24px;
+    border: 0; border-top: 1px solid rgba(0,0,0,0.12);
+}
+#tpl-menu.open .menu-link:hover {
+}
+#tpl-menu.open .menu-link:active { 
+}
+#tpl-menu .menu-link.home-link { display: block; }
+#tpl-menu .menu-link.login-link { display: none; }
+#tpl-menu .menu-link.logout-link { display: none; }
+
+/* -- #tpl-breadcrumb ---------------- */
+
+#tpl-breadcrumb {
+    display: none;
+}
+
+/* -- #tpl-content ---------------- */
+
+#tpl-content {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    margin: 0; padding: 0;
+}
+#tpl-content h1 { margin: 16px 8px; font-size: 20px; }
+#tpl-content h2 { margin: 16px 8px; font-size: 16px; }
+#tpl-content p { margin: 8px; }
+
+#tpl-content ~ .ad { /* the "keyword list" ad right aove the footer */
+    display: none;
+}
+
+/* -- #tpl-footer ---------------- */
+
+#tpl-footer { clear: both; overflow: hidden; margin: 0; padding: 0; border-top: 1px #ccc solid; background: #eee; color: #aaa; border-radius: 0; font-size: 16px; }
+#tpl-footer img { float: right; vertical-align: middle; margin: 0; padding: 0; font-size: 16px; }
+#tpl-footer p { margin: 0; padding: 0; font-size: 16px; }
+#tpl-footer table { display: block; margin: 0; padding: 0; width: 100vw; }
+#tpl-footer table tr { display: block; margin: 0; padding: 0; width: 100vw; }
+#tpl-footer table tr td { display: block; margin: 0; padding: 0 !important; width: 100vw; border-bottom: 5px solid rgba(0,0,0,0.12); }
+#tpl-footer table tr td > p { font-size: 16px; }
+#tpl-footer table tr td > p > a { display: block; padding: 8px; border-bottom: 1px solid rgba(0,0,0,0.12); }
+#tpl-footer table tr td > p > br { display: none; }
+#tpl-footer table tr td:last-child > p { font-size: 16px; }
+#tpl-footer table tr td:last-child > p:last-child { padding: 8px; text-align: center; }
+
+/* Home page */
+
+body.sitehome h1 { display: none; }
+body.sitehome .leftcol { width: 100%; margin: 0; padding: 0; float: none; }
+body.sitehome .leftcol .top-pic { background: url(/img/fotos/wand.jpg) center center no-repeat; width:100%; margin: 0; }
+body.sitehome .leftcol .left-ad { width:100%; margin: 0; padding: 0; max-height: 100px; overflow: hidden; border: 1px solid #000; border-width: 1px 0; }
+body.sitehome .leftcol .sectionlinks { margin: 0; padding: 8px; overflow: hidden; }
+body.sitehome .leftcol .currstock {  }
+
+body.sitehome .rightcol { width: 100%; margin: 0; padding: 0; }
+body.sitehome .rightcol .colors table { width: 100%; }
+body.sitehome .rightcol .colors table td { vertical-align:top; width:50%; }
+body.sitehome .rightcol .colors ul { list-style:none; margin:0; }
+body.sitehome .rightcol .colors ul li { padding:3px 0; }
+body.sitehome .rightcol .colors ul li a { display:block; }
+body.sitehome .rightcol .colors ul li a span { display:inline-block; vertical-align:middle; margin-right:5px; width:20px; height:20px; overflow:hidden; box-shadow:1px 1px 2px rgba(0,0,0,0.3); }
+
+body.sitehome .rightcol .login table { margin:5px auto; width:220px; }
+body.sitehome .rightcol .login input[type="text"],
+body.sitehome .rightcol .login input[type="password"] { width:100%; }
+body.sitehome .rightcol .login .links { text-align:center; margin:0; padding:10px 0; }
+
+body.sitehome .companies p:first-child { padding:0; margin:0 0 20px 0; }
+body.sitehome .companies ul { margin:0; list-style:none; }
+body.sitehome .companies ul li { margin:10px 0; padding:0; overflow:hidden; }
+body.sitehome .companies ul li img { width:50px; height:50px; float:left; margin-right:10px; }
+
+/* Standard box for any extra content. */
+
+div.tbox { margin: 0; padding: 0; background: #eee; overflow: hidden; border-radius: 0; }
+div.tbox div.title { padding: 16px; background: #ccc; text-align: center; font-weight: bold; border-radius: 0; box-shadow: inset 0 10px 12px -5px rgba(255,255,255,0.5), inset 0 -10px 12px -5px rgba(0,0,0,0.1); text-shadow:1px 1px 1px rgba(255,255,255,.5); }
+div.tbox>div.title a { color: #000; text-decoration: none; }
+div.tbox>div.content { padding: 8px; overflow: hidden; }
+div.tbox ul { margin: 0 0 0 20px; padding: 0; }
+div.tbox ul li { margin: 0; padding: 8px 0; } /* bit more space for touch */
+
+/* List with linked page numbers */
+
+.list-pages, .prevnext { margin: 16px 0; padding: 0; border: 0; text-align: left; font-size: 16px; line-height: 48px !important; text-align: center;}
+.list-pages a,
+.prevnext a { margin: 4px; padding: 8px 16px; color: #FFF; background: rgba(0,0,255,0.32); text-decoration: none; font-weight: bold; }
+.list-pages b,
+.prevnext b { margin: 4px; padding: 8px 16px; color: #FFF; background: rgba(0,0,255,1); text-decoration: none; font-weight: bold; white-space: nowrap; }
+.prevnext span.light { display: none; }
+
+/* Stones listing */
+/* This is based on the idea of ".stared-stone-link" and displays a stone picture in the background of every line of the <ul>-list. */
+
+ul.enhanced-stone-list { display: block; clear: none; list-style-type: none; padding: 0; margin: 0; }
+ul.enhanced-stone-list li { display: block; margin: 0; padding: 0; float: none; }
+ul.enhanced-stone-list li a { margin: 8px; padding: 30px 0 0 0; border-radius: 0; border: 0; color: #000; background: top left repeat; text-decoration: none; overflow: hidden; width: calc(100vw - 16px); }
+ul.enhanced-stone-list li a span.capt { display: block; height: 2.5em; padding: 2px 5px; margin:0; background: rgba(255,255,255,0.5); opacity: 1; overflow:hidden; }
+ul.enhanced-stone-list li a span.capt span.name { color: #000; text-decoration: none; font-weight: bold; }
+ul.enhanced-stone-list li a span.capt span.pseu { display:none; }
+
+ul.enhanced-stone-list ~ div.greybox { display: block; margin: 0; padding: 0; overflow: hidden; }
+ul.enhanced-stone-list ~ div.greybox table { display: block; margin: 0; padding: 0; overflow: hidden; }
+ul.enhanced-stone-list ~ div.greybox table tr { display: block; margin: 0; padding: 0; }
+ul.enhanced-stone-list ~ div.greybox table tr td { display: block; margin: 0; padding: 0; }
+ul.enhanced-stone-list ~ div.greybox table tr td > ul { display: block; margin: 0; padding: 0; list-style: none; }
+ul.enhanced-stone-list ~ div.greybox table tr td > ul > li { display: block; margin: 0; padding: 0; border: 0; border-bottom: 1px solid rgba(0,0,0,0.12); width: 100vw; height: 48px; color: transparent; }
+ul.enhanced-stone-list ~ div.greybox table tr td > ul > li > a { display: inline-block; margin: 0; padding: 16px; width: 100vw; color: #000; text-decoration: none; }
+}
+
+/* Stones */
+
+body.stones-home h1 { display: none; }
+body.stones-home .layout { display: block; margin: 0; } /* table */
+body.stones-home .layout > tr { display: block; }
+body.stones-home .layout .leftcol { display: block; width: 100vw; margin: 0; padding: 0; } /* td */
+body.stones-home .layout .leftcol form { margin: 0; padding: 8px 0; }
+body.stones-home .layout .leftcol form table { margin: 0 auto; border-spacing: 5px; }
+body.stones-home .layout .leftcol form td { padding: 8px; background-color: transparent; }
+body.stones-home .layout .leftcol form td:first-child { display: none; }
+body.stones-home .layout .leftcol form td:last-child select { margin: 0; padding: 0; width: 90vw; font-size: 20px; }
+body.stones-home .layout .leftcol form td:last-child input[type="text"] { margin: 0; padding: 0; width: 90vw; font-size: 20px; }
+body.stones-home .layout .leftcol form td:last-child input[type="submit"] { margin: 0; padding: 8px 32px; font-size: 24px; }
+body.stones-home .layout .rightcol { display: block; width: 100vw; text-align: center; margin: 0; padding: 8px 0; background: #FFF; }
+
+body.stones-home .layout2 { margin: 0; padding: 0; width: 100%; display: block; background: #ddd;}
+body.stones-home .layout2 tr { display: block; width: 100%; }
+body.stones-home .layout2 td { display: block; width: 100%; }
+body.stones-home .layout2 td h2 { margin: 0; padding: 8px; color: #666; }
+body.stones-home .layout2 td ul { margin: 0; padding: 0; }
+body.stones-home .layout2 td ul li { display: block; width: 100%; }
+body.stones-home .layout2 td ul li a { margin: 0; padding: 16px; display: block; width: 100%; border: 0; border-top: 1px solid rgba(0,0,0,0.12);}
+body.stones-home .layout2 td ul li a:hover { border-radius: 0; }
+
+/* Stone homepage */
+
+body.stones-item h1 { text-align: center; }
+body.stones-item h2 a { color:#000; text-decoration:none; }
+body.stones-item #tpl-content > p { text-align: center; }
+
+body.stones-item .stone1 { display: block; margin: 0; padding: 0; width: 100vw; }
+body.stones-item .stone1 > tr { display: block; margin: 0; padding: 0; width: 100vw; }
+body.stones-item .stone1 > tr > td { display: block; margin: 0; padding: 0; width: 100vw; }
+body.stones-item .stone1 .about { display: block; margin: 0; padding: 0; width: 100vw; }
+body.stones-item .stone1 .about .ad2 { max-width: 100vw; max-height: 400px; }
+body.stones-item .stone1 .about .img { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+body.stones-item .stone1 .about .comment { display: block; margin: 8px; padding: 0; width: 100vw; }
+body.stones-item .stone1 .about hr { display: none; }
+body.stones-item .stone1 .info { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+
+body.stones-item .datalist { display: block; margin: 0; padding: 0; width: 100vw; }
+body.stones-item .datalist tr { display: block; margin: 0; padding: 8px; width: 100vw; border-bottom: 1px solid rgba(0,0,0,0.12); }
+body.stones-item .datalist tr:first-child { border-top: 1px solid rgba(0,0,0,0.12); }
+body.stones-item .datalist td { display: block; margin: 0; padding: 0; width: 100vw; white-space: normal; }
+body.stones-item .datalist .title { display: block; margin: 0; padding: 0; width: auto; white-space: normal; text-align: left; }
+body.stones-item .datalist .data { display: block; margin: 0; padding: 8px; width: auto; white-space: normal; }
+
+body.stones-item .fotos { margin:20px 0; overflow:hidden; }
+body.stones-item .fotos .list { background:#000; padding:5px; text-align:center; overflow:hidden; }
+body.stones-item .fotos .list a.item { display:inline-block; margin:10px; }
+body.stones-item .fotos .list a.item img { vertical-align:middle; }
+
+body.stones-item .stock { display: none; } /* too many chinese spammers here */
+body.stones-item .stock .user-edit { display: none; }
+body.stones-item .projects { display: none; } /* too many chinese spammers here too */
+body.stones-item .projects .user-edit { display: none; }
+
+body.stones-item .ad { display: none; }
+body.stones-item .ad1 { font-size: 0; text-align: center; margin: 0; padding: 0; border-top: 1px solid #000000; border-bottom: 1px solid #000000; }
+body.stones-item .ad2 { font-size: 0; text-align: center; margin: 0; padding: 0; border-top: 1px solid #000000; border-bottom: 1px solid #000000; }
+/* 
+body.stones-item .ads125x125 { overflow: hidden; }
+body.stones-item .ads125x125 > div.item { float:left; width:125px; height:125px; background:#eee; margin:0 10px 10px 0; }
+body.stones-item .ads125x125 > div.item > a.filler { display:block; padding:50px 0 0 0; width:125px; height:75px; text-align:center; color:#999; font-weight:bold; text-decoration:none; }
+*/
+
+
+
+/* Stone Search: The standard search results table for stones */
+
+table.stone-index-wrapper-table { display: block !important; margin: 0 !important; padding: 0; width: 100vw; }
+table.stone-index-wrapper-table tr { display: block !important; margin: 0; padding: 0; width: 100vw;  }
+table.stone-index-wrapper-table td { display: block !important; margin: 0; padding: 0 !important; width: 100vw !important;  }
+
+table.stone-index-wrapper-table tr > td:first-child > div { max-height: 150px; margin: 16px 0 0 0; padding: 0; border: 0; overflow: hidden; border-top: 1px solid #000000; border-bottom: 1px solid #000000; }
+
+table.stone-index-wrapper-table tr > td:first-child > h2 { display: none !important;  }
+
+table.stone-index-wrapper-table tr > td:first-child > ul { display: none !important;  }
+
+table.stone-index-wrapper-table tr > td:nth-child(2) > h1 { margin: 8px !important; padding: 0 !important; }
+table.stone-index-wrapper-table tr > td:nth-child(2) > p { margin: 8px !important; padding: 0 !important; }
+
+table.stone-index-wrapper-table tr > td:nth-child(2) > div:nth-child(3) { display: none !important; }
+
+table.stone-index-search-table { display: block; margin: 0; padding: 0; width: 100vw; }
+table.stone-index-search-table tr { display: block; margin: 0; margin-bottom: 16px; padding: 0; width: 100vw; }
+table.stone-index-search-table td { display: block; margin: 0; padding: 0; width: 100vw; }
+td.stone-index-search-table-star { display: none; }
+td.stone-index-search-table-stone { width: 100vw; height: 100px; }
+td.stone-index-search-table-stone a { display: block; width: 100vw; height: 100px; }
+td.stone-index-search-table-desc { margin: 8px !important; }
+
+/* The standard area around a user input form */
+
+div.list2 { margin: 0; padding: 0; }
+div.list2 table { display: block; margin: 0; padding: 0; width: 100vw; }
+div.list2 table tr { display: block; overflow: hidden;  }
+div.list2 table td { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+
+div.list2 table td.description { display: block; margin: 0; margin-left: 80px; padding: 8px; width: calc(100vw - 96px) !important; border: 0; border-bottom: 1px solid rgba(0,0,0,0.12); }
+div.list2 table td.picture { display: block; margin: 0; padding: 0; width: 50px; float: left; background: none; border: 0; }
+div.list2 table td.picture img { width: 74px; }
+
+
+/* Groups */
+
+body.groups-home h1 { margin-bottom:15px; }
+body.groups-home .layout { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+body.groups-home .layout tr { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+body.groups-home .layout td { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+body.groups-home .layout .leftcol { width:300px; padding-right:10px; }
+body.groups-home .layout .leftcol p { margin:10px 0; }
+body.groups-home .layout .leftcol p.about {  }
+body.groups-home .layout .leftcol p.logo { margin-top:0; }
+body.groups-home .layout .leftcol p.logo img { width:300px; }
+body.groups-home .layout .leftcol p.info { color:#888; }
+body.groups-home .layout .leftcol p.ad { border: 1px solid #000; }
+/* body.groups-home .layout .leftcol p.ad { display: block; overflow: hidden; height: 100px; } ???? */
+
+body.groups-home .layout .rightcol { display: block; margin: 0; padding: 0; padding-top: 0; width: 100vw; border: 0; border-top: 1px solid  #999; }
+body.groups-home .layout .rightcol .switches { overflow: hidden; margin: 0; padding: 0; }
+body.groups-home .layout .rightcol .switchgroup.left { float: none; }
+body.groups-home .layout .rightcol .switchgroup.right { float: none; }
+body.groups-home .layout .rightcol .switchgroup { margin: 16px 8px; }
+
+
+/* Profiles of users */
+
+body.profile #about-company-title { text-align:center;  font-size:250%; }
+body.profile #about-company-slogan { text-align:center; }
+body.profile #about-company-about { display: block; margin: 8px; padding: 0; width: 100vw; border: 0; }
+body.profile #about-company-about p { line-height: 1.25em; margin: 8px; }
+
+body.profile.profile-contact .box-input { display: block; margin: 0; padding: 0; width: 100vw; border: 0; text-align: left; }
+body.profile.profile-contact .box-input table { display: block; margin: 0; padding: 0; width: 100vw; border: 0; text-align: left; }
+body.profile.profile-contact .box-input table td { display: block; margin: 8px; padding: 0; width: 100vw; border: 0; text-align: left; }
+body.profile.profile-contact .box-input table td input[type="text"],
+body.profile.profile-contact .box-input table td textarea { width: calc(100vw - 32px); }
+
+body.profile-home .layout { display: block; margin: 0; padding: 0; width: 100vw; border: 0; table-layout: none; }
+body.profile-home .layout .leftcol { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+body.profile-home .layout .middlecol { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+body.profile-home .layout .rightcol { display: block; margin: 0; padding: 0; width: 100vw; border: 0; }
+body.profile-home .layout .middlecol div { display: block; margin: 0; padding: 4px 0; width: 100vw; border: 0; text-align: center; }
+body.profile-home .layout .rightcol > div:first-child { margin-top:0; }
+
+/* Tab Navigations on top of user profiles */
+body.profile #tabnavi2 { display: none; }
+
+
+/* Pages */
+
+body.pages.index h1, body.pages.topic h1 { display: none; }
+
+body.pages .index { margin: 0; padding: 0; width: 100vw; float: none; }
+body.pages .topics { margin: 0; padding: 0; width: 100vw; float: none; }
+
+body.pages.index .topics { }
+body.pages.index .topics .title { display: none; }
+body.pages.index .index { display: none; }
+
+body.pages.topic .topics { margin: 0; padding: 0; width: 100vw; float: none; }
+body.pages.topic .topics .title { display: none; }
+body.pages.topic .topics .info { display: none; }
+body.pages.topic .topics .intro { display: none; }
+body.pages.topic .topics ul { display: none; }
+body.pages.topic .topics .ad { width: 100vw; max-height: 100px; }
+body.pages.topic .index { }
+
+body.pages.page h1 {  }
+body.pages.page .layout { display: block; margin: 0; padding: 0; width: 100vw; }
+body.pages.page .layout tr { display: block; margin: 0; padding: 0; width: 100vw; }
+body.pages.page .layout td { display: block; margin: 0; padding: 0; width: 100vw; }
+
+body.pages.page .leftcol { display: block; margin: 0; padding: 0; width: 100vw; text-align: left; }
+body.pages.page .leftcol .ad { margin: 20px 0; padding:10px 0; text-align:center; }
+body.pages.page .rightcol { display: block; margin: 0; padding: 0; width: 100vw; }
+body.pages.page .rightcol > div > a > img { display: block; margin: 0; padding: 0; width: 100vw; }
+
+body.pages.page .author { margin: 8px 0; padding: 8px; }
+body.pages.page .author .title { font-weight: normal; color:#666; }
+body.pages.page .author .content { margin-top:10px; }
+body.pages.page .author .name { font-size: 16px; }
+body.pages.page .author .about {  }

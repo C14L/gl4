@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns:fb="http://ogp.me/ns/fb#">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-language" content="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="Copyright" content="Christian Steimel">
+    <meta property="fb:admins" content="">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="stylesheet" type="text/css" href="/static/stonedb.css">
+    <link rel="stylesheet" type="text/css" href="/scripts/jquery/suggest.css">
+    <link rel="stylesheet" type="text/css" href="/static/stonedb-lt-500.css" media="only screen and (max-width: 750px)">
+    <script src="/scripts/jquery/jquery-1.7.1.min.js"></script>
+    <script src="/scripts/searchbar-entries.en.js"></script>
+
+    {% if DEBUG %}
+    {% else %}
+      <script type="text/javascript">
+
+window.google_analytics_uacct='UA-273063-3';
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', window.google_analytics_uacct]);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+function recOutLink(l,c,a){
+if (typeof(_gat)!='undefined') _gat._getTrackerByName()._trackEvent(c,a);
+if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
+};
+
+      </script>
+    {% endif %}
+    <script src="/tmp/52ec484f43b442126b553ea56f1f8fac.js"></script>
+  </head>
+  <body class="stones-home" style="background:url(/stonespics/amazoniabrown.jpg)">
+    <strong id="tpl-lema"><em>Marbles and Granites from around the globe</em></strong>
+    {% if settings.DEBUG %}
+      <div style="position:fixed;right:0;bottom:0;background:red;color:yellow;font:13px/1em monospace;">DEBUG</div>
+    {% else %}
+    {% endif %}
+
+    <div id="tpl-wrap">
+      <div id="tpl-title">
+        <div>
+          <div class="sponsor-ad">
+            <div>Sponsored by:</div>
+            <div><a rel="nofollow" onClick="recOutLink(this, 'Sponsor Links', 'NatursteinHilfe'); return false;" href="http://www.NatursteinHilfe.de/"><img src="/img/sponsor-nh.jpg" alt="NatursteinHilfe"></a></div>
+          </div>
+          <div id="tpl-search">
+            <form method="get" action="/stone/search.php">
+              <div><input type="hidden" name="p" value="1"></div>
+              <table>
+                <tr>
+                  <td id="tpl-site-logo"><a href="/"><img src="/img/tt-logo-small.gif" alt="Graniteland - marble and granite information online."></a></td>
+                  <td><select size="1" name="color" id="search_color"><option value="">All colors</option></select></td>
+                  <td><select size="1" name="country" id="search_country"><option value="">All countries of origin</option></select></td>
+                  <td><input type="text" name="pseu" class="search-pseu" id="search_pseu" value="" maxlength="150" size="10" placeholder="or name of stone"></td>
+                  <td><input type="submit" value="Search"></td>
+                </tr>
+              </table>
+            </form>
+          </div>
+          <div id="tpl-menu">
+            <a class="menu-link home-link" href="/">Graniteland</a>
+            <a class="menu-link" href="/stone">Natural Stone</a>
+            <a class="menu-link" href="/tradeshows">Trade shows</a>
+            <a class="menu-link" href="/infos">Stone Infos</a>
+            <a class="menu-link" href="/companies">Stone Companies</a>
+            <a class="menu-link login-link" href="/user/login.php?url=%2Fstone">Login</a>
+          </div>
+        </div>
+      </div>
+      <div id="tpl-breadcrumb">
+        <table>
+          <tr>
+            <td>
+              <a href="http://www.graniteland.com/">Graniteland.com</a> &raquo;
+              <a href="/stone">Stones</a> &raquo;
+            </td>
+            <td>
+              {% if settings.DEBUG %}
+              {% else %}
+                <div class="addthis_toolbox addthis_default_style addthis_20x20_style">
+                  <a class="addthis_button addthis_button_facebook_share" fb:share:layout="button"></a>
+                  <a class="addthis_button_pinterest_pinit" pi:pinit:url="http://www.graniteland.com/stone/amazonia-brown" pi:pinit:media="http://www.graniteland.com/stonespics/amazoniabrown.jpg" pi:pinit:layout="none">
+                  <a class="addthis_button_tweet" tw:count="none"></a>
+                </div>
+              {% endif %}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="tpl-content">
+        {% block main %}{% endblock %}
+      </div>
+
+      <div id="tpl-footer">
+        <table style="width:100%" class="top">
+          <tr>
+            <td style="white-space:nowrap; padding:10px;">
+              <p>
+                <a href="/stone/color"><strong>Natural stone by color:</strong></a>
+              </p>
+              <p>
+                <a href="/stone/color/beige">Beige natural stone</a><br>
+                <a href="/stone/color/black">Black natural stone</a><br>
+                <a href="/stone/color/blue">Blue natural stone</a><br>
+                <a href="/stone/color/brown">Brown natural stone</a><br>
+                <a href="/stone/color/colorfull">Colorfull natural stone</a><br>
+                <a href="/stone/color/darkgrey">Dark grey natural stone</a><br>
+                <a href="/stone/color/green">Green natural stone</a><br>
+                <a href="/stone/color/grey">Grey natural stone</a><br>
+                <a href="/stone/color/lightgrey">Light grey natural stone</a><br>
+                <a href="/stone/color/pink">Pink natural stone</a><br>
+                <a href="/stone/color/red">Red natural stone</a><br>
+                <a href="/stone/color/white">White natural stone</a><br>
+                <a href="/stone/color/yellow">Yellow natural stone</a><br>
+                <a href="/stone/color"><strong>More...</strong></a>
+              </p>
+            </td>
+            <td style="white-space:nowrap; padding:10px;">
+              <p>
+                <a href="/stone/country"><strong>Natural stone by country of origin:</strong></a>
+              </p>
+              <p>
+                <a href="/stone/country/brazil">Granite and marble from Brazil</a><br>
+                <a href="/stone/country/china">Granite and marble from China</a><br>
+                <a href="/stone/country/germany">Granite and marble from Germany</a><br>
+                <a href="/stone/country/france">Granite and marble from France</a><br>
+                <a href="/stone/country/india">Granite and marble from India</a><br>
+                <a href="/stone/country/italy">Granite and marble from Italy</a><br>
+                <a href="/stone/country/spain">Granite and marble from Spain</a><br>
+                <a href="/stone/country"><strong>More...</strong></a>
+              </p>
+            </td>
+            <td style="white-space:nowrap; padding:10px;">
+              <p>
+                <a href="/stone/type"><strong>Natural stones by type of stone:</strong></a>
+              </p>
+              <p>
+                <a href="/stone/type/granite">Granite</a><br>
+                <a href="/stone/type/limestone">Limestone</a><br>
+                <a href="/stone/type/marble">Marble</a><br>
+                <a href="/stone/type/quartzite">Quartzite</a><br>
+                <a href="/stone/type/sandstone">Sandstone</a><br>
+                <a href="/stone/type/slate">Slate</a><br>
+                <a href="/stone/type/soapstone">Soapstone</a><br>
+                <a href="/stone/type/travertine">Travertine</a><br>
+                <a href="/stone/type"><strong>More...</strong></a>
+              </p>
+            </td>
+            <td style="padding:10px;">
+              <p>
+                <a href="/report-abuse?url=/stone" title="Please report user submitted content that violates the Terms of Service." rel="nofollow">Report abuse</a> &middot; 
+                <a href="/tos" rel="nofollow">Terms of Service</a> &middot; 
+                <a href="/privacy" rel="nofollow">Privacy</a> &middot; 
+                </p>
+              <p>
+                <a href="/contact" rel="nofollow">Contact</a> &middot; 
+                <a href="/contact" rel="nofollow">Impressum</a> &middot; 
+                <a href="#" title="Jump to the top of this page.">Top of page</a>
+              </p>
+              <br>
+              <p>Information is provided without warranty of any kind and may contain errors or may be outdated.<br>It is strongly advised to contact a competent granite professional to confirm any information found on Graniteland.</p>
+              <p><img src="/img/flags/gb.png" alt="Find granite and marble..."><a href="http://www.graniteland.com/">Find granite and marble online</a></p>
+              <p><img src="/img/flags/de.png" alt="Naturstein finden..."><a href="http://www.graniteland.de/">Graniteland, die Naturstein-Suchmaschine</a></p>
+              <p>&copy; 2015 by Graniteland</p>
+            </td>
+          </tr>
+        </table>
+        <div style="clear:left;"></div>
+      </div><!-- /footer -->
+    </div><!-- /wrap -->
+
+    <script type="text/javascript">
+
+if(screen.availWidth<=750){
+document.getElementById('tpl-site-logo').addEventListener('click',function(e){e.preventDefault();
+document.getElementById('tpl-menu').classList.toggle('open');return false;});}
+
+    </script>
+    <div id="tpl-msg"></div>
+    <div id="fb-root"></div>
+    <div id="showbginfo">
+      <a href="/stone/amazonia-brown"><strong>The background stone is Amazonia Brown from Brazil.</strong></a>
+    </div>
+    <script type="text/javascript">(function(){$(".search-pseu").suggest("/stones/suggest.php")})();</script>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yaix"></script>
+    <div id="sysstat"> RUN 0.027 MEM 3,906 SYS 0.13 0.06 0.01</div>
+    <script>
+
+var sc_project=570770; var sc_invisible=1; var sc_partition=4; var sc_security="bb8f16d7"; var sc_remove_link=1;
+
+    </script>
+    <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script>
+    <noscript>
+      <div class="statcounter"><img class="statcounter" src="http://c5.statcounter.com/counter.php?sc_project=570770&amp;java=0&amp;security=bb8f16d7&amp;invisible=1" alt="site stats"></div>
+    </noscript>
+  </body>
+</html>

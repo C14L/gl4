@@ -13,8 +13,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Import private settings.
+from .settings_private import *
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -54,7 +56,7 @@ ROOT_URLCONF = 'gl4.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,8 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'gl4.wsgi.application'
-
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -92,6 +92,173 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Import private settings.
-from .settings_private import *
-
+COLOR_CHOICES = (
+    (1, 'beige'),
+    (2, 'blue'),
+    (3, 'brown'),
+    (4, 'yellow'),
+    (5, 'grey'),
+    (7, 'green'),
+    (8, 'white'),
+    (9, 'pink'),
+    (10, 'red'),
+    (11, 'black'),
+    (12, 'white'),
+)
+CLASSIFICATION_CHOICES = (
+    (0, 'amazonite - granite'),
+    (0, 'foidolite'),
+    (0, 'hornblende-amphibolite'),
+    (0, 'iron ore'),
+    (0, 'marble-onyx'),
+    (0, 'mikrolin-quatrz -phyllite'),
+    (0, 'n/a'),
+    (0, 'n.a'),
+    (0, 'orbicular granite'),
+    (0, 'orthoklase - quartz - phyllite'),
+    (0, 'quartz -phyllite'),
+    (0, 'phyllite'),
+    (0, 'sodalite-syenite'),
+    (0, 'schist'),
+    (0, 'serizite-quatrz-phyllite'),
+    (0, 'sodalithe-gneiss'),
+    (0, 'sodalithe-syenite'),
+    (2, 'anhydrite'),
+    (3, 'anorthosite'),
+    (4, 'aplite'),
+    (5, 'basalt'),
+    (6, 'charnockite'),
+    (8, 'cordierite'),
+    (9, 'diabase'),
+    (10, 'diorite'),
+    (13, 'gabbro'),
+    (14, 'gneiss'),
+    (15, 'granite'),
+    (17, 'granodiorite'),
+    (18, 'granulite'),
+    (19, 'hornfels'),
+    (20, 'limestone'),
+    (21, 'conglomerate'),
+    (22, 'lamprophyre'),
+    (23, 'lava'),
+    (25, 'marble'),
+    (27, 'migmatite'),
+    (26, 'metatexite'),
+    (30, 'monzonite'),
+    (32, 'norite'),
+    (33, 'ophicalcite'),
+    (35, 'orthogneiss'),
+    (35, 'granite'),
+    (37, 'paragneiss'),
+    (38, 'pegmatite'),
+    (39, 'porphyry'),
+    (41, 'quartzite'),
+    (42, 'rhyolite'),
+    (43, 'sandstone'),
+    (44, 'slate'),
+    (46, 'serpentinite'),
+    (46, 'marble'),
+    (48, 'soapstone'),
+    (50, 'spessartite'),
+    (51, 'syenite'),
+    (52, 'tonalite'),
+    (53, 'trachyte'),
+    (54, 'travertine'),
+    (55, 'tuff'),
+)
+TEXTURE_CHOICES = (
+    (0, 'coars'),
+    (0, 'coarse'),
+    (0, 'Coarse'),
+    (0, 'coarse grain'),
+    (0, 'coarse grained'),
+    (0, 'coarse grain, veined'),
+    (0, 'fine'),
+    (0, 'Fine'),
+    (0, 'fine grain'),
+    (0, 'fine grained'),
+    (0, 'fine grained, veined'),
+    (0, 'fine grained, with plenty of large fossils'),
+    (0, 'fine to medium'),
+    (0, 'Fine grained'),
+    (0, 'fine, medium'),
+    (0, 'fine, veined'),
+    (0, 'geädert'),
+    (0, 'grob'),
+    (0, 'medium'),
+    (0, 'Medium'),
+    (0, 'medium grain'),
+    (0, 'medium grained'),
+    (0, 'medium - coarse grain'),
+    (0, 'n/a'),
+    (0, 'veined'),
+    (0, 'Veined'),
+)
+COUNTRY_CHOICES = (
+    (0, 'czech republic'),
+    (0, 'great britain'),
+    (0, 'saudi arabia'),
+    (0, 'south africa'),
+    (0, 'sri lanka'),
+    (24, 'angola'),
+    (32, 'argentina'),
+    (36, 'australia'),
+    (40, 'austria'),
+    (51, 'armenia'),
+    (56, 'belgium'),
+    (68, 'bolivia'),
+    (76, 'brazil'),
+    (100, 'bulgaria'),
+    (124, 'canada'),
+    (156, 'china'),
+    (158, 'china'),
+    (191, 'croatia'),
+    (192, 'cuba'),
+    (210, 'ethiopia'),
+    (246, 'finland'),
+    (250, 'france'),
+    (268, 'georgia'),
+    (276, 'germany'),
+    (300, 'greece'),
+    (320, 'guatemala'),
+    (356, 'india'),
+    (364, 'iran'),
+    (372, 'ireland'),
+    (376, 'israel'),
+    (380, 'italy'),
+    (392, 'japan'),
+    (398, 'kasahstan'),
+    (450, 'madagascar'),
+    (458, 'malaysia'),
+    (484, 'mexico'),
+    (496, 'mongolia'),
+    (504, 'morocco'),
+    (508, 'mozambique'),
+    (516, 'namibia'),
+    (566, 'nigeria'),
+    (578, 'norway'),
+    (586, 'pakistan'),
+    (604, 'peru'),
+    (616, 'poland'),
+    (620, 'portugal'),
+    (643, 'russia'),
+    (682, 'saudi arabia'),
+    (704, 'vietnam'),
+    (705, 'slovenia'),
+    (710, 'south africa'),
+    (716, 'zimbabwe'),
+    (724, 'spain'),
+    (736, 'sudan'),
+    (752, 'sweden'),
+    (756, 'switzerland'),
+    (792, 'turkey'),
+    (788, 'tunisia'),
+    (804, 'ukraine'),
+    (807, 'macedonia'),
+    (818, 'egypt'),
+    (840, 'usa'),
+    (858, 'uruguay'),
+    (862, 'venezuela'),
+    (891, 'yugoslavia'),
+    (894, 'zambia'),
+)
