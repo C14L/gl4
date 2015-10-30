@@ -1,4 +1,4 @@
-{% load static %}
+{% load static from staticfiles %}
 <!DOCTYPE html>
 <html xmlns:fb="http://ogp.me/ns/fb#">
   <head>
@@ -10,11 +10,8 @@
     <meta property="fb:admins" content="">
     <meta name="description" content="{% block description %}{% endblock %}">
     <link rel="icon" type="image/png" href="/icon.png">
-    <link rel="stylesheet" type="text/css" href="/static/stonedb.css">
-    <link rel="stylesheet" type="text/css" href="/scripts/jquery/suggest.css">
-    <link rel="stylesheet" type="text/css" href="/static/stonedb-lt-500.css" media="only screen and (max-width: 750px)">
-    <script src="/scripts/jquery/jquery-1.7.1.min.js"></script>
-    <script src="/scripts/searchbar-entries.en.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'base-lt-750.css' %}" media="only screen and (max-width: 750px)">
 
     {% if DEBUG %}
     {% else %}
@@ -37,7 +34,6 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
 
       </script>
     {% endif %}
-    <script src="/tmp/52ec484f43b442126b553ea56f1f8fac.js"></script>
   </head>
   <body class="stones-home" style="background:url(/stonespics/amazoniabrown.jpg)">
     <strong id="tpl-lema"><em>Marbles and Granites from around the globe</em></strong>
@@ -180,27 +176,18 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
       </div><!-- /footer -->
     </div><!-- /wrap -->
 
-    <script type="text/javascript">
+    <script>if(screen.availWidth<=750){document.getElementById('tpl-site-logo').addEventListener('click',function(e){e.preventDefault();document.getElementById('tpl-menu').classList.toggle('open');return false;});}</script>
 
-if(screen.availWidth<=750){
-document.getElementById('tpl-site-logo').addEventListener('click',function(e){e.preventDefault();
-document.getElementById('tpl-menu').classList.toggle('open');return false;});}
-
-    </script>
     <div id="tpl-msg"></div>
     <div id="fb-root"></div>
     <div id="showbginfo">
       <a href="/stone/amazonia-brown"><strong>The background stone is Amazonia Brown from Brazil.</strong></a>
     </div>
-    <script type="text/javascript">(function(){$(".search-pseu").suggest("/stones/suggest.php")})();</script>
-    <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yaix"></script>
+    <script>(function(){$(".search-pseu").suggest("/stones/suggest.php")})();</script>
+    <script>var addthis_config = {"data_track_addressbar":false};</script>
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yaix"></script>
     <div id="sysstat"> RUN 0.027 MEM 3,906 SYS 0.13 0.06 0.01</div>
-    <script>
-
-var sc_project=570770; var sc_invisible=1; var sc_partition=4; var sc_security="bb8f16d7"; var sc_remove_link=1;
-
-    </script>
+    <script>var sc_project=570770;var sc_invisible=1;var sc_partition=4;var sc_security="bb8f16d7";var sc_remove_link=1;</script>
     <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script>
     <noscript>
       <div class="statcounter"><img class="statcounter" src="http://c5.statcounter.com/counter.php?sc_project=570770&amp;java=0&amp;security=bb8f16d7&amp;invisible=1" alt="site stats"></div>
