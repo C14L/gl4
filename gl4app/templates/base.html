@@ -36,25 +36,24 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     {% endif %}
   </head>
   <body class="stones-home" style="background:url(/stonespics/amazoniabrown.jpg)">
-    <strong id="tpl-lema"><em>Marbles and Granites from around the globe</em></strong>
+    <strong id="tpl-lema"><em>{% block title2 %}{% endblock %}</em></strong>
     {% if settings.DEBUG %}
       <div style="position:fixed;right:0;bottom:0;background:red;color:yellow;font:13px/1em monospace;">DEBUG</div>
     {% else %}
     {% endif %}
-
     <div id="tpl-wrap">
       <div id="tpl-title">
         <div>
           <div class="sponsor-ad">
             <div>Sponsored by:</div>
-            <div><a rel="nofollow" onClick="recOutLink(this, 'Sponsor Links', 'NatursteinHilfe'); return false;" href="http://www.NatursteinHilfe.de/"><img src="/img/sponsor-nh.jpg" alt="NatursteinHilfe"></a></div>
+            <div><a rel="nofollow" onClick="recOutLink(this, 'Sponsor Links', 'NatursteinHilfe'); return false;" href="http://www.NatursteinHilfe.de/"><img src="{% static 'img/sponsor-nh.jpg' %}" alt="NatursteinHilfe"></a></div>
           </div>
           <div id="tpl-search">
             <form method="get" action="/stone/search.php">
               <div><input type="hidden" name="p" value="1"></div>
               <table>
                 <tr>
-                  <td id="tpl-site-logo"><a href="/"><img src="/img/tt-logo-small.gif" alt="Graniteland - marble and granite information online."></a></td>
+                  <td id="tpl-site-logo"><a href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="Graniteland - marble and granite information online."></a></td>
                   <td><select size="1" name="color" id="search_color"><option value="">All colors</option></select></td>
                   <td><select size="1" name="country" id="search_country"><option value="">All countries of origin</option></select></td>
                   <td><input type="text" name="pseu" class="search-pseu" id="search_pseu" value="" maxlength="150" size="10" placeholder="or name of stone"></td>
@@ -69,7 +68,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             <a class="menu-link" href="/tradeshows">Trade shows</a>
             <a class="menu-link" href="/infos">Stone Infos</a>
             <a class="menu-link" href="/companies">Stone Companies</a>
-            <a class="menu-link login-link" href="/user/login.php?url=%2Fstone">Login</a>
+            <a class="menu-link login-link" href="{{settings.LOGIN_URL}}?next=%2Fstone">Login</a>
           </div>
         </div>
       </div>
@@ -77,8 +76,8 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         <table>
           <tr>
             <td>
-              <a href="http://www.graniteland.com/">Graniteland.com</a> &raquo;
-              <a href="/stone">Stones</a> &raquo;
+              <a href="/">Graniteland.com</a> &raquo;
+              {% block breadcrumb %}{% endblock %}
             </td>
             <td>
               {% if settings.DEBUG %}

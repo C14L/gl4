@@ -4,10 +4,11 @@ from django.utils.timezone import now
 
 
 class Stone(models.Model):
-    COLOR_CH = getattr(settings, 'COLOR_CHOICES', ())
-    TEXTURE_CH = getattr(settings, 'TEXTURE_CHOICES', ())
-    CLASSIF_CH = getattr(settings, 'CLASSIFICATION_CHOICES', ())
-    SIMPLETYPE_CH = getattr(settings, 'SIMPLETYPE_CHOICES', ())
+    CLASSIFICATION_CHOICES = getattr(settings, 'CLASSIFICATION_CHOICES', ())
+    COLOR_CHOICES = getattr(settings, 'COLOR_CHOICES', ())
+    COUNTRY_CHOICES = getattr(settings, 'COUNTRY_CHOICES', ())
+    SIMPLETYPE_CHOICES = getattr(settings, 'SIMPLETYPE_CHOICES', ())
+    TEXTURE_CHOICES = getattr(settings, 'TEXTURE_CHOICES', ())
 
     name = models.CharField(max_length=100, default='')
     slug = models.SlugField(max_length=100, default='', db_index=True)
@@ -35,7 +36,8 @@ class Stone(models.Model):
     # but also use cities geo database to lookup proximity to larger cities.
     country_name = models.CharField(max_length=100)
     city_name = models.CharField(max_length=50)
-    country = models.PositiveIntegerField(default=0)
+    country = models.CharField(
+        max_length=2, choices=COUNTRY_CHOICES, null=True, default=None)
     # country = models.ForeignKey(Country, null=True, default=None)
     lat = models.FloatField(null=True, default=None)
     lng = models.FloatField(null=True, default=None)
@@ -46,15 +48,15 @@ class Stone(models.Model):
     # classification_id --> classification
     # type_url --> simpletype
     color = models.PositiveIntegerField(
-        choices=COLOR_CH, null=True, default=None)
+        choices=COLOR_CHOICES, null=True, default=None)
     secondary_colors = models.CommaSeparatedIntegerField(
-        choices=COLOR_CH, null=True, default=None, max_length=250)
+        choices=COLOR_CHOICES, null=True, default=None, max_length=250)
     classification = models.PositiveIntegerField(
-        choices=CLASSIF_CH, null=True, default=None)
+        choices=CLASSIFICATION_CHOICES, null=True, default=None)
     texture = models.PositiveIntegerField(
-        choices=TEXTURE_CH, null=True, default=None)
+        choices=TEXTURE_CHOICES, null=True, default=None)
     simpletype = models.CharField(
-        choices=SIMPLETYPE_CH, null=True, default=None, max_length=50)
+        choices=SIMPLETYPE_CHOICES, null=True, default=None, max_length=50)
 
     application = models.TextField(default='')
     availability = models.TextField(default='')

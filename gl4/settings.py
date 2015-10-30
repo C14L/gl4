@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+PRODUCTION = False
 
 ALLOWED_HOSTS = []
 
@@ -96,6 +97,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+COUNTRY_CHOICES = (
+    ('de', 'Germany'),
+    ('fr', 'France'),
+    ('us', 'USA'),
+)
 COLOR_CHOICES = (
     (1, 'beige'),
     (2, 'blue'),
