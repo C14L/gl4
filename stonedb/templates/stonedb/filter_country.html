@@ -1,24 +1,89 @@
 {% extends 'base.html' %}
 
 {% block title %}
-
+Browse {{q|title}} marbles and granites
 {% endblock %}
 
 {% block title2 %}
-
+Browse {{q|title}} marbles and granites
 {% endblock %}
 
 {% block description %}
-
+Browse all {{q|title}} marbles and granites listed in Graniteland.
 {% endblock %}
 
 {% block head %}
 {% endblock %}
 
 {% block breadcrumb %}
-
+<a href="/stone">Stones</a> &raquo;
+<a href="/stone/{{f}}">Countries and Regions</a> &raquo;
+<a href="/stone/{{f}}/{{q}}">{{q|title}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
+<h1>Types of stone from {{q|title}}</h1>
+<p>You are viewing natural stones grouped by country {{q|title}}.</p>
+
+<div class="browse-stones browse-countries">
+
+  <h2>Photos of stone from {{q|title}}</h2>
+
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/{{f}}/{{q}}">1</a>
+      {% else %}
+        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <ul class="enhanced-stone-list">
+    {% for row in stones.object_list %}
+      <li>
+        <a href="/stone/{{row.slug}}" title="Other trade names are {{row.get_pseudonyms}}">
+          <img src="{{row.picfile}}" alt="">
+          <span class="capt">
+            <span class="name">{{row.name}}</span> is a {{row.get_color_display}} {{row.get_classification_display}} from {{row.get_country_display|title}}
+          </span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div style="clear:left;"></div>
+
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/{{f}}/{{q}}">1</a>
+      {% else %}
+        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>Natural Stone by country</h2>
+  <div class="greybox">
+    <ul>
+      {% for row in settings.COUNTRY_CHOICES %}
+        <li><a href="/stone/country/{{row.1}}">{{row.1|title}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
 {% endblock main %}
+
+
+
+
+
+
+

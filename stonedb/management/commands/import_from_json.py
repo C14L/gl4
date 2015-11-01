@@ -30,8 +30,9 @@ class Command(BaseCommand):
                     x = (int(row['texture_id']), row['texture'])
                     if x not in texture:
                         texture.append(x)
-                if row['country']:
-                    x = (int(row['country_id']), row['country'])
+                if row['country_id']:
+                    cn = row['country'] if row['country'] else 'unknown'
+                    x = (int(row['country_id']), cn)
                     if x not in country:
                         country.append(x)
 

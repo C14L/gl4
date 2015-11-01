@@ -35,11 +35,7 @@ class Stone(models.Model):
 
     # TODO: country --> country_name, and city --> city_name
     # but also use cities geo database to lookup proximity to larger cities.
-    country_name = models.CharField(max_length=100)
     city_name = models.CharField(max_length=50)
-    country = models.CharField(
-        max_length=2, choices=COUNTRY_CHOICES, null=True, default=None)
-    # country = models.ForeignKey(Country, null=True, default=None)
     lat = models.FloatField(null=True, default=None)
     lng = models.FloatField(null=True, default=None)
 
@@ -54,6 +50,8 @@ class Stone(models.Model):
         choices=COLOR_CHOICES, null=True, default=None, max_length=250)
     classification = models.PositiveIntegerField(
         choices=CLASSIFICATION_CHOICES, null=True, default=None)
+    country = models.PositiveIntegerField(
+        choices=COUNTRY_CHOICES, null=True, default=None)
     texture = models.PositiveIntegerField(
         choices=TEXTURE_CHOICES, null=True, default=None)
     simpletype = models.CharField(

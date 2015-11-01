@@ -16,7 +16,9 @@ Browse all {{q}} marbles and granites with pictures listed in Graniteland.
 {% endblock %}
 
 {% block breadcrumb %}
-<a href="/stone">Stones</a> &raquo; <a href="/stone/color">Color</a> &raquo; <a href="/stone/color/{{q}}">{{q|capfirst}}</a> &raquo;
+<a href="/stone">Stones</a> &raquo;
+<a href="/stone/{{f}}">{{f|capfirst}}</a> &raquo;
+<a href="/stone/{{f}}/{{q}}">{{q|capfirst}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
@@ -31,9 +33,9 @@ Browse all {{q}} marbles and granites with pictures listed in Graniteland.
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/color/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q}}">1</a>
       {% else %}
-        <a href="/stone/color/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>
@@ -58,9 +60,9 @@ Browse all {{q}} marbles and granites with pictures listed in Graniteland.
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/color/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q}}">1</a>
       {% else %}
-        <a href="/stone/color/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>

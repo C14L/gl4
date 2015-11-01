@@ -23,22 +23,25 @@ def simple_filter(request, f, q, p):
     """
     STONES_PER_PAGE = getattr(settings, 'STONES_PER_PAGE', 50)
     p = p or 1
+    fk = f
 
     try:
         if f == 'color':
-            i, q = [x for x in Stone.COLOR_CHOICES][0]
+            i, q = [x for x in Stone.COLOR_CHOICES if x[1] == q][0]
             template_file = 'stonedb/filter_color.html'
         elif f == 'country':
-            i, q = [x for x in Stone.COUNTRY_CHOICES][0]
+            i, q = [x for x in Stone.COUNTRY_CHOICES if x[1] == q][0]
             template_file = 'stonedb/filter_country.html'
         elif f == 'type':
-            i, q = [x for x in Stone.CLASSIFICATION_CHOICES][0]
+            fk = 'classification'
+            i, q = [x for x in Stone.CLASSIFICATION_CHOICES if x[1] == q][0]
             template_file = 'stonedb/filter_classification.html'
     except IndexError:
         raise Http404
 
-    paginator = Paginator(Stone.objects.filter(**{f: i}), STONES_PER_PAGE)
-    context = {'stones': paginator.page(p), 'q': q}
+    paginator = Paginator(Stone.objects.filter(**{fk: i}), STONES_PER_PAGE)
+    context = {'stones': paginator.page(p), 'f': f, 'q': q,
+               'settings': settings}
     return render_to_response(template_file, context,
                               context_instance=RequestContext(request))
 

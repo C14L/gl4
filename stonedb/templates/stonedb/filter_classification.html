@@ -1,24 +1,89 @@
 {% extends 'base.html' %}
 
 {% block title %}
-
+Browse {{q}} stones
 {% endblock %}
 
 {% block title2 %}
-
+Browse {{q}} stones
 {% endblock %}
 
 {% block description %}
-
+Browse all {{q}} natural stones listed in Graniteland.
 {% endblock %}
 
 {% block head %}
 {% endblock %}
 
 {% block breadcrumb %}
-
+<a href="/stone">Stones</a> &raquo;
+<a href="/stone/{{f}}">Classification</a> &raquo;
+<a href="/stone/{{f}}/{{q}}">{{q|capfirst}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
+
+<h1>Browse {{q|title}} stones</h1>
+<p>Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{q|title}} stone. Note however, that in stone trade many stone types like {{q}} are grouped into either being "marble" or "granite", for being very similar. Here are 100 {{q}} stones with photos and further data.</p>
+
+<div class="browse-stones browse-classifications">
+
+  <h2>Natural stone classification Limestone</h2>
+
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/{{f}}/{{q}}">1</a>
+      {% else %}
+        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <ul class="enhanced-stone-list">
+    {% for row in stones.object_list %}
+      <li>
+        <a href="/stone/{{row.slug}}" title="Other trade names are {{row.get_pseudonyms}}">
+          <img src="{{row.picfile}}" alt="">
+          <span class="capt">
+            <span class="name">{{row.name}}</span> is a {{row.get_color_display}} {{row.get_classification_display}} from {{row.get_country_display}}
+          </span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div style="clear:left;"></div>
+
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/{{f}}/{{q}}">1</a>
+      {% else %}
+        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>Types of natural stone / stone by classification</h2>
+
+  <div class="greybox">
+    <table class="top" style="width:100%;">
+      <tr>
+        <td>
+          <ul>
+            {% for x in settings.CLASSIFICATION_DATA %}
+              <li><a href="/stone/type/{{x.1}}">{{x.2}}</a></li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
 
 {% endblock main %}
