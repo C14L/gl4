@@ -11,11 +11,12 @@ class Stone(models.Model):
     TEXTURE_CHOICES = getattr(settings, 'TEXTURE_CHOICES', ())
 
     name = models.CharField(max_length=100, default='')
-    slug = models.SlugField(max_length=100, default='', db_index=True)
-    # OLD urlname value, for redir only.
-    urlname = models.CharField(max_length=100, db_index=True, default='')
-    created = models.DateTimeField(default=now)
-    updated = models.DateTimeField(default=now)  # --> update_time
+    slug = models.SlugField(max_length=100, default='',
+                            db_index=True, editable=False)
+    urlname = models.CharField(max_length=100, db_index=True,  # OLD 'urlname',
+                               default='', editable=False)     # for redir only
+    created = models.DateTimeField(default=now, editable=False)
+    updated = models.DateTimeField(default=now, editable=False)  # update_time
 
     # TODO: use "StoneName"."pseu"
     # pseudonym = models.TextField(default='')
@@ -56,7 +57,8 @@ class Stone(models.Model):
     texture = models.PositiveIntegerField(
         choices=TEXTURE_CHOICES, null=True, default=None)
     simpletype = models.CharField(
-        choices=SIMPLETYPE_CHOICES, null=True, default=None, max_length=50)
+        choices=SIMPLETYPE_CHOICES, null=True, default=None, max_length=50,
+        editable=False)
 
     application = models.TextField(default='')
     availability = models.TextField(default='')
@@ -78,9 +80,26 @@ class Stone(models.Model):
         verbose_name_plural = "Stones"
         index_together = [['lat', 'lng'],
                           ['color', 'classification', 'country'], ]
+        ordering = ['name']
+
+    def get_pic_fname(self):
+        """Return picfile or the standard file name for all main pictures."""
+        if self.picfile:
+            return self.picfile
+        return '{}-{}-{}.jpg'.format(self.slug, self.get_color_display,
+                                     self.get_classification_display)
+
+    def get_pic_thumb(self):
+        return '/stonesindex/{}'.format(self.get_pic_fname)
+
+    def get_pic_medium(self):
+        return '/stonespics/{}'.format(self.get_pic_fname)
+
+    def get_pseudonyms(self):
+        return ', '.join([x.name for x in self.pseu.all()])
 
     def __str__(self):
-        self.name
+        return self.name
 
 
 class StoneName(models.Model):
@@ -93,4 +112,4 @@ class StoneName(models.Model):
         verbose_name_plural = "StoneNames"
 
     def __str__(self):
-        self.name
+        return self.name

@@ -7,6 +7,7 @@ import stonedb.urls
 import tradeshowdb.urls
 
 urlpatterns = [
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^company/', include(companydb.urls)),
     url(r'^stone/', include(stonedb.urls)),

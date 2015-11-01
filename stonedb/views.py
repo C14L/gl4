@@ -12,27 +12,34 @@ def home(request, t='stonedb/home.html', c={'settings': settings}):
     return render_to_response(t, c, context_instance=RequestContext(request))
 
 
-def simple_filter(request, f, q, p=1):
+def simple_filter(request, f, q, p):
     """Return a list of stones for one filter, e.g. color.
 
     f -> filter (color, country, type)
     q -> query (color name, etc.)
-    p -> page
+    p -> page number (always None for page 1)
 
-    Example: /stone/color/blue
+    Example: /stone/color/blue/
     """
-    if not (
-        (f == 'color' and q in [x[1] for x in Stone.COLOR_CHOICES]) or
-        (f == 'country' and q in [x[1] for x in Stone.COUNTRY_CHOICES]) or
-        (f == 'type' and q in [x[1] for x in Stone.CLASSIFICATION_CHOICES])
-    ):
+    STONES_PER_PAGE = getattr(settings, 'STONES_PER_PAGE', 50)
+    p = p or 1
+
+    try:
+        if f == 'color':
+            i, q = [x for x in Stone.COLOR_CHOICES][0]
+            template_file = 'stonedb/filter_color.html'
+        elif f == 'country':
+            i, q = [x for x in Stone.COUNTRY_CHOICES][0]
+            template_file = 'stonedb/filter_country.html'
+        elif f == 'type':
+            i, q = [x for x in Stone.CLASSIFICATION_CHOICES][0]
+            template_file = 'stonedb/filter_classification.html'
+    except IndexError:
         raise Http404
 
-    stones = Paginator(Stone.objects.filter(**{f: q}), p)
-    template_file = 'stonedb/simple_filter.html'
-    context = {'stones': stones}
-    return render_to_response(template_file,
-                              context,
+    paginator = Paginator(Stone.objects.filter(**{f: i}), STONES_PER_PAGE)
+    context = {'stones': paginator.page(p), 'q': q}
+    return render_to_response(template_file, context,
                               context_instance=RequestContext(request))
 
 

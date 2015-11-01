@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}
+All {{q}} marbles and {{q}} granites
+{% endblock %}
+
+{% block title2 %}
+All {{q}} marbles and {{q}} granites
+{% endblock %}
+
+{% block description %}
+Browse all {{q}} marbles and granites with pictures listed in Graniteland.
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="/stone">Stones</a> &raquo; <a href="/stone/color">Color</a> &raquo; <a href="/stone/color/{{q}}">{{q|capfirst}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<div class="browse-stones browse-colors">
+
+  <h1>{{q|capfirst}} granite and {{q}} marble</h1>
+  <p>Browse <strong>{{stones.paginator.count}} different types of {{q}} marble and {{q}} granite</strong>. Click on a stone image to see more about a particular natural stone. Find {{q}} stone and many other colors of stone on Graniteland.</p>
+
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/color/{{q}}">1</a>
+      {% else %}
+        <a href="/stone/color/{{q}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <ul class="enhanced-stone-list">
+    {% for row in stones.object_list %}
+      <li>
+        <a href="/stone/{{row.slug}}" title="Other trade names are {{row.get_pseudonyms}}">
+          <img src="{{row.picfile}}" alt="">
+          <span class="capt">
+            <span class="name">{{row.name}}</span> is a {{row.get_color_display}} {{row.get_classification_display}} from {{row.get_country_display}}
+          </span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div style="clear:left;"></div>
+
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/color/{{q}}">1</a>
+      {% else %}
+        <a href="/stone/color/{{q}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>{{q|capfirst}} stone and other natural stone colors</h2>
+  <div class="greybox">
+    <table class="top">
+      <tr>
+        <td>
+          <ul>
+            <li><a href="/stone/color/beige">Beige granite or marble</a></li>
+            <li><a href="/stone/color/black">Black granite or marble</a></li>
+            <li><a href="/stone/color/blue">Blue granite or marble</a></li>
+            <li><a href="/stone/color/brown">Brown granite or marble</a></li>
+            <li><a href="/stone/color/colorfull">Colorfull granite or marble</a></li>
+            <li><a href="/stone/color/darkgrey">Dark grey granite or marble</a></li>
+            <li><a href="/stone/color/green">Green granite or marble</a></li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li><a href="/stone/color/grey">Grey granite or marble</a></li>
+            <li><a href="/stone/color/lightgrey">Light grey granite or marble</a></li>
+            <li><a href="/stone/color/pink">Pink granite or marble</a></li>
+            <li><a href="/stone/color/red">Red granite or marble</a></li>
+            <li><a href="/stone/color/white">White granite or marble</a></li>
+            <li><a href="/stone/color/yellow">Yellow granite or marble</a></li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+{% endblock main %}

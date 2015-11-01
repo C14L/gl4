@@ -76,10 +76,14 @@ class Command(BaseCommand):
                 # check if item was using smallpic, largepic, projectpic or
                 # title_foto and is_use_title_foto fields.
 
-                # Fill StoneName pseudonym table
+                # Fill StoneName pseudonym table; add the main name too!
+                StoneName.objects.create(stone=stone, name=stone.name,
+                                         slug=stone.slug)
                 for x in row['pseudonym'].split(', '):
-                    StoneName.objects.create(
-                        stone=stone, name=x, slug=slugify(x))
+                    x = x.strip(' \t\n\r,;.')
+                    if x:
+                        StoneName.objects.create(stone=stone, name=x,
+                                                 slug=slugify(x))
 
                 print('{} {}: {}'.format(stone.id, stone.slug, stone.name))
                 if stone.slug != stone.urlname:
