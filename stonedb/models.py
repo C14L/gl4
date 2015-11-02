@@ -33,17 +33,11 @@ class Stone(models.Model):
     # title_foto = models.ForeignKey(Fotos, null=True, default=None)
     # is_use_title_foto = models.BooleanField(default=False)
 
-    # TODO: country --> country_name, and city --> city_name
-    # but also use cities geo database to lookup proximity to larger cities.
+    # TODO: lookup lat/lng for city/location names
     city_name = models.CharField(max_length=50)
     lat = models.FloatField(null=True, default=None)
     lng = models.FloatField(null=True, default=None)
 
-    # TODO:
-    # color_id --> color
-    # texture_id --> texture
-    # classification_id --> classification
-    # type_url --> simpletype
     color = models.PositiveIntegerField(
         choices=COLOR_CHOICES, null=True, default=None)
     secondary_colors = models.CommaSeparatedIntegerField(
@@ -57,6 +51,12 @@ class Stone(models.Model):
     simpletype = models.CharField(
         choices=SIMPLETYPE_CHOICES, null=True, default=None, max_length=50,
         editable=False)
+
+    # not used, just for import verification
+    color_name = models.CharField(max_length=100, default='')
+    country_name = models.CharField(max_length=100, default='')
+    classification_name = models.CharField(max_length=100, default='')
+    texture_name = models.CharField(max_length=100, default='')
 
     application = models.TextField(default='')
     availability = models.TextField(default='')

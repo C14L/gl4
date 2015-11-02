@@ -60,7 +60,6 @@ class Command(BaseCommand):
                 stone.slug = slugify(row['name'])
                 stone.urlname = row['urlname']  # old urlname value
                 stone.country = row['country_id']
-                stone.country_name = row['country']
                 stone.city_name = row['city']
                 stone.application = row['application']
                 stone.availability = row['availability']
@@ -71,6 +70,10 @@ class Command(BaseCommand):
                 stone.classification = row['classification_id']
                 # stone.texture = Stone.TEXTURE_CH
                 # stone.simpletype = Stone.SIMPLETYPE_CH
+                stone.color_name = row['color']
+                stone.country_name = row['country']
+                stone.classification_name = row['classification']
+                stone.texture_name = row['texture']
                 stone.save()
 
                 # stone.picfile --> create standard filename for pic and thumb.
