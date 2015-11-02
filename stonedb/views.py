@@ -2,14 +2,17 @@ from django.conf import settings
 from django.core.paginator import Paginator
 # from django.core.urlresolvers import reverse
 from django.http import Http404
-from django.shortcuts import render_to_response  # redirect, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404  # redirect
 from django.template import RequestContext
 # from django.views.decorators.http import require_http_methods
 from .models import Stone
 
 
-def home(request, t='stonedb/home.html', c={'settings': settings}):
-    return render_to_response(t, c, context_instance=RequestContext(request))
+def home(request):
+    template_file = 'stonedb/home.html'
+    context = {'settings': settings}
+    return render_to_response(template_file, context,
+                              context_instance=RequestContext(request))
 
 
 def simple_filter(request, f, q, p):
@@ -46,9 +49,24 @@ def simple_filter(request, f, q, p):
                               context_instance=RequestContext(request))
 
 
-def filter(request, q, t='stonedb/filter.html', c={}):
+def filter(request, q):
     """Return a list of stones for a specific color+type+origin.
 
     Exampe: /stone/blue-sandstone-from-france
     """
-    return render_to_response(t, c, context_instance=RequestContext(request))
+    template_file = 'stonedb/filter.html'
+    context = {}
+    return render_to_response(template_file, context,
+                              context_instance=RequestContext(request))
+
+
+def item(request, q):
+    """Return a list of stones for a specific color+type+origin.
+
+    Exampe: /stone/blue-sandstone-from-france
+    """
+    stone = get_object_or_404(Stone, slug=q)
+    template_file = 'stonedb/item.html'
+    context = {'stone': stone, 'settings': settings}
+    return render_to_response(template_file, context,
+                              context_instance=RequestContext(request))

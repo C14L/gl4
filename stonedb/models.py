@@ -80,18 +80,28 @@ class Stone(models.Model):
                           ['color', 'classification', 'country'], ]
         ordering = ['name']
 
+    def get_pic_fname_default(self):
+        """Return standard file name for pictures."""
+        return '{}.jpg'.format(self.slug)
+
     def get_pic_fname(self):
-        """Return picfile or the standard file name for all main pictures."""
+        """Return custom picfile or the standard file name."""
         if self.picfile:
             return self.picfile
-        return '{}-{}-{}.jpg'.format(self.slug, self.get_color_display,
-                                     self.get_classification_display)
+        else:
+            return self.get_pic_fname_default()
 
     def get_pic_thumb(self):
-        return '/stonesindex/{}'.format(self.get_pic_fname)
+        """Return complete URL for thumb size pic."""
+        return '/stonesindex/{}'.format(self.get_pic_fname())
 
     def get_pic_medium(self):
-        return '/stonespics/{}'.format(self.get_pic_fname)
+        """Return complete URL for medium size pic."""
+        return '/stonespics/{}'.format(self.get_pic_fname())
+
+    def get_pic_large(self):
+        """Return complete URL for large size pic (don't exist yet)."""
+        return '/granite-photos/{}'.format(self.get_pic_fname())
 
     def get_pseudonyms(self):
         return ', '.join([x.name for x in self.pseu.all()])

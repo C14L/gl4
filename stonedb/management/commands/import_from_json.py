@@ -1,5 +1,6 @@
 import json
-from os.path import join, dirname
+import os
+import os.path
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
@@ -11,7 +12,9 @@ class Command(BaseCommand):
     help = "Simple import for old stone data from JSON file."
 
     def handle(self, *args, **options):
-        f = join(dirname(settings.BASE_DIR), 'import_data/en_stone.json')
+        picsdir = os.path.join(settings.BASE_DIR, 'stonedb/stonesimages')
+        f = os.path.join(
+            os.path.dirname(settings.BASE_DIR), 'import_data/en_stone.json')
         urlname_changes = []
 
         # Get all color, classification, texture, country options.
@@ -68,17 +71,33 @@ class Command(BaseCommand):
                 stone.color = row['color_id']
                 # stone.secondary_colors = Stone.COLOR_CH
                 stone.classification = row['classification_id']
-                # stone.texture = Stone.TEXTURE_CH
-                # stone.simpletype = Stone.SIMPLETYPE_CH
+                # stone.texture = Stone.TEXTURE_CHOICES
+                # stone.simpletype = Stone.SIMPLETYPE_CHOICES
                 stone.color_name = row['color']
                 stone.country_name = row['country']
                 stone.classification_name = row['classification']
                 stone.texture_name = row['texture']
                 stone.save()
 
-                # stone.picfile --> create standard filename for pic and thumb.
                 # check if item was using smallpic, largepic, projectpic or
                 # title_foto and is_use_title_foto fields.
+                fname = stone.get_pic_fname()
+                sf_indx = os.path.join(picsdir, 'stonesindex', row['smallpic'])
+                sf_pics = os.path.join(picsdir, 'stonespics', row['largepic'])
+                tf_indx = os.path.join(picsdir, 'stonesindex', fname)
+                tf_pics = os.path.join(picsdir, 'stonespics', fname)
+
+                if os.path.isfile(sf_indx):
+                    print('{} --> {}'.format(sf_indx, tf_indx))
+                    os.rename(sf_indx, tf_indx)
+                else:
+                    print('FILE NOT FOUND: {}'.format(sf_indx))
+
+                if os.path.isfile(sf_pics):
+                    print('{} --> {}'.format(sf_pics, tf_pics))
+                    os.rename(sf_pics, tf_pics)
+                else:
+                    print('FILE NOT FOUND: {}'.format(sf_pics))
 
                 # Fill StoneName pseudonym table; add the main name too!
                 StoneName.objects.create(stone=stone, name=stone.name,
@@ -89,7 +108,9 @@ class Command(BaseCommand):
                         StoneName.objects.create(stone=stone, name=x,
                                                  slug=slugify(x))
 
-                print('{} {}: {}'.format(stone.id, stone.slug, stone.name))
+                print('{} {}: {} --> {}'.format(
+                    stone.id, stone.slug, stone.name, fname))
+
                 if stone.slug != stone.urlname:
                     urlname_changes.append(
                         'For {}, urlname changed "{}" --> "{}"'.format(

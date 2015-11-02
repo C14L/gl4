@@ -34,8 +34,9 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
 
       </script>
     {% endif %}
+    {% block head %}{% endblock %}
   </head>
-  <body class="stones-home" style="background:url(/stonespics/amazoniabrown.jpg)">
+  <body class="{% block body_classes %}{% endblock %}">
     <strong id="tpl-lema"><em>{% block title2 %}{% endblock %}</em></strong>
     {% if settings.DEBUG %}
       <div style="position:fixed;right:0;bottom:0;background:red;color:yellow;font:13px/1em monospace;">DEBUG</div>
