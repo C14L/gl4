@@ -47,14 +47,7 @@ Browse all {{q|title}} marbles and granites listed in Graniteland.
 
   <ul class="enhanced-stone-list">
     {% for row in stones.object_list %}
-      <li>
-        <a href="/stone/{{row.slug}}" title="Other trade names are {{row.get_pseudonyms}}">
-          <img src="{{row.picfile}}" alt="">
-          <span class="capt">
-            <span class="name">{{row.name}}</span> is a {{row.get_color_display}} {{row.get_classification_display}} from {{row.get_country_display|title}}
-          </span>
-        </a>
-      </li>
+      <li><a href="/stone/{{row.slug}}" style="background-image:url({{row.get_pic_thumb}});" title="Other trade names are {{row.get_pseudonyms}}"><span class="capt"><span class="name">{{row.name}}</span> is a {{row.get_color_display}} {{row.get_classification_display}} from {{row.get_country_display}}</span></a></li>
     {% endfor %}
   </ul>
 

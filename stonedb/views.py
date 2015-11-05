@@ -25,8 +25,8 @@ def simple_filter(request, f, q, p):
     Example: /stone/color/blue/
     """
     STONES_PER_PAGE = getattr(settings, 'STONES_PER_PAGE', 50)
-    p = p or 1
-    fk = f
+    p = p or 1  # no page number means page 1
+    fk = f  # filter "type" needs "classification" as filter key
 
     try:
         if f == 'color':

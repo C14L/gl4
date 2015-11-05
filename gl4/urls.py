@@ -1,3 +1,4 @@
+from os.path import join
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -43,13 +44,16 @@ urlpatterns = [
 
     # companydb
     url(r'^company$', companydb.views.home, name='companydb_home'),
-
 ]
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()
 
-    # from django.conf.urls.static import static
-    # urlpatterns += static('/pics/', document_root=settings.MEDIA_ROOT)
-    # urlpatterns += static('/thumbs/', document_root=settings.MEDIA_ROOT)
+    from django.conf.urls.static import static
+    urlpatterns += static('/stonesindex/', document_root=join(
+        settings.BASE_DIR, 'stonedb/stonesimages/stonesindex'))
+    urlpatterns += static('/stonespics/', document_root=join(
+        settings.BASE_DIR, 'stonedb/stonesimages/stonespics'))
+
+    # urlpatterns += static('/stonespics/', document_root=settings.MEDIA_ROOT)

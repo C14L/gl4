@@ -49,7 +49,7 @@ stones-item
 <table class="stone1">
  <tr>
   <td class="about">
-   <div class="img" style="background:url(/stonespics/bluestone.jpg);"></div>
+   <div class="img" style="background:url({{stone.get_pic_medium}});"></div>
    <div class="comment">
     <h2>Remarks about {{stone.name}}:</h2>
     <p>{{stone.comment}}</p>
@@ -88,13 +88,13 @@ stones-item
     </tr>
     <tr>
      <td class="title">Main color:</td>
-     <td class="data"><a href="/stone/color/{{stone.get_color_display}}">{{stone.get_color_display}}</a></td>
+     <td class="data"><a href="{% url 'stonedb_simple_filter' 'color' stone.get_color_slug %}">{{stone.get_color_name}}</a></td>
     </tr>
     <tr>
      <td class="title">Country of origin:</td>
      <td class="data">
-      <a href="/stone/country/{{stone.get_country_display}}"><img src="/img/flags/de.png" style="vertical-align:middle;" alt="" title="{{stone.get_country_display}}"></a>
-      <a href="/stone/country/{{stone.get_country_display}}">{{stone.get_country_display}}</a>
+      <a href="{% url 'stonedb_simple_filter' 'country' stone.get_country_slug %}"><img src="/img/flags/{{stone.stone.get_country_cc}}.png" style="vertical-align:middle;" alt="" title="{{stone.stone.get_country_name}}"></a>
+      <a href="{% url 'stonedb_simple_filter' 'country' stone.get_country_slug %}">{{stone.get_country_name}}</a>
      </td>
     </tr>
     <tr>
@@ -103,15 +103,15 @@ stones-item
     </tr>
     <tr>
      <td class="title">Classification:</td>
-     <td class="data"><a href="/stone/type/{{stone.get_classification_display}}">{{stone.get_classification_display}}</a></td>
+     <td class="data"><a href="{% url 'stonedb_simple_filter' 'country' stone.get_classification_slug %}">{{stone.get_classification_name}}</a></td>
     </tr>
     <tr>
      <td class="title">Availability:</td>
-     <td class="data">good</td>
+     <td class="data">{{stone.availability}}</td>
     </tr>
     <tr>
      <td class="title">Texture:</td>
-     <td class="data">Fine grained</td>
+     <td class="data">{{stone.get_texture_name}}</td>
     </tr>
     <tr>
      <td class="title">Maximum size:</td>

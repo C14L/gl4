@@ -101,7 +101,3 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STONES_PER_PAGE = 50
-COLOR_CHOICES = [(x[0], x[1]) for x in COLOR_DATA]
-CLASSIFICATION_CHOICES = [(x[0], x[1]) for x in CLASSIFICATION_DATA]
-TEXTURE_CHOICES = [(x[0], x[1]) for x in TEXTURE_DATA]
-COUNTRY_CHOICES = [(x[0], x[1]) for x in COUNTRY_DATA]

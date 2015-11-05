@@ -4,11 +4,15 @@ from django.utils.timezone import now
 
 
 class Stone(models.Model):
-    CLASSIFICATION_CHOICES = getattr(settings, 'CLASSIFICATION_CHOICES', ())
-    COLOR_CHOICES = getattr(settings, 'COLOR_CHOICES', ())
-    COUNTRY_CHOICES = getattr(settings, 'COUNTRY_CHOICES', ())
+    CLASSIFICATION_CHOICES = [
+        (x[0], x[1]) for x in getattr(settings, 'CLASSIFICATION_DATA', ())]
+    COLOR_CHOICES = [
+        (x[0], x[1]) for x in getattr(settings, 'COLOR_DATA', ())]
+    TEXTURE_CHOICES = [
+        (x[0], x[1]) for x in getattr(settings, 'TEXTURE_DATA', ())]
+    COUNTRY_CHOICES = [
+        (x[0], x[1]) for x in getattr(settings, 'COUNTRY_DATA', ())]
     SIMPLETYPE_CHOICES = getattr(settings, 'SIMPLETYPE_CHOICES', ())
-    TEXTURE_CHOICES = getattr(settings, 'TEXTURE_CHOICES', ())
 
     name = models.CharField(max_length=100, default='')
     slug = models.SlugField(max_length=100, default='',
@@ -79,6 +83,41 @@ class Stone(models.Model):
         index_together = [['lat', 'lng'],
                           ['color', 'classification', 'country'], ]
         ordering = ['name']
+
+    def _get_data_field(self, k, v, data):
+        try:
+            return [x[k] for x in data if x[0] == v][0]
+        except IndexError:
+            return ''
+
+    def get_color_slug(self):
+        return self._get_data_field(1, self.color, settings.COLOR_DATA)
+
+    def get_color_name(self):
+        return self._get_data_field(2, self.color, settings.COLOR_DATA)
+
+    def get_country_slug(self):
+        return self._get_data_field(1, self.country, settings.COUNTRY_DATA)
+
+    def get_country_name(self):
+        return self._get_data_field(2, self.country, settings.COUNTRY_DATA)
+
+    def get_country_cc(self):
+        return self._get_data_field(3, self.country, settings.COUNTRY_DATA)
+
+    def get_classification_slug(self):
+        return self._get_data_field(1, self.classification,
+                                    settings.CLASSIFICATION_DATA)
+
+    def get_classification_name(self):
+        return self._get_data_field(2, self.classification,
+                                    settings.CLASSIFICATION_DATA)
+
+    def get_texture_slug(self):
+        return self._get_data_field(1, self.texture, settings.TEXTURE_DATA)
+
+    def get_texture_name(self):
+        return self._get_data_field(2, self.texture, settings.TEXTURE_DATA)
 
     def get_pic_fname_default(self):
         """Return standard file name for pictures."""
