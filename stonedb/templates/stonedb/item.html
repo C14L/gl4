@@ -99,7 +99,7 @@ stones-item
     </tr>
     <tr>
      <td class="title">City of origin:</td>
-     <td class="data"><i>- No data -</i></td>
+     <td class="data">{% if stone.city_name %}{{stone.city_name}}{% else %}<i>- No data -</i>{% endif %}</td>
     </tr>
     <tr>
      <td class="title">Classification:</td>
@@ -115,7 +115,7 @@ stones-item
     </tr>
     <tr>
      <td class="title">Maximum size:</td>
-     <td class="data"><i>- No data -</i></td>
+     <td class="data">{% if stone.maxsize %}{{stone.maxsize}}{% else %}<i>- No data -</i>{% endif %}</td>
     </tr>
     <tr>
      <td class="title">Application:</td>

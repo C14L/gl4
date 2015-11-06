@@ -3,6 +3,33 @@ from django.db import models
 from django.utils.timezone import now
 
 
+class Classification(models.Model):
+    name = models.CharField(max_length=100, default='')
+    slug = models.SlugField(max_length=100, default='', db_index=True)
+    text = models.TextField(default='')
+    simple_name = models.CharField(max_length=100, default='')
+    simple_slug = models.SlugField(max_length=100, default='', db_index=True)
+
+
+class Color(models.Model):
+    name = models.CharField(max_length=100, default='')
+    slug = models.SlugField(max_length=100, default='', db_index=True)
+    text = models.TextField(default='')
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=100, default='')
+    slug = models.SlugField(max_length=100, default='', db_index=True)
+    cc = models.CharField(max_length=1, default='')
+    text = models.TextField(default='')
+
+
+class Texture(models.Model):
+    name = models.CharField(max_length=100, default='')
+    slug = models.SlugField(max_length=100, default='', db_index=True)
+    text = models.TextField(default='')
+
+
 class Stone(models.Model):
     CLASSIFICATION_CHOICES = [
         (x[0], x[1]) for x in getattr(settings, 'CLASSIFICATION_DATA', ())]
