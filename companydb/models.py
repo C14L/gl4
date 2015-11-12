@@ -5,7 +5,7 @@ from django.utils.timezone import now
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name='profile')
+    user = models.OneToOneField(User, related_name='profile', primary_key=True)
     name = models.CharField(max_length=100, default='')
     contact = models.CharField(max_length=100, default='')
     contact_position = models.CharField(max_length=100, default='')
@@ -13,8 +13,8 @@ class UserProfile(models.Model):
     street = models.CharField(max_length=100, default='')
     city = models.CharField(max_length=100, default='')
     zip = models.CharField(max_length=16, default='')
-    country_sub_id = models.PositiveIntegerField(db_index=True)
-    country_id = models.PositiveIntegerField(db_index=True)
+    country_sub_id = models.PositiveIntegerField(db_index=True, default=0)
+    country_id = models.PositiveIntegerField(db_index=True, default=0)
     country_sub_name = models.CharField(max_length=100, default='')
     country_name = models.CharField(max_length=100, default='')
     postal = models.TextField(default='')
@@ -24,8 +24,12 @@ class UserProfile(models.Model):
     mobile = models.CharField(max_length=100, default='')
     web = models.CharField(max_length=100, default='')
     about = models.TextField(default='')
-    title_foto = models.IntegerField()
+    title_foto = models.IntegerField(default=0)
     title_foto_ext = models.CharField(max_length=30, default='')
+    signup_ip = models.CharField(max_length=15, default='')
+    lastlogin_ip = models.CharField(max_length=15, default='')
+    is_blocked = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
 
 
 class Stock(models.Model):
@@ -75,15 +79,16 @@ class Pic(models.Model):  # cc__fotos
                       ('pages', 'Pages'))
 
     user = models.ForeignKey(User, db_index=True)
-    module = models.CharField(max_length=20, choices=MODULE_CHOICES)
+    module = models.CharField(max_length=20,
+                              choices=MODULE_CHOICES, default='profile')
     module_id = models.PositiveIntegerField(default=0)
     created = models.DateField(default=now)  # time
-    size = models.PositiveIntegerField()
-    width = models.PositiveIntegerField()
-    height = models.PositiveIntegerField()
+    size = models.PositiveIntegerField(default=0)
+    width = models.PositiveIntegerField(default=0)
+    height = models.PositiveIntegerField(default=0)
     ext = models.CharField(max_length=3, default='jpg')
     title = models.CharField(max_length=80, default='')
-    caption = models.TextField()
+    caption = models.TextField(default='')
     is_blocked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_sticky = models.BooleanField(default=False)
@@ -100,14 +105,15 @@ class Pic(models.Model):  # cc__fotos
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=30)
-    slug = models.CharField(max_length=30)  # url
+    name = models.CharField(max_length=30, default='')
+    slug = models.CharField(max_length=30, default='')  # url
     about = models.TextField(default='')  # intro text for group page
     description = models.CharField(max_length=255, default='')
     keywords = models.CharField(max_length=255, default='')
-    title_foto = models.ForeignKey(Pic)
-    count_members = models.PositiveSmallIntegerField()
+    title_foto = models.ForeignKey(Pic, null=True, default=None)
+    count_members = models.PositiveSmallIntegerField(default=0)
     created = models.DateTimeField(default=now)  # created_time
+    members = models.ManyToManyField(User)
 
     class Meta:
         verbose_name = "Group"
@@ -115,8 +121,3 @@ class Group(models.Model):
 
     def __str__(self):
         pass
-
-
-class GroupMember(models.Model):
-    group = models.ForeignKey(Group, db_index=True)
-    user = models.ForeignKey(User, db_index=True)

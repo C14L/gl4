@@ -31,6 +31,7 @@ class Texture(models.Model):
 
 
 class Stone(models.Model):
+    """
     CLASSIFICATION_CHOICES = [
         (x[0], x[1]) for x in getattr(settings, 'CLASSIFICATION_DATA', ())]
     COLOR_CHOICES = [
@@ -40,6 +41,7 @@ class Stone(models.Model):
     COUNTRY_CHOICES = [
         (x[0], x[1]) for x in getattr(settings, 'COUNTRY_DATA', ())]
     SIMPLETYPE_CHOICES = getattr(settings, 'SIMPLETYPE_CHOICES', ())
+    """
 
     name = models.CharField(max_length=100, default='')
     slug = models.SlugField(max_length=100, default='',
@@ -69,21 +71,17 @@ class Stone(models.Model):
     lat = models.FloatField(null=True, default=None)
     lng = models.FloatField(null=True, default=None)
 
-    color = models.PositiveIntegerField(
-        choices=COLOR_CHOICES, null=True, default=None)
-    secondary_colors = models.CommaSeparatedIntegerField(
-        choices=COLOR_CHOICES, null=True, default=None, max_length=250)
-    classification = models.PositiveIntegerField(
-        choices=CLASSIFICATION_CHOICES, null=True, default=None)
-    country = models.PositiveIntegerField(
-        choices=COUNTRY_CHOICES, null=True, default=None)
-    texture = models.PositiveIntegerField(
-        choices=TEXTURE_CHOICES, null=True, default=None)
-    simpletype = models.CharField(
-        choices=SIMPLETYPE_CHOICES, null=True, default=None, max_length=50,
-        editable=False)
+    country = models.ForeignKey(Country, blank=True, null=True, default=None,
+                                related_name='stones')
+    texture = models.ForeignKey(Texture, blank=True, null=True, default=None,
+                                related_name='stones')
+    classification = models.ForeignKey(Classification, blank=True, null=True,
+                                       default=None, related_name='stones')
+    color = models.ForeignKey(Color, blank=True, null=True, default=None,
+                              related_name='stones')
+    secondary_colors = models.ManyToManyField(Color)
 
-    # not used, just for import verification
+    # + + +  not used, just for import verification  + + +
     color_name = models.CharField(max_length=100, default='')
     country_name = models.CharField(max_length=100, default='')
     classification_name = models.CharField(max_length=100, default='')
