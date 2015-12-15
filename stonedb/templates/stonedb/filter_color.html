@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
 {% block title %}
-All {{q}} marbles and {{q}} granites
+All {{q.name}} marbles and {{q.name}} granites
 {% endblock %}
 
 {% block title2 %}
-All {{q}} marbles and {{q}} granites
+All {{q.name}} marbles and {{q.name}} granites
 {% endblock %}
 
 {% block description %}
-Browse all {{q}} marbles and granites with pictures listed in Graniteland.
+Browse all {{q.name}} marbles and granites with pictures listed in Graniteland.
 {% endblock %}
 
 {% block head %}
@@ -21,24 +21,24 @@ Browse all {{q}} marbles and granites with pictures listed in Graniteland.
 {% block breadcrumb %}
 <a href="/stone">Stones</a> &raquo;
 <a href="/stone/{{f}}">{{f|capfirst}}</a> &raquo;
-<a href="/stone/{{f}}/{{q}}">{{q|capfirst}}</a> &raquo;
+<a href="/stone/{{f}}/{{q.slug}}">{{q.name|capfirst}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
 <div class="browse-stones browse-colors">
 
-  <h1>{{q|capfirst}} granite and {{q}} marble</h1>
-  <p>Browse <strong>{{stones.paginator.count}} different types of {{q}} marble and {{q}} granite</strong>. Click on a stone image to see more about a particular natural stone. Find {{q}} stone and many other colors of stone on Graniteland.</p>
+  <h1>{{q.name|capfirst}} granite and {{q.name}} marble</h1>
+  <p>Browse <strong>{{stones.paginator.count}} different types of {{q.name}} marble and {{q.name}} granite</strong>. Click on a stone image to see more about a particular natural stone. Find {{q.name}} stone and many other colors of stone on Graniteland.</p>
 
   <div class="list-pages">
     {% for i in stones.paginator.page_range %}
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
       {% else %}
-        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>
@@ -56,14 +56,14 @@ Browse all {{q}} marbles and granites with pictures listed in Graniteland.
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
       {% else %}
-        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>
 
-  <h2>{{q|capfirst}} stone and other natural stone colors</h2>
+  <h2>{{q.name|capfirst}} stone and other natural stone colors</h2>
   <div class="greybox">
     <table class="top">
       <tr>
@@ -73,7 +73,6 @@ Browse all {{q}} marbles and granites with pictures listed in Graniteland.
             <li><a href="/stone/color/black">Black granite or marble</a></li>
             <li><a href="/stone/color/blue">Blue granite or marble</a></li>
             <li><a href="/stone/color/brown">Brown granite or marble</a></li>
-            <li><a href="/stone/color/colorfull">Colorfull granite or marble</a></li>
             <li><a href="/stone/color/darkgrey">Dark grey granite or marble</a></li>
             <li><a href="/stone/color/green">Green granite or marble</a></li>
           </ul>

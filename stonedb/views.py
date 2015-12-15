@@ -5,7 +5,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404  # redirect
 from django.template import RequestContext
 # from django.views.decorators.http import require_http_methods
-from .models import Stone
+from stonedb.models import Stone, Classification, Color, Country, Texture
 
 
 def home(request):
@@ -30,21 +30,20 @@ def simple_filter(request, f, q, p):
 
     try:
         if f == 'color':
-            i, q = [x for x in Stone.COLOR_CHOICES if x[1] == q][0]
+            q = get_object_or_404(Color, slug=q)
             template_file = 'stonedb/filter_color.html'
         elif f == 'country':
-            i, q = [x for x in Stone.COUNTRY_CHOICES if x[1] == q][0]
+            q = get_object_or_404(Country, slug=q)
             template_file = 'stonedb/filter_country.html'
         elif f == 'type':
             fk = 'classification'
-            i, q = [x for x in Stone.CLASSIFICATION_CHOICES if x[1] == q][0]
+            q = get_object_or_404(Classification, slug=q)
             template_file = 'stonedb/filter_classification.html'
     except IndexError:
         raise Http404
 
-    paginator = Paginator(Stone.objects.filter(**{fk: i}), STONES_PER_PAGE)
-    context = {'stones': paginator.page(p), 'f': f, 'q': q,
-               'settings': settings}
+    paginator = Paginator(Stone.objects.filter(**{fk: q}), STONES_PER_PAGE)
+    context = {'stones': paginator.page(p), 'f': f, 'q': q}
     return render_to_response(template_file, context,
                               context_instance=RequestContext(request))
 

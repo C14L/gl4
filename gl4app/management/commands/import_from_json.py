@@ -23,12 +23,25 @@ def parse_iso_datetime(t):
 
 class Command(BaseCommand):
     args = ""
-    help = "Simple import for old stone data from JSON file."
+    help = "Import most old Graniteland data from JSON files."
     data_dir = join(dirname(settings.BASE_DIR), 'import_data')
     pics_dir = join(settings.BASE_DIR, 'stonedb/stonesimages')
     lang = 'en'
 
     def handle(self, *args, **options):
+        print(
+            '\nThis will import all old Graniteland data JSON files.\n\n'
+            '1. Import colors, classifications, countries.\n\n'
+            '2. Import user accounts.\n\n'
+            '3. Import profiles and group relations.\n\n'
+            '4. Import stones and stone pictures, renaming jpg files.\n\n'
+            '5. WONT: (mostly spam anyway) ~~Import user stock items~~.\n\n'
+            '6. WONT: (mostly spam anyway) ~~Import user showroom items~~.\n\n'
+            '7. Import user uploaded pictures, keeping relation to profiles, '
+            'stones, stock items, showroom item.\n\n'
+            )
+        input('Please press Enter to continue...')
+
         self.import_color()
         self.import_classification()
         self.import_country()

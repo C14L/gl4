@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Browse {{q|title}} marbles and granites
+Browse {{q.name}} marbles and granites
 {% endblock %}
 
 {% block title2 %}
-Browse {{q|title}} marbles and granites
+Browse {{q.name}} marbles and granites
 {% endblock %}
 
 {% block description %}
-Browse all {{q|title}} marbles and granites listed in Graniteland.
+Browse all {{q.name}} marbles and granites listed in Graniteland.
 {% endblock %}
 
 {% block head %}
@@ -21,26 +21,26 @@ Browse all {{q|title}} marbles and granites listed in Graniteland.
 {% block breadcrumb %}
 <a href="/stone">Stones</a> &raquo;
 <a href="/stone/{{f}}">Countries and Regions</a> &raquo;
-<a href="/stone/{{f}}/{{q}}">{{q|title}}</a> &raquo;
+<a href="/stone/{{f}}/{{q.slug}}">{{q.name}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>Types of stone from {{q|title}}</h1>
-<p>You are viewing natural stones grouped by country {{q|title}}.</p>
+<h1>Types of stone from {{q.name}}</h1>
+<p>You are viewing natural stones grouped by country {{q.name}}.</p>
 
 <div class="browse-stones browse-countries">
 
-  <h2>Photos of stone from {{q|title}}</h2>
+  <h2>Photos of stone from {{q.name}}</h2>
 
   <div class="list-pages">
     {% for i in stones.paginator.page_range %}
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
       {% else %}
-        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>
@@ -58,9 +58,9 @@ Browse all {{q|title}} marbles and granites listed in Graniteland.
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
       {% else %}
-        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>

@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Browse {{q}} stones
+Browse {{q.name}} stones
 {% endblock %}
 
 {% block title2 %}
-Browse {{q}} stones
+Browse {{q.name}} stones
 {% endblock %}
 
 {% block description %}
-Browse all {{q}} natural stones listed in Graniteland.
+Browse all {{q.name}} natural stones listed in Graniteland.
 {% endblock %}
 
 {% block head %}
@@ -21,13 +21,13 @@ Browse all {{q}} natural stones listed in Graniteland.
 {% block breadcrumb %}
 <a href="/stone">Stones</a> &raquo;
 <a href="/stone/{{f}}">Classification</a> &raquo;
-<a href="/stone/{{f}}/{{q}}">{{q|capfirst}}</a> &raquo;
+<a href="/stone/{{f}}/{{q.slug}}">{{q.name|capfirst}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>Browse {{q|title}} stones</h1>
-<p>Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{q|title}} stone. Note however, that in stone trade many stone types like {{q}} are grouped into either being "marble" or "granite", for being very similar. Here are 100 {{q}} stones with photos and further data.</p>
+<h1>Browse {{q.name|title}} stones</h1>
+<p>Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{q.name|title}} stone. Note however, that in stone trade many stone types like {{q.name}} are grouped into either being "marble" or "granite", for being very similar. Here are 100 {{q.name}} stones with photos and further data.</p>
 
 <div class="browse-stones browse-classifications">
 
@@ -38,9 +38,9 @@ Browse all {{q}} natural stones listed in Graniteland.
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
       {% else %}
-        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>
@@ -58,9 +58,9 @@ Browse all {{q}} natural stones listed in Graniteland.
       {% if i == stones.number %}
         <b>[ {{i}} ]</b>
       {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q}}">1</a>
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
       {% else %}
-        <a href="/stone/{{f}}/{{q}}/{{i}}">{{i}}</a>
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
       {% endif %}
     {% endfor %}
   </div>
