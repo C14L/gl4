@@ -35,6 +35,9 @@ def simple_filter(request, f, q, p):
         elif f == 'country':
             q = get_object_or_404(Country, slug=q)
             template_file = 'stonedb/filter_country.html'
+        elif f == 'texture':
+            q = get_object_or_404(Texture, slug=q)
+            template_file = 'stonedb/filter_texture.html'
         elif f == 'type':
             fk = 'classification'
             q = get_object_or_404(Classification, slug=q)
