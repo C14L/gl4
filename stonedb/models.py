@@ -1,48 +1,67 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Count
 from django.utils.timezone import now
 
 
-class Classification(models.Model):
+class CommonStonePropertyManager(models.Manager):
+    def all_with_stones(self):
+        """
+        Return a list of all items that are a property of at least one stone.
+        Each object as "stones__count" with the number of stones it is a
+        property of.
+        """
+        return self.all().annotate(Count('stones'))\
+            .filter(stones__count__gte=1).exclude(name__exact='')
+
+
+class CommonStoneProperty(models.Model):
     name = models.CharField(max_length=100, default='')
     slug = models.SlugField(max_length=100, default='', db_index=True)
     text = models.TextField(default='')
+
+    objects = CommonStonePropertyManager()
+
+    class Meta:
+        abstract = True
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class Classification(CommonStoneProperty):
     simple_name = models.CharField(max_length=100, default='')
     simple_slug = models.SlugField(max_length=100, default='', db_index=True)
 
-
-class Color(models.Model):
-    name = models.CharField(max_length=100, default='')
-    slug = models.SlugField(max_length=100, default='', db_index=True)
-    text = models.TextField(default='')
+    class Meta:
+        verbose_name = "classification"
+        verbose_name_plural = "classifications"
 
 
-class Country(models.Model):
-    name = models.CharField(max_length=100, default='')
-    slug = models.SlugField(max_length=100, default='', db_index=True)
+class Color(CommonStoneProperty):
+
+    class Meta:
+        verbose_name = "color"
+        verbose_name_plural = "colors"
+
+
+class Country(CommonStoneProperty):
     cc = models.CharField(max_length=1, default='')
-    text = models.TextField(default='')
+
+    class Meta:
+        verbose_name = "country"
+        verbose_name_plural = "countries"
 
 
-class Texture(models.Model):
-    name = models.CharField(max_length=100, default='')
-    slug = models.SlugField(max_length=100, default='', db_index=True)
-    text = models.TextField(default='')
+class Texture(CommonStoneProperty):
+
+    class Meta:
+        verbose_name = "texture"
+        verbose_name_plural = "textures"
 
 
 class Stone(models.Model):
-    """
-    CLASSIFICATION_CHOICES = [
-        (x[0], x[1]) for x in getattr(settings, 'CLASSIFICATION_DATA', ())]
-    COLOR_CHOICES = [
-        (x[0], x[1]) for x in getattr(settings, 'COLOR_DATA', ())]
-    TEXTURE_CHOICES = [
-        (x[0], x[1]) for x in getattr(settings, 'TEXTURE_DATA', ())]
-    COUNTRY_CHOICES = [
-        (x[0], x[1]) for x in getattr(settings, 'COUNTRY_DATA', ())]
-    SIMPLETYPE_CHOICES = getattr(settings, 'SIMPLETYPE_CHOICES', ())
-    """
-
     name = models.CharField(max_length=100, default='')
     slug = models.SlugField(max_length=100, default='',
                             db_index=True, editable=False)
@@ -103,46 +122,11 @@ class Stone(models.Model):
     uv_resistance = models.FloatField(null=True, default=None)
 
     class Meta:
-        verbose_name = "Stone"
-        verbose_name_plural = "Stones"
+        verbose_name = "stone"
+        verbose_name_plural = "stones"
         index_together = [['lat', 'lng'],
                           ['color', 'classification', 'country'], ]
         ordering = ['name']
-
-    def _get_data_field(self, k, v, data):
-        try:
-            return [x[k] for x in data if x[0] == v][0]
-        except IndexError:
-            return ''
-
-    def get_color_slug(self):
-        return self._get_data_field(1, self.color, settings.COLOR_DATA)
-
-    def get_color_name(self):
-        return self._get_data_field(2, self.color, settings.COLOR_DATA)
-
-    def get_country_slug(self):
-        return self._get_data_field(1, self.country, settings.COUNTRY_DATA)
-
-    def get_country_name(self):
-        return self._get_data_field(2, self.country, settings.COUNTRY_DATA)
-
-    def get_country_cc(self):
-        return self._get_data_field(3, self.country, settings.COUNTRY_DATA)
-
-    def get_classification_slug(self):
-        return self._get_data_field(1, self.classification,
-                                    settings.CLASSIFICATION_DATA)
-
-    def get_classification_name(self):
-        return self._get_data_field(2, self.classification,
-                                    settings.CLASSIFICATION_DATA)
-
-    def get_texture_slug(self):
-        return self._get_data_field(1, self.texture, settings.TEXTURE_DATA)
-
-    def get_texture_name(self):
-        return self._get_data_field(2, self.texture, settings.TEXTURE_DATA)
 
     def get_pic_fname_default(self):
         """Return standard file name for pictures."""
@@ -180,8 +164,8 @@ class StoneName(models.Model):
     slug = models.SlugField(max_length=100, default='', db_index=True)
 
     class Meta:
-        verbose_name = "StoneName"
-        verbose_name_plural = "StoneNames"
+        verbose_name = "stone name"
+        verbose_name_plural = "stone names"
 
     def __str__(self):
         return self.name

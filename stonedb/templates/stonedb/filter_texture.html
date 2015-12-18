@@ -9,7 +9,7 @@ All {{q.name}} marbles and {{q.name}} granites
 {% endblock %}
 
 {% block description %}
-Browse all {{q.name}} marbles and granites with pictures listed in Graniteland.
+Browse {{q.name}} marbles and granites with pictures listed in Graniteland.
 {% endblock %}
 
 {% block head %}
@@ -26,10 +26,10 @@ Browse all {{q.name}} marbles and granites with pictures listed in Graniteland.
 
 {% block main %}
 
-<div class="browse-stones browse-colors">
+<div class="browse-stones browse-texture">
 
   <h1>{{q.name|capfirst}} granite and {{q.name}} marble</h1>
-  <p>Browse <strong>{{stones.paginator.count}} different types of {{q.name}} marble and {{q.name}} granite</strong>. Click on a stone image to see more about a particular natural stone. Find {{q.name}} stone and many other colors of stone on Graniteland.</p>
+  <p>Browse <strong>{{stones.paginator.count}} different types of {{q.name}} marble and {{q.name}} granite</strong>. Click on a stone image to see more about a particular natural stone. Natural stone with a {{q.name}} texture on Graniteland.</p>
 
   <div class="list-pages">
     {% for i in stones.paginator.page_range %}
@@ -63,14 +63,14 @@ Browse all {{q.name}} marbles and granites with pictures listed in Graniteland.
     {% endfor %}
   </div>
 
-  <h2>{{q.name|capfirst}} stone and other natural stone colors</h2>
+  <h2>{{q.name|capfirst}} stone and other natural stone textures</h2>
   <div class="greybox">
     <table class="top">
       <tr>
         <td>
           <ul>
             {% for item in more %}
-              <li><a href="/stone/color/{{item.slug}}">{{item.name|capfirst}} granite or marble</a></li>
+            <li><a href="/stone/texture/{{item.slug}}">{{item.name}} textured stones</a></li>
             {% endfor %}
           </ul>
         </td>

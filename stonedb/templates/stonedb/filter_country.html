@@ -68,8 +68,8 @@ Browse all {{q.name}} marbles and granites listed in Graniteland.
   <h2>Natural Stone by country</h2>
   <div class="greybox">
     <ul>
-      {% for row in settings.COUNTRY_CHOICES %}
-        <li><a href="/stone/country/{{row.1}}">{{row.1|title}}</a></li>
+      {% for item in more %}
+        <li><a href="/stone/country/{{item.slug}}">{{item.name}}</a></li>
       {% endfor %}
     </ul>
   </div>

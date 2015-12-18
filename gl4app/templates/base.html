@@ -55,9 +55,21 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
               <table>
                 <tr>
                   <td id="tpl-site-logo"><a href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="Graniteland - marble and granite information online."></a></td>
-                  <td><select size="1" name="color" id="search_color"><option value="">All colors</option></select></td>
-                  <td><select size="1" name="country" id="search_country"><option value="">All countries of origin</option></select></td>
-                  <td><input type="text" name="pseu" class="search-pseu" id="search_pseu" value="" maxlength="150" size="10" placeholder="or name of stone"></td>
+                  <td>
+                    <select size="1" name="color" id="search_color">
+                      <option value="">All colors</option>
+                      {% for item in search_colors %}<option value="{{item.id}}">{{item.name}}</option>{% endfor %}
+                    </select>
+                  </td>
+                  <td>
+                    <select size="1" name="country" id="search_country">
+                      <option value="">All countries of origin</option>
+                      {% for item in search_countries %}<option value="{{item.id}}">{{item.name}}</option>{% endfor %}
+                    </select>
+                  </td>
+                  <td>
+                    <input type="text" name="pseu" class="search-pseu" id="search_pseu" value="" maxlength="150" size="10" placeholder="or name of stone">
+                  </td>
                   <td><input type="submit" value="Search"></td>
                 </tr>
               </table>
@@ -155,13 +167,13 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             </td>
             <td style="padding:10px;">
               <p>
-                <a href="/report-abuse?url=/stone" title="Please report user submitted content that violates the Terms of Service." rel="nofollow">Report abuse</a> &middot; 
-                <a href="/tos" rel="nofollow">Terms of Service</a> &middot; 
-                <a href="/privacy" rel="nofollow">Privacy</a> &middot; 
+                <a href="/report-abuse?url=/stone" title="Please report user submitted content that violates the Terms of Service." rel="nofollow">Report abuse</a> &middot;
+                <a href="/tos" rel="nofollow">Terms of Service</a> &middot;
+                <a href="/privacy" rel="nofollow">Privacy</a> &middot;
                 </p>
               <p>
-                <a href="/contact" rel="nofollow">Contact</a> &middot; 
-                <a href="/contact" rel="nofollow">Impressum</a> &middot; 
+                <a href="/contact" rel="nofollow">Contact</a> &middot;
+                <a href="/contact" rel="nofollow">Impressum</a> &middot;
                 <a href="#" title="Jump to the top of this page.">Top of page</a>
               </p>
               <br>

@@ -1,18 +1,23 @@
 from django.conf import settings
 from django.core.paginator import Paginator
-# from django.core.urlresolvers import reverse
-from django.http import Http404
-from django.shortcuts import render_to_response, get_object_or_404  # redirect
+# from django.http import Http404
+from django.shortcuts import render_to_response as rtr
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 # from django.views.decorators.http import require_http_methods
 from stonedb.models import Stone, Classification, Color, Country, Texture
 
 
 def home(request):
-    template_file = 'stonedb/home.html'
-    context = {'settings': settings}
-    return render_to_response(template_file, context,
-                              context_instance=RequestContext(request))
+    tpl = 'stonedb/home.html'
+    ctx = {
+        'classifications': Classification.objects.all_with_stones(),
+        'colors': Color.objects.all_with_stones(),
+        'countries': Country.objects.all_with_stones(),
+        'textures': Texture.objects.all_with_stones(),
+    }
+
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def simple_filter(request, f, q, p):
@@ -28,27 +33,26 @@ def simple_filter(request, f, q, p):
     p = p or 1  # no page number means page 1
     fk = f  # filter "type" needs "classification" as filter key
 
-    try:
-        if f == 'color':
-            q = get_object_or_404(Color, slug=q)
-            template_file = 'stonedb/filter_color.html'
-        elif f == 'country':
-            q = get_object_or_404(Country, slug=q)
-            template_file = 'stonedb/filter_country.html'
-        elif f == 'texture':
-            q = get_object_or_404(Texture, slug=q)
-            template_file = 'stonedb/filter_texture.html'
-        elif f == 'type':
-            fk = 'classification'
-            q = get_object_or_404(Classification, slug=q)
-            template_file = 'stonedb/filter_classification.html'
-    except IndexError:
-        raise Http404
+    if f == 'color':
+        more = Color.objects.all_with_stones()
+        q = get_object_or_404(Color, slug=q)
+    elif f == 'country':
+        more = Country.objects.all_with_stones()
+        q = get_object_or_404(Country, slug=q)
+    elif f == 'texture':
+        more = Texture.objects.all_with_stones()
+        q = get_object_or_404(Texture, slug=q)
+    elif f == 'type':
+        more = Classification.objects.all_with_stones()
+        fk = 'classification'
+        q = get_object_or_404(Classification, slug=q)
 
     paginator = Paginator(Stone.objects.filter(**{fk: q}), STONES_PER_PAGE)
-    context = {'stones': paginator.page(p), 'f': f, 'q': q}
-    return render_to_response(template_file, context,
-                              context_instance=RequestContext(request))
+
+    tpl = 'stonedb/filter_{}.html'.format(fk)
+    ctx = {'stones': paginator.page(p), 'f': f, 'q': q, 'more': more}
+
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def filter(request, q):
@@ -56,10 +60,9 @@ def filter(request, q):
 
     Exampe: /stone/blue-sandstone-from-france
     """
-    template_file = 'stonedb/filter.html'
-    context = {}
-    return render_to_response(template_file, context,
-                              context_instance=RequestContext(request))
+    tpl = 'stonedb/filter.html'
+    ctx = {}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def item(request, q):
@@ -68,7 +71,6 @@ def item(request, q):
     Exampe: /stone/blue-sandstone-from-france
     """
     stone = get_object_or_404(Stone, slug=q)
-    template_file = 'stonedb/item.html'
-    context = {'stone': stone, 'settings': settings}
-    return render_to_response(template_file, context,
-                              context_instance=RequestContext(request))
+    tpl = 'stonedb/item.html'
+    ctx = {'stone': stone}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))

@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'gl4app.context_processors.add_settings',
+                'gl4app.context_processors.add_search_mask_options',
             ],
         },
     },

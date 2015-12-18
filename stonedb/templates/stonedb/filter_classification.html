@@ -72,8 +72,8 @@ Browse all {{q.name}} natural stones listed in Graniteland.
       <tr>
         <td>
           <ul>
-            {% for x in settings.CLASSIFICATION_DATA %}
-              <li><a href="/stone/type/{{x.1}}">{{x.2}}</a></li>
+            {% for item in more %}
+              <li><a href="/stone/type/{{item.slug}}">{{item.name}}</a></li>
             {% endfor %}
           </ul>
         </td>
