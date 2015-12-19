@@ -24,7 +24,6 @@ class CommonStoneProperty(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -37,6 +36,7 @@ class Classification(CommonStoneProperty):
     class Meta:
         verbose_name = "classification"
         verbose_name_plural = "classifications"
+        ordering = ('slug', )
 
 
 class Color(CommonStoneProperty):
@@ -44,6 +44,7 @@ class Color(CommonStoneProperty):
     class Meta:
         verbose_name = "color"
         verbose_name_plural = "colors"
+        ordering = ('slug', )
 
 
 class Country(CommonStoneProperty):
@@ -52,6 +53,7 @@ class Country(CommonStoneProperty):
     class Meta:
         verbose_name = "country"
         verbose_name_plural = "countries"
+        ordering = ('slug', )
 
 
 class Texture(CommonStoneProperty):
@@ -59,6 +61,7 @@ class Texture(CommonStoneProperty):
     class Meta:
         verbose_name = "texture"
         verbose_name_plural = "textures"
+        ordering = ('slug', )
 
 
 class Stone(models.Model):

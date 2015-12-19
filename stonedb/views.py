@@ -58,7 +58,7 @@ def simple_filter(request, f, q, p):
 def filter(request, q):
     """Return a list of stones for a specific color+type+origin.
 
-    Exampe: /stone/blue-sandstone-from-france
+    Exampe: /stone/sandstone/blue/veined/france/
     """
     tpl = 'stonedb/filter.html'
     ctx = {}
