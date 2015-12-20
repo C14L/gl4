@@ -48,7 +48,7 @@ class Color(CommonStoneProperty):
 
 
 class Country(CommonStoneProperty):
-    cc = models.CharField(max_length=1, default='')
+    cc = models.CharField(max_length=2, default='xx')
 
     class Meta:
         verbose_name = "country"

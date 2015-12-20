@@ -121,7 +121,7 @@ class Command(BaseCommand):
 
             try:
                 user = User(id=row['user_id'])
-                user.username = row['nick']
+                user.username = row['nick'][:30]
                 user.set_password(row['pass'])
                 user.email = row['email']
                 user.last_login = parse_iso_datetime(row['lastlogin_time'])
