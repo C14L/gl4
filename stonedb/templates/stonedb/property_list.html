@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Overview of natural stone by {{fk}} | GRANITELAND - The Granite and Marble Search Engine
+{% endblock %}
+
+{% block title2 %}
+Overview of natural stone by {{fk}} | GRANITELAND - The Granite and Marble Search Engine
+{% endblock %}
+
+{% block description %}
+Overview of natural stone by {{fk}} for kitchen countertops, tiles, flooring, etc.
+{% endblock %}
+
+{% block head %}
+<style>
+.stone-property-list {
+  display: block;
+  list-style: none;
+  margin: 0; padding: 0;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  -ms-column-count: 3;
+  -o-column-count: 3;
+  column-count: 3;
+}
+.stone-property-list li {
+  display: block;
+  margin: 4px 0; padding: 8px 0;
+  background-color: #F3F3F3;
+  text-align: center;
+}
+.stone-property-list li a { text-decoration: inherit; }
+.stone-property-list li a:hover { text-decoration: underline; }
+.stone-property-list li .count { color: #999; }
+</style>
+{% endblock %}
+
+{% block body_classes %}
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="/stone">Stones</a> &raquo;
+<a href="/stone/{{f}}">{{f|capfirst}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+{% if fk == "color" %}
+<h1>Browse natural stone colors</h1>
+<p>Here you can browse natural stones by color. Please choose a color to see all granites and marbles grouped by color.</p>
+{% elif fk == "classification" %}
+<h1>Browse by stone classification</h1>
+<p>Here you can browse natural stones by classification. Please choose a classification to see all granites and marbles grouped by classification.</p>
+{% elif fk == "country" %}
+<h1>Browse by country of origin</h1>
+<p>Here you can browse natural stones by country. Please choose a country of origin to see all granites and marbles from that country.</p>
+{% elif fk == "texture" %}
+<h1>Browse by texture</h1>
+<p>Here you can browse natural stones by their texture. Please choose a texture to see all granites and marbles with that surface appearence.</p>
+{% endif %}
+
+<h2>Natural Stone by {{fk}}</h2>
+
+<ul class="stone-property-list">
+  {% for item in items %}
+  <li>
+    <a href="/stone/{{f}}/{{item.slug}}">{{item.name}} granite or marble</a>
+    <span class="count">({{item.stones__count}})</span>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock main %}

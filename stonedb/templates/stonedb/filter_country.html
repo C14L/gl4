@@ -13,6 +13,25 @@ Browse all {{q.name}} marbles and granites listed in Graniteland.
 {% endblock %}
 
 {% block head %}
+<style>
+.stone-property-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  -webkit-column-count: 4;
+  -moz-column-count: 4;
+  -ms-column-count: 4;
+  -o-column-count: 4;
+  column-count: 4;
+}
+.stone-property-list li {
+  margin: 4px 0; padding: 8px 0;
+  background-color: #F3F3F3;
+  text-align: center;
+}
+.stone-property-list li a { text-decoration: inherit; }
+.stone-property-list li a:hover { text-decoration: underline; }
+.stone-property-list li .count { color: #999; }
+</style>
 {% endblock %}
 
 {% block body_classes %}
@@ -66,13 +85,11 @@ Browse all {{q.name}} marbles and granites listed in Graniteland.
   </div>
 
   <h2>Natural Stone by country</h2>
-  <div class="greybox">
-    <ul>
-      {% for item in more %}
-        <li><a href="/stone/country/{{item.slug}}">{{item.name}}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
+  <ul class="stone-property-list">
+    {% for item in more %}
+      <li><a href="/stone/country/{{item.slug}}">{{item.name}}</a> <span class="count">({{item.stones__count}})</span></li>
+    {% endfor %}
+  </ul>
 </div>
 
 {% endblock main %}

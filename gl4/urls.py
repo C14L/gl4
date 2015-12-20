@@ -16,20 +16,37 @@ urlpatterns = [
     url(r'^$', gl4app.views.home, name='home'),
 
     # stonedb
-    url(r'^stone$', stonedb.views.home, name='stonedb_home'),
+    url(r'^stone$',
+        stonedb.views.home, name='stonedb_home'),
+    # /stone/search.php --> stonedb_filter
+    url(r'^stone/search.php$',
+        stonedb.views.redir_search_php, name='stonedb_redir_search_php'),
+    # /stone/color
+    # /stone/type
+    url(r'^stone'
+        r'/(?P<f>color|country|type|texture)$',
+        stonedb.views.property_list, name='stonedb_property_list'),
     # /stone/color/blue
     # /stone/country/france/3
     # /stone/type/sandstone
-    url(r'^stone/(?P<f>color|country|type)/(?P<q>[a-zA-Z0-9_-]{1,100})'
+    url(r'^stone'
+        r'/(?P<f>color|country|type|texture)'
+        r'/(?P<q>[a-zA-Z0-9_-]{1,100})'
         r'(?:/(?P<p>[2-9]))?$',
         stonedb.views.simple_filter, name='stonedb_simple_filter'),
     # /stone/aachener-blaustein
     # /stone/aachener-blaustein/comments
     # /stone/aachener-blaustein/pictures
-    url(r'^stone/(?P<q>[a-zA-Z0-9_-]{1,100})$',
+    url(r'^stone/'
+        r'(?P<q>[a-zA-Z0-9_-]{1,100})$',
         stonedb.views.item, name='stonedb_item'),
-    # /stone/blue-sandstone-from-france
-    url(r'^stone/(?P<q>[a-zA-Z0-9_-]{1,100})$',
+    # /stone/france/coarse-grained/blue/sandstone
+    url(r'^stone'
+        r'/(?P<country>[a-zA-Z0-9_-]{1,30})'
+        r'/(?P<texture>[a-zA-Z0-9_-]{1,30})'
+        r'/(?P<color>[a-zA-Z0-9_-]{1,30})'
+        r'/(?P<classif>[a-zA-Z0-9_-]{1,30})'
+        r'(?:/(?P<p>[2-9]))?$',
         stonedb.views.filter, name='stonedb_filter'),
 
     # tradeshowdb
