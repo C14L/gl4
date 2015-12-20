@@ -47,27 +47,27 @@ Overview of natural stone by {{fk}} for kitchen countertops, tiles, flooring, et
 {% block main %}
 
 {% if fk == "color" %}
-<h1>Browse natural stone colors</h1>
-<p>Here you can browse natural stones by color. Please choose a color to see all granites and marbles grouped by color.</p>
+  <h1>Browse natural stone colors</h1>
+  <p>Here you can browse natural stones by color. Please choose a color to see all granites and marbles grouped by color.</p>
 {% elif fk == "classification" %}
-<h1>Browse by stone classification</h1>
-<p>Here you can browse natural stones by classification. Please choose a classification to see all granites and marbles grouped by classification.</p>
+  <h1>Browse by stone classification</h1>
+  <p>Here you can browse natural stones by classification. Please choose a classification to see all granites and marbles grouped by classification.</p>
 {% elif fk == "country" %}
-<h1>Browse by country of origin</h1>
-<p>Here you can browse natural stones by country. Please choose a country of origin to see all granites and marbles from that country.</p>
+  <h1>Browse by country of origin</h1>
+  <p>Here you can browse natural stones by country. Please choose a country of origin to see all granites and marbles from that country.</p>
 {% elif fk == "texture" %}
-<h1>Browse by texture</h1>
-<p>Here you can browse natural stones by their texture. Please choose a texture to see all granites and marbles with that surface appearence.</p>
+  <h1>Browse by texture</h1>
+  <p>Here you can browse natural stones by their texture. Please choose a texture to see all granites and marbles with that surface appearence.</p>
 {% endif %}
 
 <h2>Natural Stone by {{fk}}</h2>
 
 <ul class="stone-property-list">
   {% for item in items %}
-  <li>
-    <a href="/stone/{{f}}/{{item.slug}}">{{item.name}} granite or marble</a>
-    <span class="count">({{item.stones__count}})</span>
-  </li>
+    <li>
+      <a href="/stone/{{f}}/{{item.slug}}">{{item.name}} granite or marble</a>
+      <span class="count">({{item.stones__count}})</span>
+    </li>
   {% endfor %}
 </ul>
 

@@ -1,26 +1,93 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Marbles and Granites from around the globe
+{{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}
 {% endblock %}
 
 {% block title2 %}
-Marbles and Granites from around the globe
+All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}
 {% endblock %}
 
 {% block description %}
-Information on granite and marble from around the world, including data and pictures of thousands of natural stones, at the Graniteland online stone database.
+All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}
 {% endblock %}
 
 {% block head %}
+<style>
+.stone-property-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  -webkit-column-count: 4;
+  -moz-column-count: 4;
+  -ms-column-count: 4;
+  -o-column-count: 4;
+  column-count: 4;
+}
+.stone-property-list li {
+  margin: 4px; padding: 8px 0;
+  background-color: #F3F3F3;
+  text-align: center;
+}
+.stone-property-list li a { text-decoration: inherit; }
+.stone-property-list li a:hover { text-decoration: underline; }
+.stone-property-list li .count { color: #999; }
+</style>
 {% endblock %}
 
 {% block body_classes %}
 {% endblock %}
 
 {% block breadcrumb %}
+<a href="/stone">Stones</a> &raquo;
+<a href="/stone/country/{{country.slug}}">{{country.name}}</a> &raquo;
+<a href="/stone/{{country.slug}}/{{texture.slug}}/all/all">{{texture.name}}</a> &raquo;
+<a href="/stone/{{country.slug}}/{{texture.slug}}/{{color.slug}}/all">{{color.name}}</a> &raquo;
+<a href="/stone/{{country.slug}}/{{texture.slug}}/{{color.slug}}/{{classification.slug}}">{{ classification.name}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
--- Filter --
+
+<div class="browse-stones browse-filter">
+
+  <h1>
+      {{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}
+  </h1>
+  <p>
+      Browse <strong>{{stones.paginator.count}} different types of {{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}</strong>. Click on a stone image to see more about a particular natural stone.
+  </p>
+
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
+      {% else %}
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% include 'stonedb/stone-list-1.html'%}
+  
+  <div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+      {% if i == stones.number %}
+        <b>[ {{i}} ]</b>
+      {% elif i == 1 %}
+        <a href="/stone/{{f}}/{{q.slug}}">1</a>
+      {% else %}
+        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <h2>{{q.name|capfirst}} stone and other natural stone colors</h2>
+  <ul class="stone-property-list">
+    {% for item in more %}
+      <li><a href="/stone/color/{{item.slug}}">{{item.name|capfirst}} granite or marble</a> <span class="count">({{item.stones__count}})</span></li>
+    {% endfor %}
+  </ul>
+</div>
+
 {% endblock main %}

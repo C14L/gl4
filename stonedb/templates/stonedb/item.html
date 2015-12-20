@@ -88,13 +88,19 @@ stones-item
     </tr>
     <tr>
      <td class="title">Main color:</td>
-     <td class="data"><a href="{% url 'stonedb_simple_filter' 'color' stone.color.slug %}">{{stone.color.name}}</a></td>
+     <td class="data">
+      {% if stone.color.slug %}
+       <a href="{% url 'stonedb_simple_filter' 'color' stone.color.slug %}">{{stone.color.name}}</a>
+      {% endif %}
+     </td>
     </tr>
     <tr>
      <td class="title">Country of origin:</td>
      <td class="data">
+      {% if stone.country.slug %}
       <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}"><img src="/img/flags/{{stone.stone.country.cc}}.png" style="vertical-align:middle;" alt="" title="{{stone.stone.country.name}}"></a>
       <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">{{stone.country.name}}</a>
+      {% endif %}
      </td>
     </tr>
     <tr>
@@ -103,7 +109,11 @@ stones-item
     </tr>
     <tr>
      <td class="title">Classification:</td>
-     <td class="data"><a href="{% url 'stonedb_simple_filter' 'country' stone.classification.name %}">{{stone.classification.name}}</a></td>
+     <td class="data">
+         {% if stone.classification.slug %}
+         <a href="{% url 'stonedb_simple_filter' 'type' stone.classification.slug %}">{{stone.classification.name}}</a>
+         {% endif %}
+     </td>
     </tr>
     <tr>
      <td class="title">Availability:</td>

@@ -58,17 +58,40 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
                   <td>
                     <select size="1" name="color" id="search_color">
                       <option value="">All colors</option>
-                      {% for item in search_colors %}<option value="{{item.id}}">{{item.name}}</option>{% endfor %}
+                      {% for item in search_colors %}
+                      <option value="{{item.id}}"{% if item.id == color.id %} selected{% endif %}>{{item.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                  <td>
+                    <select size="1" name="type" id="search_type">
+                      <option value="">All stone types</option>
+                      <optgroup label="Simplefied">
+                        <option value="">Granite-like</option>
+                        <option value="">Marble-like</option>
+                      </optgroup>
+                      <optgroup label="Geological">
+                        {% for item in search_classifications %}
+                          <option value="{{item.id}}"{% if item.id == classification.id %} selected{% endif %}>{{item.name}}</option>
+                        {% endfor %}
+                      </optgroup>
                     </select>
                   </td>
                   <td>
                     <select size="1" name="country" id="search_country">
                       <option value="">All countries of origin</option>
-                      {% for item in search_countries %}<option value="{{item.id}}">{{item.name}}</option>{% endfor %}
+                      {% for item in search_countries %}
+                        <option value="{{item.id}}"{% if item.id == country.id %} selected{% endif %}>{{item.name}}</option>
+                      {% endfor %}
                     </select>
                   </td>
                   <td>
-                    <input type="text" name="pseu" class="search-pseu" id="search_pseu" value="" maxlength="150" size="10" placeholder="or name of stone">
+                    <select size="1" name="type" id="search_type">
+                      <option value="">All textures</option>
+                      {% for item in search_textures %}
+                        <option value="{{item.id}}"{% if item.id == texture.id %} selected{% endif %}>{{item.name}}</option>
+                      {% endfor %}
+                    </select>
                   </td>
                   <td><input type="submit" value="Search"></td>
                 </tr>

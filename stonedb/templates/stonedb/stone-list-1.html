@@ -1,0 +1,8 @@
+<ul class="enhanced-stone-list">
+  {% for item in stones.object_list %}
+    <li>
+      <a href="/stone/{{item.slug}}" style="background-image:url({{item.get_pic_thumb}});" title="Other trade names are {{item.get_pseudonyms}}"><span class="capt"><span class="name">{{item.name}}</span> is a {{item.color.name}} {{item.classification.name}} ({{item.classification.simple_name}}-like) from {{item.country.name}}</span></a>
+    </li>
+  {% endfor %}
+</ul>
+<div style="clear:left;"></div>

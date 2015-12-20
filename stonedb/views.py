@@ -142,11 +142,17 @@ def simple_filter(request, f, q, p):
         raise Http404
 
     paginator = Paginator(Stone.objects.filter(**{fk: q}), STONES_PER_PAGE)
-
     tpl = 'stonedb/filter_{}.html'.format(fk)
-    ctx = {'stones': paginator.page(p), 'f': f, 'q': q, 'more': more}
+    ctx = {'stones': paginator.page(p), 'f': f, 'q': q, 'more': more, fk: q}
 
     return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def _filter_cleanup_val(k):
+    k = k.lower()
+    if k == FILTER_URL_NO_VALUE:
+        k = ''
+    return k
 
 
 def filter(request, color, country, texture, classif, p=1):
@@ -154,25 +160,50 @@ def filter(request, color, country, texture, classif, p=1):
 
     Exampe: /stone/sandstone/blue/veined/france/
     """
+    url = ''
     p = force_int(p) or 1
-    color = request.GET.get('color', FILTER_URL_NO_VALUE).lower()
-    country = request.GET.get('country', FILTER_URL_NO_VALUE).lower()
-    texture = request.GET.get('texture', FILTER_URL_NO_VALUE).lower()
-    classif = request.GET.get('classif', FILTER_URL_NO_VALUE).lower()
+    color = _filter_cleanup_val(color)
+    country = _filter_cleanup_val(country)
+    texture = _filter_cleanup_val(texture)
+    classif = _filter_cleanup_val(classif)
 
+    # Now redirect depending on what values we received.
+    if not (color or country or texture or classif):
+        # no vals at all is not possible, go to search page.
+        url = reverse('stonedb_home')
+    elif color and not (country or texture or classif):
+        # only color, go to old color page
+        url = reverse('stonedb_simple_filter',
+                      kwargs={'f': 'color', 'q': color.slug})
+    elif country and not (color or texture or classif):
+        # only country, go to old country page.
+        url = reverse('stonedb_simple_filter',
+                      kwargs={'f': 'country', 'q': country.slug})
+    elif texture and not (color or country or classif):
+        # only texture, there is NO old texture page, so that's okay.
+        pass
+    elif classif and not (color or country or texture):
+        # only classification, go to old "type" page.
+        url = reverse('stonedb_simple_filter',
+                      kwargs={'f': 'classif', 'q': classif.slug})
+
+    if url:
+        return HttpResponsePermanentRedirect(url)
+
+    # Still here? Then display the filtered results.
     li = Stone.objects.all()
 
-    if color != FILTER_URL_NO_VALUE:
-        color = Color.objects.get(slug=color)
+    if color:
+        color = get_object_or_404(Color, slug=color)
         li = li.filter(color=color)
-    if country != FILTER_URL_NO_VALUE:
-        country = Country.objects.get(slug=country)
+    if country:
+        country = get_object_or_404(Country, slug=country)
         li = li.filter(country=country)
-    if texture != FILTER_URL_NO_VALUE:
-        texture = Texture.objects.get(slug=texture)
+    if texture:
+        texture = get_object_or_404(Texture, slug=texture)
         li = li.filter(texture=texture)
-    if classif != FILTER_URL_NO_VALUE:
-        classif = Classification.objects.get(slug=classif)
+    if classif:
+        classif = get_object_or_404(Classification, slug=classif)
         li = li.filter(classification=classif)
 
     paginator = Paginator(li, STONES_PER_PAGE)
