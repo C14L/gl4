@@ -67,8 +67,8 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
                     <select size="1" name="type" id="search_type">
                       <option value="">All stone types</option>
                       <optgroup label="Simplefied">
-                        <option value="">Granite-like</option>
-                        <option value="">Marble-like</option>
+                        <option value="m">Granite-like</option>
+                        <option value="g">Marble-like</option>
                       </optgroup>
                       <optgroup label="Geological">
                         {% for item in search_classifications %}
@@ -86,7 +86,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
                     </select>
                   </td>
                   <td>
-                    <select size="1" name="type" id="search_type">
+                    <select size="1" name="texture" id="search_texture">
                       <option value="">All textures</option>
                       {% for item in search_textures %}
                         <option value="{{item.id}}"{% if item.id == texture.id %} selected{% endif %}>{{item.name}}</option>

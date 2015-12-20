@@ -42,10 +42,11 @@ class Command(BaseCommand):
             )
         input('Please press Enter to continue...')
 
-        self.import_color()
-        self.import_classification()
-        self.import_country()
-        self.import_user()
+        #self.import_color()
+        #self.import_classification()
+        #self.import_country()
+        self.init_texture()  # only deletes current entries
+        #self.import_user()
         self.import_stone()
 
     def walkjsondata(self, fn):
@@ -64,6 +65,24 @@ class Command(BaseCommand):
                 id=row['id'], slug=row['url'], name=row['name'])
             print('color --> added: {} {} -> {}'.format(
                 item.id, item.slug, item.name))
+
+    def init_texture(self):
+        Texture.objects.all().delete()
+
+    def fetch_or_create_texture(self, texture_name):
+        # return texture name and id
+        texture_name = texture_name.lower().strip()
+        if texture_name in ['', 'n/a', 'na']:
+            return None
+
+        item, created = Texture.objects.get_or_create(name=texture_name)
+        if created:
+            item.slug = slugify(item.name)
+            item.save()
+            print('texture --> added: {} {} -> {}'.format(
+                item.id, item.slug, item.name))
+
+        return item
 
     def import_classification(self):
         """
@@ -160,15 +179,15 @@ class Command(BaseCommand):
             stone.color_name = row['color']
             stone.country_name = row['country']
             stone.classification_name = row['classification']
+
             stone.texture_name = row['texture']
+            stone.texture = self.fetch_or_create_texture(row['texture'])
 
             stone.secondary_colors = []
-            stone.texture = Texture.objects.filter(
-                pk=row['texture_id']).first()
-            stone.classification = Classification.objects.filter(
-                pk=row['classification_id']).first()
             stone.color = Color.objects.filter(
                 pk=row['color_id']).first()
+            stone.classification = Classification.objects.filter(
+                pk=row['classification_id']).first()
             stone.country = Country.objects.filter(
                 pk=row['country_id']).first()
 
