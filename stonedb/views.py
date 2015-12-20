@@ -154,6 +154,7 @@ def filter(request, color, country, texture, classif, p=1):
 
     Exampe: /stone/sandstone/blue/veined/france/
     """
+    p = force_int(p) or 1
     color = request.GET.get('color', FILTER_URL_NO_VALUE).lower()
     country = request.GET.get('country', FILTER_URL_NO_VALUE).lower()
     texture = request.GET.get('texture', FILTER_URL_NO_VALUE).lower()
