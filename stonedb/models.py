@@ -18,7 +18,7 @@ class CommonStonePropertyManager(models.Manager):
 class CommonStoneProperty(models.Model):
     name = models.CharField(max_length=100, default='')
     slug = models.SlugField(max_length=100, default='', db_index=True)
-    text = models.TextField(default='')
+    text = models.TextField(default='', blank=True)
 
     objects = CommonStonePropertyManager()
 
@@ -30,8 +30,9 @@ class CommonStoneProperty(models.Model):
 
 
 class Classification(CommonStoneProperty):
-    simple_name = models.CharField(max_length=100, default='')
-    simple_slug = models.SlugField(max_length=100, default='', db_index=True)
+    simple_name = models.CharField(max_length=100, default='', blank=True)
+    simple_slug = models.SlugField(max_length=100, default='', db_index=True,
+                                   blank=True)
 
     class Meta:
         verbose_name = "classification"
@@ -82,47 +83,51 @@ class Stone(models.Model):
     # smallpic = models.CharField(max_length=100, default='')
     # largepic = models.CharField(max_length=100, default='')
     # projectpic = models.CharField(max_length=100, default='')
-    picfile = models.CharField(max_length=100, default='')
+    picfile = models.CharField(max_length=100, default='', blank=True)
 
     # TODO: additional pics all frmo media
     # title_foto = models.ForeignKey(Fotos, null=True, default=None)
     # is_use_title_foto = models.BooleanField(default=False)
 
     # TODO: lookup lat/lng for city/location names
-    city_name = models.CharField(max_length=50)
-    lat = models.FloatField(null=True, default=None)
-    lng = models.FloatField(null=True, default=None)
+    city_name = models.CharField(max_length=50, blank=True)
+    lat = models.FloatField(null=True, default=None, blank=True)
+    lng = models.FloatField(null=True, default=None, blank=True)
 
-    country = models.ForeignKey(Country, blank=True, null=True, default=None,
-                                related_name='stones')
-    texture = models.ForeignKey(Texture, blank=True, null=True, default=None,
-                                related_name='stones')
+    country = models.ForeignKey(Country, null=True, default=None,
+                                related_name='stones', blank=True)
+    texture = models.ForeignKey(Texture, null=True, default=None,
+                                related_name='stones', blank=True)
     classification = models.ForeignKey(Classification, blank=True, null=True,
                                        default=None, related_name='stones')
-    color = models.ForeignKey(Color, blank=True, null=True, default=None,
-                              related_name='stones')
-    secondary_colors = models.ManyToManyField(Color)
+    color = models.ForeignKey(Color, null=True, default=None,
+                              related_name='stones', blank=True)
+    secondary_colors = models.ManyToManyField(Color, blank=True)
 
     # + + +  not used, just for import verification  + + +
-    color_name = models.CharField(max_length=100, default='')
-    country_name = models.CharField(max_length=100, default='')
-    classification_name = models.CharField(max_length=100, default='')
-    texture_name = models.CharField(max_length=100, default='')
+    color_name = models.CharField(max_length=100, default='',
+                                  editable=False, blank=True)
+    country_name = models.CharField(max_length=100, default='',
+                                    editable=False, blank=True)
+    classification_name = models.CharField(max_length=100, default='',
+                                           editable=False, blank=True)
+    texture_name = models.CharField(max_length=100, default='',
+                                    editable=False, blank=True)
 
-    application = models.TextField(default='')
-    availability = models.TextField(default='')
-    comment = models.TextField(default='')
+    application = models.TextField(default='', blank=True)
+    availability = models.TextField(default='', blank=True)
+    comment = models.TextField(default='', blank=True)
 
-    maxsize = models.TextField(default='')
-    maxsize_block_w = models.PositiveIntegerField(default=0)
-    maxsize_block_h = models.PositiveIntegerField(default=0)
-    maxsize_block_d = models.PositiveIntegerField(default=0)
-    maxsize_slab_w = models.PositiveIntegerField(default=0)
-    maxsize_slab_h = models.PositiveIntegerField(default=0)
+    maxsize = models.TextField(default='', blank=True)
+    maxsize_block_w = models.PositiveIntegerField(default=0, blank=True)
+    maxsize_block_h = models.PositiveIntegerField(default=0, blank=True)
+    maxsize_block_d = models.PositiveIntegerField(default=0, blank=True)
+    maxsize_slab_w = models.PositiveIntegerField(default=0, blank=True)
+    maxsize_slab_h = models.PositiveIntegerField(default=0, blank=True)
 
     # TODO: add more technical data.
-    hardness = models.FloatField(null=True, default=None)
-    uv_resistance = models.FloatField(null=True, default=None)
+    hardness = models.FloatField(null=True, default=None, blank=True)
+    uv_resistance = models.FloatField(null=True, default=None, blank=True)
 
     class Meta:
         verbose_name = "stone"

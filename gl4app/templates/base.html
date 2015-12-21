@@ -45,12 +45,12 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     <div id="tpl-wrap">
       <div id="tpl-title">
         <div>
-          <div class="sponsor-ad">
+          <!-- <div class="sponsor-ad">
             <div>Sponsored by:</div>
             <div><a rel="nofollow" onClick="recOutLink(this, 'Sponsor Links', 'NatursteinHilfe'); return false;" href="http://www.NatursteinHilfe.de/"><img src="{% static 'img/sponsor-nh.jpg' %}" alt="NatursteinHilfe"></a></div>
-          </div>
+          </div> -->
           <div id="tpl-search">
-            <form method="get" action="/stone/search.php">
+            <form method="get" action="/stone/search.php" id="tpl-search-form">
               <div><input type="hidden" name="p" value="1"></div>
               <table>
                 <tr>
@@ -218,10 +218,20 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     <div id="showbginfo">
       <a href="/stone/amazonia-brown"><strong>The background stone is Amazonia Brown from Brazil.</strong></a>
     </div>
-    <script>(function(){$(".search-pseu").suggest("/stones/suggest.php")})();</script>
+    <script>
+      (function(){ /* auto-submit search for onchange */
+        document.querySelector('#tpl-search-form input[type="submit"]').style.display = "none";
+        var o = document.querySelectorAll('#tpl-search-form select');
+        for (var i=0; i<o.length; i++){
+          o[i].addEventListener('change', function(e){
+            this.form.submit();
+            for (var i=0; i<o.length; i++){ o[i].disabled = "disabled"; }
+          });
+        }
+      })(window);
+    </script>
     <script>var addthis_config = {"data_track_addressbar":false};</script>
     <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yaix"></script>
-    <div id="sysstat"> RUN 0.027 MEM 3,906 SYS 0.13 0.06 0.01</div>
     <script>var sc_project=570770;var sc_invisible=1;var sc_partition=4;var sc_security="bb8f16d7";var sc_remove_link=1;</script>
     <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script>
     <noscript>
