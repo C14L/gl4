@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Stone, StoneName
+from .models import Stone, StoneName, Color, Country, Texture, Classification
 
 
 class StoneAdmin(admin.ModelAdmin):
@@ -15,3 +15,8 @@ class StoneNameAdmin(admin.ModelAdmin):
 
 admin.site.register(Stone, StoneAdmin)
 admin.site.register(StoneName, StoneNameAdmin)
+
+admin.site.register(Color)
+admin.site.register(Country)
+admin.site.register(Texture)
+admin.site.register(Classification)
