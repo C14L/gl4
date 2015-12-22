@@ -59,8 +59,14 @@ urlpatterns = [
     url(r'^tradeshows/(?P<y>[12][0-9]{3})/(?P<slug>[a-zA-Z0-9_-]{1,100})$',
         tradeshowdb.views.item, name='tradeshowdb_item'),
 
-    # companydb
-    url(r'^company$', companydb.views.home, name='companydb_home'),
+    # companydb: /companies
+    url(r'^companies$', companydb.views.home, name='companydb_home'),
+    # /companies/memorials-grave-stones/1
+    url(r'^companies/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
+        companydb.views.list, name='companydb_list'),
+    # /company/xiamen-pengcheng-imp
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})$',
+        companydb.views.item, name='companydb_item'),
 ]
 
 if settings.DEBUG:

@@ -31,6 +31,13 @@ class UserProfile(models.Model):
     is_blocked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = "Profile"
+        verbose_name_plural = "Profiles"
+
+    def __str__(self):
+        return self.name
+
 
 class Stock(models.Model):
     stone = models.ForeignKey(Stone, db_index=True)
@@ -49,7 +56,7 @@ class Stock(models.Model):
         verbose_name_plural = "Stocks"
 
     def __str__(self):
-        pass
+        return '{} --> {}'.format(self.user.profile.name, self.stone.name)
 
 
 class Project(models.Model):
@@ -69,7 +76,7 @@ class Project(models.Model):
         verbose_name_plural = "Stocks"
 
     def __str__(self):
-        pass
+        return '{} --> {}'.format(self.user.profile.name, self.stone.name)
 
 
 class Pic(models.Model):  # cc__fotos
@@ -101,7 +108,7 @@ class Pic(models.Model):  # cc__fotos
         verbose_name_plural = "Pictures"
 
     def __str__(self):
-            pass
+        return self.pk
 
 
 class Group(models.Model):
@@ -120,4 +127,4 @@ class Group(models.Model):
         verbose_name_plural = "Groups"
 
     def __str__(self):
-        pass
+        return self.name
