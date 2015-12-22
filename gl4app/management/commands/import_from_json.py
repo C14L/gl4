@@ -6,10 +6,9 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
-from django.utils.timezone import utc
-from companydb.models import (UserProfile, )
-from stonedb.models import (Stone, StoneName, Color, Classification,
-                            Texture, Country)
+from companydb.models import (UserProfile, Stock, Project, Pic, Group)
+from stonedb.models import (Stone, StoneName,
+                            Color, Classification, Texture, Country)
 from tradeshowdb.models import Tradeshow
 from toolbox import parse_iso_date, parse_iso_datetime
 
@@ -40,8 +39,10 @@ class Command(BaseCommand):
         #self.import_country()
         #self.init_texture()  # only deletes current entries
         #self.import_user()
+        self.import_profile()
         #self.import_stone()
-        self.import_tradeshows()
+        #self.import_tradeshow()
+        #self.import_group()
 
     def walkjsondata(self, fn):
         f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
@@ -102,7 +103,6 @@ class Command(BaseCommand):
 
     def import_user(self):
         """
-
         --- user --------------------------------------------------------------
         {"user_id":"22","nick":"YYY","pass":"XXX","email":"info@example.com",
         "name":"Blah Corp.","type":"company","title_foto":"12","title_foto_ext"
@@ -114,20 +114,16 @@ class Command(BaseCommand):
         "0","is_admin":"0","is_mod_global":"0","is_mod_forum":"0",
         "is_mod_fotos":"0","is_mod_stones":"0","is_mod_pages":"0",
         "is_mod_groups":"0","is_mod_tradeshows":"0"}
-        --- profile -----------------------------------------------------------
-        {"user_id":"1","nick":"admin","name":"Graniteland","contact":
-        "xxxxxxx","contact_position":"","slogan":"","street":"","city":"",
-        "zip":"","country_sub_id":"0","country_id":"0","country_sub_name":"",
-        "country_name":"","postal":"","email":"info@graniteland.com","fax":"",
-        "tel":"","mobile":"","web":"","about":"","title_foto":"0",
-        "title_foto_ext":""}
-        -----------------------------------------------------------------------
-
         """
         User.objects.all().delete()
         UserProfile.objects.all().delete()
         for row in self.walkjsondata('user'):
-            repr(row)
+            if row['nick'] == '':  # skip if no username
+                continue
+            if row['type'] != 'company':  # only allow "company" as members
+                continue
+            # if row['is_deleted'] or row['is_blocked']:
+            #    continue
 
             print('user --> adding {} [{}] --> {}'.format(
                 row['nick'], row['user_id'], row['name']))
@@ -150,11 +146,11 @@ class Command(BaseCommand):
             profile.title_foto_ext = row['title_foto_ext']
             profile.signup_ip = row['signup_ip']
             profile.lastlogin_ip = row['lastlogin_ip']
-            profile.is_blocked = bool(row['is_blocked'])
-            profile.is_deleted = bool(row['is_deleted'])
             profile.save()
 
             print('--> User added: {} {}'.format(user.id, user.username))
+        print('All users created, now update all profiles')
+
 
     def import_stone(self):
         Stone.objects.all().delete()
@@ -256,7 +252,7 @@ class Command(BaseCommand):
         24  update_ip
         """
 
-    def import_tradeshows(self):
+    def import_tradeshow(self):
         Tradeshow.objects.all().delete()
         print('--> Importing tradeshows: ', end='', flush=True)
         for row in self.walkjsondata('tradeshows2'):
@@ -277,3 +273,82 @@ class Command(BaseCommand):
             tradeshow.save()
             print('.', end='', flush=True)
         print(' done')
+
+    def import_group(self):
+        """
+        {"id":"15","topic_id":"0","name":"Stone Installation","url":"stone-installer","about":"Natural stone companies specialized in the installtion of granite, marble and similar natural stones. Installation of natural stone as flooring, wall cladding, counter tops or as other application.","description":"Companies specialized in the installtion of granite, marble and related natural stones, as flooring, wall cladding, counter tops or other applications.","keywords":"installation of stone, granite, marble, limestone, flooring, wall cladding","title_foto":"305","title_foto_ext":"jpg","count_members":"554","created_time":"2007-10-27 23:12:54","created_ip":"127.0.0.1","created_user":"1","time":"2008-08-18 06:27:47","ip":"84.137.125.24","is_invite_only":"0","is_private":"0","is_blocked":"0","is_deleted":"0"},
+        """
+        Group.objects.all().delete()
+        print('--> Importing user groups: ', end='', flush=True)
+        for row in self.walkjsondata('groups'):
+            group = Group(id=row['id'])
+            group.name = row['name'][:30]
+            group.slug = row['url'][:30]  # url
+            group.about = row['about']
+            group.description = row['description'][:255]
+            group.keywords = row['keywords'][:255]
+            group.title_foto = None
+            group.count_members = row['count_members']
+            group.created = parse_iso_datetime(row['created_time'])
+            group.save()
+            print('Created group "{}", adding members '.format(group.name))
+            # add members of this group
+            """
+            {"user_id":"4","group_id":"13","applied_time":"2008-08-17 04:40:27","confirmed_time":"2008-08-17 04:40:27"}
+            """
+            for row2 in self.walkjsondata('groups_members'):
+                if row2['group_id'] == group.id:
+                    try:
+                        user = User.objects.get(pk=row2['user_id'])
+                        group.members.add(user)
+                        print('.', end='', flush=True)
+                    except User.DoesNotExist:
+                        print('Could not add user {} to group {}: User does '
+                              'not exist.'.format(row2['user_id'], group.name))
+            print(' done')
+        print('all groups done')
+
+
+    def import_profile(self):
+        # Does NOT delete user profiles but simply overwrites values in
+        # existing ones that were created by import_user previously.
+        """
+        --- profile -----------------------------------------------------------
+        {"user_id":"1","nick":"admin","name":"Graniteland","contact":
+        "xxxxxxx","contact_position":"","slogan":"","street":"","city":"",
+        "zip":"","country_sub_id":"0","country_id":"0","country_sub_name":"",
+        "country_name":"","postal":"","email":"info@graniteland.com","fax":"",
+        "tel":"","mobile":"","web":"","about":"","title_foto":"0",
+        "title_foto_ext":""}
+        """
+        i = 0;
+        for row in self.walkjsondata('user_profiles'):
+            i += 1
+            try:
+                profile = UserProfile.objects.get(user_id=row['user_id'])
+            except UserProfile.DoesNotExist:
+                print('!!! No profile foudn for user {} ({})'.format(
+                      row['user_id'], row['nick']))
+
+            print('{}.-- profile --> updating {}'.format(i, row['user_id']))
+
+            profile.contact = row['contact']
+            profile.contact_position = row['contact_position']
+            profile.slogan = row['slogan']
+            profile.street = row['street']
+            profile.city = row['city']
+            profile.zip = row['zip']
+            profile.country_sub_id = row['country_sub_id']
+            profile.country_id = row['country_id']
+            profile.country_sub_name = row['country_sub_name']
+            profile.country_name = row['country_name']
+            profile.postal = row['postal']
+            profile.email = row['email']
+            profile.fax = row['fax']
+            profile.tel = row['tel']
+            profile.mobile = row['mobile']
+            profile.web = row['web']
+            profile.about = row['about']
+            profile.save()
+
+        print('All profiles updated, done')

@@ -7,6 +7,7 @@ import math
 import pytz
 import re
 from datetime import date, datetime
+from django.utils.timezone import utc
 
 
 def to_iso8601(when=None):

@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{view_user.profile.name}}
+{% endblock %}
+
+{% block title2 %}
+{{view_user.profile.name}}
+{% endblock %}
+
+{% block description %}
+The company overview for {{view_user.profile.name}}.
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+profile profile-home
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1 id="about-company-title">{{view_user.profile.name}}</h1>
+
+<ul id="tabnavi2">
+  <li>
+    <a id="current" href="{% url 'companydb_item' view_user.username %}">
+      <span>Home</span>
+    </a>
+  </li>
+  <li>
+    <a href="/company/xiamen-heads-import-and-export/stock">
+      <span>Stones on Stock</span>
+    </a>
+  </li>
+  <li>
+    <a href="/company/xiamen-heads-import-and-export/projects">
+      <span>Projects Showroom</span>
+    </a>
+  </li>
+  <li>
+    <a href="/company/xiamen-heads-import-and-export/photos">
+      <span>Company Photos</span>
+    </a>
+  </li>
+  <li class="last">
+    <a href="/company/xiamen-heads-import-and-export/contact">
+      <span>Contact Us</span>
+    </a>
+  </li>
+</ul>
+<table class="layout">
+  <tr>
+    <td class="leftcol">
+      <table class="profile-contact-info">
+        <tr>
+          <td></td>
+          <td>
+            <strong>{{view_user.profile.name}}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Contact:</td>
+          <td style="width:100%">{{view_user.profile.contact}} ({{view_user.profile.contact_position}})</td>
+        </tr>
+        <tr>
+          <td>Website:</td>
+          <td><a onClick="recOutLink(this, 'Company Links', '/company/xiamen-heads-import-and-export'); return false;" rel="nofollow" href="{{view_user.profile.web}}">{{view_user.profile.web}}</a></td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td><a href="/company/xiamen-heads-import-and-export/contact">Contact form</a></td>
+        </tr>
+        <tr>
+          <td>Phone:</td>
+          <td>{{view_user.profile.fon}}</td>
+        </tr>
+        <tr>
+          <td>Fax:</td>
+          <td>{{view_user.profile.fax}}</td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td>{{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}}, {{view_user.profile.country_name}}</td>
+        </tr>
+      </table>
+
+      <div id="about-company-about">
+        {{view_user.profile.about}}
+      </div>
+    </td>
+
+    <td class="middlecol">
+      <div class="fotoslist">
+
+        <div class="list">
+          <div class="item">
+            <a href="/company/xiamen-heads-import-and-export/photos">
+              <img src="/media/en/fotos_small/372.jpg" alt="Photos of G655 .JPG">
+            </a>
+          </div>
+          <div class="item">
+            <a href="/company/xiamen-heads-import-and-export/photos">
+              <img src="/media/en/fotos_small/371.jpg" alt="Photos of G654">
+            </a>
+          </div>
+          <div class="item">
+            <a href="/company/xiamen-heads-import-and-export/photos">
+              <img src="/media/en/fotos_small/370.jpg" alt="Photos of G648">
+            </a>
+          </div>
+          <div class="item">
+            <a href="/company/xiamen-heads-import-and-export/photos">
+              <img src="/media/en/fotos_small/369.jpg" alt="Photos of G640">
+            </a>
+          </div>
+          <div class="item">
+            <a href="/company/xiamen-heads-import-and-export/photos">
+              <img src="/media/en/fotos_small/368.jpg" alt="Photos of G636">
+            </a>
+          </div>
+        </div>
+      </div>
+    </td>
+
+    <td class="rightcol">
+      <div class="tbox">
+        <div class="title">Business areas</div>
+        <div class="content">
+          <ul>
+            <li><a href="/companies/consultancy-quality-assurance/1">Consultancy, Quality Assurance</a></li>
+            <li><a href="/companies/granite-import-export/1">Import / export</a></li>
+            <li><a href="/companies/memorials-grave-stones/1">Memorials and Headstones</a></li>
+            <li><a href="/companies/stone-block-trade/1">Natural stone block trade</a></li>
+            <li><a href="/companies/buy-granite-marble/1">Natural stone trade</a></li>
+            <li><a href="/companies/granite-wholesale/1">Natural stone wholesale</a></li>
+            <li><a href="/companies/quarry-owner-operator/1">Quarry Owner / Operator</a></li>
+            <li><a href="/companies/related-products/1">Related Products</a></li>
+            <li><a href="/companies/slabs-supplier/1">Slab supplier</a></li>
+            <li><a href="/companies/tiles-supplier/1">Tiles production</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="tbox">
+        <div class="title">Stones on Stock</div>
+        <div class="content">
+          <ul></ul>
+        </div>
+      </div>
+      <div class="tbox">
+        <div class="title">
+          Project History </div>
+        <div class="content">
+          <ul></ul>
+        </div>
+      </div>
+      <div class="tbox">
+        <div class="title">
+          0 stones with star </div>
+        <div class="content" style="padding:0 5px;">
+          <p>Natural stone that you marked with a star will be listed here.</p>
+        </div>
+      </div>
+
+    </td>
+  </tr>
+</table>
+
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

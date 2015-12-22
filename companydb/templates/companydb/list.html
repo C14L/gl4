@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{group.name}}
+{% endblock %}
+
+{% block title2 %}
+{{group.name}}
+{% endblock %}
+
+{% block description %}
+{{group.description}}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+groups-home
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1>{{group.name}}</h1>
+
+<table class="layout">
+  <tr>
+    <td class="leftcol">
+      <p class="logo"><img src="/media/en/fotos_medium/292.jpg"></p>
+      <p class="info"><strong>{{group.name}}</strong> has {{group.count_members}} members.</p>
+      <p class="about">{{group.about}}</p>
+
+{% if settings.PRODUCTION %}
+      <p class="ad"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- gc resp atf companies list -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-0795994016573783"
+     data-ad-slot="9645557647"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+      <p class="ad"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- gc resp btf companies list -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-0795994016573783"
+     data-ad-slot="3599024047"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+{% else %}
+      <p class="ad"><div style="width:300px; height:350px; background:gray;"></div></p>
+      <p class="ad"><div style="width:300px; height:350px; background:gray;"></div></p>
+{% endif %}
+
+    </td>
+    <td class="rightcol">
+      <div class="prevnext">
+        {% for i in range_pages %}
+          {% if i == members.number %}
+            <b>[ {{i}} ]</b>
+          {% else %}
+            <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="list2">
+        <table>
+          {% for item in members %}
+            <tr id="groupmemberlist{{item.id}}">
+              <td class="picture" style="width:100px">
+                <a href="{% url 'companydb_item' item.username %}"><img src="/img/nofoto100.jpg"></a>
+              </td>
+              <td class="description" style="width:100%">
+                <strong><a href="{% url 'companydb_item' item.username %}">{{item.profile.name}}</a></strong><br><em>({{item.profile.city}}, {{item.profile.country_name}})</em><br>{{item.profile.about|truncatewords:25}}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="prevnext">
+        {% for i in range_pages %}
+          {% if i == members.number %}
+            <b>[ {{i}} ]</b>
+          {% else %}
+            <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </td>
+  </tr>
+</table>
+
+
+{% endblock %}
+
+{% block foot %}
+{% endblock %}
