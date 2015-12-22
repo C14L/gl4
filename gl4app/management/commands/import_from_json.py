@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 from os import rename
 from os.path import join, isfile, dirname
 from django.conf import settings
@@ -11,14 +10,8 @@ from django.utils.timezone import utc
 from companydb.models import (UserProfile, )
 from stonedb.models import (Stone, StoneName, Color, Classification,
                             Texture, Country)
-
-
-def parse_iso_datetime(t):
-    """Return timezone aware datetime from simple 'yyyy-mm-dd hh-mm-ss'."""
-    try:
-        return datetime.strptime(t, "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc)
-    except:
-        return datetime.utcnow().replace(tzinfo=utc)
+from tradeshowdb.models import Tradeshow
+from toolbox import parse_iso_date, parse_iso_datetime
 
 
 class Command(BaseCommand):
@@ -45,9 +38,10 @@ class Command(BaseCommand):
         #self.import_color()
         #self.import_classification()
         #self.import_country()
-        self.init_texture()  # only deletes current entries
+        #self.init_texture()  # only deletes current entries
         #self.import_user()
-        self.import_stone()
+        #self.import_stone()
+        self.import_tradeshows()
 
     def walkjsondata(self, fn):
         f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
@@ -234,30 +228,52 @@ class Command(BaseCommand):
         print(urlname_changes)
         print('---')
 
-    """
-    0   id
-    1   name
-    2   smallpic
-    3   largepic
-    4   projectpic
-    5   title_foto
-    6   is_use_title_foto
-    7   country
-    8   country_id
-    9  city
-    10  color
-    11  color_id
-    12  pseudonym
-    13  application
-    14  texture
-    15  texture_id
-    16  availability
-    17  maxsize
-    18  comment
-    19  type_url
-    20  classification
-    21  classification_id
-    22  urlname
-    23  update_time datetime
-    24  update_ip
-    """
+        """
+        0   id
+        1   name
+        2   smallpic
+        3   largepic
+        4   projectpic
+        5   title_foto
+        6   is_use_title_foto
+        7   country
+        8   country_id
+        9  city
+        10  color
+        11  color_id
+        12  pseudonym
+        13  application
+        14  texture
+        15  texture_id
+        16  availability
+        17  maxsize
+        18  comment
+        19  type_url
+        20  classification
+        21  classification_id
+        22  urlname
+        23  update_time datetime
+        24  update_ip
+        """
+
+    def import_tradeshows(self):
+        Tradeshow.objects.all().delete()
+        print('--> Importing tradeshows: ', end='', flush=True)
+        for row in self.walkjsondata('tradeshows2'):
+            tradeshow = Tradeshow()
+            tradeshow.aumaid = row['aumaid']
+            tradeshow.name = row['name'][:60]
+            tradeshow.aka = row['aka'][:255]
+            tradeshow.url = slugify(row['name'])[:60]
+            tradeshow.city_name = row['city'][:60]
+            tradeshow.country_name = row['country'][:60]
+            tradeshow.begins = parse_iso_date(row['begins'])
+            tradeshow.ends = parse_iso_date(row['ends'])
+            tradeshow.keywords = row['keywords']
+            tradeshow.about = row['about']
+            tradeshow.web = row['web'][:250]
+            tradeshow.contact = row['contact'][:250]
+            tradeshow.logo = row['logo'][:60]
+            tradeshow.save()
+            print('.', end='', flush=True)
+        print(' done')

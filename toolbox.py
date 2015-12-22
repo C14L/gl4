@@ -33,6 +33,28 @@ def from_iso8601(when=None):
     return _when
 
 
+def parse_iso_datetime(t=None):
+    """Return timezone aware datetime from simple 'yyyy-mm-dd hh-mm-ss'."""
+    if t:
+        try:
+            return datetime.strptime(t, "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc)
+        except ValueError:
+            return None
+    else:
+        return datetime.utcnow().replace(tzinfo=utc)
+
+
+def parse_iso_date(t=None):
+    """Return timezone aware date from simple 'yyyy-mm-dd'."""
+    if t:
+        try:
+            return datetime.strptime(t, "%Y-%m-%d").date()  #.replace(tzinfo=utc)
+        except ValueError:
+            return None
+    else:
+        return date.today()  #.replace(tzinfo=utc)
+
+
 def force_int(x, min=None, max=None):
     """
     Receives any value and returns an integer. Values that can not be

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Granite and Marble Tradeshows Worldwide
+{% endblock %}
+
+{% block title2 %}
+Granite and Marble Tradeshows Worldwide
+{% endblock %}
+
+{% block description %}
+Tradeshows worldwide related to the natural stone industry. Exhibitions and fairs specialized in granite and marble products.
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+tradeshow-index
+{% endblock %}
+
+{% block breadcrumb %}
+  <a href="{% url 'tradeshowdb_by_year' view_year %}">Tradeshows {{view_year}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1>Granite and Marble Tradeshows {{view_year}}</h1>
+<p>Currently we have information on {{ts_total}} granite and marble related trade shows worldwide.</p>
+
+<div class="switchgroup">
+  {% for year in years %}
+    <a class="item{% if view_year == year %} active{% endif %}" href="{% url 'tradeshowdb_by_year' year %}">{{year}}</a>
+  {% endfor %}
+</div>
+
+<div class="list">
+  {% for month in tradeshows %}
+    <h2>{{month.name}} {{view_year}} natural stone related tradeshows</h2>
+    <table>
+      <tr>
+        {% for item in month.tradeshows %}
+          <td class="item">
+            <a href="{% url 'tradeshowdb_item' view_year item.slug %}">
+              {% if item.logo %}
+                <img src="/static/tradeshow-logos/{{item.logo}}" class="icon" alt="Tradeshow {{item.name}}">
+              {% else %}
+                <img src="/static/tradeshow-logos/nologo.png" class="icon" alt="Tradeshow {{item.name}}">
+              {% endif %}
+              <span class="name">{{item.name}}</span>
+              <span class="aka">{{item.aka}}</span>
+              <span class="dateplace">Starts on {{item.begins}} in {{item.city_name}}, {{item.country_name}}</span>
+            </a>
+          </td>
+          {% if forloop.counter|divisibleby:2 and not forloop.last %}</tr><tr>{% endif %}
+        {% endfor %}
+      </tr>
+    </table>
+  {% endfor %}
+</div>
+
+<div class="tbox">
+ <div class="title">
+  Did we forget a trade show? </div>
+ <div class="content">
+  <a href="/contact.php">Drop us a line</a> about any natural stone or construction related trade show you feel should be included into the Graniteland trade shows list. </div>
+</div>
+
+{% endblock %}

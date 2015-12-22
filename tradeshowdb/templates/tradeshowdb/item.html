@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{tradeshow.name}}
+{% endblock %}
+
+{% block title2 %}
+{{tradeshow.name}}
+{% endblock %}
+
+{% block description %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+tradeshow-item
+{% endblock %}
+
+{% block breadcrumb %}
+  <a href="{% url 'tradeshowdb_by_year' view_year %}">Tradeshows {{view_year}}</a> &raquo;
+  <a href="{% url 'tradeshowdb_item' view_year tradeshow.slug %}">{{tradeshow.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1>{{tradeshow.name}}</h1>
+
+<div class="item-title">
+  {% if tradeshow.logo %}
+    <img src="/static/tradeshow-logos/{{tradeshow.logo}}" alt="{{tradeshow.name}}">
+  {% else %}
+    <img src="/static/tradeshow-logos/nologo.png" alt="{{tradeshow.name}}">
+  {% endif %}
+  <strong>{{tradeshow.name}} is a trade show in {{tradeshow.country_name}} from {{tradeshow.begins}} until {{tradeshow.ends}}.</strong>
+  <em>{{tradeshow.keywords}}</em></div>
+
+<table class="item-data">
+  <tr>
+    <th>Name of the trade show:</th>
+    <td>{{tradeshow.name}}</td>
+  </tr>
+  <tr>
+    <th>Start date:</th>
+    <td>{{tradeshow.begins}}</td>
+  </tr>
+  <tr>
+    <th>End date:</th>
+    <td>{{tradeshow.ends}}</td>
+  </tr>
+  <tr>
+    <th>City:</th>
+    <td>{{tradeshow.city_name}}</td>
+  </tr>
+  <tr>
+    <th>Country:</th>
+    <td>{{tradeshow.country_name}}</td>
+  </tr>
+  <tr>
+    <th>Contact information:</th>
+    <td>{{tradeshow.contact}}</td>
+  </tr>
+  <tr>
+    <th>Web site:</th>
+    <td>
+      {% if tradeshow.web %}
+        <a href="{{tradeshow.web}}">{{tradeshow.web}}</a>
+      {% endif %}
+    </td>
+  </tr>
+  <tr>
+    <th>More information:</th>
+    <td>
+      <a href="//www.auma.de/_pages/MesseDetailListe.aspx?id={{tradeshow.aumaid}}">AUMA data sheet</a>,
+      <a href="">Location on OpenStreetMaps</a>,
+      <a href="//duckduckgo.com/?q={{tradeshow.name|urlencode}}+{{tradeshow.country_name|urlencode}}">Search on DuckDuckGo</a>
+    </td>
+  </tr>
+  <tr>
+    <th>Travel preparations:</th>
+    <td><a href="http://www.hotelscombined.de/City/{{tradeshow.city_name}}.htm?a_aid=27504&amp;label=gl_ts_city">Book a hotel in {{tradeshow.city_name}}</a></td>
+  </tr>
+</table>
+
+{% endblock %}

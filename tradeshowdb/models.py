@@ -24,3 +24,19 @@ class Tradeshow(models.Model):
     is_edited = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_blocked = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'tradeshow'
+        verbose_name_plural = 'tradeshows'
+        ordering = ('begins', )
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def slug(self):
+        return self.url
+
+    @slug.setter
+    def slug(self, val):
+        self.url = val
