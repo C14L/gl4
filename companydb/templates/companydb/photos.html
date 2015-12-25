@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Photos of {{view_user.profile.name}}
+{% endblock %}
+
+{% block title2 %}
+Photos of {{view_user.profile.name}}
+{% endblock %}
+
+{% block description %}
+The company overview for {{view_user.profile.name}}.
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+profile profile-home
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1 id="about-company-title">Photos of {{view_user.profile.name}}</h1>
+
+{% with 'photos' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+
+<div class="fotoslist" id="fotoslist">
+  <p class="count">There are currently {{photos.paginator.count}} photos of the company {{view_user.profile.name}} here.</p>
+  <div class="list">
+    {% for item in photos %}
+      <div class="item">
+        <a href="/company/linlinstone-com/photos/{{item.id}}">
+          <img src="/media/en/fotos_small/{{item.id}}.jpg" alt="">
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

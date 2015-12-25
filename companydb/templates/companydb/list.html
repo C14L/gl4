@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 {{group.name}}
@@ -31,7 +32,7 @@ groups-home
 <table class="layout">
   <tr>
     <td class="leftcol">
-      <p class="logo"><img src="/media/en/fotos_medium/292.jpg"></p>
+      <p class="logo"><img src="{% get_static_prefix %}companies/en/{{group.slug}}.jpg"></p>
       <p class="info"><strong>{{group.name}}</strong> has {{group.count_members}} members.</p>
       <p class="about">{{group.about}}</p>
 

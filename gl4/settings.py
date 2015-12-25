@@ -85,17 +85,13 @@ WSGI_APPLICATION = 'gl4.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
+LANGUAGE_SHORT = 'en'
 LANGUAGES = (('en-us', 'english'), ('de-de', 'deutsch'), )
 
 TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
 USE_TZ = True
-
+USE_I18N = True
+USE_L10N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -103,3 +99,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STONES_PER_PAGE = 50
+
+# Example: "/media/en/fotos_small/21392.jpg"
+MEDIA_URL = '/media/en/'
+MEDIA_ROOT = '/home/chris/v600/graniteland_backups/graniteland_media_en/'

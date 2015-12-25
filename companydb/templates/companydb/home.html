@@ -48,7 +48,9 @@ Find stone companies related to the granite and marble industry by business type
     <tr>
       {% for item in groups %}
         <td class="picture">
-          <a href="{% url 'companydb_list' item.slug '1' %}"><img src="/media/en/fotos_thumb/289.jpg" alt="{{item.name}}" title="{{item.name}}"></a>
+          <a href="{% url 'companydb_list' item.slug '1' %}">
+            <img src="/static/companies/en/{{item.slug}}.jpg" alt="{{item.name}}" style="width:200px">
+          </a>
         </td>
         <td class="description">
           <strong><a href="{% url 'companydb_list' item.slug '1' %}">{{item.name}}</a></strong><br><span class="small">({{item.count_members}} companies)</span><br>{{item.description}}

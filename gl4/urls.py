@@ -64,9 +64,21 @@ urlpatterns = [
     # /companies/memorials-grave-stones/1
     url(r'^companies/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
         companydb.views.list, name='companydb_list'),
-    # /company/xiamen-pengcheng-imp
+    # /company/xxxxxxxxxx
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})$',
         companydb.views.item, name='companydb_item'),
+    # /company/xxxxxxxxxx/stock
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/stock$',
+        companydb.views.stock, name='companydb_stock'),
+    # /company/xxxxxxxxxx/projects
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/projects$',
+        companydb.views.projects, name='companydb_projects'),
+    # /company/xxxxxxxxxx/photos
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/photos$',
+        companydb.views.photos, name='companydb_photos'),
+    # /company/xxxxxxxxxx/contact
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/contact$',
+        companydb.views.contact, name='companydb_contact'),
 ]
 
 if settings.DEBUG:

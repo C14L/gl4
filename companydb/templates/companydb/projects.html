@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{view_user.profile.name}}
+{% endblock %}
+
+{% block title2 %}
+{{view_user.profile.name}}
+{% endblock %}
+
+{% block description %}
+The company overview for {{view_user.profile.name}}.
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+profile profile-home
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1 id="about-company-title">{{view_user.profile.name}}</h1>
+
+{% with 'projects' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+
+  {% for item in projects %}
+    <div class="stock-list item">
+      <div class="header-line">
+        <table class="stock-table-header-table">
+          <tr class="date">
+            <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
+            <td class="title">Added to stock on:</td>
+            <td class="data">{{item.created}}</td>
+          </tr>
+          <tr class="stone">
+            <td class="title">Name of natural stone:</td>
+            <td class="data">
+              <strong><a href="{% url 'stonedb_item' item.stone.slug %}">{{item.stone.name}}</a></strong>
+            </td>
+          </tr>
+          <tr class="user">
+            <td class="title">More information:</td>
+            <td class="data">
+              <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="text-html content-line">
+        {{item.description}}
+      </div>
+      <div class="fotoslist" id="fotoslist41353">
+        <div class="list">
+          <div class="item">
+            <a href="/fotos/27120">
+              <img src="/media/en/fotos_small/27120.jpg" alt="">
+            </a>
+          </div>
+          <div class="item">
+            <a href="/fotos/27121">
+              <img src="/media/en/fotos_small/27121.jpg" alt="">
+            </a>
+          </div>
+          <div class="item">
+            <a href="/fotos/27122">
+              <img src="/media/en/fotos_small/27122.jpg" alt="">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

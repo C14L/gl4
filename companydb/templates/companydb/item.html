@@ -28,33 +28,8 @@ profile profile-home
 
 <h1 id="about-company-title">{{view_user.profile.name}}</h1>
 
-<ul id="tabnavi2">
-  <li>
-    <a id="current" href="{% url 'companydb_item' view_user.username %}">
-      <span>Home</span>
-    </a>
-  </li>
-  <li>
-    <a href="/company/xiamen-heads-import-and-export/stock">
-      <span>Stones on Stock</span>
-    </a>
-  </li>
-  <li>
-    <a href="/company/xiamen-heads-import-and-export/projects">
-      <span>Projects Showroom</span>
-    </a>
-  </li>
-  <li>
-    <a href="/company/xiamen-heads-import-and-export/photos">
-      <span>Company Photos</span>
-    </a>
-  </li>
-  <li class="last">
-    <a href="/company/xiamen-heads-import-and-export/contact">
-      <span>Contact Us</span>
-    </a>
-  </li>
-</ul>
+{% with 'item' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+
 <table class="layout">
   <tr>
     <td class="leftcol">

@@ -39,11 +39,9 @@ class UserProfile(models.Model):
         return self.name
 
 
-class Stock(models.Model):
+class CommonProjectsStocks(models.Model):
     stone = models.ForeignKey(Stone, db_index=True)
     user = models.ForeignKey(User, db_index=True)
-    # foto_id int(10)
-    # foto_ext    varchar(3)
     created = models.DateTimeField(default=now)  # time
     description = models.TextField(default='')
     is_blocked = models.BooleanField(default=False)
@@ -52,38 +50,32 @@ class Stock(models.Model):
     count_views = models.PositiveIntegerField(default=0)
 
     class Meta:
-        verbose_name = "Stock"
-        verbose_name_plural = "Stocks"
+        abstract = True
 
     def __str__(self):
         return '{} --> {}'.format(self.user.profile.name, self.stone.name)
 
 
-class Project(models.Model):
-    stone = models.ForeignKey(Stone, db_index=True)
-    user = models.ForeignKey(User, db_index=True)
-    # foto_id int(10)
-    # foto_ext    varchar(3)
-    created = models.DateTimeField(default=now)  # time
-    description = models.TextField(default='')
-    is_blocked = models.BooleanField(default=False)
-    is_deleted = models.BooleanField(default=False)
-    is_recommended = models.BooleanField(default=False)
-    count_views = models.PositiveIntegerField(default=0)
+class Stock(CommonProjectsStocks):
 
     class Meta:
         verbose_name = "Stock"
         verbose_name_plural = "Stocks"
+        ordering = ('-created', )
 
-    def __str__(self):
-        return '{} --> {}'.format(self.user.profile.name, self.stone.name)
+class Project(CommonProjectsStocks):
+
+    class Meta:
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
+        ordering = ('-created', )
 
 
 class Pic(models.Model):  # cc__fotos
     """All user uploaded pictures for profiles, projects, stock items, etc"""
-    MODULE_CHOICES = (('profile', 'Profile'), ('fotos', 'Photos'),
-                      ('stock', 'Stock'), ('forum', 'Forum'),
-                      ('pages', 'Pages'))
+    MODULE_CHOICES = (
+        ('profile', 'Profile'), ('projects', 'Projects'), ('stones', 'Stones'),
+        ('stock', 'Stock'), ('groups', 'Groups'), ('pages', 'Pages'))
 
     user = models.ForeignKey(User, db_index=True)
     module = models.CharField(max_length=20,

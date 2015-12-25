@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Contact {{view_user.profile.name}}
+{% endblock %}
+
+{% block title2 %}
+Contact {{view_user.profile.name}}
+{% endblock %}
+
+{% block description %}
+{% endblock %}
+
+{% block head %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
+
+{% block body_classes %}
+profile profile-contact
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_contact' view_user.username %}">Contact</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1 id="about-company-title">Contact {{view_user.profile.name}}</h1>
+
+{% with 'contact' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+
+<div class="box-input">
+ <h2>Contact</h2>
+ <p>Use this form to contact the company {{view_user.profile.name}}.</p>
+ <form method="post" action="" onSubmit="if (typeof(_gat) != 'undefined'){ _gat._getTrackerByName()._trackEvent('Company Contact',location.href) };return true;">
+  <table>
+   <tr>
+    <td>
+     <label for="name">Your name:</label><br>
+     <input type="text" name="name" value="" maxlength="80" size="60">
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <label for="email">Your email address:</label><br>
+     <input type="text" name="email" value="" maxlength="80" size="60">
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <label for="msg">Your message:</label><br>
+     <textarea name="msg" cols="80" rows="8"></textarea>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     <!-- <label>Spam protection: Please fill in the two words you see below.:</label> -->
+     <div class="g-recaptcha" data-sitekey="6LeI2gIAAAAAAKbxn_Qn42Kmtzmdo5VOdfG_aG0X"></div>
+    </td>
+   </tr>
+   <tr><td><input type="submit" name="submit" value="Send"></td></tr>
+  </table>
+ </form>
+</div>
+
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

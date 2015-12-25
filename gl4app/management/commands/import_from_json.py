@@ -10,7 +10,7 @@ from companydb.models import (UserProfile, Stock, Project, Pic, Group)
 from stonedb.models import (Stone, StoneName,
                             Color, Classification, Texture, Country)
 from tradeshowdb.models import Tradeshow
-from toolbox import parse_iso_date, parse_iso_datetime
+from toolbox import parse_iso_date, parse_iso_datetime, force_int
 
 
 class Command(BaseCommand):
@@ -39,10 +39,13 @@ class Command(BaseCommand):
         #self.import_country()
         #self.init_texture()  # only deletes current entries
         #self.import_user()
-        self.import_profile()
+        #self.import_profile()
         #self.import_stone()
         #self.import_tradeshow()
         #self.import_group()
+        #self.import_stock()
+        #self.import_projects()
+        self.import_pics()
 
     def walkjsondata(self, fn):
         f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
@@ -157,7 +160,8 @@ class Command(BaseCommand):
         StoneName.objects.all().delete()
         urlname_changes = []
         for row in self.walkjsondata('stones'):
-            stone = Stone.objects.create(id=row['id'], name=row['name'])
+            stone = Stone.objects.create(id=row['id'])
+            stone.name = row['name']
             stone.slug = slugify(row['name'])
             stone.urlname = row['urlname']  # old urlname value
             stone.city_name = row['city']
@@ -352,3 +356,168 @@ class Command(BaseCommand):
             profile.save()
 
         print('All profiles updated, done')
+
+    def import_pics(self):
+        """
+        {"id":"1","user_id":"4","module":"profile","module_id":"4","folder":"0","time":"2005-06-12 08:48:06","ip":"0.0.0.0","size":"26860","width":"397","height":"297","ext":"jpg","title":"","caption":"","is_blocked":"0","is_deleted":"0","is_sticky":"0","is_comments":"0","is_approved":"1","is_title":"0"},
+
+        companydb.modules.Pic.MODULE_CHOICES = (
+            ('profile', 'Profile'), ('projects', 'Projects'),
+            ('stones', 'Stones'), ('stock', 'Stock'), ('groups', 'Groups'),
+            ('pages', 'Pages'))
+
+        {'groups': 17, 'stock': 11754, 'stones': 2450,
+         'projects': 1770, 'pages': 29, 'profile': 11006}
+        """
+        """
+        print('Count pic modules:')
+        m = dict()
+        for row in self.walkjsondata('fotos'):
+            if row['module'] in m.keys():
+                m[row['module']] += 1
+            else:
+                m[row['module']] = 0
+        print('done counting:')
+        print(m)
+        input('Press ENTER to continue with pics import...')
+        """
+        Pic.objects.all().delete()
+        print('Pics importieren', end='', flush=True)
+        i = 0
+        for row in self.walkjsondata('fotos'):
+            try:
+                user = User.objects.get(pk=row['user_id'])
+            except User.DoesNotExist:
+                print('U', end='', flush=True)
+                continue
+            pic = Pic(id=row['id'])
+            pic.user = user
+            # check integrity: find the object in the referenced model
+            pic.module = row['module']  # related model
+            pic.module_id = row['module_id']  # object id within related model
+
+            if pic.module == 'profile':
+                try:
+                    obj = User.objects.get(pk=pic.module_id)
+                except UserProfile.DoesNotExist:
+                    print('UP', end='', flush=True)
+                    continue  # user not found!
+            elif pic.module == 'projects':
+                try:
+                    obj = Project.objects.get(pk=pic.module_id)
+                except Project.DoesNotExist:
+                    print('P', end='', flush=True)
+                    continue  # project item not found!
+            elif pic.module == 'stock':
+                try:
+                    obj = Stock.objects.get(pk=pic.module_id)
+                except Stock.DoesNotExist:
+                    print('K', end='', flush=True)
+                    continue  # stock item not found!
+            elif pic.module == 'stones':
+                try:
+                    obj = Stone.objects.get(pk=pic.module_id)
+                except Stone.DoesNotExist:
+                    print('S', end='', flush=True)
+                    continue  # stone item not found!
+            elif pic.module == 'pages':
+                pass
+            elif pic.module == 'groups':
+                pass
+
+            pic.created = parse_iso_datetime(row['time'])
+            if not pic.created:  # skip if no timestamp
+                continue
+            pic.size = force_int(row['size'])
+            pic.width = force_int(row['width'])
+            pic.height = force_int(row['height'])
+            pic.ext = row['ext']
+            pic.title = row['title']
+            pic.caption = row['caption']
+            pic.is_blocked = bool(force_int(row['is_blocked']))
+            pic.is_deleted = bool(force_int(row['is_deleted']))
+            if pic.is_blocked or pic.is_deleted:  # skip if deleted
+                continue
+            pic.is_sticky = bool(force_int(row['is_sticky']))
+            pic.is_comments = bool(force_int(row['is_comments']))
+            pic.is_approved = bool(force_int(row['is_approved']))
+            pic.is_title = bool(force_int(row['is_title']))
+            pic.save()
+            i += 1
+            print('.', end='', flush=True)
+            if (i % 1000) == 0:
+                print(i, end='', flush=True)
+
+        print('done. {} pics imported.'.format(i))
+
+
+    def import_stock(self):
+        i = 0
+        Stock.objects.all().delete()
+        print('Importing stock items', end='', flush=True)
+        for row in self.walkjsondata('stones_stock'):
+            try:
+                stone = Stone.objects.get(pk=row['stone_id'])
+            except Stone.DoesNotExist:
+                print('Stone not found for stock {}'.format(row['stone_id']))
+                continue
+            try:
+                user = User.objects.get(pk=row['user_id'])
+            except User.DoesNotExist:
+                print('User not found for stock {}'.format(row['user_id']))
+                continue
+            item = Stock(id=row['id'])
+            item.stone = stone
+            item.user = user
+            item.created = parse_iso_datetime(row['time'])
+            if not item.created:  # skip if no created time
+                continue
+            item.description = row['description']
+            item.is_blocked = bool(force_int(row['is_blocked']))
+            item.is_deleted = bool(force_int(row['is_deleted']))
+            if item.is_blocked or item.is_deleted:  # skip deleted items
+                continue
+            item.is_recommended = bool(force_int(row['is_recommended']))
+            item.count_views = force_int(row['count_views'])
+            item.save()
+            i += 1
+            print('.', end='', flush=True)
+            if (i % 1000) == 0:
+                print(i, end='', flush=True)
+        print('done. {} stock items imported.'.format(i))
+
+
+    def import_projects(self):
+        i = 0
+        Project.objects.all().delete()
+        print('Importing project items', end='', flush=True)
+        for row in self.walkjsondata('stones_projects'):
+            try:
+                stone = Stone.objects.get(pk=row['stone_id'])
+            except Stone.DoesNotExist:
+                print('Stone not found for project {}'.format(row['stone_id']))
+                continue
+            try:
+                user = User.objects.get(pk=row['user_id'])
+            except User.DoesNotExist:
+                print('User not found for project {}'.format(row['user_id']))
+                continue
+            item = Project(id=row['id'])
+            item.stone = stone
+            item.user = user
+            item.created = parse_iso_datetime(row['time'])
+            if not item.created:  # skip if no created time
+                continue
+            item.description = row['description']
+            item.is_blocked = bool(force_int(row['is_blocked']))
+            item.is_deleted = bool(force_int(row['is_deleted']))
+            if item.is_blocked or item.is_deleted:  # skip deleted items
+                continue
+            item.is_recommended = bool(force_int(row['is_recommended']))
+            item.count_views = force_int(row['count_views'])
+            item.save()
+            i += 1
+            print('.', end='', flush=True)
+            if (i % 1000) == 0:
+                print(i, end='', flush=True)
+        print('done. {} project items imported.'.format(i))

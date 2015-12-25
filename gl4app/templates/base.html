@@ -1,4 +1,4 @@
-{% load static from staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html xmlns:fb="http://ogp.me/ns/fb#">
   <head>
@@ -13,8 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'base-lt-750.css' %}" media="only screen and (max-width: 750px)">
 
-    {% if DEBUG %}
-    {% else %}
+    {% if settings.PRODUCTION %}
       <script type="text/javascript">
 
 window.google_analytics_uacct='UA-273063-3';
@@ -230,7 +229,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         }
       })(window);
     </script>
-    
+
     {% block foot %}{% endblock %}
 
     <script>var addthis_config = {"data_track_addressbar":false};</script>
