@@ -15,7 +15,6 @@ import os
 
 # Import private settings.
 from .settings_private import *
-from .settings_en import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
