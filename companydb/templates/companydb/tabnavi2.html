@@ -6,17 +6,17 @@
   </li>
   <li>
     <a {% if view == 'stock' %}id="current"{% endif %} href="{% url 'companydb_stock' view_user.username %}">
-      <span>Stones on Stock</span>
+      <span>Stones on Stock ({{stock_count}})</span>
     </a>
   </li>
   <li>
     <a {% if view == 'projects' %}id="current"{% endif %} href="{% url 'companydb_projects' view_user.username %}">
-      <span>Projects Showroom</span>
+      <span>Projects Showroom ({{project_count}})</span>
     </a>
   </li>
   <li>
     <a {% if view == 'photos' %}id="current"{% endif %} href="{% url 'companydb_photos' view_user.username %}">
-      <span>Company Photos</span>
+      <span>Company Photos ({{pic_count}})</span>
     </a>
   </li>
   <li class="last">

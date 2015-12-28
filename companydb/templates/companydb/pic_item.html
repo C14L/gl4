@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{pic.title}}
+{% endblock %}
+
+{% block title2 %}
+{{pic.title}}
+{% endblock %}
+
+{% block description %}
+{{pic.title}}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+profile fotos fotos-{{pic.module}}
+{% endblock %}
+
+{% block breadcrumb %}
+  <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+  <a href="{% url 'companydb_item' pic.user.username %}">{{pic.user.profile.name}}</a> &raquo;
+  {% if pic.module == 'projects' %}
+    <a href="{% url 'companydb_projects' pic.user.username %}">Project</a> &raquo;
+  {% elif pic.module == 'stock' %}
+    <a href="{% url 'companydb_stock' pic.user.username %}">Stock</a> &raquo;
+  {% elif pic.module == 'stones' %}
+    <a href="{% url 'stonedb_item' related.slug %}">{{related.name}}</a> &raquo;
+  {% endif %}
+{% endblock %}
+
+
+{% block main %}
+
+  {% if pic.module == 'projects' %}
+    {% with 'projects' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+  {% elif pic.module == 'stock' %}
+    {% with 'stock' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+  {% elif pic.module == 'profile' %}
+    {% with 'photos' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+  {% endif %}
+
+  <div id="display-foto">
+    <div class="fotoitem">
+      <div class="ctrl">
+        {% if pic.module == 'projects' %}
+          <b><a class="back" href="{% url 'companydb_projects' pic.user.username %}">Back</a></b>
+        {% elif pic.module == 'stock' %}
+          <b><a class="back" href="{% url 'companydb_stock' pic.user.username %}">Back</a></b>
+        {% elif pic.module == 'profile' %}
+          <b><a class="back" href="{% url 'companydb_item' pic.user.username %}">Back</a></b>
+        {% elif pic.module == 'stones' %}
+          <b><a class="back" href="{% url 'stonedb_item' related.slug %}">Back</a></b>
+        {% endif %}
+        | <a href="/media/en/fotos_large/{{pic.id}}.jpg">Download large photo</a> | Uploaded on {{pic.created}} by <a href="{% url 'companydb_item' pic.user.username %}">{{pic.user.profile.name}}</a>
+      </div>
+      <img class="pic" src="/media/en/fotos_medium/{{pic.id}}.jpg" alt="{{pic.title}}">
+    </div>
+    <div name="caption" id="view-caption">{{pic.caption}}</div>
+  </div>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

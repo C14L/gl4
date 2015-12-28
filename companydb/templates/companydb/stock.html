@@ -57,23 +57,15 @@ profile profile-home
       <div class="text-html content-line">
         {{item.description}}
       </div>
-      <div class="fotoslist" id="fotoslist41353">
+      <div class="fotoslist" id="fotoslist{{item.id}}">
         <div class="list">
-          <div class="item">
-            <a href="/fotos/27120">
-              <img src="/media/en/fotos_small/27120.jpg" alt="">
-            </a>
-          </div>
-          <div class="item">
-            <a href="/fotos/27121">
-              <img src="/media/en/fotos_small/27121.jpg" alt="">
-            </a>
-          </div>
-          <div class="item">
-            <a href="/fotos/27122">
-              <img src="/media/en/fotos_small/27122.jpg" alt="">
-            </a>
-          </div>
+          {% for pic in item.pic_set.all %}
+            <div class="item">
+              <a href="/fotos/{{pic.id}}">
+                <img src="/media/en/fotos_small/{{pic.id}}.{{pic.ext}}" alt="">
+              </a>
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>

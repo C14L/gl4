@@ -73,22 +73,32 @@ urlpatterns = [
     # /company/xxxxxxxxxx/projects
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/projects$',
         companydb.views.projects, name='companydb_projects'),
-    # /company/xxxxxxxxxx/photos
-    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/photos$',
-        companydb.views.photos, name='companydb_photos'),
     # /company/xxxxxxxxxx/contact
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/contact$',
         companydb.views.contact, name='companydb_contact'),
+    # /company/xxxxxxxxxx/photos
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/photos$',
+        companydb.views.photos, name='companydb_photos'),
+
+    # DROP: /company/xxxxxxxxxx/photos/12345 --> REDIR to /fotos/12345
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/photos/(?P<id>\d+)$',
+        companydb.views.photo_redir, name='companydb_photo_redir'),
+    # /fotos/12345
+    url(r'^fotos/(?P<id>\d+)$',
+        companydb.views.pic_item, name='companydb_pic_item'),
 ]
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-    urlpatterns += staticfiles_urlpatterns()
-
     from django.conf.urls.static import static
+
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static('/stonesindex/', document_root=join(
         settings.BASE_DIR, 'stonedb/stonesimages/stonesindex'))
     urlpatterns += static('/stonespics/', document_root=join(
         settings.BASE_DIR, 'stonedb/stonesimages/stonespics'))
 
     # urlpatterns += static('/stonespics/', document_root=settings.MEDIA_ROOT)
+    # static files (images, css, javascript, etc.)

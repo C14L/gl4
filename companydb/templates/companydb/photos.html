@@ -35,7 +35,7 @@ profile profile-home
   <div class="list">
     {% for item in photos %}
       <div class="item">
-        <a href="/company/linlinstone-com/photos/{{item.id}}">
+        <a href="{% url 'companydb_pic_item' item.id %}">
           <img src="/media/en/fotos_small/{{item.id}}.jpg" alt="">
         </a>
       </div>

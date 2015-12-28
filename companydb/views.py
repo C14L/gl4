@@ -1,17 +1,29 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponse, Http404
+from django.core.urlresolvers import reverse
+from django.http import HttpResponsePermanentRedirect, Http404
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
-from companydb.models import Group, Pic
+from companydb.models import Group, Pic, Stock, Project
 
 
 def get_page(o, p):
     PER_PAGE = getattr(settings, 'PER_PAGE', 20)
     paginator = Paginator(o, PER_PAGE)
     return paginator.page(p)
+
+
+def add_to_ctx(ctx):
+    # adds some standard profile properties for view_user to the ctx dict and
+    # returns ctx.
+    ctx['stock_count'] = ctx['view_user'].stock_set.all().count()
+    ctx['project_count'] = ctx['view_user'].project_set.all().count()
+    ctx['pic_count'] = Pic.objects.filter(
+        module='profile', module_id=ctx['view_user'].id).count()
+
+    return ctx
 
 
 def home(request):
@@ -40,7 +52,7 @@ def item(request, slug):
     pics = Pic.objects.filter(user=view_user, module='profile')
     tpl = 'companydb/item.html'
     ctx = {'view_user': view_user, 'pics': pics}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
 
 
 def stock(request, slug):
@@ -49,7 +61,7 @@ def stock(request, slug):
     all = view_user.stock_set.filter(is_deleted=False, is_blocked=False)
     tpl = 'companydb/stock.html'
     ctx = {'view_user': view_user, 'stock': get_page(all, page)}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
 
 
 def projects(request, slug):
@@ -58,7 +70,7 @@ def projects(request, slug):
     all = view_user.project_set.filter(is_deleted=False, is_blocked=False)
     tpl = 'companydb/projects.html'
     ctx = {'view_user': view_user, 'projects': get_page(all, page)}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
 
 
 def photos(request, slug):
@@ -68,11 +80,37 @@ def photos(request, slug):
                     .exclude(is_blocked=True, is_deleted=True)
     tpl = 'companydb/photos.html'
     ctx = {'view_user': view_user, 'photos': get_page(all, page)}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
 
 
 def contact(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     tpl = 'companydb/contact.html'
     ctx = {'view_user': view_user}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
+
+
+def photo_redir(request, slug, id):
+    pic = get_object_or_404(Pic, pk=id)
+    url = reverse('companydb_pic_item', kwargs={'id': pic.id})
+    return HttpResponsePermanentRedirect(url)
+
+
+def pic_item(request, id):
+    pic = get_object_or_404(Pic, pk=id)
+    related = None
+    # Get the related module objects that this pic is atatched to.
+    if pic.module == 'stones':
+        related = get_object_or_404(Stone, pk=pic.module_id)
+    elif pic.module == 'projects':
+        related = get_object_or_404(Project, pk=pic.module_id)
+    elif pic.module == 'stock':
+        related = get_object_or_404(Stock, pk=pic.module_id)
+    elif pic.module == 'groups':
+        related = get_object_or_404(Group, pk=pic.module_id)
+    elif pic.module == 'pages':
+        related = get_object_or_404(Pages, pk=pic.module_id)
+
+    tpl = 'companydb/pic_item.html'
+    ctx = {'pic': pic, 'related': related, 'view_user': pic.user}
+    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))

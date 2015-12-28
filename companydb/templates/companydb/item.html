@@ -73,33 +73,14 @@ profile profile-home
 
     <td class="middlecol">
       <div class="fotoslist">
-
         <div class="list">
-          <div class="item">
-            <a href="/company/xiamen-heads-import-and-export/photos">
-              <img src="/media/en/fotos_small/372.jpg" alt="Photos of G655 .JPG">
-            </a>
-          </div>
-          <div class="item">
-            <a href="/company/xiamen-heads-import-and-export/photos">
-              <img src="/media/en/fotos_small/371.jpg" alt="Photos of G654">
-            </a>
-          </div>
-          <div class="item">
-            <a href="/company/xiamen-heads-import-and-export/photos">
-              <img src="/media/en/fotos_small/370.jpg" alt="Photos of G648">
-            </a>
-          </div>
-          <div class="item">
-            <a href="/company/xiamen-heads-import-and-export/photos">
-              <img src="/media/en/fotos_small/369.jpg" alt="Photos of G640">
-            </a>
-          </div>
-          <div class="item">
-            <a href="/company/xiamen-heads-import-and-export/photos">
-              <img src="/media/en/fotos_small/368.jpg" alt="Photos of G636">
-            </a>
-          </div>
+          {% for pic in pics %}
+            <div class="item">
+              <a href="{% url 'companydb_pic_item' pic.id  %}">
+                <img src="/media/en/fotos_small/{{pic.id}}.jpg" alt="{{pic.title}}">
+              </a>
+            </div>
+          {% endfor %}
         </div>
       </div>
     </td>
@@ -109,40 +90,12 @@ profile profile-home
         <div class="title">Business areas</div>
         <div class="content">
           <ul>
-            <li><a href="/companies/consultancy-quality-assurance/1">Consultancy, Quality Assurance</a></li>
-            <li><a href="/companies/granite-import-export/1">Import / export</a></li>
-            <li><a href="/companies/memorials-grave-stones/1">Memorials and Headstones</a></li>
-            <li><a href="/companies/stone-block-trade/1">Natural stone block trade</a></li>
-            <li><a href="/companies/buy-granite-marble/1">Natural stone trade</a></li>
-            <li><a href="/companies/granite-wholesale/1">Natural stone wholesale</a></li>
-            <li><a href="/companies/quarry-owner-operator/1">Quarry Owner / Operator</a></li>
-            <li><a href="/companies/related-products/1">Related Products</a></li>
-            <li><a href="/companies/slabs-supplier/1">Slab supplier</a></li>
-            <li><a href="/companies/tiles-supplier/1">Tiles production</a></li>
+            {% for group in view_user.group_set.all %}
+              <li><a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a></li>
+            {% endfor %}
           </ul>
         </div>
       </div>
-      <div class="tbox">
-        <div class="title">Stones on Stock</div>
-        <div class="content">
-          <ul></ul>
-        </div>
-      </div>
-      <div class="tbox">
-        <div class="title">
-          Project History </div>
-        <div class="content">
-          <ul></ul>
-        </div>
-      </div>
-      <div class="tbox">
-        <div class="title">
-          0 stones with star </div>
-        <div class="content" style="padding:0 5px;">
-          <p>Natural stone that you marked with a star will be listed here.</p>
-        </div>
-      </div>
-
     </td>
   </tr>
 </table>
