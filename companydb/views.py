@@ -15,17 +15,6 @@ def get_page(o, p):
     return paginator.page(p)
 
 
-def add_to_ctx(ctx):
-    # adds some standard profile properties for view_user to the ctx dict and
-    # returns ctx.
-    ctx['stock_count'] = ctx['view_user'].stock_set.all().count()
-    ctx['project_count'] = ctx['view_user'].project_set.all().count()
-    ctx['pic_count'] = Pic.objects.filter(
-        module='profile', module_id=ctx['view_user'].id).count()
-
-    return ctx
-
-
 def home(request):
     tpl = 'companydb/home.html'
     ctx = {'groups': Group.objects.all()}
@@ -52,7 +41,7 @@ def item(request, slug):
     pics = Pic.objects.filter(user=view_user, module='profile')
     tpl = 'companydb/item.html'
     ctx = {'view_user': view_user, 'pics': pics}
-    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def stock(request, slug):
@@ -61,7 +50,7 @@ def stock(request, slug):
     all = view_user.stock_set.filter(is_deleted=False, is_blocked=False)
     tpl = 'companydb/stock.html'
     ctx = {'view_user': view_user, 'stock': get_page(all, page)}
-    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def projects(request, slug):
@@ -70,7 +59,7 @@ def projects(request, slug):
     all = view_user.project_set.filter(is_deleted=False, is_blocked=False)
     tpl = 'companydb/projects.html'
     ctx = {'view_user': view_user, 'projects': get_page(all, page)}
-    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def photos(request, slug):
@@ -80,14 +69,14 @@ def photos(request, slug):
                     .exclude(is_blocked=True, is_deleted=True)
     tpl = 'companydb/photos.html'
     ctx = {'view_user': view_user, 'photos': get_page(all, page)}
-    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def contact(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     tpl = 'companydb/contact.html'
     ctx = {'view_user': view_user}
-    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def photo_redir(request, slug, id):
@@ -113,4 +102,4 @@ def pic_item(request, id):
 
     tpl = 'companydb/pic_item.html'
     ctx = {'pic': pic, 'related': related, 'view_user': pic.user}
-    return rtr(tpl, add_to_ctx(ctx), context_instance=RequestContext(request))
+    return rtr(tpl, ctx, context_instance=RequestContext(request))

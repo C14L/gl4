@@ -38,6 +38,18 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def stock_count(self):
+        return self.user.stock_set.all().count()
+
+    @property
+    def project_count(self):
+        return self.user.project_set.all().count()
+
+    @property
+    def pic_count(self):
+        return Pic.objects.filter(module='profile',
+                                  module_id=self.user.id).count()
 
 class CommonProjectsStocks(models.Model):
     stone = models.ForeignKey(Stone, db_index=True)
