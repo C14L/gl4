@@ -30,332 +30,373 @@ stones-item
 {% block main %}
 
 <h1>{{stone.name}}</h1>
+
 <p><em>{{stone.name}} is a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}. In natural stone trade, {{stone.name}} is often simply called a granite.</em></p>
 
 <div class="ad1">
-{% if settings.PRODUCTION %}
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- gc resp atf stone item -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0795994016573783"
-     data-ad-slot="8448026040"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-{% else %}
-<div style="width:728px;height:90px;background:grey;"></div>
-{% endif %}
+  {% if settings.PRODUCTION %}
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- gc resp atf stone item -->
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="8448026040" data-ad-format="auto"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  {% else %}
+    <div style="width:728px;height:90px;background:grey;"></div>
+  {% endif %}
 </div>
 
 <table class="stone1">
- <tr>
-  <td class="about">
-   <div class="img" style="background:url({{stone.get_pic_medium}});"></div>
-   <div class="comment">
-    <h2>Remarks about {{stone.name}}:</h2>
-    <p>{{stone.comment}}</p>
-   </div>
-   <hr>
-   <div class="ad2">
+  <tr>
+    <td class="about">
+      <div class="img" style="background:url({{stone.get_pic_medium}});"></div>
+      <div class="comment">
+        <h2>Remarks about {{stone.name}}:</h2>
+        <p>{{stone.comment}}</p>
+      </div>
+      <hr>
+      <div class="ad2">
 
-{% if settings.PRODUCTION %}
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- gc resp btf stone item -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0795994016573783"
-     data-ad-slot="3878225647"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-{% else %}
-<div style="width:336px;height:280px;background:grey;"></div>
-{% endif %}
+        {% if settings.PRODUCTION %}
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- gc resp btf stone item -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="3878225647" data-ad-format="auto"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        {% else %}
+        <div style="width:336px;height:280px;background:grey;"></div>
+        {% endif %}
 
-   </div>
-  </td>
-  <td class="info">
+      </div>
+    </td>
+    <td class="info">
 
-   <h2>Data on {{stone.name}}:</h2>
-   <table class="datalist">
-    <tr>
-     <td class="title">Stone Name:</td>
-     <td class="data"><strong>{{stone.name}}</strong></td>
-    </tr>
-    <tr>
-     <td class="title">Pseudonyme:</td>
-     <td class="data">{{stone.get_pseudonyms}}</td>
-    </tr>
-    <tr>
-     <td class="title">Main color:</td>
-     <td class="data">
-      {% if stone.color.slug %}
-       <a href="{% url 'stonedb_simple_filter' 'color' stone.color.slug %}">{{stone.color.name}}</a>
-      {% endif %}
-     </td>
-    </tr>
-    <tr>
-     <td class="title">Country of origin:</td>
-     <td class="data">
-      {% if stone.country.slug %}
-      <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}"><img src="/img/flags/{{stone.stone.country.cc}}.png" style="vertical-align:middle;" alt="" title="{{stone.stone.country.name}}"></a>
-      <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">{{stone.country.name}}</a>
-      {% endif %}
-     </td>
-    </tr>
-    <tr>
-     <td class="title">City of origin:</td>
-     <td class="data">{% if stone.city_name %}{{stone.city_name}}{% else %}<i>- No data -</i>{% endif %}</td>
-    </tr>
-    <tr>
-     <td class="title">Classification:</td>
-     <td class="data">
-         {% if stone.classification.slug %}
-         <a href="{% url 'stonedb_simple_filter' 'type' stone.classification.slug %}">{{stone.classification.name}}</a>
-         {% endif %}
-     </td>
-    </tr>
-    <tr>
-     <td class="title">Availability:</td>
-     <td class="data">{{stone.availability}}</td>
-    </tr>
-    <tr>
-     <td class="title">Texture:</td>
-     <td class="data">{{stone.texture.name}}</td>
-    </tr>
-    <tr>
-     <td class="title">Maximum size:</td>
-     <td class="data">{% if stone.maxsize %}{{stone.maxsize}}{% else %}<i>- No data -</i>{% endif %}</td>
-    </tr>
-    <tr>
-     <td class="title">Application:</td>
-     <td class="data">{{stone.application}}</td>
-    </tr>
-   </table>
-   <h2>More about {{stone.name}}:</h2>
-   <table class="link-table">
-    <tr>
-     <td>
-      <img src="/img/icons/nuovext22/text-editor.png" class="link-icon" alt="Comments about {{stone.name}}"> <a href="/stone/{{stone.slug}}/comments"><strong>Comments about {{stone.name}}</strong></a> You know the stone {{stone.name}} well or have a question about {{stone.name}}, then post a comment here.
-     </td>
-    </tr>
-    <tr>
-     <td>
-      <img src="/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Photos of {{stone.name}}"> <a href="/stone/{{stone.slug}}/pictures"><strong>Photos of {{stone.name}}</strong></a>More {{stone.name}} photos, and pictures of construction projects that use {{stone.name}}. If you have interesting photos of {{stone.name}}, please add them here.
-     </td>
-    </tr>
-   </table>
+      <h2>Data on {{stone.name}}:</h2>
+      <table class="datalist">
+        <tr>
+          <td class="title">Stone Name:</td>
+          <td class="data">
+            <strong>{{stone.name}}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td class="title">Pseudonyme:</td>
+          <td class="data">{{stone.get_pseudonyms}}</td>
+        </tr>
+        <tr>
+          <td class="title">Main color:</td>
+          <td class="data">
+            {% if stone.color.slug %}
+            <a href="{% url 'stonedb_simple_filter' 'color' stone.color.slug %}">{{stone.color.name}}</a> {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td class="title">Country of origin:</td>
+          <td class="data">
+            {% if stone.country.slug %}
+            <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">
+              <img src="/img/flags/{{stone.stone.country.cc}}.png" style="vertical-align:middle;" alt="" title="{{stone.stone.country.name}}">
+            </a>
+            <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">{{stone.country.name}}</a>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td class="title">City of origin:</td>
+          <td class="data">{% if stone.city_name %}{{stone.city_name}}{% else %}<i>- No data -</i>{% endif %}</td>
+        </tr>
+        <tr>
+          <td class="title">Classification:</td>
+          <td class="data">
+            {% if stone.classification.slug %}
+            <a href="{% url 'stonedb_simple_filter' 'type' stone.classification.slug %}">{{stone.classification.name}}</a> {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td class="title">Availability:</td>
+          <td class="data">{{stone.availability}}</td>
+        </tr>
+        <tr>
+          <td class="title">Texture:</td>
+          <td class="data">
+            {% if stone.texture.slug %}
+            <a href="{% url 'stonedb_simple_filter' 'texture' stone.texture.slug %}">{{stone.texture.name}}</a>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td class="title">Maximum size:</td>
+          <td class="data">{% if stone.maxsize %}{{stone.maxsize}}{% else %}<i>- No data -</i>{% endif %}</td>
+        </tr>
+        <tr>
+          <td class="title">Application:</td>
+          <td class="data">{{stone.application}}</td>
+        </tr>
+      </table>
+      <h2>More about {{stone.name}}:</h2>
+      <table class="link-table">
+        <tr>
+          <td>
+            <img src="/img/icons/nuovext22/text-editor.png" class="link-icon" alt="Comments about {{stone.name}}">
+            <a href="/stone/{{stone.slug}}/comments">
+              <strong>Comments about {{stone.name}}</strong>
+            </a> You know the stone {{stone.name}} well or have a question about {{stone.name}}, then post a comment here.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Photos of {{stone.name}}">
+            <a href="/stone/{{stone.slug}}/pictures">
+              <strong>Photos of {{stone.name}}</strong>
+            </a>More {{stone.name}} photos, and pictures of construction projects that use {{stone.name}}. If you have interesting photos of {{stone.name}}, please add them here.
+          </td>
+        </tr>
+      </table>
 
-   <h2>{{stone.name}} for companies:</h2>
-   <table class="link-table">
-    <tr>
-     <td>
-      <img src="/img/icons/nuovext22/file-manager.png" class="link-icon" alt="Advertise current stock of {{stone.name}}"> <a rel="nofollow" href="/user/stock-add.php?id={{stone.id}}"><strong>Advertise current stock of {{stone.name}}</strong></a>Advertise your current stock of {{stone.name}} within your company's Graniteland profile page.
-     </td>
-    </tr>
-    <tr>
-     <td>
-      <img src="/img/icons/nuovext22/go-home.png" class="link-icon" alt="Publish your {{stone.name}}-related project"><a rel="nofollow" href="/user/stone-projects-add.php?id={{stone.id}}"><strong>Publish your {{stone.name}}-related project</strong></a> Advertise your {{stone.name}}-related projects on your company's profile page at Graniteland. Include photos of your projects, to show potential customers your work.
-     </td>
-    </tr>
-    <tr>
-     <td>
-      <img src="/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Submit your photo of {{stone.name}}"> <a href="/stone/{{stone.slug}}/pictures"><strong>Submit your photo of {{stone.name}}</strong></a> You are invited to add your own {{stone.name}} pictures here. All uploaded pictures will be linked to your company's page at Graniteland.
-     </td>
-    </tr>
-   </table>
+      <h2>{{stone.name}} for companies:</h2>
+      <table class="link-table">
+        <tr>
+          <td>
+            <img src="/img/icons/nuovext22/file-manager.png" class="link-icon" alt="Advertise current stock of {{stone.name}}">
+            <a rel="nofollow" href="/user/stock-add.php?id={{stone.id}}">
+              <strong>Advertise current stock of {{stone.name}}</strong>
+            </a>Advertise your current stock of {{stone.name}} within your company's Graniteland profile page.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="/img/icons/nuovext22/go-home.png" class="link-icon" alt="Publish your {{stone.name}}-related project">
+            <a rel="nofollow" href="/user/stone-projects-add.php?id={{stone.id}}">
+              <strong>Publish your {{stone.name}}-related project</strong>
+            </a> Advertise your {{stone.name}}-related projects on your company's profile page at Graniteland. Include photos of your projects, to show potential customers your work.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Submit your photo of {{stone.name}}">
+            <a href="/stone/{{stone.slug}}/pictures">
+              <strong>Submit your photo of {{stone.name}}</strong>
+            </a> You are invited to add your own {{stone.name}} pictures here. All uploaded pictures will be linked to your company's page at Graniteland.
+          </td>
+        </tr>
+      </table>
 
-  </td>
- </tr>
+    </td>
+  </tr>
 </table>
 
 <div class="fotos">
- <h2><a href="/stone/{{stone.slug}}/pictures">Photos of {{stone.name}}</a></h2>
-   <p><em>No more photos of {{stone.name}} available.</em></p>
- </div>
+  <h2><a href="/stone/{{stone.slug}}/pictures">Photos of {{stone.name}}</a></h2>
+  <p>
+    <em>No more photos of {{stone.name}} available.</em>
+  </p>
+</div>
 
 <div class="projects">
- <h2>Projects that used {{stone.name}}</h2>
-   <div class="projects-list" id="project3537">
+  <h2>Projects that used {{stone.name}}</h2>
+  <div class="projects-list" id="project3537">
     <div class="header">
-     <table>
-      <tr class="pub_date">
-       <td class="title">Published on:</td>
-       <td class="data" id="stock-publish-date3537"><strong>Thursday, 07 February 2013</strong></td>
-      </tr class="stone">
-      <tr>
-       <td class="title">Name of natural stone:</td>
-       <td class="data"><strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong></td>
-      </tr>
-      <tr class="user">
-       <td class="title">Project company:</td>
-       <td class="data"><strong><a href="/company/linlinstone-com/projects">linlinstone.com</a></strong></td>
-      </tr>
-     </table>
+      <table>
+        <tr class="pub_date">
+          <td class="title">Published on:</td>
+          <td class="data" id="stock-publish-date3537">
+            <strong>Thursday, 07 February 2013</strong>
+          </td>
+        </tr class="stone">
+        <tr>
+          <td class="title">Name of natural stone:</td>
+          <td class="data">
+            <strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong>
+          </td>
+        </tr>
+        <tr class="user">
+          <td class="title">Project company:</td>
+          <td class="data">
+            <strong><a href="/company/linlinstone-com/projects">linlinstone.com</a></strong>
+          </td>
+        </tr>
+      </table>
     </div>
     <div class="content" id="tx3537">
-     <p>Granite Slab &amp; Tile
-</p>
-<p>1. Various Granite Materials are available. We are a professional stone manufacturer with factory.
-</p>
-<p>2. Quality Assurance: During the whole production process, from material selecting, we make reports on them, our QC will strictly control each details, like polish, calibration, cut, as well as package.
-</p>
-<p>3. Finishing: Polished, flamed, honed, bush-hammered, sandblasted, water jet and so on.
-</p>
-<p>4. Tile size:30.5x30.5x1cm,30.5x61x1cm,40x40x1cm,60x30x1cm,30x60x1.5/2./3cm, 40x40x1.5/2/3cm, 60x60x1.5/2/3cm.
-</p>
-<p>5. Random Slab Size: 110↑x250↑x2cm, 110↑x250↑x3cm, 110↑x250↑x4/5/6/8/10cm,<br />
-Small Slab Size: 240-280x65/70x2cm, 240-280x65/70x3cm;
-</p>
-<p>6. Package: tile packed by costumed carton or Styrofoam, slab by strong bundle
-</p>
-<p>7 Delivery: Within 5-20 days. Others depend on customers' order quantity.
-</p>
-<p>8. Price terms: FOB, CIF, or CNF.
-</p>
-<p>9. Loading port: Xiamen or other China Port.
-</p>
-<p>Email: chinagranitemarble@hotmail.com sales@linlinstone.com<br />
-Web: www.linlinstone.com
-</p>
+      <p>Granite Slab &amp; Tile
+      </p>
+      <p>1. Various Granite Materials are available. We are a professional stone manufacturer with factory.
+      </p>
+      <p>2. Quality Assurance: During the whole production process, from material selecting, we make reports on them, our QC will strictly control each details, like polish, calibration, cut, as well as package.
+      </p>
+      <p>3. Finishing: Polished, flamed, honed, bush-hammered, sandblasted, water jet and so on.
+      </p>
+      <p>4. Tile size:30.5x30.5x1cm,30.5x61x1cm,40x40x1cm,60x30x1cm,30x60x1.5/2./3cm, 40x40x1.5/2/3cm, 60x60x1.5/2/3cm.
+      </p>
+      <p>5. Random Slab Size: 110↑x250↑x2cm, 110↑x250↑x3cm, 110↑x250↑x4/5/6/8/10cm,
+        <br /> Small Slab Size: 240-280x65/70x2cm, 240-280x65/70x3cm;
+      </p>
+      <p>6. Package: tile packed by costumed carton or Styrofoam, slab by strong bundle
+      </p>
+      <p>7 Delivery: Within 5-20 days. Others depend on customers' order quantity.
+      </p>
+      <p>8. Price terms: FOB, CIF, or CNF.
+      </p>
+      <p>9. Loading port: Xiamen or other China Port.
+      </p>
+      <p>Email: chinagranitemarble@hotmail.com sales@linlinstone.com
+        <br /> Web: www.linlinstone.com
+      </p>
     </div>
-   </div>
-     <div class="projects-list" id="project2907">
-        <div class="header">
-     <table>
-      <tr class="pub_date">
-       <td class="title">Published on:</td>
-       <td class="data" id="stock-publish-date2907"><strong>Tuesday, 08 January 2013</strong></td>
-      </tr class="stone">
-      <tr>
-       <td class="title">Name of natural stone:</td>
-       <td class="data"><strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong></td>
-      </tr>
-      <tr class="user">
-       <td class="title">Project company:</td>
-       <td class="data"><strong><a href="/company/tspstone/projects">TSP Stone Co., Limited</a></strong></td>
-      </tr>
-     </table>
+  </div>
+  <div class="projects-list" id="project2907">
+    <div class="header">
+      <table>
+        <tr class="pub_date">
+          <td class="title">Published on:</td>
+          <td class="data" id="stock-publish-date2907">
+            <strong>Tuesday, 08 January 2013</strong>
+          </td>
+        </tr class="stone">
+        <tr>
+          <td class="title">Name of natural stone:</td>
+          <td class="data">
+            <strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong>
+          </td>
+        </tr>
+        <tr class="user">
+          <td class="title">Project company:</td>
+          <td class="data">
+            <strong><a href="/company/tspstone/projects">TSP Stone Co., Limited</a></strong>
+          </td>
+        </tr>
+      </table>
     </div>
     <div class="content" id="tx2907">
-     <p>TSP Stone Co. is a comprehensive enterprise engaged in designing, processing and trading of natural stone products.
-</p>
-<p>Equipped with advanced fabrication machines and skillful workers, we can provide granite and marble slabs, countertops, tiles, sinks, mosaics together with other stone products to meet the demand globally.
-</p>
-<p>Our customers are scattered across the world, such as in North America, Europe, Australia, Japan, and Middle East, etc,. With the principle of “Top quality; Best price and Customer-oriented”, we are confident to be your best supplier here in China.
-</p>
-<p>Linc<br />
-sales executive manager
-</p>
-<p>TSP Stone Co., Ltd<br />
-Add: A1501,25 Xinyuan Building, xinglong Rd,<br />
-Huli District, Xiamen, China 361006
-</p>
-<p>Tel: +86-592 5611213<br />
-Fax: +86-592 6027890
-</p>
-<p>Website: www.tspstone.com
-</p>
-<p>Email: sales@tspstone.com
-</p>
+      <p>TSP Stone Co. is a comprehensive enterprise engaged in designing, processing and trading of natural stone products.
+      </p>
+      <p>Equipped with advanced fabrication machines and skillful workers, we can provide granite and marble slabs, countertops, tiles, sinks, mosaics together with other stone products to meet the demand globally.
+      </p>
+      <p>Our customers are scattered across the world, such as in North America, Europe, Australia, Japan, and Middle East, etc,. With the principle of “Top quality; Best price and Customer-oriented”, we are confident to be your best supplier here in China.
+      </p>
+      <p>Linc
+        <br /> sales executive manager
+      </p>
+      <p>TSP Stone Co., Ltd
+        <br /> Add: A1501,25 Xinyuan Building, xinglong Rd,
+        <br /> Huli District, Xiamen, China 361006
+      </p>
+      <p>Tel: +86-592 5611213
+        <br /> Fax: +86-592 6027890
+      </p>
+      <p>Website: www.tspstone.com
+      </p>
+      <p>Email: sales@tspstone.com
+      </p>
     </div>
-   </div>
-     <div class="projects-list" id="project1670">
-        <div class="header">
-     <table>
-      <tr class="pub_date">
-       <td class="title">Published on:</td>
-       <td class="data" id="stock-publish-date1670"><strong>Friday, 28 September 2012</strong></td>
-      </tr class="stone">
-      <tr>
-       <td class="title">Name of natural stone:</td>
-       <td class="data"><strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong></td>
-      </tr>
-      <tr class="user">
-       <td class="title">Project company:</td>
-       <td class="data"><strong><a href="/company/amoylimaistone/projects">Amoylimai Imp. & Exp. Co., Limited</a></strong></td>
-      </tr>
-     </table>
+  </div>
+  <div class="projects-list" id="project1670">
+    <div class="header">
+      <table>
+        <tr class="pub_date">
+          <td class="title">Published on:</td>
+          <td class="data" id="stock-publish-date1670">
+            <strong>Friday, 28 September 2012</strong>
+          </td>
+        </tr class="stone">
+        <tr>
+          <td class="title">Name of natural stone:</td>
+          <td class="data">
+            <strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong>
+          </td>
+        </tr>
+        <tr class="user">
+          <td class="title">Project company:</td>
+          <td class="data">
+            <strong><a href="/company/amoylimaistone/projects">Amoylimai Imp. & Exp. Co., Limited</a></strong>
+          </td>
+        </tr>
+      </table>
     </div>
     <div class="content" id="tx1670">
-     <p>We are the supplier of the above mentioned stone.
-</p>
-<p>Amoylimai is the professional exporter and manufacturer of granite and marble slabs, flooring tiles, bathroom tops, kitchen countertops, bar tops, stairs, swimming copings etc. we are shipping from china factory directly to your warehouse, building construction site etc. we are selling to distributors, contractors, project owners, construction companies and any comapnies or personal who would like to import from China factory.
-</p>
-<p>If you have project please do not hesitate to contact me by.
-</p>
-<p>sending mail: info@amoylimai.com.<br />
-add msn: mei_ab@hotmail.com.<br />
-add skype: amoylimai-stone.
-</p>
-<p>Best wishes and warm regards.<br />
-Shanna Wu<br />
-Amoylimai Imp. &amp; Exp. Co., Limited<br />
-E-mail: info@amoylimai.com<br />
-MSN: mei_ab@hotmail.com<br />
-SKYPE: amoylimai-stone<br />
-QQ: 34022080<br />
-www.amoylimai.com<br />
-www.canadagranite.ca
-</p>
-<p>China Contact<br />
-Add: 5/F Unit 0502 Binhai Forest 52#Heshunli Huli District.<br />
-Xiamen Fujian Province, China 361002.<br />
-Tel: 86 592 5672369 Mob: 86 138 60191643.<br />
-Fax: 86 592 5672132.
-</p>
-<p>Canada Contact<br />
-Add: 14 Warfield Dr, North York, ON M2J 3S3, Canada.<br />
-Tel: (416) 800 5018 Mob: (647) 818 2689.<br />
-Fax: (888) 703 3192.</p>
+      <p>We are the supplier of the above mentioned stone.
+      </p>
+      <p>Amoylimai is the professional exporter and manufacturer of granite and marble slabs, flooring tiles, bathroom tops, kitchen countertops, bar tops, stairs, swimming copings etc. we are shipping from china factory directly to your warehouse, building
+        construction site etc. we are selling to distributors, contractors, project owners, construction companies and any comapnies or personal who would like to import from China factory.
+      </p>
+      <p>If you have project please do not hesitate to contact me by.
+      </p>
+      <p>sending mail: info@amoylimai.com.
+        <br /> add msn: mei_ab@hotmail.com.
+        <br /> add skype: amoylimai-stone.
+      </p>
+      <p>Best wishes and warm regards.
+        <br /> Shanna Wu
+        <br /> Amoylimai Imp. &amp; Exp. Co., Limited
+        <br /> E-mail: info@amoylimai.com
+        <br /> MSN: mei_ab@hotmail.com
+        <br /> SKYPE: amoylimai-stone
+        <br /> QQ: 34022080
+        <br /> www.amoylimai.com
+        <br /> www.canadagranite.ca
+      </p>
+      <p>China Contact
+        <br /> Add: 5/F Unit 0502 Binhai Forest 52#Heshunli Huli District.
+        <br /> Xiamen Fujian Province, China 361002.
+        <br /> Tel: 86 592 5672369 Mob: 86 138 60191643.
+        <br /> Fax: 86 592 5672132.
+      </p>
+      <p>Canada Contact
+        <br /> Add: 14 Warfield Dr, North York, ON M2J 3S3, Canada.
+        <br /> Tel: (416) 800 5018 Mob: (647) 818 2689.
+        <br /> Fax: (888) 703 3192.</p>
     </div>
-   </div>
-   </div>
+  </div>
+</div>
 
 
 <div class="stock">
   <h2>Stock items of Aachener Blaustein</h2>
-      <div class="stock-list" id="stock41342">
+  <div class="stock-list" id="stock41342">
     <div class="header-line">
-     <table class="stock-table-header-table">
-      <tr>
-       <td class="pic" rowspan="3" style="background:url(/stonespics/bluestone.jpg) center center repeat;">
-       <!-- <a href="/stone/aachener-blaustein">Aachener Blaustein</a> -->
-       </td>
-       <td class="title">Added to stock on:</td>
-       <td class="data" id="stock-publish-date41342"><strong>Thursday, 08 October 2015</strong></td>
-      </tr>
-      <tr>
-       <td class="title">Name of natural stone:</td>
-       <td class="data"><strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong></td>
-      </tr>
-      <tr>
-       <td class="title">More information:</td>
-       <td class="data"><strong><a href="/company/linlinstone-com/stock">linlinstone.com</a></strong></td>
-      </tr>
-     </table>
+      <table class="stock-table-header-table">
+        <tr>
+          <td class="pic" rowspan="3" style="background:url(/stonespics/bluestone.jpg) center center repeat;">
+            <!-- <a href="/stone/aachener-blaustein">Aachener Blaustein</a> -->
+          </td>
+          <td class="title">Added to stock on:</td>
+          <td class="data" id="stock-publish-date41342">
+            <strong>Thursday, 08 October 2015</strong>
+          </td>
+        </tr>
+        <tr>
+          <td class="title">Name of natural stone:</td>
+          <td class="data">
+            <strong><a href="/stone/aachener-blaustein">Aachener Blaustein</a></strong>
+          </td>
+        </tr>
+        <tr>
+          <td class="title">More information:</td>
+          <td class="data">
+            <strong><a href="/company/linlinstone-com/stock">linlinstone.com</a></strong>
+          </td>
+        </tr>
+      </table>
     </div>
     <div class="content-line" id="tx41342">
-     <p>Linkstar Industry Co., Ltd. is committed to provide the creative stone design &amp; stone products with more competitive price for the worldwide clients.
-</p>
-<p>At present,Linkstar Industry mainly design, produce and export 3d limestone wallart tile, 3d marble wallart tile, 3d granite wallart tile,3d sandstone wallart tile &amp; 3d engineered stone wallart tile，granite, marble, limestone, sandstone, basalt, travertine,and artificial stone.
-</p>
-<p>Linkstar Industry Company Limited<br />
-Email: sales@linlinstone.com<br />
-Email: LinkstarIndustry@hotmail.com<br />
-www.linlinstone.com<br />
-www.facebook.com/Linkstarindustry<br />
-www.youtube.com/user/Linkstarindustry<br />
-www.flickr.com/photos/linkstarindustry<br />
-www.houzz.com/pro/linkstarindustry<br />
-www.pinterest.com/chinalinkstar<br />
-www.twitter.com/chinalinkstar</p>
+      <p>Linkstar Industry Co., Ltd. is committed to provide the creative stone design &amp; stone products with more competitive price for the worldwide clients.
+      </p>
+      <p>At present,Linkstar Industry mainly design, produce and export 3d limestone wallart tile, 3d marble wallart tile, 3d granite wallart tile,3d sandstone wallart tile &amp; 3d engineered stone wallart tile，granite, marble, limestone, sandstone, basalt,
+        travertine,and artificial stone.
+      </p>
+      <p>Linkstar Industry Company Limited
+        <br /> Email: sales@linlinstone.com
+        <br /> Email: LinkstarIndustry@hotmail.com
+        <br /> www.linlinstone.com
+        <br /> www.facebook.com/Linkstarindustry
+        <br /> www.youtube.com/user/Linkstarindustry
+        <br /> www.flickr.com/photos/linkstarindustry
+        <br /> www.houzz.com/pro/linkstarindustry
+        <br /> www.pinterest.com/chinalinkstar
+        <br /> www.twitter.com/chinalinkstar
+      </p>
     </div>
-       </div>
-   </div>
-
-
+  </div>
+</div>
 {% endblock main %}

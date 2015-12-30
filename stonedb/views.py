@@ -224,5 +224,6 @@ def item(request, q):
     """
     stone = get_object_or_404(Stone, slug=q)
     tpl = 'stonedb/item.html'
-    ctx = {'stone': stone}
+    ctx = {'stone': stone, 'color': stone.color, 'texture': stone.texture,
+           'classification': stone.classification, 'country': stone.country}
     return rtr(tpl, ctx, context_instance=RequestContext(request))

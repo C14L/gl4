@@ -99,10 +99,10 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
           </div>
           <div id="tpl-menu">
             <a class="menu-link home-link" href="/">Graniteland</a>
-            <a class="menu-link" href="/stone">Natural Stone</a>
-            <a class="menu-link" href="/tradeshows">Trade shows</a>
-            <a class="menu-link" href="/infos">Stone Infos</a>
-            <a class="menu-link" href="/companies">Stone Companies</a>
+            <a class="menu-link" href="{% url 'stonedb_home' %}">Natural Stone</a>
+            <a class="menu-link" href="{% url 'tradeshowdb_home'%}">Trade shows</a>
+            <a class="menu-link" href="{% url 'articles_home' %}">Stone Infos</a>
+            <a class="menu-link" href="{% url 'companydb_home' %}">Stone Companies</a>
             <a class="menu-link login-link" href="{{settings.LOGIN_URL}}?next=%2Fstone">Login</a>
           </div>
         </div>
@@ -219,12 +219,14 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     </div>
     <script>
       (function(){ /* auto-submit search for onchange */
-        document.querySelector('#tpl-search-form input[type="submit"]').style.display = "none";
-        var o = document.querySelectorAll('#tpl-search-form select');
-        for (var i=0; i<o.length; i++){
-          o[i].addEventListener('change', function(e){
+        //document.querySelector('#tpl-search-form input[type="submit"]').style.display = "none";
+        var oSel = document.querySelectorAll('#tpl-search-form select');
+        var oBtn = document.querySelector('#tpl-search-form input[type="submit"]');
+        for (var i=0; i<oSel.length; i++){
+          oSel[i].addEventListener('change', function(e){
             this.form.submit();
-            for (var i=0; i<o.length; i++){ o[i].disabled = "disabled"; }
+            oBtn.disabled = "disabled";
+            for (var i=0; i<oSel.length; i++) oSel[i].disabled = "disabled";
           });
         }
       })(window);
