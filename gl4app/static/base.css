@@ -446,7 +446,7 @@ body.profile #tabnavi2 a:hover { color:#666; }
 /* Home page */
 
 body.sitehome .leftcol { width:520px; margin:0; padding:0; float:left; }
-body.sitehome .leftcol .top-pic { background:url(/img/fotos/wand.jpg) center center no-repeat; width:520px; height:125px; margin:0 0 15px 0; }
+body.sitehome .leftcol .top-pic { background:url(/static/img/fotos/wand.jpg) center center no-repeat; width:520px; height:125px; margin:0 0 15px 0; }
 body.sitehome .leftcol .left-ad { width:160px; float:left; margin:0 0 10px 0; }
 body.sitehome .leftcol .sectionlinks { margin:0 0 10px 170px; padding:0; }
 body.sitehome .leftcol .currstock { clear:left; }

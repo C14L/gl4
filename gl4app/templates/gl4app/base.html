@@ -103,7 +103,11 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             <a class="menu-link" href="{% url 'tradeshowdb_home'%}">Trade shows</a>
             <a class="menu-link" href="{% url 'articles_home' %}">Stone Infos</a>
             <a class="menu-link" href="{% url 'companydb_home' %}">Stone Companies</a>
-            <a class="menu-link login-link" href="{{settings.LOGIN_URL}}?next=%2Fstone">Login</a>
+            {% if user.is_authenticated %}
+            <a class="menu-link logout-link" href="{{settings.LOGOUT_URL}}?next=">Logout {{user.profile.name}}</a>
+            {% else %}
+            <a class="menu-link login-link" href="{{settings.LOGIN_URL}}?next=">Login</a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -200,9 +204,9 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
               </p>
               <br>
               <p>Information is provided without warranty of any kind and may contain errors or may be outdated.<br>It is strongly advised to contact a competent granite professional to confirm any information found on Graniteland.</p>
-              <p><img src="/img/flags/gb.png" alt="Find granite and marble..."><a href="http://www.graniteland.com/">Find granite and marble online</a></p>
-              <p><img src="/img/flags/de.png" alt="Naturstein finden..."><a href="http://www.graniteland.de/">Graniteland, die Naturstein-Suchmaschine</a></p>
-              <p>&copy; 2015 by Graniteland</p>
+              <p><img src="/static/img/flags/gb.png" alt="Find granite and marble..."><a href="http://www.graniteland.com/">Find granite and marble online</a></p>
+              <p><img src="/static/img/flags/de.png" alt="Naturstein finden..."><a href="http://www.graniteland.de/">Graniteland, die Naturstein-Suchmaschine</a></p>
+              <p>&copy; {% now "Y" %} by Graniteland</p>
             </td>
           </tr>
         </table>
