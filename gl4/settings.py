@@ -84,6 +84,7 @@ INSTALLED_APPS = (
     'companydb',
     'stonedb',
     'tradeshowdb',
+    'mdpages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -141,8 +142,13 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/en/'
 MEDIA_ROOT = '/home/chris/v600/graniteland_backups/graniteland_media_en/'
 
-# django-allauth settings
+# --- django-autoslug settings -------------------------------------------------
+
+AUTOSLUG_SLUGIFY_FUNCTION = 'django.utils.text.slugify'
+
+# --- django-allauth settings --------------------------------------------------
 # http://django-allauth.readthedocs.org/en/latest/configuration.html
+
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True  # user needs to provide and confirm email address
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
@@ -155,7 +161,6 @@ ACCOUNT_PASSWORD_MIN_LENGTH = 4  # def: 6
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 
-
-# My own settings
+# --- my own settings ----------------------------------------------------------
 
 STONES_PER_PAGE = 50

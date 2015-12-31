@@ -1,0 +1,26 @@
+{% extends 'gl4app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block title2 %}
+{% endblock %}
+
+{% block description %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+mdpages-topic
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="/stone">Stones</a> &raquo;
+<a href="/stone/country/{{country.slug}}">{{country.name}}</a> &raquo;
+<a href="/stone/{{country.slug}}/{{texture.slug}}/all/all">{{texture.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+{% endblock main %}

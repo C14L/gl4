@@ -1,7 +1,9 @@
 from os.path import join
+
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+
 import gl4app.views
 import companydb.views
 import stonedb.views
@@ -12,6 +14,7 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^infos/', include('mdpages.urls')),
 
     # gl4app
     url(r'^$', gl4app.views.home, name='home'),
@@ -88,10 +91,8 @@ urlpatterns = [
     url(r'^fotos/(?P<id>\d+)$',
         companydb.views.pic_item, name='companydb_pic_item'),
 
-    # TODO: this should be "articles.views.home" or something that displays
-    #       all article categories, etc.
-    url(r'infos', gl4app.views.home, name='articles_home'),
 ]
+
 
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns

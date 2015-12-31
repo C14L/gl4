@@ -1,0 +1,31 @@
+{% extends 'gl4app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block title2 %}
+{% endblock %}
+
+{% block description %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+mdpages-article
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'mdpages_home' %}">Articles</a> &raquo;
+<a href="{% url 'mdpages_topic' article.topic.slug %}">{{article.topic.name}}</a> &raquo;
+<a href="{% url 'mdpages_author' article.author.slug %}">{{article.author.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1>{{article.title}}</h1>
+
+<article>{{article.html}}</article>
+
+{% endblock main %}

@@ -11,12 +11,6 @@ def create_profile_for_user(sender, instance=None, created=False, **kwargs):
     if created:
         UserProfile.objects.get_or_create(user=instance)
 
-@receiver(pre_delete, sender=User)
-def delete_profile_for_user(sender, instance=None, **kwargs):
-    if instance:
-        user_profile = UserProfile.objects.get(user=instance)
-        user_profile.delete()
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='profile', primary_key=True)
@@ -65,6 +59,7 @@ class UserProfile(models.Model):
         return Pic.objects.filter(module='profile',
                                   module_id=self.user.id).count()
 
+
 class CommonProjectsStocks(models.Model):
     stone = models.ForeignKey(Stone, db_index=True)
     user = models.ForeignKey(User, db_index=True)
@@ -88,6 +83,7 @@ class Stock(CommonProjectsStocks):
         verbose_name = "Stock"
         verbose_name_plural = "Stocks"
         ordering = ('-created', )
+
 
 class Project(CommonProjectsStocks):
 

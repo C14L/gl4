@@ -101,7 +101,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             <a class="menu-link home-link" href="/">Graniteland</a>
             <a class="menu-link" href="{% url 'stonedb_home' %}">Natural Stone</a>
             <a class="menu-link" href="{% url 'tradeshowdb_home'%}">Trade shows</a>
-            <a class="menu-link" href="{% url 'articles_home' %}">Stone Infos</a>
+            <a class="menu-link" href="{% url 'mdpages_home' %}">Stone Infos</a>
             <a class="menu-link" href="{% url 'companydb_home' %}">Stone Companies</a>
             {% if user.is_authenticated %}
             <a class="menu-link logout-link" href="{{settings.LOGOUT_URL}}?next=">Logout {{user.profile.name}}</a>

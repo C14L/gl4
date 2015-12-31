@@ -1,0 +1,30 @@
+{% extends 'gl4app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block title2 %}
+{% endblock %}
+
+{% block description %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body_classes %}
+mdpages-author
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'mdpages_home' %}">Articles</a> &raquo;
+<a href="{% url 'mdpages_author' author.slug %}">{{author.name}}</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+-- author info --
+
+-- list of articles written by author --
+
+{% endblock main %}
