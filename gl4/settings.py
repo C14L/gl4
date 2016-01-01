@@ -21,7 +21,7 @@ DEBUG = os.path.exists('/islocal.txt')
 PRODUCTION = False
 
 ALLOWED_HOSTS = []
-APPEND_SLASH = False
+APPEND_SLASH = True
 SITE_ID = 1
 ROOT_URLCONF = 'gl4.urls'
 WSGI_APPLICATION = 'gl4.wsgi.application'

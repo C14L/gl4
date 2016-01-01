@@ -35,18 +35,18 @@ class Command(BaseCommand):
             )
         input('Please press Enter to continue...')
 
-        #self.import_color()
-        #self.import_classification()
-        #self.import_country()
-        #self.init_texture()  # only deletes current entries
-        #self.import_user()
-        #self.import_profile()
-        #self.import_stone()
-        #self.import_tradeshow()
-        #self.import_group()
-        #self.import_stock()
-        #self.import_projects()
-        #self.import_pics()
+        self.import_color()
+        self.import_classification()
+        self.import_country()
+        self.init_texture()  # only deletes current entries
+        self.import_user()
+        self.import_profile()
+        self.import_stone()
+        self.import_tradeshow()
+        self.import_group()
+        self.import_stock()
+        self.import_projects()
+        self.import_pics()
         self.import_pages()
 
     def walkjsondata(self, fn):
@@ -59,12 +59,13 @@ class Command(BaseCommand):
             yield row
 
     def import_color(self):
+        print('Import colors')
         Color.objects.all().delete()
         for row in self.walkjsondata('data_colors'):
             item = Color.objects.create(
                 id=row['id'], slug=row['url'], name=row['name'])
-            print('color --> added: {} {} -> {}'.format(
-                item.id, item.slug, item.name))
+            print('.', end='', flush=True)
+        print('done!')
 
     def init_texture(self):
         Texture.objects.all().delete()
@@ -74,14 +75,13 @@ class Command(BaseCommand):
         texture_name = texture_name.lower().strip()
         if texture_name in ['', 'n/a', 'na']:
             return None
-
         item, created = Texture.objects.get_or_create(name=texture_name)
         if created:
             item.slug = slugify(item.name)
             item.save()
-            print('texture --> added: {} {} -> {}'.format(
-                item.id, item.slug, item.name))
-
+            #print('texture --> added: {} {} -> {}'.format(
+            #    item.id, item.slug, item.name))
+            print('T', end='', flush=True)
         return item
 
     def import_classification(self):
@@ -89,22 +89,24 @@ class Command(BaseCommand):
         {"id":"1","old_class":"amazonit - granit","name":"Amazonite
         Granite","url":"amazonitegranit","simple":"Granite"}
         """
+        print('Import classification')
         Classification.objects.all().delete()
         for row in self.walkjsondata('data_stone_classifications'):
             item = Classification.objects.create(
                 id=row['id'], slug=row['url'], name=row['name'],
                 simple_slug=slugify(row['simple']), simple_name=row['simple'])
-            print('classif --> added: {} {} -> {}'.format(
-                item.id, item.slug, item.name))
+            print('.', end='', flush=True)
+        print('done!')
 
     def import_country(self):
         # {"un3":"4","iso2":"af","url":"afghanistan","name":"Afghanistan"}
+        print('Import country')
         Country.objects.all().delete()
         for row in self.walkjsondata('data_country_names'):
             item = Country.objects.create(id=row['un3'], cc=row['iso2'],
                                           slug=row['url'], name=row['name'])
-            print('country --> added: {} [{}] {} -> {}'.format(
-                item.id, item.cc, item.slug, item.name))
+            print('.', end='', flush=True)
+        print('done')
 
     def import_user(self):
         """
@@ -120,19 +122,15 @@ class Command(BaseCommand):
         "is_mod_fotos":"0","is_mod_stones":"0","is_mod_pages":"0",
         "is_mod_groups":"0","is_mod_tradeshows":"0"}
         """
+        print('Import users and profiles', end='', flush=True)
         User.objects.all().delete()
         UserProfile.objects.all().delete()
         for row in self.walkjsondata('user'):
-            if row['nick'] == '':  # skip if no username
+            if not row['user_id'] or not row['nick'] or row['type'] != 'company':
                 continue
-            if row['type'] != 'company':  # only allow "company" as members
+            if int(row['is_deleted']) or int(row['is_blocked']):
+                print('D', end='', flush=True)
                 continue
-            # if row['is_deleted'] or row['is_blocked']:
-            #    continue
-
-            print('user --> adding {} [{}] --> {}'.format(
-                row['nick'], row['user_id'], row['name']))
-
             try:
                 user = User(id=row['user_id'])
                 user.username = row['nick'][:30]
@@ -142,22 +140,19 @@ class Command(BaseCommand):
                 user.date_joined = parse_iso_datetime(row['signup_time'])
                 user.save()
             except IntegrityError as e:
-                print('!!! IntegrityError: {}'.format(e))
+                print('E', end='', flush=True)
                 continue
-
-            profile = UserProfile.objects.create(user=user)
-            profile.name = row['name']
-            profile.title_foto = row['title_foto']
-            profile.title_foto_ext = row['title_foto_ext']
-            profile.signup_ip = row['signup_ip']
-            profile.lastlogin_ip = row['lastlogin_ip']
-            profile.save()
-
-            print('--> User added: {} {}'.format(user.id, user.username))
-        print('All users created, now update all profiles')
-
+            user.profile.name = row['name']
+            user.profile.title_foto = row['title_foto']
+            user.profile.title_foto_ext = row['title_foto_ext']
+            user.profile.signup_ip = row['signup_ip']
+            user.profile.lastlogin_ip = row['lastlogin_ip']
+            user.profile.save()
+            print('.', end='', flush=True)
+        print('done! All users created.')
 
     def import_stone(self):
+        print('Import stones')
         Stone.objects.all().delete()
         StoneName.objects.all().delete()
         urlname_changes = []
@@ -171,14 +166,11 @@ class Command(BaseCommand):
             stone.availability = row['availability']
             stone.comment = row['comment']
             stone.maxsize = row['maxsize']
-
             stone.color_name = row['color']
             stone.country_name = row['country']
             stone.classification_name = row['classification']
-
             stone.texture_name = row['texture']
             stone.texture = self.fetch_or_create_texture(row['texture'])
-
             stone.secondary_colors = []
             stone.color = Color.objects.filter(
                 pk=row['color_id']).first()
@@ -186,8 +178,8 @@ class Command(BaseCommand):
                 pk=row['classification_id']).first()
             stone.country = Country.objects.filter(
                 pk=row['country_id']).first()
-
             stone.save()
+            print('.', end='', flush=True)
 
             # check if item was using smallpic, largepic, projectpic or
             # title_foto and is_use_title_foto fields.
@@ -198,16 +190,20 @@ class Command(BaseCommand):
             tf_pics = join(self.pics_dir, 'stonespics', fname)
 
             if isfile(sf_indx):
-                print('{} --> {}'.format(sf_indx, tf_indx))
+                #print('{} --> {}'.format(sf_indx, tf_indx))
+                print('i', end='', flush=True)
                 rename(sf_indx, tf_indx)
             else:
-                print('FILE NOT FOUND: {}'.format(sf_indx))
+                #print('FILE NOT FOUND: {}'.format(sf_indx))
+                print('x', end='', flush=True)
 
             if isfile(sf_pics):
-                print('{} --> {}'.format(sf_pics, tf_pics))
+                #print('{} --> {}'.format(sf_pics, tf_pics))
                 rename(sf_pics, tf_pics)
+                print('p', end='', flush=True)
             else:
-                print('FILE NOT FOUND: {}'.format(sf_pics))
+                #print('FILE NOT FOUND: {}'.format(sf_pics))
+                print('x', end='', flush=True)
 
             # Fill StoneName pseudonym table; add the main name too!
             StoneName.objects.create(stone=stone, name=stone.name,
@@ -217,18 +213,14 @@ class Command(BaseCommand):
                 if x:
                     StoneName.objects.create(stone=stone, name=x,
                                              slug=slugify(x))
-
-            print('{} {}: {} --> {}'.format(
-                stone.id, stone.slug, stone.name, fname))
+                    print('+', end='', flush=True)
 
             if stone.slug != stone.urlname:
                 urlname_changes.append(
-                    'For {}, urlname changed "{}" --> "{}"'.format(
+                    'Stone {} urlname changed "{}" --> "{}"'.format(
                         stone.id, stone.urlname, stone.slug))
 
-        print('done.')
-        print(urlname_changes)
-        print('---')
+        print('done. Some urlnames changed:\n', urlname_changes)
 
         """
         0   id
@@ -259,8 +251,8 @@ class Command(BaseCommand):
         """
 
     def import_tradeshow(self):
+        print('Import tradeshows', end='', flush=True)
         Tradeshow.objects.all().delete()
-        print('--> Importing tradeshows: ', end='', flush=True)
         for row in self.walkjsondata('tradeshows2'):
             tradeshow = Tradeshow()
             tradeshow.aumaid = row['aumaid']
@@ -284,8 +276,8 @@ class Command(BaseCommand):
         """
         {"id":"15","topic_id":"0","name":"Stone Installation","url":"stone-installer","about":"Natural stone companies specialized in the installtion of granite, marble and similar natural stones. Installation of natural stone as flooring, wall cladding, counter tops or as other application.","description":"Companies specialized in the installtion of granite, marble and related natural stones, as flooring, wall cladding, counter tops or other applications.","keywords":"installation of stone, granite, marble, limestone, flooring, wall cladding","title_foto":"305","title_foto_ext":"jpg","count_members":"554","created_time":"2007-10-27 23:12:54","created_ip":"127.0.0.1","created_user":"1","time":"2008-08-18 06:27:47","ip":"84.137.125.24","is_invite_only":"0","is_private":"0","is_blocked":"0","is_deleted":"0"},
         """
+        print('Import groups: ', end='', flush=True)
         Group.objects.all().delete()
-        print('--> Importing user groups: ', end='', flush=True)
         for row in self.walkjsondata('groups'):
             group = Group(id=row['id'])
             group.name = row['name'][:30]
@@ -297,7 +289,7 @@ class Command(BaseCommand):
             group.count_members = row['count_members']
             group.created = parse_iso_datetime(row['created_time'])
             group.save()
-            print('Created group "{}", adding members '.format(group.name))
+            print('g', end='', flush=True)
             # add members of this group
             """
             {"user_id":"4","group_id":"13","applied_time":"2008-08-17 04:40:27","confirmed_time":"2008-08-17 04:40:27"}
@@ -309,11 +301,10 @@ class Command(BaseCommand):
                         group.members.add(user)
                         print('.', end='', flush=True)
                     except User.DoesNotExist:
-                        print('Could not add user {} to group {}: User does '
-                              'not exist.'.format(row2['user_id'], group.name))
-            print(' done')
+                        #print('Could not add user {} to group {}: User does '
+                        #      'not exist.'.format(row2['user_id'], group.name))
+                        print('X', end='', flush=True)
         print('all groups done')
-
 
     def import_profile(self):
         # Does NOT delete user profiles but simply overwrites values in
@@ -328,16 +319,16 @@ class Command(BaseCommand):
         "title_foto_ext":""}
         """
         i = 0;
+        print('Update user profiles')
         for row in self.walkjsondata('user_profiles'):
             i += 1
             try:
                 profile = UserProfile.objects.get(user_id=row['user_id'])
             except UserProfile.DoesNotExist:
-                print('!!! No profile foudn for user {} ({})'.format(
-                      row['user_id'], row['nick']))
-
-            print('{}.-- profile --> updating {}'.format(i, row['user_id']))
-
+                #print('!!! No profile foudn for user {} ({})'.format(
+                #      row['user_id'], row['nick']))
+                print('E', end='', flush=True)
+            #print('{}.-- profile --> updating {}'.format(i, row['user_id']))
             profile.contact = row['contact']
             profile.contact_position = row['contact_position']
             profile.slogan = row['slogan']
@@ -356,8 +347,8 @@ class Command(BaseCommand):
             profile.web = row['web']
             profile.about = row['about']
             profile.save()
-
-        print('All profiles updated, done')
+            print('.', end='', flush=True)
+        print('done!')
 
     def import_pics(self):
         """
@@ -383,8 +374,8 @@ class Command(BaseCommand):
         print(m)
         input('Press ENTER to continue with pics import...')
         """
+        print('Import pics', end='', flush=True)
         Pic.objects.all().delete()
-        print('Pics importieren', end='', flush=True)
         i = 0
         for row in self.walkjsondata('fotos'):
             try:
@@ -402,7 +393,7 @@ class Command(BaseCommand):
                 try:
                     obj = User.objects.get(pk=pic.module_id)
                 except UserProfile.DoesNotExist:
-                    print('UP', end='', flush=True)
+                    print('U', end='', flush=True)
                     continue  # user not found!
             elif pic.module == 'projects':
                 try:
@@ -449,23 +440,24 @@ class Command(BaseCommand):
             print('.', end='', flush=True)
             if (i % 1000) == 0:
                 print(i, end='', flush=True)
-
         print('done. {} pics imported.'.format(i))
 
     def import_stock(self):
         i = 0
+        print('Import stock', end='', flush=True)
         Stock.objects.all().delete()
-        print('Importing stock items', end='', flush=True)
         for row in self.walkjsondata('stones_stock'):
             try:
                 stone = Stone.objects.get(pk=row['stone_id'])
             except Stone.DoesNotExist:
-                print('Stone not found for stock {}'.format(row['stone_id']))
+                #print('Stone not found for stock {}'.format(row['stone_id']))
+                print('SE', end='', flush=True)
                 continue
             try:
                 user = User.objects.get(pk=row['user_id'])
             except User.DoesNotExist:
-                print('User not found for stock {}'.format(row['user_id']))
+                #print('User not found for stock {}'.format(row['user_id']))
+                print('UE', end='', flush=True)
                 continue
             item = Stock(id=row['id'])
             item.stone = stone
@@ -489,18 +481,20 @@ class Command(BaseCommand):
 
     def import_projects(self):
         i = 0
+        print('Import project', end='', flush=True)
         Project.objects.all().delete()
-        print('Importing project items', end='', flush=True)
         for row in self.walkjsondata('stones_projects'):
             try:
                 stone = Stone.objects.get(pk=row['stone_id'])
             except Stone.DoesNotExist:
-                print('Stone not found for project {}'.format(row['stone_id']))
+                #print('Stone not found for project {}'.format(row['stone_id']))
+                print('SE', end='', flush=True)
                 continue
             try:
                 user = User.objects.get(pk=row['user_id'])
             except User.DoesNotExist:
-                print('User not found for project {}'.format(row['user_id']))
+                #print('User not found for project {}'.format(row['user_id']))
+                print('UE', end='', flush=True)
                 continue
             item = Project(id=row['id'])
             item.stone = stone
@@ -532,17 +526,17 @@ class Command(BaseCommand):
         Keyword.objects.all().delete()
         Topic.objects.all().delete()
 
-        print('Importing topics ', end='', flush=True)
+        print('Import topics ', end='', flush=True)
         for row in self.walkjsondata('pages_topics'):
             item = Topic(id=row['id'])
             item.title = row['title']
-            item.slug = row['url']
+            item.slug = row['url'][:50]
             item.description = row['description']
             item.save()
             print('.', end='', flush=True)
         print(' done!')
 
-        print('Importing authors', end='', flush=True)
+        print('Import authors', end='', flush=True)
         for row in self.walkjsondata('pages'):
             a = row['author_name']
             b = {'about': row['author_about'], 'url': row['author_url']}
@@ -551,12 +545,17 @@ class Command(BaseCommand):
                 print('.', end='', flush=True)
         print(' done!')
 
-        print('Importing articles', end='', flush=True)
+        print('Import keywords', end='', flush=True)
+        for row in self.walkjsondata('pages'):
+            pass
+        print(' NOT IMPLEMENTED!')
+
+        print('Import articles', end='', flush=True)
         user = User.objects.get(pk=1)
         for row in self.walkjsondata('pages'):
             item = Article(id=row['id'])
             item.title = row['title']
-            item.slug = row['url']
+            item.slug = row['url'][:50]
             item.created = parse_iso_datetime(row['time'])
             item.user = user
             try:
@@ -573,10 +572,9 @@ class Command(BaseCommand):
             item.save()
 
             for k in row['keywords'].split(', '):
-                kslug = slugify(k)
+                kslug = slugify(k)[:50]
                 if not kslug:
                     continue
-
                 kobj, created = Keyword.objects.get_or_create(slug=kslug)
                 item.keywords.add(kobj)
                 print('.', end='', flush=True)
