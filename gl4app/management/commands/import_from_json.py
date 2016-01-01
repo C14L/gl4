@@ -10,6 +10,7 @@ from companydb.models import (UserProfile, Stock, Project, Pic, Group)
 from stonedb.models import (Stone, StoneName,
                             Color, Classification, Texture, Country)
 from tradeshowdb.models import Tradeshow
+from mdpages.models import Article, Author, Keyword, Topic
 from toolbox import parse_iso_date, parse_iso_datetime, force_int
 
 
@@ -45,7 +46,8 @@ class Command(BaseCommand):
         #self.import_group()
         #self.import_stock()
         #self.import_projects()
-        self.import_pics()
+        #self.import_pics()
+        self.import_pages()
 
     def walkjsondata(self, fn):
         f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
@@ -450,7 +452,6 @@ class Command(BaseCommand):
 
         print('done. {} pics imported.'.format(i))
 
-
     def import_stock(self):
         i = 0
         Stock.objects.all().delete()
@@ -486,7 +487,6 @@ class Command(BaseCommand):
                 print(i, end='', flush=True)
         print('done. {} stock items imported.'.format(i))
 
-
     def import_projects(self):
         i = 0
         Project.objects.all().delete()
@@ -521,3 +521,62 @@ class Command(BaseCommand):
             if (i % 1000) == 0:
                 print(i, end='', flush=True)
         print('done. {} project items imported.'.format(i))
+
+    def import_pages(self):
+        #pages_topics
+        #pages
+
+        i = 0
+        Article.objects.all().delete()
+        Author.objects.all().delete()
+        Keyword.objects.all().delete()
+        Topic.objects.all().delete()
+
+        print('Importing topics ', end='', flush=True)
+        for row in self.walkjsondata('pages_topics'):
+            item = Topic(id=row['id'])
+            item.title = row['title']
+            item.slug = row['url']
+            item.description = row['description']
+            item.save()
+            print('.', end='', flush=True)
+        print(' done!')
+
+        print('Importing authors', end='', flush=True)
+        for row in self.walkjsondata('pages'):
+            a = row['author_name']
+            b = {'about': row['author_about'], 'url': row['author_url']}
+            item, created = Author.objects.get_or_create(name=a, defaults=b)
+            if created:
+                print('.', end='', flush=True)
+        print(' done!')
+
+        print('Importing articles', end='', flush=True)
+        user = User.objects.get(pk=1)
+        for row in self.walkjsondata('pages'):
+            item = Article(id=row['id'])
+            item.title = row['title']
+            item.slug = row['url']
+            item.created = parse_iso_datetime(row['time'])
+            item.user = user
+            try:
+                item.author = Author.objects.get(name=row['author_name'])
+            except Author.DoesNotExist:
+                item.author = None
+            item.is_published = bool(int(row['is_published']))
+            item.is_stickied = False
+            item.is_frontpage = False
+            item.topic = Topic.objects.get(pk=int(row['topic_id']))
+            item.teaser = row['teaser']
+            item.description = row['description']
+            item.text = row['text']
+            item.save()
+
+            for k in row['keywords'].split(', '):
+                kslug = slugify(k)
+                kobj, created = Keyword.objects.get_or_create(slug=kslug)
+                item.keywords.add(kobj)
+                print('.', end='', flush=True)
+
+            print('.', end='', flush=True)
+        print(' done!')
