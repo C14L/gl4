@@ -565,7 +565,7 @@ class Command(BaseCommand):
                 item.author = None
             item.is_published = bool(int(row['is_published']))
             item.is_stickied = False
-            item.is_frontpage = False
+            item.is_frontpage = True
             item.topic = Topic.objects.get(pk=int(row['topic_id']))
             item.teaser = row['teaser']
             item.description = row['description']
@@ -574,6 +574,9 @@ class Command(BaseCommand):
 
             for k in row['keywords'].split(', '):
                 kslug = slugify(k)
+                if not kslug:
+                    continue
+
                 kobj, created = Keyword.objects.get_or_create(slug=kslug)
                 item.keywords.add(kobj)
                 print('.', end='', flush=True)

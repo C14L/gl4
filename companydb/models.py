@@ -103,7 +103,7 @@ class Pic(models.Model):  # cc__fotos
     module = models.CharField(max_length=20,
                               choices=MODULE_CHOICES, default='profile')
     module_id = models.PositiveIntegerField(default=0)
-    created = models.DateField(default=now)  # time
+    created = models.DateTimeField(default=now)  # time
     size = models.PositiveIntegerField(default=0)
     width = models.PositiveIntegerField(default=0)
     height = models.PositiveIntegerField(default=0)
@@ -122,7 +122,7 @@ class Pic(models.Model):  # cc__fotos
         verbose_name_plural = "Pictures"
 
     def __str__(self):
-        return self.pk
+        return '{}.{}'.format(self.id, self.ext)
 
 
 class Group(models.Model):

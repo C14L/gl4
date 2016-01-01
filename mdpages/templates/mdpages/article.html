@@ -1,31 +1,54 @@
 {% extends 'gl4app/base.html' %}
 
 {% block title %}
+{{article.title}}
 {% endblock %}
 
 {% block title2 %}
+{{article.title}}
 {% endblock %}
 
 {% block description %}
+{{article.description}}
 {% endblock %}
 
 {% block head %}
 {% endblock %}
 
 {% block body_classes %}
-mdpages-article
+pages page
 {% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'mdpages_home' %}">Articles</a> &raquo;
-<a href="{% url 'mdpages_topic' article.topic.slug %}">{{article.topic.name}}</a> &raquo;
-<a href="{% url 'mdpages_author' article.author.slug %}">{{article.author.name}}</a> &raquo;
+<a href="{% url 'mdpages_home' %}">Natural Stone Magazine</a> &raquo;
+<a href="{% url 'mdpages_topic' article.topic.slug %}">{{article.topic.title}}</a> &raquo;
+<a href="{% url 'mdpages_article' article.topic.slug article.slug %}">{{article.title}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
+{% if user.is_staff %}<a href="/admin/mdpages/article/{{article.id}}/" style="float:right;">edit</a>{% endif %}
 <h1>{{article.title}}</h1>
 
-<article>{{article.html}}</article>
+<table class="layout">
+    <tr>
+        <td class="leftcol">{{article.html}}</td>
+        <td class="rightcol" id="fotoscolumn">
+            {% if settings.PRODUCTION %}
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- gc resp atf text item -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-0795994016573783"
+     data-ad-slot="9785158445"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+            {% endif %}
+        </td>
+    </tr>
+</table>
 
 {% endblock main %}

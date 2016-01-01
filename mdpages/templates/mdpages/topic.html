@@ -1,26 +1,49 @@
 {% extends 'gl4app/base.html' %}
 
 {% block title %}
+{{topic.title}}
 {% endblock %}
 
 {% block title2 %}
+{{topic.title}}
 {% endblock %}
 
 {% block description %}
+{{topic.description}}
 {% endblock %}
 
 {% block head %}
 {% endblock %}
 
 {% block body_classes %}
-mdpages-topic
+pages topic
 {% endblock %}
 
 {% block breadcrumb %}
-<a href="/stone">Stones</a> &raquo;
-<a href="/stone/country/{{country.slug}}">{{country.name}}</a> &raquo;
-<a href="/stone/{{country.slug}}/{{texture.slug}}/all/all">{{texture.name}}</a> &raquo;
+<a href="{% url 'mdpages_home' %}">Natural Stone Magazine</a> &raquo;
+<a href="{% url 'mdpages_topic' topic.slug %}">{{topic.title}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
+
+<div class="index">
+    <h1>Home use</h1>
+    <div class="list">
+        {% for item in articles %}
+        <div class="item">
+            <h2><a href="{% url 'mdpages_article' item.topic.slug item.slug %}">{{item.title}}</a>
+            </h2>
+            <p class="intro">{{item.description}}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="prevnext">
+        {% for i in articles.paginator.page_range %}
+        {% if i == articles.number %}<b>[ {{i}} ]</b>{% else %}<a
+            href="?p={{i}}">{{i}}</a>{% endif %}
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock main %}

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.utils.safestring import mark_safe
 from markdown import markdown
 
 
@@ -13,7 +14,8 @@ class Keyword(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)[:50]
+        if not self.slug:
+            self.slug = slugify(self.name)[:50]
         super(Keyword, self).save(*args, **kwargs)
 
 
@@ -27,7 +29,8 @@ class Author(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)[:50]
+        if not self.slug:
+            self.slug = slugify(self.name)[:50]
         super(Author, self).save(*args, **kwargs)
 
 
@@ -40,8 +43,22 @@ class Topic(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)[:50]
+        if not self.slug:
+            self.slug = slugify(self.title)[:50]
         super(Topic, self).save(*args, **kwargs)
+
+
+class ArticleManager(models.Manager):
+
+    def published(self):
+        return self.filter(is_published=True)\
+                   .prefetch_related('topic', 'author')
+
+    def frontpage(self):
+        return self.published().filter(is_frontpage=True)
+
+    def topic(self, topic):
+        return self.published().filter(topic=topic)
 
 
 class Article(models.Model):
@@ -59,11 +76,19 @@ class Article(models.Model):
     description = models.TextField(default='', blank=True)
     text = models.TextField(default='', blank=True)
 
+    objects = ArticleManager()
+
+    class Meta:
+        verbose_name = 'Article'
+        verbose_name_plural = 'Articles'
+        ordering = ('-created', )
+
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)[:50]
+        if not self.slug:
+            self.slug = slugify(self.title)[:50]
         super(Article, self).save(*args, **kwargs)
 
     def keywords_str(self):
@@ -72,5 +97,5 @@ class Article(models.Model):
     @property
     def html(self):
         # converts markdown text into html
-        return markdown(self.text)
+        return mark_safe(markdown(self.text))
 

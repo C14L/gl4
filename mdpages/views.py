@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.paginator import Paginator
 from django.shortcuts import render_to_response as rtr
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
@@ -6,18 +8,22 @@ from mdpages.models import Article, Author, Keyword, Topic
 
 def home_view(request, template_name='mdpages/home.html'):
     # list featured articles and all topics
+    p = request.GET.get('p', 1)
+    per_page = getattr(settings, 'MDPAGES_PER_PAGE', 10)
     topics = Topic.objects.all()
     authors = Author.objects.all()[:10]
-    articles = Article.objects.filter(is_published=True, is_frontpage=True)
-    ctx = {'topics': topics, 'authors': authors, 'articles': articles}
+    articles = Paginator(Article.objects.frontpage(), per_page)
+    ctx = {'topics': topics, 'authors': authors, 'articles': articles.page(p)}
     return rtr(template_name, ctx, context_instance=RequestContext(request))
 
 
 def topic_view(request, topic, template_name='mdpages/topic.html'):
     # one topic with a list of related articles
+    p = request.GET.get('p', 1)
+    per_page = getattr(settings, 'MDPAGES_PER_PAGE', 10)
     topic = get_object_or_404(Topic, slug=topic)
-    articles = Article.objects.filter(topic=topic, is_published=True)
-    ctx = {'topic': topic, 'articles': articles}
+    articles = Paginator(Article.objects.topic(topic), per_page)
+    ctx = {'topic': topic, 'articles': articles.page(p)}
     return rtr(template_name, ctx, context_instance=RequestContext(request))
 
 
