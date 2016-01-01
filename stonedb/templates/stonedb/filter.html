@@ -1,16 +1,10 @@
 {% extends 'gl4app/base.html' %}
 
-{% block title %}
-{{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}
-{% endblock %}
+{% block title %}{{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}{% endblock %}
 
-{% block title2 %}
-All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}
-{% endblock %}
+{% block title2 %}All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}{% endblock %}
 
-{% block description %}
-All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}
-{% endblock %}
+{% block description %}All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}{% endblock %}
 
 {% block head %}
 <style>

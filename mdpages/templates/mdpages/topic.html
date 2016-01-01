@@ -1,23 +1,14 @@
 {% extends 'gl4app/base.html' %}
 
-{% block title %}
-{{topic.title}}
-{% endblock %}
+{% block title %}{{topic.title}}{% endblock %}
 
-{% block title2 %}
-{{topic.title}}
-{% endblock %}
+{% block title2 %}{{topic.title}}{% endblock %}
 
-{% block description %}
-{{topic.description}}
-{% endblock %}
+{% block description %}{{topic.description}}{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-pages topic
-{% endblock %}
+{% block body_classes %}pages topic{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'mdpages_home' %}">Natural Stone Magazine</a> &raquo;

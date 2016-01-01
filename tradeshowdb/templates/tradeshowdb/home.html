@@ -1,26 +1,17 @@
 {% extends 'gl4app/base.html' %}
 
-{% block title %}
-Granite and Marble Tradeshows Worldwide
-{% endblock %}
+{% block title %}Granite and Marble Tradeshows Worldwide{% endblock %}
 
-{% block title2 %}
-Granite and Marble Tradeshows Worldwide
-{% endblock %}
+{% block title2 %}Granite and Marble Tradeshows Worldwide{% endblock %}
 
-{% block description %}
-Tradeshows worldwide related to the natural stone industry. Exhibitions and fairs specialized in granite and marble products.
-{% endblock %}
+{% block description %}Tradeshows worldwide related to the natural stone industry. Exhibitions and fairs specialized in granite and marble products.{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-tradeshow-index
-{% endblock %}
+{% block body_classes %}tradeshow-index{% endblock %}
 
 {% block breadcrumb %}
-  <a href="{% url 'tradeshowdb_by_year' view_year %}">Tradeshows {{view_year}}</a> &raquo;
+<a href="{% url 'tradeshowdb_by_year' view_year %}">Tradeshows {{view_year}}</a> &raquo;
 {% endblock %}
 
 {% block main %}

@@ -20,11 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = os.path.exists('/islocal.txt')
 PRODUCTION = False
 
-ALLOWED_HOSTS = []
 APPEND_SLASH = True
 SITE_ID = 1
 ROOT_URLCONF = 'gl4.urls'
 WSGI_APPLICATION = 'gl4.wsgi.application'
+
+ALLOWED_HOSTS = ['www.graniteland.com', 'localhost']
+CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
 
 EMAIL_HOST = 'localhost'
 if DEBUG:

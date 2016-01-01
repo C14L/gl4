@@ -1,16 +1,10 @@
 {% extends 'gl4app/base.html' %}
 
-{% block title %}
-{{stone.name}} - a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}
-{% endblock %}
+{% block title %}{{stone.name}} - a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}{% endblock %}
 
-{% block title2 %}
-{{stone.name}} - a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}
-{% endblock %}
+{% block title2 %}{{stone.name}} - a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}{% endblock %}
 
-{% block description %}
-{{stone.name}} is a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}. In natural stone trade, {{stone.name}} is often simply called a granite.
-{% endblock %}
+{% block description %}{{stone.name}} is a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}. In natural stone trade, {{stone.name}} is often simply called a granite.{% endblock %}
 
 {% block head %}
 <style media="screen">
@@ -18,9 +12,7 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
 </style>
 {% endblock %}
 
-{% block body_classes %}
-stones-item
-{% endblock %}
+{% block body_classes %}stones-item{% endblock %}
 
 {% block breadcrumb %}
   <a href="/stone">Stones</a> &raquo;

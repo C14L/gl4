@@ -1,22 +1,14 @@
 {% extends 'gl4app/base.html' %}
 
-{% block title %}
-{{tradeshow.name}}
-{% endblock %}
+{% block title %}{{tradeshow.name}}{% endblock %}
 
-{% block title2 %}
-{{tradeshow.name}}
-{% endblock %}
+{% block title2 %}{{tradeshow.name}}{% endblock %}
 
-{% block description %}
-{% endblock %}
+{% block description %}{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-tradeshow-item
-{% endblock %}
+{% block body_classes %}tradeshow-item{% endblock %}
 
 {% block breadcrumb %}
   <a href="{% url 'tradeshowdb_by_year' view_year %}">Tradeshows {{view_year}}</a> &raquo;

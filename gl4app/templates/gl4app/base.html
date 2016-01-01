@@ -9,6 +9,8 @@
     <meta name="Copyright" content="Christian Steimel">
     <meta property="fb:admins" content="">
     <meta name="description" content="{% block description %}{% endblock %}">
+
+    {% if canonical %}<link rel="canonical" href="{{canonical}}">{% endif %}
     <link rel="icon" type="image/png" href="/icon.png">
     <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'base-lt-750.css' %}" media="only screen and (max-width: 750px)">
@@ -65,15 +67,16 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
                   <td>
                     <select size="1" name="type" id="search_type">
                       <option value="">All stone types</option>
+                        <!--
                       <optgroup label="Simplefied">
                         <option value="m">Granite-like</option>
                         <option value="g">Marble-like</option>
                       </optgroup>
-                      <optgroup label="Geological">
+                      <optgroup label="Geological"> -->
                         {% for item in search_classifications %}
                           <option value="{{item.id}}"{% if item.id == classification.id %} selected{% endif %}>{{item.name}}</option>
                         {% endfor %}
-                      </optgroup>
+                      <!-- </optgroup> -->
                     </select>
                   </td>
                   <td>

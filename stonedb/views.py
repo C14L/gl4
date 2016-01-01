@@ -36,7 +36,7 @@ def redir_search_php(request):
     color = force_int(request.GET.get('color', 0))
     country = force_int(request.GET.get('country', 0))
     texture = force_int(request.GET.get('texture', 0))
-    classif = force_int(request.GET.get('classification', 0))
+    classif = force_int(request.GET.get('type', 0))
 
     if color:
         color = get_object_or_404(Color, pk=color)
