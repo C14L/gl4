@@ -1,0 +1,11 @@
+<div class="list-pages">
+    {% for i in stones.paginator.page_range %}
+    {% if i == stones.number %}
+    <b>[ {{i}} ]</b>
+    {% elif i == 1 %}
+    <a href="{% url 'stonedb_simple_filter' f q.slug %}">1</a>
+    {% else %}
+    <a href="{% url 'stonedb_simple_filter' f q.slug i %}">{{i}}</a>
+    {% endif %}
+    {% endfor %}
+</div>

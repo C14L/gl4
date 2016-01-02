@@ -32,9 +32,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-<a href="/stone">Stones</a> &raquo;
-<a href="/stone/{{f}}">Countries and Regions</a> &raquo;
-<a href="/stone/{{f}}/{{q.slug}}">{{q.name}}</a> &raquo;
+{% include 'stonedb/simple-filter-breadcrumb.html' %}
 {% endblock %}
 
 {% block main %}
@@ -46,38 +44,13 @@
 
   <h2>Photos of stone from {{q.name}}</h2>
 
-  <div class="list-pages">
-    {% for i in stones.paginator.page_range %}
-      {% if i == stones.number %}
-        <b>[ {{i}} ]</b>
-      {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q.slug}}">1</a>
-      {% else %}
-        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
-      {% endif %}
-    {% endfor %}
-  </div>
-
+  {% include 'stonedb/simple-filter-prevnext.html'%}
   {% include 'stonedb/stone-list-1.html'%}
-  
-  <div class="list-pages">
-    {% for i in stones.paginator.page_range %}
-      {% if i == stones.number %}
-        <b>[ {{i}} ]</b>
-      {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q.slug}}">1</a>
-      {% else %}
-        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
-      {% endif %}
-    {% endfor %}
-  </div>
+  {% include 'stonedb/simple-filter-prevnext.html'%}
 
   <h2>Natural Stone by country</h2>
-  <ul class="stone-property-list">
-    {% for item in more %}
-      <li><a href="/stone/country/{{item.slug}}">{{item.name}}</a> <span class="count">({{item.stones__count}})</span></li>
-    {% endfor %}
-  </ul>
+
+  {% include 'stonedb/simple-filter-proplist.html' %}
 </div>
 
 {% endblock main %}

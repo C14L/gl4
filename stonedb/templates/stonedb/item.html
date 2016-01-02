@@ -88,7 +88,7 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
           <td class="data">
             {% if stone.country.slug %}
             <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">
-              <img src="/img/flags/{{stone.stone.country.cc}}.png" style="vertical-align:middle;" alt="" title="{{stone.stone.country.name}}">
+              <img src="/static/img/flags/{{stone.stone.country.cc}}.png" style="vertical-align:middle;" alt="" title="{{stone.stone.country.name}}">
             </a>
             <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">{{stone.country.name}}</a>
             {% endif %}

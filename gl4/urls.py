@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^stone'
         r'/(?P<f>color|country|type|texture)'
         r'/(?P<q>[a-zA-Z0-9_-]{1,100})'
-        r'(?:/(?P<p>[2-9]))?$',
+        r'(?:/(?P<p>\d{1,3}))?$',
         stonedb.views.simple_filter, name='stonedb_simple_filter'),
     # /stone/aachener-blaustein
     # /stone/aachener-blaustein/comments

@@ -1,0 +1,5 @@
+  <ul class="stone-property-list">
+    {% for item in more %}
+      <li><a href="{% url 'stonedb_simple_filter' f item.slug %}">{{item.name}}</a> <span class="count">({{item.stones__count}})</span></li>
+    {% endfor %}
+  </ul>

@@ -1,0 +1,3 @@
+<a href="{% url 'stonedb_home' %}">Stones</a> &raquo;
+<a href="{% url 'stonedb_property_list' f %}">{{f|capfirst}}</a> &raquo;
+<a href="{% url 'stonedb_simple_filter' f q.slug %}">{{q.name|capfirst}}</a> &raquo;
