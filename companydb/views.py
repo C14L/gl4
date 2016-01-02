@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
 from companydb.models import Group, Pic, Stock, Project
+from stonedb.models import Stone
 
 
 def get_page(o, p):

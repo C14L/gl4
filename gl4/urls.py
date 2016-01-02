@@ -22,14 +22,17 @@ urlpatterns = [
     # stonedb
     url(r'^stone$',
         stonedb.views.home, name='stonedb_home'),
+
     # /stone/search.php --> stonedb_filter
     url(r'^stone/search.php$',
         stonedb.views.redir_search_php, name='stonedb_redir_search_php'),
+
     # /stone/color
     # /stone/type
     url(r'^stone'
         r'/(?P<f>color|country|type|texture)$',
         stonedb.views.property_list, name='stonedb_property_list'),
+
     # /stone/color/blue
     # /stone/country/france/3
     # /stone/type/sandstone
@@ -38,12 +41,14 @@ urlpatterns = [
         r'/(?P<q>[a-zA-Z0-9_-]{1,100})'
         r'(?:/(?P<p>\d{1,3}))?$',
         stonedb.views.simple_filter, name='stonedb_simple_filter'),
+
     # /stone/aachener-blaustein
     # /stone/aachener-blaustein/comments
     # /stone/aachener-blaustein/pictures
     url(r'^stone/'
         r'(?P<q>[a-zA-Z0-9_-]{1,100})$',
         stonedb.views.item, name='stonedb_item'),
+
     # /stone/france/coarse-grained/blue/sandstone
     url(r'^stone'
         r'/(?P<country>[a-zA-Z0-9_-]{1,30})'

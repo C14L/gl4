@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.views.decorators.http import require_http_methods
 from stonedb.models import Stone, Classification, Color, Country, Texture
+from companydb.models import Stock, Project, Pic
 from toolbox import force_int
 
 
@@ -208,22 +209,19 @@ def filter(request, color, country, texture, classif, p=1):
 
     paginator = Paginator(li, STONES_PER_PAGE)
     tpl = 'stonedb/filter.html'
-    ctx = {'stones': paginator.page(p),
-           'color': color,
-           'country': country,
-           'texture': texture,
-           'classification': classif}
-
+    ctx = {'stones': paginator.page(p), 'color': color, 'country': country,
+           'texture': texture, 'classification': classif}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def item(request, q):
-    """Return a list of stones for a specific color+type+origin.
-
-    Exampe: /stone/blue-sandstone-from-france
-    """
+    """Return data page for one stone."""
     stone = get_object_or_404(Stone, slug=q)
+    stocks = Stock.objects.all_for_stone(stone)
+    projects = Project.objects.all_for_stone(stone)
+    pics = Pic.objects.all_for_stone(stone)
     tpl = 'stonedb/item.html'
     ctx = {'stone': stone, 'color': stone.color, 'texture': stone.texture,
-           'classification': stone.classification, 'country': stone.country}
+           'classification': stone.classification, 'country': stone.country,
+           'stocks': stocks, 'projects': projects, 'pics': pics}
     return rtr(tpl, ctx, context_instance=RequestContext(request))

@@ -167,3 +167,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 # --- my own settings ----------------------------------------------------------
 
 STONES_PER_PAGE = 50
+
+PIC_SMALL_URL = MEDIA_URL + 'fotos_small/'
+PIC_MEDIUM_URL = MEDIA_URL + 'fotos_medium/'
+PIC_LARGE_URL = MEDIA_URL + 'fotos_large/'

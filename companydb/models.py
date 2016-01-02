@@ -1,5 +1,6 @@
+from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from stonedb.models import Stone
@@ -13,6 +14,7 @@ def create_profile_for_user(sender, instance=None, created=False, **kwargs):
 
 
 class UserProfile(models.Model):
+
     user = models.OneToOneField(User, related_name='profile', primary_key=True)
     name = models.CharField(max_length=100, default='')
     contact = models.CharField(max_length=100, default='')
@@ -60,7 +62,21 @@ class UserProfile(models.Model):
                                   module_id=self.user.id).count()
 
 
+class CommonProjectsStocksManager(models.Manager):
+
+    def all_public(self):
+        return self.exclude(is_blocked=True, is_deleted=True)\
+                   .prefetch_related('stone', 'user', 'user__profile')
+
+    def all_for_stone(self, stone):
+        return self.all_public().filter(stone=stone)
+
+    def all_for_user(self, user):
+        return self.all_public().filter(user=user)
+
+
 class CommonProjectsStocks(models.Model):
+
     stone = models.ForeignKey(Stone, db_index=True)
     user = models.ForeignKey(User, db_index=True)
     created = models.DateTimeField(default=now)  # time
@@ -69,6 +85,8 @@ class CommonProjectsStocks(models.Model):
     is_deleted = models.BooleanField(default=False)
     is_recommended = models.BooleanField(default=False)
     count_views = models.PositiveIntegerField(default=0)
+
+    objects = CommonProjectsStocksManager()
 
     class Meta:
         abstract = True
@@ -84,6 +102,9 @@ class Stock(CommonProjectsStocks):
         verbose_name_plural = "Stocks"
         ordering = ('-created', )
 
+    def get_pics_list(self):
+        return Pic.objects.all_for_stock(self)
+
 
 class Project(CommonProjectsStocks):
 
@@ -92,9 +113,40 @@ class Project(CommonProjectsStocks):
         verbose_name_plural = "Projects"
         ordering = ('-created', )
 
+    def get_pics_list(self):
+        return Pic.objects.all_for_project(self)
+
+
+class PicManager(models.Manager):
+
+    def all_public(self):
+        return self.exclude(is_blocked=True, is_deleted=True)
+
+    def all_for_user(self, user):
+        return self.all_public().filter(user=user)
+
+    def all_for_stone(self, stone):
+        return self.all_public().filter(module='stones', module_id=stone.id)
+
+    def all_for_profile(self, user):
+        return self.all_public().filter(module='profile', module_id=user.id)
+
+    def all_for_project(self, project):
+        return self.all_public().filter(module='projects', module_id=project.id)
+
+    def all_for_stock(self, stock):
+        return self.all_public().filter(module='stock', module_id=stock.id)
+
+    def all_for_group(self, group):
+        return self.all_public().filter(module='groups', module_id=group.id)
+
+    def all_for_page(self, page):
+        return self.all_public().filter(module='pages', module_id=page.id)
+
 
 class Pic(models.Model):  # cc__fotos
     """All user uploaded pictures for profiles, projects, stock items, etc"""
+
     MODULE_CHOICES = (
         ('profile', 'Profile'), ('projects', 'Projects'), ('stones', 'Stones'),
         ('stock', 'Stock'), ('groups', 'Groups'), ('pages', 'Pages'))
@@ -117,12 +169,26 @@ class Pic(models.Model):  # cc__fotos
     is_approved = models.BooleanField(default=False)
     is_title = models.BooleanField(default=False)
 
+    objects = PicManager()
+
     class Meta:
         verbose_name = "Picture"
         verbose_name_plural = "Pictures"
 
     def __str__(self):
         return '{}.{}'.format(self.id, self.ext)
+
+    @property
+    def url_small(self):
+        return settings.PIC_SMALL_URL + '{}.{}'.format(self.id, self.ext)
+
+    @property
+    def url_medium(self):
+        return settings.PIC_MEDIUM_URL + '{}.{}'.format(self.id, self.ext)
+
+    @property
+    def url_large(self):
+        return settings.PIC_LARGE_URL + '{}.{}'.format(self.id, self.ext)
 
 
 class Group(models.Model):
