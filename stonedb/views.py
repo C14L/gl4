@@ -66,7 +66,7 @@ def redir_search_php(request):
     elif classif and not (color or country or texture):
         # only classification
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'classif', 'q': classif.slug})
+                      kwargs={'f': 'type', 'q': classif.slug})
     else:
         # if there are at least two properties defined, then show filter page.
         url = reverse('stonedb_filter', kwargs={
