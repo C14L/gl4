@@ -107,9 +107,9 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             <a class="menu-link" href="{% url 'mdpages_home' %}">Stone Infos</a>
             <a class="menu-link" href="{% url 'companydb_home' %}">Stone Companies</a>
             {% if user.is_authenticated %}
-            <a class="menu-link logout-link" href="{{settings.LOGOUT_URL}}?next=">Logout {{user.profile.name}}</a>
+            <a class="menu-link dashboard-link" href="{% url 'companydb_dashboard' %}">Dashboard for {{user.profile.name}}</a>
             {% else %}
-            <a class="menu-link login-link" href="{{settings.LOGIN_URL}}?next=">Login</a>
+            <a class="menu-link login-link" href="{% url 'account_login' %}">Login</a>
             {% endif %}
           </div>
         </div>
@@ -219,7 +219,12 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
 
     <script>if(screen.availWidth<=750){document.getElementById('tpl-site-logo').addEventListener('click',function(e){e.preventDefault();document.getElementById('tpl-menu').classList.toggle('open');return false;});}</script>
 
-    <div id="tpl-msg"></div>
+    <div id="tpl-msg">
+      {% for message in messages %}
+      <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+      {% endfor %}
+    </div>
+
     <div id="fb-root"></div>
     <div id="showbginfo">
       <a href="/stone/amazonia-brown"><strong>The background stone is Amazonia Brown from Brazil.</strong></a>

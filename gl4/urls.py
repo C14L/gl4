@@ -96,6 +96,8 @@ urlpatterns = [
     url(r'^fotos/(?P<id>\d+)$',
         companydb.views.pic_item, name='companydb_pic_item'),
 
+    url(r'^company/dashboard/$',
+        companydb.views.dashboard, name='companydb_dashboard'),
 ]
 
 

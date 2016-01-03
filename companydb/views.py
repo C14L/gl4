@@ -104,3 +104,10 @@ def pic_item(request, id):
     tpl = 'companydb/pic_item.html'
     ctx = {'pic': pic, 'related': related, 'view_user': pic.user}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def dashboard(request):
+
+    tpl = 'companydb/dashboard.html'
+    ctx = {}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
