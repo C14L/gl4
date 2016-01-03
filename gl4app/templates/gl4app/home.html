@@ -20,124 +20,244 @@
 <h1>Granite and Marble Search Engine</h1>
 
 <div class="leftcol">
-    <div class="top-pic" title="Granite Quary"></div>
-    <div class="left-ad">
-      {% if settings.PRODUCTION %}
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- gc resp atf homepage -->
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="1762364042" data-ad-format="auto"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      {% else %}
-        <div style="width:160px;height:600px;background:grey;"></div>
-      {% endif %}
+  <div class="top-pic" title="Granite Quary"></div>
+  <div class="left-ad">
+    {% if settings.PRODUCTION %}
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- gc resp atf homepage -->
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="1762364042" data-ad-format="auto"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    {% else %}
+    <div style="width:160px;height:600px;background:grey;"></div>
+    {% endif %}
+  </div>
+  <div class="sectionlinks">
+    <h2>Find Granite and Marble</h2>
+    <p>Find granite, marble and other natural stone easily. Graniteland's
+      Natural Stone Database contains information on more than 1600 types of
+      granite and marble.</p>
+    <p>Simply select a color, country of origin or type of stone at the top of
+      this page, and hit the "Find Stones" button. You will get a list of
+      natural stones that match you search options, including a picture and
+      further details.</p>
+
+    <h2><a href="/companies">Natural Stone Company Directory</a></h2>
+    <p>A growing directory of worldwide companies from the granite and marble
+      business. Find wholesale granite suppliers, quarry operator companies, or
+      a granite installers near you. If you run a granite related company
+      business, please add your company and promote your stock items and recent
+      projects. <a href="/companies">Natural Stone Company Directory...</a></p>
+
+    <h2><a href="/tradeshows">Granite Tradeshows</a></h2>
+    <p>We have collected information on some of the most important natural stone
+      exhibitions and construction trade shows worldwide. If you are a granite
+      manufacturer, an architect, a home owner, or granite trader, you can find
+      granite exhibitions near you to visit. <a href="/tradeshows">Granite Trade
+        Shows...</a></p>
+
+    <h2><a href="/infos">Granite + Marble Magazine</a></h2>
+    <p>More information about granite and marble is available at Graniteland's
+      Natural Stone Magazine. We have compiled many interesting articles about
+      granite and marble and about the international natural stone industry.
+      Find out why some granite is expensive and other granite is cheap. And
+      what other types of stone are there besides granite and marble.
+      <a href="/infos">Granite + Marble Magazine...</a></p>
+  </div>
+
+  <div class="tbox currstock">
+    <div class="title">Current stock items</div>
+    <div class="content">
+      <p>A selection of current stock items of companies listed in the
+        Graniteland stone companies directory. For questions regarding a stock
+        item, please contact the company directly.</p>
+      <ul class="imglink">
+        {% for item in stocks %}
+        <li>
+          <a class="img-link" href="{% url 'companydb_stock' item.user.username %}" style="background:url({{item.stone.get_pic_medium}}) top left repeat;"></a><a class="main-link" href="{% url 'companydb_stock' item.user.username %}"><strong>{{item.user.profile.name}} has {{item.stone.name}} on stock</strong></a><span class="content">{{item.description|truncatewords:25}}</span>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
-    <div class="sectionlinks">
-        <h2>Find Granite and Marble</h2>
-        <p>Find granite, marble and other natural stone easily. Graniteland's Natural Stone Database contains information on more than 1600 types of granite and marble.</p>
-        <p>Simply select a color, country of origin or type of stone at the top of this page, and hit the "Find Stones" button. You will get a list of natural stones that match you search options, including a picture and further details.</p>
-
-        <h2><a href="/companies">Natural Stone Company Directory</a></h2><p>A growing directory of worldwide companies from the granite and marble business. Find wholesale granite suppliers, quarry operator companies, or a granite installers near you. If you run a granite related company business, please add your company and promote your stock items and recent projects. <a href="/companies">Natural Stone Company Directory...</a></p>
-
-        <h2><a href="/tradeshows">Granite Tradeshows</a></h2><p>We have collected information on some of the most important natural stone exhibitions and construction trade shows worldwide. If you are a granite manufacturer, an architect, a home owner, or granite trader, you can find granite exhibitions near you to visit. <a href="/tradeshows">Granite Trade Shows...</a></p>
-
-        <h2><a href="/infos">Granite + Marble Magazine</a></h2><p>More information about granite and marble is available at Graniteland's Natural Stone Magazine. We have compiled many interesting articles about granite and marble and about the international natural stone industry. Find out why some granite is expensive and other granite is cheap. And what other types of stone are there besides granite and marble. <a href="/infos">Granite + Marble Magazine...</a></p>
-    </div>
-
-    <div class="tbox currstock">
-        <div class="title">Current stock items</div>
-        <div class="content">
-            <p>A selection of current stock items of companies listed in the Graniteland stone companies directory. For questions regarding a stock item, please contact the company directly.</p>
-            <ul class="imglink">
-                <li><a class="img-link" href="/company/linlinstone-com/stock" style="background:url(/stonesindex/mafyonaltini.jpg) top left repeat;"></a><a class="main-link" href="/company/linlinstone-com/stock"><strong>linlinstone.com has Afyon Altini on stock</strong></a><span class="content">Linkstar Industry Co., Ltd. is committed to provide the creative stone design &amp; stone products with more competitive price for the worldwide clients.
-
-At present,Linkstar Industry mainly design, pro</span></li><li><a class="img-link" href="/company/gl-global-inc/stock" style="background:url(/stonesindex/mg3533salomewhite.jpg) top left repeat;"></a><a class="main-link" href="/company/gl-global-inc/stock"><strong>GL Global Inc. has Salome White G 3533 on stock</strong></a><span class="content">Available in:
-Muping White
-Shandong White Pearl
-Sesame White
-Crystal White</span></li><li><a class="img-link" href="/company/grandall-granites-from-brazil/stock" style="background:url(/stonesindex/mlabradorgold.jpg) top left repeat;"></a><a class="main-link" href="/company/grandall-granites-from-brazil/stock"><strong>Grandall - Granites from Brazil has Labrador Gold on stock</strong></a><span class="content">     Dear customer, we have a continuous supply of this material, so we can provide a lot of slabs in both measures of 2cm and 03cm, with polished or resin, flamed or coated finish.</span></li><li><a class="img-link" href="/company/alfa-estates/stock" style="background:url(/stonesindex/mpremiumblack.jpg) top left repeat;"></a><a class="main-link" href="/company/alfa-estates/stock"><strong>Alfa Estates Pvt Ltd has Premium Black on stock</strong></a><span class="content">Rough Blocks of all Sizes Suitable for Monuments &amp; Slabs
-1) 0.3 cbm Below
-2) 0.3 cbm Above
-3) 200 x 100 cm
-4) 240 x 120 cm
-5) Mini Gang Saw
-6) Gang Saw
-
-Gang Saw Slabs
-1) 260 x 160 cm
-2) 280</span></li>            </ul>
-        </div>
-    </div>
+  </div>
 </div>
 
 <div class="rightcol">
-    <div class="tbox colors">
-        <div class="title"><a href="/stone/color">Natural stone by color</a></div>
-        <div class="content">
-            <table>
-                <tr>
-                    <td>
-                        <ul>
-                            <li><a href="/stone/color/beige"><span style="background: url(/static/img/stonecolors/beige-marble.jpg)"></span>Beige natural stone</a></li>
-                            <li><a href="/stone/color/blue"><span style="background: url(/static/img/stonecolors/blue-marble.jpg)"></span>Blue natural stone</a></li>
-                            <li><a href="/stone/color/brown"><span style="background: url(/static/img/stonecolors/brown-marble.jpg"></span>Brown natural stone</a></li>
-                            <li><a href="/stone/color/yellow"><span style="background: url(/static/img/stonecolors/yellow-marble.jpg)"></span>Yellow natural stone</a></li>
-                            <li><a href="/stone/color/grey"><span style="background: url(/static/img/stonecolors/grey-marble.jpg)"></span>Grey natural stone</a></li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul>
-                            <li><a href="/stone/color/green"><span style="background: url(/static/img/stonecolors/green-marble.jpg)"></span>Green natural stone</a></li>
-                            <li><a href="/stone/color/pink"><span style="background: url(/static/img/stonecolors/pink-marble.jpg)"></span>Pink natural stone</a></li>
-                            <li><a href="/stone/color/red"><span style="background: url(/static/img/stonecolors/red-marble.jpg)"></span>Red natural stone</a></li>
-                            <li><a href="/stone/color/black"><span style="background: url(/static/img/stonecolors/black-marble.jpg)"></span>Black natural stone</a></li>
-                            <li><a href="/stone/color/white"><span style="background: url(/static/img/stonecolors/white-marble.jpg)"></span>White natural stone</a></li>
-                        </ul>
-                    </td>
-                </tr>
-            </table>
-        </div>
+  <div class="tbox colors">
+    <div class="title">
+      <a href="{% url 'stonedb_property_list' 'color' %}">Natural stone by color</a>
     </div>
-
-    <div class="tbox login">
-                <div class="title">Login</div>
-        <div class="content">
-            <form method="post" action="/user/login.php">
-                <table>
-                    <tr><td>Login:</td><td><input type="text" name="loginnick" value=""></td></tr>
-                    <tr><td>Password:</td><td><input type="password" name="loginpass" value=""></td></tr>
-                    <tr><td></td><td><input type="submit" name="submit" value="Login"></td></tr>
-                </table>
-            </form>
-            <div class="links"><b><a href="/user/register.php">Register now!</a></b> | <a href="/user/password-reminder.php">Password reminder</a></div>
-        </div>
-            </div>
-
-    <div class="tbox">
-        <div class="title">Granite + Marble Magazine</div>
-        <div class="content staticpages">
-            <ul><li><strong><a href="/infos/home">Home use</a></strong><br>Tipps and tricks for the installation and use of granite and marble stone at home.</li><li><strong><a href="/infos/professional">Stone professional</a></strong><br>Natural stone for professional builders and designers, from architecture to facade building and the installation of marble and granite flooring.</li><li><strong><a href="/infos/production">Quary and Production</a></strong><br>Information for natural stone companies, quarying of granite and marble, cutting of slabs and tiles, with information on machinery and current trends.</li><li><strong><a href="/infos/misc">Misc</a></strong><br>Other natural stone related events that do not fit into any of the above topics.</li><li><strong><a href="/infos/help">Graniteland Help</a></strong><br>How to use Graniteland, explains how to find quickly the right natural stone. And for stone companies, how to present your company online.</li></ul>
-        </div>
+    <div class="content">
+      <table>
+        <tr>
+          <td>
+            <ul>
+              <li>
+                <a href="/stone/color/beige"><span style="background: url(/static/img/stonecolors/beige-marble.jpg)"></span>Beige
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/blue"><span style="background: url(/static/img/stonecolors/blue-marble.jpg)"></span>Blue
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/brown"><span style="background: url(/static/img/stonecolors/brown-marble.jpg"></span>Brown
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/yellow"><span style="background: url(/static/img/stonecolors/yellow-marble.jpg)"></span>Yellow
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/grey"><span style="background: url(/static/img/stonecolors/grey-marble.jpg)"></span>Grey
+                  natural stone</a></li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>
+                <a href="/stone/color/green"><span style="background: url(/static/img/stonecolors/green-marble.jpg)"></span>Green
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/pink"><span style="background: url(/static/img/stonecolors/pink-marble.jpg)"></span>Pink
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/red"><span style="background: url(/static/img/stonecolors/red-marble.jpg)"></span>Red
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/black"><span style="background: url(/static/img/stonecolors/black-marble.jpg)"></span>Black
+                  natural stone</a></li>
+              <li>
+                <a href="/stone/color/white"><span style="background: url(/static/img/stonecolors/white-marble.jpg)"></span>White
+                  natural stone</a></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
     </div>
- <div class="tbox companies">
-  <div class="title">Stone Companies online</div>
-  <div class="content">
-   <p>Many companies specialized in natural stone and related products are already listed in the Graniteland Company Directory.</p>
-   <ul><li><img src="/media/en/fotos_thumb/186.jpg"><strong><a href="/company/xiamen-xieshunfa-trade-co-ltd">XIAMEN XIESHUNFA TRADE CO., LTD</a></strong><br><em>(XIAMEN, China)</em></li><li><img src="/media/en/fotos_thumb/187.jpg"><strong><a href="/company/xiamen-jiebo-stone-co-ltd">Xiamen Jiebo Stone Co.,Ltd</a></strong><br><em>(Xiamen, China)</em></li><li><img src="/media/en/fotos_thumb/188.jpg"><strong><a href="/company/surfside-granite">Surfside Granite</a></strong><br><em>(Surfside Beach, )</em></li><li><img src="/img/nofoto100.jpg"><strong><a href="/company/mondial-marmi-spa">MONDIAL MARMI SPA</a></strong><br><em>(perugia, Italy)</em></li><li><img src="/img/nofoto100.jpg"><strong><a href="/company/marmoguia-m-rmores-e-cantarias-lda">MARMOGUIA-MÁRMORES E CANTARIAS, LDA</a></strong><br><em>(Anadia, Portugal)</em></li><li><img src="/img/nofoto100.jpg"><strong><a href="/company/robstone-products">ROBSTONE PRODUCTS</a></strong><br><em>(Constanta, Romania)</em></li><li><img src="/img/nofoto100.jpg"><strong><a href="/company/marmor-konrad-konrad">Marmor Konrad Konrad</a></strong><br><em>(Paderborn, Germany)</em></li><li><img src="/media/en/fotos_thumb/191.jpg"><strong><a href="/company/guvensoy-marble-ltd-sti">guvensoy marble ltd sti</a></strong><br><em>(ankara, Turkey)</em></li><li><img src="/media/en/fotos_thumb/192.jpg"><strong><a href="/company/xr-stone-factory">XR Stone Factory</a></strong><br><em>(, China)</em></li><li><img src="/img/nofoto100.jpg"><strong><a href="/company/xiamen-sunroad-ind-tra-co-ltd-">XIAMEN SUNROAD IND.&amp; TRA.CO.,LTD.</a></strong><br><em>(XIAMEN, China)</em></li></ul>
-   <p><a href="/user/register.php">Register now!</a></p>
   </div>
- </div>
 
- <div class="tbox countries">
-  <div class="title"><a href="">Natural stone by country of origin</a></div>
-  <div class="content">
-   <ul><li><a href="/stone/country/brazil">Granite and marble from Brazil</a></li><li><a href="/stone/country/china">Granite and marble from China</a></li><li><a href="/stone/country/germany">Granite and marble from Germany</a></li><li><a href="/stone/country/france">Granite and marble from France</a></li><li><a href="/stone/country/india">Granite and marble from India</a></li><li><a href="/stone/country/italy">Granite and marble from Italy</a></li><li><a href="/stone/country/spain">Granite and marble from Spain</a></li><li><a href=""><strong>More...</strong></a></li></ul>
+  <div class="tbox login">
+    <div class="title">Login</div>
+    <div class="content">
+      <form method="post" action="{{settings.LOGIN_URL}}">{% csrf_token %}
+        <table>
+          <tr>
+            <td>Login:</td>
+            <td><input type="text" name="username" value=""></td>
+          </tr>
+          <tr>
+            <td>Password:</td>
+            <td><input type="password" name="passwword" value=""></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="submit" name="submit" value="Login"></td>
+          </tr>
+        </table>
+      </form>
+      <div class="links"><b><a href="{{settings.SIGNUP_URL}}">Register now!</a></b> |
+        <a href="">Password reminder</a></div>
+    </div>
   </div>
- </div>
 
- <div class="tbox classes">
-  <div class="title"><a href="">Natural stone by classification</a></div>
-  <div class="content"><table class="wide top"><tr><td><ul><li><a href="/stone/type/granite">Granite</a></li><li><a href="/stone/type/limestone">Limestone</a></li><li><a href="/stone/type/marble">Marble</a></li></ul></td><td><ul><li><a href="/stone/type/quartzite">Quartzite</a></li><li><a href="/stone/type/sandstone">Sandstone</a></li><li><a href="/stone/type/slate">Slate</a></li></ul></td><td><ul><li><a href="/stone/type/soapstone">Soapstone</a></li><li><a href="/stone/type/travertine">Travertine</a></li><li><a href=""><strong>More...</strong></a></li></ul></td></tr></table></div>
- </div>
+  <div class="tbox">
+    <div class="title">Granite + Marble Magazine</div>
+    <div class="content staticpages">
+      <ul>
+        <li><strong><a href="/infos/home">Home use</a></strong><br>Tipps and
+          tricks for the installation and use of granite and marble stone at
+          home.
+        </li>
+        <li><strong><a href="/infos/professional">Stone
+          professional</a></strong><br>Natural stone for professional builders
+          and designers, from architecture to facade building and the
+          installation of marble and granite flooring.
+        </li>
+        <li><strong><a href="/infos/production">Quary and
+          Production</a></strong><br>Information for natural stone companies,
+          quarying of granite and marble, cutting of slabs and tiles, with
+          information on machinery and current trends.
+        </li>
+        <li><strong><a href="/infos/misc">Misc</a></strong><br>Other natural
+          stone related events that do not fit into any of the above topics.
+        </li>
+        <li><strong><a href="/infos/help">Graniteland Help</a></strong><br>How
+          to use Graniteland, explains how to find quickly the right natural
+          stone. And for stone companies, how to present your company online.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tbox companies">
+    <div class="title">Stone Companies online</div>
+    <div class="content">
+      <p>Many companies specialized in natural stone and related products are
+        already listed in the Graniteland Company Directory.</p>
+      <ul>
+        {% for item in view_users %}
+        <li>
+          <img src="{{item.profile.title_foto_url}}"><strong><a href="{% url 'companydb_item' item.username %}">{{item.profile.name}}</a></strong><br><em>({{item.profile.city}}, {{item.profile.country_name}})</em>
+        </li>
+        {% endfor %}
+      </ul>
+      <p><a href="{{settings.SIGNUP_URL}}">Register now!</a></p>
+    </div>
+  </div>
+
+  <div class="tbox countries">
+    <div class="title">
+      <a href="{% url 'stonedb_property_list' 'country' %}">Natural stone by country of origin</a>
+    </div>
+    <div class="content">
+      <ul>
+        <li><a href="/stone/country/brazil">Granite and marble from Brazil</a>
+        </li>
+        <li><a href="/stone/country/china">Granite and marble from China</a>
+        </li>
+        <li><a href="/stone/country/germany">Granite and marble from Germany</a>
+        </li>
+        <li><a href="/stone/country/france">Granite and marble from France</a>
+        </li>
+        <li><a href="/stone/country/india">Granite and marble from India</a>
+        </li>
+        <li><a href="/stone/country/italy">Granite and marble from Italy</a>
+        </li>
+        <li><a href="/stone/country/spain">Granite and marble from Spain</a>
+        </li>
+        <li><a href=""><strong>More...</strong></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tbox classes">
+    <div class="title">
+      <a href="{% url 'stonedb_property_list' 'type' %}">Natural stone by classification</a>
+    </div>
+    <div class="content">
+      <table class="wide top">
+        <tr>
+          <td>
+            <ul>
+              <li><a href="/stone/type/granite">Granite</a></li>
+              <li><a href="/stone/type/limestone">Limestone</a></li>
+              <li><a href="/stone/type/marble">Marble</a></li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li><a href="/stone/type/quartzite">Quartzite</a></li>
+              <li><a href="/stone/type/sandstone">Sandstone</a></li>
+              <li><a href="/stone/type/slate">Slate</a></li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li><a href="/stone/type/soapstone">Soapstone</a></li>
+              <li><a href="/stone/type/travertine">Travertine</a></li>
+              <li><a href=""><strong>More...</strong></a></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

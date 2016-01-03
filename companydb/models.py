@@ -60,6 +60,13 @@ class UserProfile(models.Model):
     def pic_count(self):
         return Pic.objects.filter(module='profile',
                                   module_id=self.user.id).count()
+    @property
+    def title_foto_url(self):
+        if self.title_foto:
+            return '{}{}.{}'.format(settings.PIC_SMALL_URL,
+                                    self.title_foto, self.title_foto_ext)
+        else:
+            return ''
 
 
 class CommonProjectsStocksManager(models.Manager):
