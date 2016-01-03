@@ -132,18 +132,33 @@
     </div>
   </div>
 
+  {% if user.is_authenticated %}
   <div class="tbox login">
     <div class="title">Login</div>
     <div class="content">
-      <form method="post" action="{{settings.LOGIN_URL}}">{% csrf_token %}
+      <p>Signed in as {{user.profile.name}}</p>
+      <form action="{% url 'account_logout' %}" method="get">
+        <input type="submit" value="Sign out">
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="tbox login">
+    <div class="title">Login</div>
+    <div class="content">
+      <form method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}">
+        {% endif %}
         <table>
           <tr>
             <td>Login:</td>
-            <td><input type="text" name="username" value=""></td>
+            <td><input type="text" name="login" value=""></td>
           </tr>
           <tr>
             <td>Password:</td>
-            <td><input type="password" name="passwword" value=""></td>
+            <td><input type="password" name="password" value=""></td>
           </tr>
           <tr>
             <td></td>
@@ -151,10 +166,11 @@
           </tr>
         </table>
       </form>
-      <div class="links"><b><a href="{{settings.SIGNUP_URL}}">Register now!</a></b> |
-        <a href="">Password reminder</a></div>
+      <div class="links"><b><a href="{% url 'account_signup' %}">Register now!</a></b> |
+        <a href="{% url 'account_reset_password' %}">Password reminder</a></div>
     </div>
   </div>
+  {% endif %}
 
   <div class="tbox">
     <div class="title">Granite + Marble Magazine</div>
