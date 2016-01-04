@@ -1,22 +1,15 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
 
-{% block title %}
-Profile settings for {{user.profile.name}}
-{% endblock %}
+{% block title %}Profile settings for {{user.profile.name}}{% endblock %}
 
-{% block title2 %}
-Profile settings for {{user.profile.name}}
-{% endblock %}
+{% block title2 %}Profile settings for {{user.profile.name}}{% endblock %}
 
-{% block description %}
-{% endblock %}
+{% block description %}{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-{% endblock %}
+{% block body_classes %}{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
@@ -26,7 +19,7 @@ Profile settings for {{user.profile.name}}
 
 {% block main %}
 
-<h1>Profile settings for Christian Steimel</h1>
+<h1>Dashboard for Christian Steimel</h1>
 
 <p>Your stone company's Graniteland account to edit your public profile page. Add current offers and stock items to your profile page, publish your projects history and present your company to thousands of potential stone buyers every day.</p>
 
@@ -38,13 +31,13 @@ Profile settings for {{user.profile.name}}
    Add photos of your company</a>Upload some photos of your company and your people, to let potential clients know you. It's easy and straight forward, if you have some photos on your PC already.  </td>
   <td style="width:50%;">
    <img src="{% get_static_prefix %}img/icons/nuovext22/text-editor.png" class="link-icon" alt="">
-   <a href="/user/settings-about.php">Present your company</a>
+   <a href="{% url 'companydb_db_about' %}">Present your company</a>
    There are thousands of visitors on Graniteland every day, looking for granite and related products. Tell this already highly targeted audience more about your company and your products.  </td>
  </tr>
  <tr>
   <td>
    <img src="{% get_static_prefix %}img/icons/nuovext22/user-info.png" class="link-icon" alt="">
-   <a href="/user/settings-contact.php">Update contact details</a>
+   <a href="{% url 'companydb_db_details' %}">Update contact details</a>
    Keep your company's contact details up-to-date easily and offer potential customers simple ways to contact you. All company listings in Graniteland are free of charge.  </td>
   <td>
    <img src="{% get_static_prefix %}img/icons/nuovext22/file-manager.png" class="link-icon" alt="">
@@ -58,19 +51,16 @@ Profile settings for {{user.profile.name}}
    Present your work to thousands of visitors every day. Add your best past projects to your company's projects showroom, add photos and describe the difficulties and special requirements you mastered.  </td>
   <td>
    <img src="{% get_static_prefix %}img/icons/nuovext22/users.png" class="link-icon" alt="">
-   <a href="/companies">Manage your groups</a>
+   <a href="{% url 'companydb_db_areas' %}">Define your business areas</a>
    Define the areas of business your company is participating, from running a quary to natural stone installers.  </td>
  </tr>
- <tr>
-  <td>
-   <img src="{% get_static_prefix %}img/icons/nuovext22/cancel.png" class="link-icon" alt="">
-   <a href="/user/settings-delete.php">Delete your account</a>
-   Remove your account and related data from Graniteland.  </td>
-  <td>
-   <img src="{% get_static_prefix %}img/icons/nuovext22/gnome-help.png" class="link-icon" alt="">
-   <a href="/user/settings-pass.php">Update your password</a>
-   Set a new password for your account.  </td>
- </tr>
 </table>
+
+<h2>More settings</h2>
+<ul>
+  <li><a href="">Update your Email address</a></li>
+  <li><a href="">Change your password</a></li>
+  <li><a href="">Delete your account</a></li>
+</ul>
 
 {% endblock %}

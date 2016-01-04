@@ -1,0 +1,26 @@
+{% extends 'gl4app/base.html' %}
+{% load static %}
+
+{% block title %}Define areas of business for {{user.profile.name}}{% endblock %}
+
+{% block title2 %}Define areas of business for {{user.profile.name}}{% endblock %}
+
+{% block description %}{% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block body_classes %}user settings areas{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1>Areas of Business for {{user.profile.name}}</h1>
+
+<p>...</p>
+
+{% endblock %}

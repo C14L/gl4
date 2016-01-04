@@ -98,6 +98,12 @@ urlpatterns = [
 
     url(r'^company/dashboard/$',
         companydb.views.dashboard, name='companydb_dashboard'),
+    url(r'^company/dashboard/details/$',
+        companydb.views.db_details, name='companydb_db_details'),
+    url(r'^company/dashboard/about/$',
+        companydb.views.db_about, name='companydb_db_about'),
+    url(r'^company/dashboard/business-areas/$',
+        companydb.views.db_areas, name='companydb_db_areas'),
 ]
 
 

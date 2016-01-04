@@ -107,7 +107,24 @@ def pic_item(request, id):
 
 
 def dashboard(request):
-
     tpl = 'companydb/dashboard.html'
+    ctx = {}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def db_details(request):
+    tpl = 'companydb/db_details.html'
+    ctx = {}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def db_about(request):
+    tpl = 'companydb/db_about.html'
+    ctx = {}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def db_areas(request):
+    tpl = 'companydb/db_areas.html'
     ctx = {}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
