@@ -1,7 +1,9 @@
 import json
+import os
+
 from os import rename
 from os.path import join, isfile, dirname
-from django.conf import settings
+# from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
@@ -12,6 +14,12 @@ from stonedb.models import (Stone, StoneName,
 from tradeshowdb.models import Tradeshow
 from mdpages.models import Article, Author, Keyword, Topic
 from toolbox import parse_iso_date, parse_iso_datetime, force_int
+
+from django.core.management import call_command
+from django.conf import settings
+from django.db import connection
+from django.db.models.loading import get_app
+from io import StringIO
 
 
 class Command(BaseCommand):
@@ -35,19 +43,20 @@ class Command(BaseCommand):
             )
         input('Please press Enter to continue...')
 
-        self.import_color()
-        self.import_classification()
-        self.import_country()
-        self.init_texture()  # only deletes current entries
-        self.import_user()
-        self.import_profile()
-        self.import_stone()
-        self.import_tradeshow()
-        self.import_group()
-        self.import_stock()
-        self.import_projects()
-        self.import_pics()
-        self.import_pages()
+        # self.import_color()
+        # self.import_classification()
+        # self.import_country()
+        # self.init_texture()  # only deletes current entries
+        # self.import_user()
+        # self.import_profile()
+        # self.import_stone()
+        # self.import_tradeshow()
+        # self.import_group()
+        # self.import_stock()
+        # self.import_projects()
+        # self.import_pics()
+        # self.import_pages()
+        self.fix_all_id()
 
     def walkjsondata(self, fn):
         f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
@@ -581,3 +590,14 @@ class Command(BaseCommand):
 
             print('.', end='', flush=True)
         print(' done!')
+
+    def fix_all_id(self):
+        # Fixed all auto_increment id values for all models. There was a problem
+        # on the companydb.models.Pic model, so just fix them all to be save.
+        os.environ['DJANGO_COLORS'] = 'nocolor'
+        commands = StringIO()
+        cursor = connection.cursor()
+        for label in ['companydb', 'stonedb', 'tradeshowdb', 'mdpages']:
+            call_command('sqlsequencereset', label, stdout=commands)
+            print('Will fix "{}".'.format(label))
+        cursor.execute(commands.getvalue())
