@@ -1,0 +1,48 @@
+{% extends 'gl4app/base.html' %}
+{% load static %}
+
+{% block title %}Add relevant photos for {{user.profile.name}}{% endblock %}
+
+{% block title2 %}Add relevant photos for {{user.profile.name}}{% endblock %}
+
+{% block description %}{% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block body_classes %}user settings pics{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
+<a href="">add photos</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<p>Photos are great to introduce your company to potential customers. Show off your company facilities to let future customers see who they will be dealing with.</p>
+
+<div style="padding: 10px; background: #DDD;">
+  <form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+      {{form.as_table}}
+      <tr><td></td><td><input type="submit" value="add"></td></tr>
+    </table>
+  </form>
+</div>
+
+<div class="fotoslist" id="fotoslist">
+  <p class="count">{{photos.count}}/10 photos for the company {{user.profile.name}} here.</p>
+  <div class="list">
+    {% for item in photos %}
+      <div class="item">
+        <a href="{% url 'companydb_pic_item' item.id %}">
+          <img src="/media/en/fotos_small/{{item.id}}.jpg" alt="">
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

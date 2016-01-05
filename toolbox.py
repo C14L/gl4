@@ -1,17 +1,97 @@
-"""
-Collection of random simple general-purpose helper functions.
-"""
+"""Collection of random simple general-purpose helper functions."""
 
 import dateutil.parser
 import math
 import pytz
 import re
+
 from datetime import date, datetime
+from PIL import Image, ImageFont, ImageDraw
+from django.conf import settings
+# from typing import Union --> Py3.5
+
 from django.utils.timezone import utc
 
 
-def to_iso8601(when=None):
-    """Return a datetime as string in ISO-8601 format."""
+def resize_copy(raw_fname: str, target_fname: str, resize_type: str,
+                max_w: int, max_h: int, watermark: bool=None) -> bool:
+    """
+    Make a resized JPEG copy of the image with file name "raw_fname" and write
+    the resulting image data to a file named "target_fname".
+
+    The resulting image will be not larger than "max_w x max_h" pixels and is
+    resized to either "contain" the original image completely and have some
+    empty areas on the target image, or to "cover" the target image completely
+    by cropping parts of the original image.
+
+    :param raw_fname: Full file name of raw image.
+    :param target_fname: Full file name of target image.
+    :param resize_type: Either "cover" or "contain", like CSS3.
+    :param max_w: Maximum width of target image.
+    :param max_h: Maximum height of target image.
+    :param watermark: Optional. If True, add settings.SITE_NAME as watermark.
+    """
+    file_type = 'JPEG'
+    # raw_fh.seek(0)
+    im = Image.open(raw_fname).convert('RGBA')
+
+    # Original image size.
+    curr_w, curr_h = im.size
+
+    # Resize either "cover" or "contain".
+    if resize_type == 'cover':
+        # Same as CSS3, cover the entire target image and crop
+        w = int(max_w)
+        h = int(max(curr_h * max_w / curr_w, 1))
+        cx2, cy2 = 0, int((h - max_h) / 2)  # part to crop
+        if h < max_h:
+            h = int(max_h)
+            w = int(max(curr_w * max_h / curr_h, 1))
+            cx2, cy2 = int((w - max_w) / 2), 0  # part to crop
+        im = im.resize((w, h), Image.ANTIALIAS).crop((cx2, cy2, w-cx2, h-cy2))
+        im.load()  # load() is necessary after crop
+
+    elif resize_type == 'contain':
+        # First calc to fit the width. Then check to see if height is still
+        # too large, and if so, calc again to fit height.
+        #
+        # max_w, max_h: this is the target.
+        # curr_w, curr_h: this is the current situation.
+        if curr_w > max_w:
+            curr_h = int(max(curr_h * max_w / curr_w, 1))
+            curr_w = int(max_w)
+        if curr_h > max_h:
+            curr_w = int(max(curr_w * max_h / curr_h, 1))
+            curr_h = int(max_h)
+        im = im.resize((curr_w, curr_h), Image.ANTIALIAS)
+
+    else:
+        raise ValueError('No such resize_type "{}".'.format(resize_type))
+
+    if watermark:
+        font_fname = getattr(settings, 'WATERMARK_FONT_FILENAME',
+                             '/usr/share/fonts/truetype/freefont/FreeSans.ttf')
+        txt = settings.SITE_NAME
+        font = ImageFont.truetype(font_fname, 16)
+        im_tx_dark = Image.new('RGBA', im.size, (32, 32, 32, 0))
+        im_tx_light = Image.new('RGBA', im.size, (255, 255, 255, 0))
+        draw_ctx_dark = ImageDraw.Draw(im_tx_dark)
+        draw_ctx_light = ImageDraw.Draw(im_tx_light)
+        draw_ctx_dark.text((12, 12), txt, font=font, fill=(32, 32, 32, 192))
+        draw_ctx_light.text((10, 10), txt, font=font, fill=(255, 255, 255, 192))
+        im = Image.alpha_composite(im, im_tx_dark)
+        im = Image.alpha_composite(im, im_tx_light)
+
+    im.save(target_fname, file_type)
+    return True
+
+
+def to_iso8601(when: datetime=None) -> str:
+    """
+    Return a datetime as string in ISO-8601 format. If no time given, default
+    to now.
+    :param when:
+    """
     if not when:
         when = datetime.now(pytz.utc)
     if not when.tzinfo:
@@ -20,10 +100,11 @@ def to_iso8601(when=None):
     return _when
 
 
-def from_iso8601(when=None):
+def from_iso8601(when: str=None) -> datetime:
     """
-    Return a UTC timezone aware datetime object from a string in
-    ISO-8601 format.
+    Return a UTC timezone aware datetime object from a string in ISO-8601
+    format. If no time given, default to now.
+    :param when:
     """
     if not when:
         _when = datetime.now(pytz.utc)
@@ -34,8 +115,11 @@ def from_iso8601(when=None):
     return _when
 
 
-def parse_iso_datetime(t=None):
-    """Return timezone aware datetime from simple 'yyyy-mm-dd hh-mm-ss'."""
+def parse_iso_datetime(t: str=None) -> datetime:
+    """
+    Return ISO timezone aware datetime from simple 'yyyy-mm-dd hh-mm-ss'.
+    :param t:
+    """
     if t:
         try:
             return datetime.strptime(t, "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc)
@@ -45,23 +129,29 @@ def parse_iso_datetime(t=None):
         return datetime.utcnow().replace(tzinfo=utc)
 
 
-def parse_iso_date(t=None):
-    """Return timezone aware date from simple 'yyyy-mm-dd'."""
+def parse_iso_date(t: str=None) -> datetime:
+    """
+    Return timezone aware date from simple 'yyyy-mm-dd'.
+    :param t:
+    """
     if t:
         try:
-            return datetime.strptime(t, "%Y-%m-%d").date()  #.replace(tzinfo=utc)
+            return datetime.strptime(t, "%Y-%m-%d").date()
         except ValueError:
             return None
     else:
-        return date.today()  #.replace(tzinfo=utc)
+        return date.today()
 
 
-def force_int(x, min=None, max=None):
+def force_int(x, min: int=None, max: int=None) -> int:
     """
     Receives any value and returns an integer. Values that can not be
     parsed are returned as 0. Values that are smaller that min or
     larger than max, if either is given, are set to min or max
     respectively.
+    :param x:
+    :param min:
+    :param max:
     """
     try:
         i = int(x)
@@ -74,18 +164,19 @@ def force_int(x, min=None, max=None):
     return i
 
 
-def force_float(x):
+def force_float(x) -> float:
     """
     Receives any value and returns a float. Values that can not be
     parsed are returned as 0.0
+    :param x:
     """
     try:
         return float(x)
     except:
-        return 0
+        return 0.0
 
 
-def set_imgur_url(url="http://i.imgur.com/wPqDiEy.jpg", size='t'):
+def set_imgur_url(url: str, size: str='t') -> str:
     """
     Gets a imgur picture URL (e.g. "http://i.imgur.com/wPqDiEyl.jpg")
     and changes the size byte to 'size':
@@ -97,6 +188,8 @@ def set_imgur_url(url="http://i.imgur.com/wPqDiEy.jpg", size='t'):
 
     If 'url' is not a valid imgur.com URL, the value is returned
     unchanged.
+    :param url:
+    :param size:
     """
     re_imgur_url = (r'(?P<base>https?://i.imgur.com/)'
                     r'(?P<name>[a-zA-Z0-9]{2,20}?)'
@@ -109,10 +202,11 @@ def set_imgur_url(url="http://i.imgur.com/wPqDiEy.jpg", size='t'):
     return url
 
 
-def get_imgur_page_from_picture_url(url):
+def get_imgur_page_from_picture_url(url: str) -> str:
     """
     Returns the URL of the containing page for a picture URL
     on imgur.com
+    :param url:
     """
     re_imgur_url = (r'(?P<base>https?://i.imgur.com/)'
                     r'(?P<name>[a-zA-Z0-9]{2,20})'
@@ -130,7 +224,10 @@ def get_imgur_page_from_picture_url(url):
 
 
 def get_dob_range(minage, maxage):
-    """Return earliest and latest dob to match a min/max age range."""
+    """Return earliest and latest dob to match a min/max age range.
+    :param minage:
+    :param maxage:
+    """
     year = date.today().year
     dob_earliest = date.today().replace(year=(year-maxage))
     dob_latest = date.today().replace(year=(year-minage))
@@ -192,8 +289,10 @@ EASTERN_ZODIAC_UPPER_LIMIT = (  # from 1925-01-23 until 2044-01-29
     (20410131, 9), (20420121, 10), (20430209, 11), (20440129, 12))
 
 
-def get_western_zodiac_index(dob):
-    """Gets a datetime.date value and returns its Western zodiac index"""
+def _get_western_zodiac_index(dob):
+    """Gets a datetime.date value and returns its Western zodiac index
+    :param dob:
+    """
     try:
         mdd = int(dob.strftime('%m%d'))
         lim = WESTERN_ZODIAC_UPPER_LIMIT
@@ -204,20 +303,22 @@ def get_western_zodiac_index(dob):
 
 def get_western_zodiac(dob):
     try:
-        return WESTERN_ZODIAC[get_western_zodiac_index(dob)][1]
+        return WESTERN_ZODIAC[_get_western_zodiac_index(dob)][1]
     except IndexError:
         return ''
 
 
 def get_western_zodiac_symbol(dob):
     try:
-        return WESTERN_ZODIAC_SYMBOLS[get_western_zodiac_index(dob)][1]
+        return WESTERN_ZODIAC_SYMBOLS[_get_western_zodiac_index(dob)][1]
     except IndexError:
         return ''
 
 
 def get_eastern_zodiac_index(dob):
-    """Gets a datetime.date value and returns its Eastern zodiac"""
+    """Gets a datetime.date value and returns its Eastern zodiac
+    :param dob:
+    """
     try:
         ymd = int(dob.strftime('%Y%m%d'))
         lim = EASTERN_ZODIAC_UPPER_LIMIT
@@ -247,7 +348,9 @@ def distance_between_geolocations(p1, p2):
     """
     Gets two geolocation points p1 and p2 as (lat, lng) tuples. Returns
     the approximate distance in meters. Does not account for earth's
-    curvature, so that inaccurency increases with distance.
+    curvature, so that inaccuracy increases with distance.
+    :param p1:
+    :param p2:
     """
     p1_lat, p1_lng = float(p1[0]), float(p1[1])
     p2_lat, p2_lng = float(p2[0]), float(p2[1])
@@ -267,6 +370,9 @@ def get_latlng_bounderies(lat, lng, distance):
     that point. To simplify database lookup, only get a square around
     the geolocation. Return (lat_min, lng_min) and (lat_max, lng_max)
     geolocation points to draw the box.
+    :param lat:
+    :param lng:
+    :param distance:
     """
     lat_1deg = 110574.0  # m
     lng_1deg = 111320.0 * math.cos(lat)  # m

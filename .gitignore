@@ -6,3 +6,5 @@ gl4/settings_private.py
 NOTES
 .idea/
 static/
+*.ttf
+

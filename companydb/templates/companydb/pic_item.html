@@ -40,7 +40,19 @@ profile fotos fotos-{{pic.module}}
     {% with 'stock' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
   {% elif pic.module == 'profile' %}
     {% with 'photos' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+    {% if user.is_authenticated %}
+      <p>
+        <a href="{% url 'companydb_db_pics' %}">{{pic.user.name}} pictures dashboard</a>
+        <form method="POST" action="{% url 'companydb_pic_item' pic.id %}"
+              onsubmit="return confirm('Delete this picture?');">
+          {% csrf_token %}
+          <input type="hidden" name="_method" value="DELETE">
+          <input type="submit" value="delete this picture">
+        </form>
+      </p>
+    {% endif %}
   {% endif %}
+
 
   <div id="display-foto">
     <div class="fotoitem">

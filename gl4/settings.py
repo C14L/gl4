@@ -18,11 +18,13 @@ from gl4.settings_private import *
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+SITE_ID = 1
+SITE_NAME = 'Graniteland.com'
+
 DEBUG = os.path.exists('/islocal.txt')
 PRODUCTION = False
 
 APPEND_SLASH = True
-SITE_ID = 1
 ROOT_URLCONF = 'gl4.urls'
 WSGI_APPLICATION = 'gl4.wsgi.application'
 
@@ -44,6 +46,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'crispy_forms',
 
     'allauth',
     'allauth.account',
@@ -106,8 +110,14 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
-        'APP_DIRS': True,
+        # 'APP_DIRS': True,
         'OPTIONS': {
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
+            ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -142,8 +152,9 @@ USE_L10N = True
 STATIC_URL = '/static/'
 
 # Example: "/media/en/fotos_small/21392.jpg"
-MEDIA_URL = '/media/en/'
-MEDIA_ROOT = '/home/chris/v600/graniteland_backups/graniteland_media_en/'
+MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
+MEDIA_ROOT = '/home/chris/v600/graniteland_backups/' \
+             'graniteland_media_{}/'.format(LANGUAGE_SHORT)
 
 # --- django-autoslug settings -------------------------------------------------
 
@@ -168,6 +179,4 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 
 STONES_PER_PAGE = 50
 
-PIC_SMALL_URL = MEDIA_URL + 'fotos_small/'
-PIC_MEDIUM_URL = MEDIA_URL + 'fotos_medium/'
-PIC_LARGE_URL = MEDIA_URL + 'fotos_large/'
+WATERMARK_FONT_FILENAME = os.path.join(BASE_DIR, 'Verdana.ttf')
