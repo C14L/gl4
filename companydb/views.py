@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
 
-from companydb.forms import PicUploadForm
+from companydb.forms import PicUploadForm, CompanyDetailsForm
 from companydb.models import Group, Pic, Stock, Project
 from mdpages.models import Article
 from stonedb.models import Stone
@@ -121,8 +121,9 @@ def dashboard(request):
 
 
 def db_details(request):
+    form = CompanyDetailsForm()
     tpl = 'companydb/db_details.html'
-    ctx = {}
+    ctx = {'form': form}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
@@ -144,8 +145,7 @@ def db_pics(request):
         if form.is_valid():
             pic = Pic.objects.add_to_profile(request.user,
                                              request.FILES['pic'],
-                                             form.cleaned_data['title'],
-                                             form.cleaned_data['caption'])
+                                             form.cleaned_data['title'])
             if request.is_ajax():
                 return HttpJsonResponse({'pic':{
                     'url_thumb': pic.url_thumb,

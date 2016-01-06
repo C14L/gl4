@@ -12,6 +12,7 @@
 
     {% if canonical %}<link rel="canonical" href="{{canonical}}">{% endif %}
     <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'base-lt-750.css' %}" media="only screen and (max-width: 750px)">
 
@@ -245,6 +246,8 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     </script>
 
     {% block foot %}{% endblock %}
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
 
     <script>var addthis_config = {"data_track_addressbar":false};</script>
     <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yaix"></script>

@@ -18,24 +18,49 @@ from toolbox import resize_copy
 class UserProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', primary_key=True)
-    name = models.CharField(max_length=100, default='')
-    contact = models.CharField(max_length=100, default='')
-    contact_position = models.CharField(max_length=100, default='')
-    slogan = models.CharField(max_length=255, default='')
-    street = models.CharField(max_length=100, default='')
-    city = models.CharField(max_length=100, default='')
-    zip = models.CharField(max_length=16, default='')
+    name = models.CharField(
+        max_length=100, default='', help_text='The name of your company.')
+    contact = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='The name of your company.')
+    contact_position = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='The job title of the contact person (sales, owner, etc.)')
+    slogan = models.CharField(max_length=255, default='', blank=True)
+    street = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='The physical address of the company.')
+    city = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='The name of the city or town.')
+    zip = models.CharField(
+        max_length=16, default='', blank=True, help_text='The postal code.')
     country_sub_id = models.PositiveIntegerField(db_index=True, default=0)
     country_id = models.PositiveIntegerField(db_index=True, default=0)
-    country_sub_name = models.CharField(max_length=100, default='')
-    country_name = models.CharField(max_length=100, default='')
+    country_sub_name = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='The province or region if applicable.')
+    country_name = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='The country your company is registered.')
     postal = models.TextField(default='')
-    email = models.CharField(max_length=100, default='')
-    fax = models.CharField(max_length=100, default='')
-    tel = models.CharField(max_length=100, default='')
-    mobile = models.CharField(max_length=100, default='')
-    web = models.CharField(max_length=100, default='')
-    about = models.TextField(default='')
+    email = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='Official company sales email address.')
+    fax = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text="Your company's fax number.")
+    tel = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text="Your company's phone number, "
+        "including international dialing code for your country.")
+    mobile = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='Your mobile phone number.')
+    web = models.CharField(
+        max_length=100, default='', blank=True,
+        help_text='The official web site of your company, if applicable.')
+    about = models.TextField(default='', blank=True, help_text='')
     title_foto = models.IntegerField(default=0)
     title_foto_ext = models.CharField(max_length=30, default='')
     signup_ip = models.CharField(max_length=15, default='')
@@ -249,8 +274,10 @@ class Pic(models.Model):  # cc__fotos
     width = models.PositiveIntegerField(default=0)
     height = models.PositiveIntegerField(default=0)
     ext = models.CharField(max_length=3, default='jpg')
-    title = models.CharField(max_length=80, default='', blank=True)
-    caption = models.TextField(default='', blank=True)
+    title = models.CharField(max_length=80, default='', blank=True,
+                             help_text='A short title for the picture.')
+    caption = models.TextField(default='', blank=True, help_text='Optionally, '
+                               'some more information about the picture.')
     is_blocked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_sticky = models.BooleanField(default=False)

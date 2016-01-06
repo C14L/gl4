@@ -1,5 +1,6 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}Company details for {{user.profile.name}}{% endblock %}
 
@@ -21,7 +22,11 @@
 
 <h1>Edit contact details</h1>
 
-<div class="box-input">
+<div style="padding: 10px;">
+  {% crispy form %}
+</div>
+
+<!--
   <form method="post" action="">
     <input type="hidden" id="url" name="url" value="/company/csx">
     <table>
@@ -376,6 +381,6 @@
       </tr>
     </table>
   </form>
-</div>
+</div> -->
 
 {% endblock %}

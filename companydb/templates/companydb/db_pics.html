@@ -1,5 +1,6 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}Add relevant photos for {{user.profile.name}}{% endblock %}
 
@@ -23,13 +24,7 @@
 <p>Photos are great to introduce your company to potential customers. Show off your company facilities to let future customers see who they will be dealing with.</p>
 
 <div style="padding: 10px; background: #DDD;">
-  <form method="POST" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-      {{form.as_table}}
-      <tr><td></td><td><input type="submit" value="add"></td></tr>
-    </table>
-  </form>
+  {% crispy form %}
 </div>
 
 <div class="fotoslist" id="fotoslist">
