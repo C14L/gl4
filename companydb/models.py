@@ -1,6 +1,6 @@
 import os
 
-from os.path import join
+from os.path import join, isdir, dirname
 
 from django.conf import settings
 from django.db import models
@@ -337,12 +337,14 @@ class Pic(models.Model):  # cc__fotos
         return join(settings.MEDIA_URL, size, '{}.{}'.format(self.id, 'jpg'))
 
     def get_filename(self, size=None):
+        ext = 'jpg'  # all sizes will be JPEG.
         if not size:
             size = Pic.RAW
+            ext = self.ext  # use extention of uploaded file.
         elif size not in [x[0] for x in Pic.SIZES]:
             raise ValueError('Not a define image size, see Pic.SIZES')
 
-        return join(settings.MEDIA_ROOT, size, '{}.{}'.format(self.id, 'jpg'))
+        return join(settings.MEDIA_ROOT, size, '{}.{}'.format(self.id, ext))
 
     def make_sizes(self):
         """Creates all image file sizes Pic.models.SIZE for this instance."""
@@ -351,6 +353,8 @@ class Pic(models.Model):  # cc__fotos
         for x in Pic.SIZES:
             size_name, resize_type, max_width, max_height, watermark = x
             fname = self.get_filename(size_name)
+            # Make sure the directory exists
+            os.makedirs(dirname(fname), mode=0o755, exist_ok=True)
             # Try to delete any old thumb image file
             try:
                 os.remove(fname)
@@ -358,6 +362,8 @@ class Pic(models.Model):  # cc__fotos
                 pass
             resize_copy(raw_fname, fname, resize_type,
                         max_width, max_height, watermark)
+            os.chmod(fname, 0o644)
+
         return True
 
     def delete_file(self, size):
