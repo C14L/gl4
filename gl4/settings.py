@@ -155,10 +155,8 @@ STATIC_URL = '/static/'
 
 # Example: "/media/en/fotos_small/21392.jpg"
 MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
-
-# MEDIA_ROOT = '/home/chris/v600/graniteland_backups/' \
-#              'graniteland_media_{}/'.format(LANGUAGE_SHORT)
-MEDIA_ROOT = '/home/chris/dev-data/gl4-media'
+MEDIA_ROOT = '/home/chris/dev-data/gl4-media/' \
+             'graniteland_media_{}/'.format(LANGUAGE_SHORT)
 
 # --- django-autoslug settings -------------------------------------------------
 
