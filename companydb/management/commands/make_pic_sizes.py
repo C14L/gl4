@@ -8,5 +8,27 @@ class Command(BaseCommand):
     help = "Re-create uploaded media files for companydb.Pic model."
 
     def handle(self, *args, **options):
-        for pic in Pic.objects.all_public():
-            pic.make_sizes()
+        count_oserror = 0
+        count_notfound = 0
+        count_success = 0
+        li = Pic.objects.all_public()
+
+        print('\nCreate image files for all sizes of each uploaded, public\n'
+              'picture. There are currently {} items.\n'.format(li.count()))
+        input('--- Press ENTER to continue ---')
+
+        for pic in li:
+            try:
+                pic.make_sizes()
+                print('.', end='', flush=True)
+                count_success += 1
+            except FileNotFoundError:
+                print('E', end='', flush=True)
+                count_notfound += 1
+            except OSError:
+                print('E', end='', flush=True)
+                count_oserror += 1
+
+        print(' done.')
+        print('OSErrpr: {} -- NotFound: {} -- Success: {}\n'.format(
+            count_oserror, count_notfound, count_success))
