@@ -3,7 +3,13 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
 
-from companydb.models import UserProfile, Pic
+from companydb.models import UserProfile, Pic, Project
+
+
+class CompanyProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['stones', 'description', 'location']
 
 
 class CompanyAboutForm(forms.ModelForm):

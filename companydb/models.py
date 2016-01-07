@@ -67,7 +67,8 @@ class UserProfile(models.Model):
         help_text='The official web site of your company, if applicable.')
     about = models.TextField(default='', blank=True,
                              verbose_name='About company',
-                             help_text='')
+                             help_text='Provide some background about your '
+                                       'company')
     title_foto = models.IntegerField(default=0)
     title_foto_ext = models.CharField(max_length=30, default='')
     signup_ip = models.CharField(max_length=15, default='')
@@ -98,8 +99,9 @@ class UserProfile(models.Model):
     @property
     def title_foto_url(self):
         if self.title_foto:
-            return '{}{}.{}'.format(settings.PIC_SMALL_URL,
-                                    self.title_foto, self.title_foto_ext)
+            thumb_dir = 'fotos_thumb'
+            return join(settings.MEDIA_URL, thumb_dir, '{}.{}'.format(
+                        self.title_foto, self.title_foto_ext))
         else:
             return ''
 
@@ -119,14 +121,16 @@ class CommonProjectsStocksManager(models.Manager):
 
 class CommonProjectsStocks(models.Model):
 
-    stone = models.ForeignKey(Stone, db_index=True)
-    user = models.ForeignKey(User, db_index=True)
-    created = models.DateTimeField(default=now)  # time
-    description = models.TextField(default='')
+    user = models.ForeignKey(User, db_index=True, editable=False)
+    created = models.DateTimeField(default=now, editable=False)  # time
+    description = models.TextField(
+        default='', blank=True, verbose_name='Project description',
+        help_text='Describe the project, the challenges you met, the problems '
+                  'you solved, the time it took, etc.')
     is_blocked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_recommended = models.BooleanField(default=False)
-    count_views = models.PositiveIntegerField(default=0)
+    count_views = models.PositiveIntegerField(default=0, editable=False)
 
     objects = CommonProjectsStocksManager()
 
@@ -138,6 +142,7 @@ class CommonProjectsStocks(models.Model):
 
 
 class Stock(CommonProjectsStocks):
+    stone = models.ForeignKey(Stone, db_index=True, null=True, default=None)
 
     class Meta:
         verbose_name = "Stock"
@@ -149,6 +154,13 @@ class Stock(CommonProjectsStocks):
 
 
 class Project(CommonProjectsStocks):
+    stones = models.ManyToManyField(Stone)
+    location = models.TextField(
+        default='', blank=True, verbose_name='Address',
+        help_text='ONLY for publicly accessible buildings, provide a street'
+                  'address of the project, where it can be visited.')
+    lat = models.FloatField(null=True, default=None, editable=False)
+    lng = models.FloatField(null=True, default=None, editable=False)
 
     class Meta:
         verbose_name = "Project"

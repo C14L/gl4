@@ -114,12 +114,12 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
-            #'loaders': [
+            # 'loaders': [
             #    ('django.template.loaders.cached.Loader', [
             #        'django.template.loaders.filesystem.Loader',
             #        'django.template.loaders.app_directories.Loader',
             #    ]),
-            #],
+            # ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -155,8 +155,10 @@ STATIC_URL = '/static/'
 
 # Example: "/media/en/fotos_small/21392.jpg"
 MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
-MEDIA_ROOT = '/home/chris/v600/graniteland_backups/' \
-             'graniteland_media_{}/'.format(LANGUAGE_SHORT)
+
+# MEDIA_ROOT = '/home/chris/v600/graniteland_backups/' \
+#              'graniteland_media_{}/'.format(LANGUAGE_SHORT)
+MEDIA_ROOT = '/home/chris/dev-data/gl4-media'
 
 # --- django-autoslug settings -------------------------------------------------
 

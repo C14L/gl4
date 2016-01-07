@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
@@ -9,13 +8,14 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
 
-from companydb.forms import PicUploadForm, CompanyDetailsForm, CompanyAboutForm
+from companydb.forms import PicUploadForm, CompanyDetailsForm, CompanyAboutForm, \
+    CompanyProjectForm
 from companydb.models import Group, Pic, Stock, Project
 from mdpages.models import Article
 from stonedb.models import Stone
 
 
-def get_page(o, p):
+def _get_page(o, p):
     per_page = getattr(settings, 'PER_PAGE', 20)
     paginator = Paginator(o, per_page)
     return paginator.page(p)
@@ -34,7 +34,7 @@ def itemlist(request, slug, p):
                                       profile__is_blocked=False)
     members_qs = members_qs.prefetch_related('profile')
     members_qs = members_qs.order_by('profile__name')
-    members = get_page(members_qs, p)
+    members = _get_page(members_qs, p)
 
     tpl = 'companydb/list.html'
     ctx = {'group': group, 'members': members,
@@ -55,7 +55,7 @@ def stock(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = view_user.stock_set.filter(is_deleted=False, is_blocked=False)
     tpl = 'companydb/stock.html'
-    ctx = {'view_user': view_user, 'stock': get_page(li, page)}
+    ctx = {'view_user': view_user, 'stock': _get_page(li, page)}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
@@ -64,7 +64,7 @@ def projects(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = view_user.project_set.filter(is_deleted=False, is_blocked=False)
     tpl = 'companydb/projects.html'
-    ctx = {'view_user': view_user, 'projects': get_page(li, page)}
+    ctx = {'view_user': view_user, 'projects': _get_page(li, page)}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
@@ -73,7 +73,7 @@ def photos(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = Pic.objects.all_for_profile(view_user)
     tpl = 'companydb/photos.html'
-    ctx = {'view_user': view_user, 'photos': get_page(li, page)}
+    ctx = {'view_user': view_user, 'photos': _get_page(li, page)}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
@@ -185,7 +185,7 @@ def db_pics(request):
                                              request.FILES['pic'],
                                              form.cleaned_data['title'])
             if request.is_ajax():
-                return JsonResponse({'pic':{
+                return JsonResponse({'pic': {
                     'url_thumb': pic.url_thumb,
                     'url_small': pic.url_small,
                     'url_medium': pic.url_medium,
@@ -198,4 +198,33 @@ def db_pics(request):
 
     tpl = 'companydb/db_pics.html'
     ctx = {'form': form, 'photos': Pic.objects.all_for_profile(request.user)}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def db_projects(request, pk=None):
+    """
+    Provide a form to add a "project" to a company profile. A project includes
+    a reference to up to 10 Stone items, a description, up to 20 pictures,
+    and (in case of a pubic building) a street address, so that it can be
+    visited irl.
+
+    :param request:
+    :param pk: Optionally, the pk of an existing Project.
+    :return:
+    """
+    project = None
+    if pk:
+        project = get_object_or_404(Project, pk=pk)
+
+    if request.method == 'POST':
+        form = CompanyProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            redirect_url = reverse('companydb_projects')
+            return HttpResponseRedirect(redirect_url)
+    else:
+        form = CompanyProjectForm(instance=project)
+
+    tpl = 'companydb/db_project.html'
+    ctx = {'form': form}
     return rtr(tpl, ctx, context_instance=RequestContext(request))

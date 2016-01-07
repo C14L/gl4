@@ -1,0 +1,29 @@
+{% extends 'gl4app/base.html' %}
+{% load static %}
+
+{% block title %}Add a project your company has finished{% endblock %}
+
+{% block title2 %}Add a project your company has finished{% endblock %}
+
+{% block description %}{% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block body_classes %}user settings project{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
+<a href="{% url 'companydb_db_project' %}">Add Project</a> &raquo;
+{% endblock %}
+
+{% block main %}
+
+<h1>Add a project</h1>
+
+<p></p>
+
+
+
+{% endblock %}

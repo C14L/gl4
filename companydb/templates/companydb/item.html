@@ -102,6 +102,8 @@ profile profile-home
   </tr>
 </table>
 
+<p>Last active: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }} </p>
+
 {% endblock %}
 
 {% block foot %}

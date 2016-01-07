@@ -12,7 +12,7 @@ def home(request):
                      .exclude(profile__country_name='')\
                      .exclude(profile__is_blocked=True)\
                      .exclude(profile__is_deleted=True)\
-                     .order_by('-last_login')[:10]
+                     .order_by('last_login')[:10]
 
     stocks = []
     # NotImplementedError: annotate() + distinct(fields) is not implemented.

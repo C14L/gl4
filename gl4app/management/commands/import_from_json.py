@@ -18,7 +18,7 @@ from toolbox import parse_iso_date, parse_iso_datetime, force_int
 from django.core.management import call_command
 from django.conf import settings
 from django.db import connection
-from django.db.models.loading import get_app
+# from django.db.models.loading import get_app
 from io import StringIO
 
 
@@ -43,35 +43,37 @@ class Command(BaseCommand):
             )
         input('Please press Enter to continue...')
 
-        # self.import_color()
-        # self.import_classification()
-        # self.import_country()
-        # self.init_texture()  # only deletes current entries
-        # self.import_user()
-        # self.import_profile()
-        # self.import_stone()
-        # self.import_tradeshow()
-        # self.import_group()
-        # self.import_stock()
-        # self.import_projects()
-        # self.import_pics()
-        # self.import_pages()
+        self.import_color()
+        self.import_classification()
+        self.import_country()
+        self.init_texture()  # only deletes current entries
+        self.import_user()
+        self.import_profile()
+        self.import_stone()
+        self.import_tradeshow()
+        self.import_group()
+        self.import_stock()
+        self.import_projects()
+        self.import_pages()
+        self.import_pics()  # must be last after Article, Stock, etc.
         self.fix_all_id()
 
     def walkjsondata(self, fn):
+        line = None
         f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
         with open(f) as fh:
             for line in fh:  # MySQL adds different kind of comments to the
                 if line.startswith('['):  # data file. Find actual JSON data.
                     break
-        for row in json.loads(line):
-            yield row
+        if line:
+            for row in json.loads(line):
+                yield row
 
     def import_color(self):
         print('Import colors')
         Color.objects.all().delete()
         for row in self.walkjsondata('data_colors'):
-            item = Color.objects.create(
+            Color.objects.create(
                 id=row['id'], slug=row['url'], name=row['name'])
             print('.', end='', flush=True)
         print('done!')
@@ -88,7 +90,7 @@ class Command(BaseCommand):
         if created:
             item.slug = slugify(item.name)
             item.save()
-            #print('texture --> added: {} {} -> {}'.format(
+            # print('texture --> added: {} {} -> {}'.format(
             #    item.id, item.slug, item.name))
             print('T', end='', flush=True)
         return item
@@ -101,7 +103,7 @@ class Command(BaseCommand):
         print('Import classification')
         Classification.objects.all().delete()
         for row in self.walkjsondata('data_stone_classifications'):
-            item = Classification.objects.create(
+            Classification.objects.create(
                 id=row['id'], slug=row['url'], name=row['name'],
                 simple_slug=slugify(row['simple']), simple_name=row['simple'])
             print('.', end='', flush=True)
@@ -112,8 +114,8 @@ class Command(BaseCommand):
         print('Import country')
         Country.objects.all().delete()
         for row in self.walkjsondata('data_country_names'):
-            item = Country.objects.create(id=row['un3'], cc=row['iso2'],
-                                          slug=row['url'], name=row['name'])
+            Country.objects.create(id=row['un3'], cc=row['iso2'],
+                                   slug=row['url'], name=row['name'])
             print('.', end='', flush=True)
         print('done')
 
@@ -135,7 +137,8 @@ class Command(BaseCommand):
         User.objects.all().delete()
         UserProfile.objects.all().delete()
         for row in self.walkjsondata('user'):
-            if not row['user_id'] or not row['nick'] or row['type'] != 'company':
+            if not row['user_id'] or \
+                    not row['nick'] or row['type'] != 'company':
                 continue
             if int(row['is_deleted']) or int(row['is_blocked']):
                 print('D', end='', flush=True)
@@ -148,7 +151,7 @@ class Command(BaseCommand):
                 user.last_login = parse_iso_datetime(row['lastlogin_time'])
                 user.date_joined = parse_iso_datetime(row['signup_time'])
                 user.save()
-            except IntegrityError as e:
+            except IntegrityError:
                 print('E', end='', flush=True)
                 continue
             user.profile.name = row['name']
@@ -199,19 +202,19 @@ class Command(BaseCommand):
             tf_pics = join(self.pics_dir, 'stonespics', fname)
 
             if isfile(sf_indx):
-                #print('{} --> {}'.format(sf_indx, tf_indx))
+                # print('{} --> {}'.format(sf_indx, tf_indx))
                 print('i', end='', flush=True)
                 rename(sf_indx, tf_indx)
             else:
-                #print('FILE NOT FOUND: {}'.format(sf_indx))
+                # print('FILE NOT FOUND: {}'.format(sf_indx))
                 print('x', end='', flush=True)
 
             if isfile(sf_pics):
-                #print('{} --> {}'.format(sf_pics, tf_pics))
+                # print('{} --> {}'.format(sf_pics, tf_pics))
                 rename(sf_pics, tf_pics)
                 print('p', end='', flush=True)
             else:
-                #print('FILE NOT FOUND: {}'.format(sf_pics))
+                # print('FILE NOT FOUND: {}'.format(sf_pics))
                 print('x', end='', flush=True)
 
             # Fill StoneName pseudonym table; add the main name too!
@@ -310,7 +313,7 @@ class Command(BaseCommand):
                         group.members.add(user)
                         print('.', end='', flush=True)
                     except User.DoesNotExist:
-                        #print('Could not add user {} to group {}: User does '
+                        # print('Could not add user {} to group {}: User does '
                         #      'not exist.'.format(row2['user_id'], group.name))
                         print('X', end='', flush=True)
         print('all groups done')
@@ -327,17 +330,17 @@ class Command(BaseCommand):
         "tel":"","mobile":"","web":"","about":"","title_foto":"0",
         "title_foto_ext":""}
         """
-        i = 0;
+        i = 0
         print('Update user profiles')
         for row in self.walkjsondata('user_profiles'):
             i += 1
             try:
                 profile = UserProfile.objects.get(user_id=row['user_id'])
             except UserProfile.DoesNotExist:
-                #print('!!! No profile foudn for user {} ({})'.format(
+                # print('!!! No profile foudn for user {} ({})'.format(
                 #      row['user_id'], row['nick']))
                 print('E', end='', flush=True)
-            #print('{}.-- profile --> updating {}'.format(i, row['user_id']))
+            # print('{}.-- profile --> updating {}'.format(i, row['user_id']))
             profile.contact = row['contact']
             profile.contact_position = row['contact_position']
             profile.slogan = row['slogan']
@@ -400,32 +403,42 @@ class Command(BaseCommand):
 
             if pic.module == 'profile':
                 try:
-                    obj = User.objects.get(pk=pic.module_id)
+                    User.objects.get(pk=pic.module_id)
                 except UserProfile.DoesNotExist:
                     print('U', end='', flush=True)
                     continue  # user not found!
             elif pic.module == 'projects':
                 try:
-                    obj = Project.objects.get(pk=pic.module_id)
+                    Project.objects.get(pk=pic.module_id)
                 except Project.DoesNotExist:
                     print('P', end='', flush=True)
                     continue  # project item not found!
             elif pic.module == 'stock':
                 try:
-                    obj = Stock.objects.get(pk=pic.module_id)
+                    Stock.objects.get(pk=pic.module_id)
                 except Stock.DoesNotExist:
                     print('K', end='', flush=True)
                     continue  # stock item not found!
             elif pic.module == 'stones':
                 try:
-                    obj = Stone.objects.get(pk=pic.module_id)
+                    Stone.objects.get(pk=pic.module_id)
                 except Stone.DoesNotExist:
                     print('S', end='', flush=True)
                     continue  # stone item not found!
             elif pic.module == 'pages':
-                pass
+                try:
+                    Article.objects.get(pk=pic.module_id)
+                except Article.DoesNotExist:
+                    print('A', end='', flush=True)
+                    continue  # article item not found!
             elif pic.module == 'groups':
-                pass
+                try:
+                    Group.objects.get(pk=pic.module_id)
+                except Group.DoesNotExist:
+                    print('G', end='', flush=True)
+                    continue  # group item not found!
+            else:
+                continue  # not a valid module
 
             pic.created = parse_iso_datetime(row['time'])
             if not pic.created:  # skip if no timestamp
@@ -459,18 +472,18 @@ class Command(BaseCommand):
             try:
                 stone = Stone.objects.get(pk=row['stone_id'])
             except Stone.DoesNotExist:
-                #print('Stone not found for stock {}'.format(row['stone_id']))
+                # print('Stone not found for stock {}'.format(row['stone_id']))
                 print('SE', end='', flush=True)
                 continue
             try:
                 user = User.objects.get(pk=row['user_id'])
             except User.DoesNotExist:
-                #print('User not found for stock {}'.format(row['user_id']))
+                # print('User not found for stock {}'.format(row['user_id']))
                 print('UE', end='', flush=True)
                 continue
             item = Stock(id=row['id'])
-            item.stone = stone
             item.user = user
+            item.stone = stone
             item.created = parse_iso_datetime(row['time'])
             if not item.created:  # skip if no created time
                 continue
@@ -482,6 +495,7 @@ class Command(BaseCommand):
             item.is_recommended = bool(force_int(row['is_recommended']))
             item.count_views = force_int(row['count_views'])
             item.save()
+
             i += 1
             print('.', end='', flush=True)
             if (i % 1000) == 0:
@@ -496,17 +510,16 @@ class Command(BaseCommand):
             try:
                 stone = Stone.objects.get(pk=row['stone_id'])
             except Stone.DoesNotExist:
-                #print('Stone not found for project {}'.format(row['stone_id']))
+                # print('Stone not found for proj. {}'.format(row['stone_id']))
                 print('SE', end='', flush=True)
                 continue
             try:
                 user = User.objects.get(pk=row['user_id'])
             except User.DoesNotExist:
-                #print('User not found for project {}'.format(row['user_id']))
+                # print('User not found for project {}'.format(row['user_id']))
                 print('UE', end='', flush=True)
                 continue
             item = Project(id=row['id'])
-            item.stone = stone
             item.user = user
             item.created = parse_iso_datetime(row['time'])
             if not item.created:  # skip if no created time
@@ -519,6 +532,10 @@ class Command(BaseCommand):
             item.is_recommended = bool(force_int(row['is_recommended']))
             item.count_views = force_int(row['count_views'])
             item.save()
+
+            item.stones.add(stone)
+            item.save()
+
             i += 1
             print('.', end='', flush=True)
             if (i % 1000) == 0:
@@ -526,10 +543,9 @@ class Command(BaseCommand):
         print('done. {} project items imported.'.format(i))
 
     def import_pages(self):
-        #pages_topics
-        #pages
+        # pages_topics
+        # pages
 
-        i = 0
         Article.objects.all().delete()
         Author.objects.all().delete()
         Keyword.objects.all().delete()
