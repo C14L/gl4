@@ -2,8 +2,6 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.utils.text import slugify
-from django.utils.safestring import mark_safe
-from markdown import markdown
 
 
 class Keyword(models.Model):
@@ -93,9 +91,4 @@ class Article(models.Model):
 
     def keywords_str(self):
         return ', '.join(self.keywords.all())
-
-    @property
-    def html(self):
-        # converts markdown text into html
-        return mark_safe(markdown(self.text))
 

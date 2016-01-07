@@ -6,6 +6,30 @@ from crispy_forms.layout import Submit, Layout
 from companydb.models import UserProfile, Pic
 
 
+class CompanyAboutForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['about', ]
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyAboutForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_company-about-form'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'companydb_db_about'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.layout = Layout(
+            'about',
+
+            FormActions(
+                Submit('save', 'Submit'),
+                # Button('cancel', 'Cancel')
+            )
+        )
+
+
 class CompanyDetailsForm(forms.ModelForm):
     class Meta:
         model = UserProfile
@@ -18,7 +42,7 @@ class CompanyDetailsForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'id_company-details-form'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'companydb_dashboard'
+        self.helper.form_action = 'companydb_db_details'
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'

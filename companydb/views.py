@@ -1,13 +1,15 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
-from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, \
+    HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
 
-from companydb.forms import PicUploadForm, CompanyDetailsForm
+from companydb.forms import PicUploadForm, CompanyDetailsForm, CompanyAboutForm
 from companydb.models import Group, Pic, Stock, Project
 from mdpages.models import Article
 from stonedb.models import Stone
@@ -121,21 +123,57 @@ def dashboard(request):
 
 
 def db_details(request):
-    form = CompanyDetailsForm()
+    if request.method == 'POST':
+        form = CompanyDetailsForm(request.POST, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            if request.is_ajax():
+                return HttpResponse()
+            else:
+                return HttpResponseRedirect(request.path)
+    else:
+        form = CompanyDetailsForm(instance=request.user.profile)
+
     tpl = 'companydb/db_details.html'
     ctx = {'form': form}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def db_about(request):
+    if request.method == 'POST':
+        form = CompanyAboutForm(request.POST, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            if request.is_ajax():
+                return HttpResponse()
+            else:
+                return HttpResponseRedirect(request.path)
+    else:
+        form = CompanyAboutForm(instance=request.user.profile)
+
     tpl = 'companydb/db_about.html'
-    ctx = {}
+    ctx = {'form': form}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def db_areas(request):
+    if request.method == 'POST':
+        group = get_object_or_404(Group, pk=request.POST.get('group', None))
+
+        if request.POST.get('_method', None) == 'POST':
+            # add a company to a group
+            group.members.add(request.user.pk)
+        elif request.POST.get('_method', None) == 'DELETE':
+            # remove a company from a group
+            group.members.remove(request.user.pk)
+
+        if request.is_ajax():
+            return HttpResponse()
+        else:
+            return HttpResponseRedirect(request.path)
+
     tpl = 'companydb/db_areas.html'
-    ctx = {}
+    ctx = {'groups': Group.objects.all()}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
@@ -147,7 +185,7 @@ def db_pics(request):
                                              request.FILES['pic'],
                                              form.cleaned_data['title'])
             if request.is_ajax():
-                return HttpJsonResponse({'pic':{
+                return JsonResponse({'pic':{
                     'url_thumb': pic.url_thumb,
                     'url_small': pic.url_small,
                     'url_medium': pic.url_medium,

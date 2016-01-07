@@ -354,7 +354,6 @@ body.groups-home .layout .rightcol .switches { overflow:hidden; }
 body.groups-home .layout .rightcol .switchgroup.left { float:left; }
 body.groups-home .layout .rightcol .switchgroup.right { float:right; }
 
-
 /* Stones */
 
 body.stones-home .layout { width:100%; margin:10px 0; }
@@ -521,3 +520,23 @@ body.stones-item .ads125x125 > div.item > a.filler { display:block; padding:50px
 
 body.stones-fotos h1 { margin:5px 0 15px 0; }
 
+
+/* List of groups (business areas), without and with added dashboard items. */
+
+body.user.areas .list { overflow: hidden; }
+body.user.areas .list .item { position: relative; overflow: hidden; width: 50%; height: 100px; float: left; margin: 10px 0; }
+body.user.areas .list .item .picture { float: left; margin-right: 10px; }
+body.user.areas .list .item .picture a { display: block; width: 100px; height: 100px; background-position: center center; background-repeat: no-repeat; background-size: cover; }
+body.user.areas .list .item .about { }
+body.user.areas .list .item .about .name {  }
+body.user.areas .list .item .about .count {  }
+body.user.areas .list .item .about .description { display: block; }
+
+body.user.areas .list .item .group-form { display: block; padding: 10px 0 0 10px; position: absolute; bottom: 0; right: 0; left: 100px; background-color: rgba(255,255,255,0.75); }
+body.user.areas .list .item .group-form.join-form {  }
+body.user.areas .list .item .group-form.leave-form {  }
+
+body.user.settings.areas .list .item .picture { opacity: 0.75; float: left; margin-right: 10px; }
+body.user.settings.areas .list .item .about { opacity: 0.75; }
+body.user.settings.areas .list .item.is-member .picture { opacity: 1; }
+body.user.settings.areas .list .item.is-member .about { opacity: 1; }

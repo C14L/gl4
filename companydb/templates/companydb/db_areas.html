@@ -7,7 +7,10 @@
 
 {% block description %}{% endblock %}
 
-{% block head %}{% endblock %}
+{% block head %}
+<style>
+</style>
+{% endblock %}
 
 {% block body_classes %}user settings areas{% endblock %}
 
@@ -21,6 +24,10 @@
 
 <h1>Areas of Business for {{user.profile.name}}</h1>
 
-<p>...</p>
+<p>Select up to 5 areas of business for your company. Please limit your selection to only those areas your company is actually active in.</p>
+
+{% with is_dashboard=True %}
+{% include 'companydb/partial_group_list.html' %}
+{% endwith %}
 
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}About text for {{user.profile.name}}{% endblock %}
 
@@ -25,22 +26,7 @@
   <p>The presentation text is the center part of your company's profile page.
     What is the history and success story of your company? Where are your strong
     points?</p>
-  <form method="post" action="">
-    <input type="hidden" id="url" name="url" value="/company/csx">
-    <table>
-      <tr>
-        <td><textarea name="text" id="text" cols="80" rows="12" tabindex="1"
-                      style="width:780px;height:340px;"></textarea></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="submit" tabindex="2" value="Submit">
-          <input type="button" value="Cancel"
-                 onclick="if(confirm('Really abandon all unsaved changes?')){document.location=document.getElementById('url').value;}">
-        </td>
-      </tr>
-    </table>
-  </form>
+  {% crispy form %}
 </div>
 
 {% endblock %}

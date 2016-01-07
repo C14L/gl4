@@ -1,15 +1,15 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
 
-{% block title %}{{stone.name}} - a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}{% endblock %}
+{% block title %}{{ stone.name }} - a {{ stone.color.name }} {{ stone.classification.name }} from {{ stone.country.name }}{% endblock %}
 
-{% block title2 %}{{stone.name}} - a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}{% endblock %}
+{% block title2 %}{{ stone.name }} - a {{ stone.color.name }} {{ stone.classification.name}} from {{ stone.country.name }}{% endblock %}
 
-{% block description %}{{stone.name}} is a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}. In natural stone trade, {{stone.name}} is often simply called a granite.{% endblock %}
+{% block description %}{{ stone.name }} is a {{ stone.color.name }} {{ stone.classification.name }} from {{ stone.country.name }}. In natural stone trade, {{ stone.name }} is often simply called a granite.{% endblock %}
 
 {% block head %}
 <style media="screen">
-body { background: url({{stone.get_pic_medium}}) top left repeat; }
+body { background: url({{ stone.get_pic_medium }}) top left repeat; }
 </style>
 {% endblock %}
 
@@ -17,14 +17,14 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
 
 {% block breadcrumb %}
   <a href="/stone">Stones</a> &raquo;
-  <a href="/stone/{{stone.slug}}">{{stone.name}}</a> &raquo;
+  <a href="/stone/{{stone.slug}}">{{ stone.name }}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>{{stone.name}}</h1>
+<h1>{{ stone.name }}</h1>
 
-<p><em>{{stone.name}} is a {{stone.color.name}} {{stone.classification.name}} from {{stone.country.name}}. In natural stone trade, {{stone.name}} is often simply called a granite.</em></p>
+<p><em>{{ stone.name }} is a {{ stone.color.name }} {{ stone.classification.name }} from {{ stone.country.name }}. In natural stone trade, {{ stone.name }} is often simply called a granite.</em></p>
 
 <div class="ad1">
   {% if settings.PRODUCTION %}
@@ -42,10 +42,10 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
 <table class="stone1">
   <tr>
     <td class="about">
-      <div class="img" style="background:url({{stone.get_pic_medium}});"></div>
+      <div class="img" style="background:url({{ stone.get_pic_medium }});"></div>
       <div class="comment">
-        <h2>Remarks about {{stone.name}}:</h2>
-        <p>{{stone.comment}}</p>
+        <h2>Remarks about {{ stone.name }}:</h2>
+        <p>{{ stone.comment }}</p>
       </div>
       <hr>
       <div class="ad2">
@@ -65,23 +65,23 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
     </td>
     <td class="info">
 
-      <h2>Data on {{stone.name}}:</h2>
+      <h2>Data on {{ stone.name }}:</h2>
       <table class="datalist">
         <tr>
           <td class="title">Stone Name:</td>
           <td class="data">
-            <strong>{{stone.name}}</strong>
+            <strong>{{ stone.name }}</strong>
           </td>
         </tr>
         <tr>
           <td class="title">Pseudonyme:</td>
-          <td class="data">{{stone.get_pseudonyms}}</td>
+          <td class="data">{{ stone.get_pseudonyms }}</td>
         </tr>
         <tr>
           <td class="title">Main color:</td>
           <td class="data">
             {% if stone.color.slug %}
-            <a href="{% url 'stonedb_simple_filter' 'color' stone.color.slug %}">{{stone.color.name}}</a> {% endif %}
+            <a href="{% url 'stonedb_simple_filter' 'color' stone.color.slug %}">{{ stone.color.name }}</a> {% endif %}
           </td>
         </tr>
         <tr>
@@ -89,60 +89,60 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
           <td class="data">
             {% if stone.country.slug %}
             <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">
-              <img src="{% get_static_prefix %}img/flags/{{stone.country.cc}}.png" style="vertical-align:middle;" alt="" title="{{stone.stone.country.name}}">
+              <img src="{% get_static_prefix %}img/flags/{{ stone.country.cc }}.png" style="vertical-align:middle;" alt="" title="{{ stone.stone.country.name }}">
             </a>
-            <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">{{stone.country.name}}</a>
+            <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">{{ stone.country.name }}</a>
             {% endif %}
           </td>
         </tr>
         <tr>
           <td class="title">City of origin:</td>
-          <td class="data">{% if stone.city_name %}{{stone.city_name}}{% else %}<i>- No data -</i>{% endif %}</td>
+          <td class="data">{% if stone.city_name %}{{ stone.city_name }}{% else %}<i>- No data -</i>{% endif %}</td>
         </tr>
         <tr>
           <td class="title">Classification:</td>
           <td class="data">
             {% if stone.classification.slug %}
-            <a href="{% url 'stonedb_simple_filter' 'type' stone.classification.slug %}">{{stone.classification.name}}</a> {% endif %}
+            <a href="{% url 'stonedb_simple_filter' 'type' stone.classification.slug %}">{{ stone.classification.name }}</a> {% endif %}
           </td>
         </tr>
         <tr>
           <td class="title">Availability:</td>
-          <td class="data">{{stone.availability}}</td>
+          <td class="data">{{ stone.availability }}</td>
         </tr>
         <tr>
           <td class="title">Texture:</td>
           <td class="data">
             {% if stone.texture.slug %}
-            <a href="{% url 'stonedb_simple_filter' 'texture' stone.texture.slug %}">{{stone.texture.name}}</a>
+            <a href="{% url 'stonedb_simple_filter' 'texture' stone.texture.slug %}">{{ stone.texture.name }}</a>
             {% endif %}
           </td>
         </tr>
         <tr>
           <td class="title">Maximum size:</td>
-          <td class="data">{% if stone.maxsize %}{{stone.maxsize}}{% else %}<i>- No data -</i>{% endif %}</td>
+          <td class="data">{% if stone.maxsize %}{{ stone.maxsize }}{% else %}<i>- No data -</i>{% endif %}</td>
         </tr>
         <tr>
           <td class="title">Application:</td>
-          <td class="data">{{stone.application}}</td>
+          <td class="data">{{ stone.application }}</td>
         </tr>
       </table>
-      <h2>More about {{stone.name}}:</h2>
+      <h2>More about {{ stone.name }}:</h2>
       <table class="link-table">
         <tr>
           <td>
-            <img src="{% get_static_prefix %}/img/icons/nuovext22/text-editor.png" class="link-icon" alt="Comments about {{stone.name}}">
-            <a href="/stone/{{stone.slug}}/comments">
-              <strong>Comments about {{stone.name}}</strong>
-            </a> You know the stone {{stone.name}} well or have a question about {{stone.name}}, then post a comment here.
+            <img src="{% get_static_prefix %}/img/icons/nuovext22/text-editor.png" class="link-icon" alt="Comments about {{ stone.name }}">
+            <a href="/stone/{{ stone.slug }}/comments">
+              <strong>Comments about {{ stone.name }}</strong>
+            </a> You know the stone {{ stone.name }} well or have a question about {{ stone.name }}, then post a comment here.
           </td>
         </tr>
         <tr>
           <td>
-            <img src="{% get_static_prefix %}/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Photos of {{stone.name}}">
-            <a href="/stone/{{stone.slug}}/pictures">
+            <img src="{% get_static_prefix %}/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Photos of {{ stone.name }}">
+            <a href="/stone/{{ stone.slug }}/pictures">
               <strong>Photos of {{stone.name}}</strong>
-            </a>More {{stone.name}} photos, and pictures of construction projects that use {{stone.name}}. If you have interesting photos of {{stone.name}}, please add them here.
+            </a>More {{ stone.name }} photos, and pictures of construction projects that use {{ stone.name }}. If you have interesting photos of {{ stone.name }}, please add them here.
           </td>
         </tr>
       </table>
@@ -151,26 +151,26 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
       <table class="link-table">
         <tr>
           <td>
-            <img src="{% get_static_prefix %}/img/icons/nuovext22/file-manager.png" class="link-icon" alt="Advertise current stock of {{stone.name}}">
-            <a rel="nofollow" href="/user/stock-add.php?id={{stone.id}}">
+            <img src="{% get_static_prefix %}/img/icons/nuovext22/file-manager.png" class="link-icon" alt="Advertise current stock of {{ stone.name }}">
+            <a rel="nofollow" href="/user/stock-add.php?id={{ stone.id }}">
               <strong>Advertise current stock of {{stone.name}}</strong>
             </a>Advertise your current stock of {{stone.name}} within your company's profile page on Graniteland.
           </td>
         </tr>
         <tr>
           <td>
-            <img src="{% get_static_prefix %}/img/icons/nuovext22/go-home.png" class="link-icon" alt="Publish your {{stone.name}}-related project">
-            <a rel="nofollow" href="/user/stone-projects-add.php?id={{stone.id}}">
+            <img src="{% get_static_prefix %}/img/icons/nuovext22/go-home.png" class="link-icon" alt="Publish your {{ stone.name }}-related project">
+            <a rel="nofollow" href="/user/stone-projects-add.php?id={{ stone.id }}">
               <strong>Publish your {{stone.name}}-related project</strong>
             </a> Advertise your {{stone.name}}-related projects on your company's profile page on Graniteland. Include photos of your projects, to show potential customers your work.
           </td>
         </tr>
         <tr>
           <td>
-            <img src="{% get_static_prefix %}/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Submit your photo of {{stone.name}}">
-            <a href="/stone/{{stone.slug}}/pictures">
+            <img src="{% get_static_prefix %}/img/icons/nuovext22/gthumb.png" class="link-icon" alt="Submit your photo of {{ stone.name }}">
+            <a href="/stone/{{ stone.slug }}/pictures">
               <strong>Submit your photo of {{stone.name}}</strong>
-            </a>You are invited to add your own {{stone.name}} pictures here. All uploaded pictures will be linked to your company's page on Graniteland.
+            </a>You are invited to add your own {{ stone.name }} pictures here. All uploaded pictures will be linked to your company's page on Graniteland.
           </td>
         </tr>
       </table>
@@ -182,11 +182,11 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
 <div class="fotos">
   <h2>Photos of {{stone.name}}</h2>
   <div class="fotoslist">
-    <p class="count">There are {{pics|length}} photos of {{stone.name}} available.</p>
+    <p class="count">There are {{ pics|length }} photos of {{ stone.name }} available.</p>
     <div class="list">
       {% for item in pics %}
       <div class="item">
-        <a href="{% url 'companydb_pic_item' item.id %}"><img src="{{item.url_small}}" alt=""></a>
+        <a href="{% url 'companydb_pic_item' item.id %}"><img src="{{ item.url_small }}" alt=""></a>
       </div>
       {% endfor %}
     </div>
@@ -196,11 +196,11 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
 <div class="projects">
   <h2>{{projects|length}} projects that used {{stone.name}}</h2>
   {% for item in projects %}
-  <div class="projects-list" id="project{{item.id}}">
+  <div class="projects-list" id="project{{ item.id }}">
     <div class="fotoslist">
       <div class="list">
         {% for item_pic in item.get_pics_list %}
-        <div class="item" id="f{{item_pic.id}}b">
+        <div class="item" id="pf{{ item_pic.id }}b">
           <a href="{% url 'companydb_pic_item' item_pic.id %}"><img src="{{item_pic.url_small}}" alt="{{item.stone.name}} at {{item.user.profile.name}}"></a>
         </div>
         {% endfor %}
@@ -210,11 +210,11 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
       <table>
         <tr class="pub_date">
           <td class="title">Published on:</td>
-          <td class="data" id="stock-publish-date{{item.id}}">
+          <td class="data" id="stock-publish-date{{ item.id }}">
             <strong>{{item.created|date:"DATE_FORMAT"}}</strong>
           </td>
-        </tr class="stone">
-        <tr>
+        </tr>
+        <tr class="stone">
           <td class="title">Name of natural stone:</td>
           <td class="data">
             <strong><a href="{% url 'stonedb_item' item.stone.id %}">{{item.stone.name}}</a></strong>
@@ -228,7 +228,7 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
         </tr>
       </table>
     </div>
-    <div class="content" id="tx{{item.id}}">
+    <div class="content" id="ptx{{ item.id }}">
       {{item.description}}
     </div>
   </div>
@@ -238,14 +238,14 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
 <div class="stock">
   <h2>{{stocks|length}} stock items of {{stone.name}}</h2>
   {% for item in stocks %}
-  <div class="stock-list" id="stock{{item.id}}">
+  <div class="stock-list" id="stock{{ item.id }}">
     {% if user.is_staff %}
     <div class="staff" style="background:orange;padding:4px;">
       <form method="POST" action="" style="display:inline;">{% csrf_token %}
         <input type="submit" value="delete this stock item">
       </form>
       <form method="POST" action="" style="display:inline;">{% csrf_token %}
-        <input type="submit" value="delete all stock items by {{item.user.profile.name}}">
+        <input type="submit" value="delete all stock items by {{ item.user.profile.name }}">
       </form>
     </div>
     {% endif %}
@@ -254,7 +254,7 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
         <tr>
           <td class="pic" rowspan="3" style="background:url({{item.stone.get_pic_medium}}) center center repeat;"><!-- <a href="{% url 'stonedb_item' item.stone.slug %}">{{item.stone.name}}</a> --></td>
           <td class="title">Added to stock on:</td>
-          <td class="data" id="stock-publish-date{{item.id}}"><strong>{{item.created|date:"DATE_FORMAT"}}</strong></td>
+          <td class="data" id="stock-publish-date{{ item.id }}"><strong>{{item.created|date:"DATE_FORMAT"}}</strong></td>
         </tr>
         <tr>
           <td class="title">Name of natural stone:</td>
@@ -266,14 +266,14 @@ body { background: url({{stone.get_pic_medium}}) top left repeat; }
         </tr>
       </table>
     </div>
-    <div class="content-line" id="tx{{item.id}}">
+    <div class="content-line" id="stx{{ item.id }}">
       {{item.description}}
     </div>
     <div class="fotoslist">
       <div class="list">
         {% for item_pic in item.get_pics_list %}
-        <div class="item" id="f{{item_pic.id}}b">
-          <a href="{% url 'companydb_pic_item' item_pic.id %}"><img src="{{item_pic.url_small}}" alt="{{item.stone.name}} at {{item.user.profile.name}}"></a>
+        <div class="item" id="sf{{ item_pic.id }}b">
+          <a href="{% url 'companydb_pic_item' item_pic.id %}"><img src="{{ item_pic.url_small }}" alt="{{ item.stone.name }} at {{ item.user.profile.name }}"></a>
         </div>
         {% endfor %}
       </div>

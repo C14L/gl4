@@ -1,4 +1,6 @@
 {% extends 'gl4app/base.html' %}
+{% load markdown_deux_tags %}
+{% load bleach_tags %}
 
 {% block title %}
 {{view_user.profile.name}}
@@ -67,7 +69,7 @@ profile profile-home
       </table>
 
       <div id="about-company-about">
-        {{view_user.profile.about}}
+        {{view_user.profile.about|markdown|bleach}}
       </div>
     </td>
 

@@ -19,48 +19,55 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', primary_key=True)
     name = models.CharField(
-        max_length=100, default='', help_text='The name of your company.')
+        max_length=100, default='', verbose_name='Company name',
+        help_text='The name of your company.')
     contact = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Contact person',
         help_text='The name of your company.')
     contact_position = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Contact position',
         help_text='The job title of the contact person (sales, owner, etc.)')
-    slogan = models.CharField(max_length=255, default='', blank=True)
+    slogan = models.CharField(max_length=255, default='', blank=True,
+                              verbose_name='Company slogan',
+                              help_text='A very short sentence thath expresses'
+                              'the company focus and values.')
     street = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Street',
         help_text='The physical address of the company.')
     city = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='City',
         help_text='The name of the city or town.')
     zip = models.CharField(
-        max_length=16, default='', blank=True, help_text='The postal code.')
+        max_length=16, default='', blank=True, verbose_name='Postal code',
+        help_text='The postal code.')
     country_sub_id = models.PositiveIntegerField(db_index=True, default=0)
     country_id = models.PositiveIntegerField(db_index=True, default=0)
     country_sub_name = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Province/Region',
         help_text='The province or region if applicable.')
     country_name = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Country name',
         help_text='The country your company is registered.')
-    postal = models.TextField(default='')
+    postal = models.TextField(default='', verbose_name='Postal address')
     email = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='E-mail',
         help_text='Official company sales email address.')
     fax = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Fax',
         help_text="Your company's fax number.")
     tel = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Phone',
         help_text="Your company's phone number, "
         "including international dialing code for your country.")
     mobile = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Mobile phone',
         help_text='Your mobile phone number.')
     web = models.CharField(
-        max_length=100, default='', blank=True,
+        max_length=100, default='', blank=True, verbose_name='Company website',
         help_text='The official web site of your company, if applicable.')
-    about = models.TextField(default='', blank=True, help_text='')
+    about = models.TextField(default='', blank=True,
+                             verbose_name='About company',
+                             help_text='')
     title_foto = models.IntegerField(default=0)
     title_foto_ext = models.CharField(max_length=30, default='')
     signup_ip = models.CharField(max_length=15, default='')

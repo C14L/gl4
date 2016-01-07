@@ -19,41 +19,59 @@
 
 {% block main %}
 
-<h1>Dashboard for Christian Steimel</h1>
+<h1>Dashboard for {{user.profile.name}}</h1>
 
-<p>Your stone company's Graniteland account to edit your public profile page. Add current offers and stock items to your profile page, publish your projects history and present your company to thousands of potential stone buyers every day.</p>
+<p>Your stone company's Graniteland account to edit your public profile page.
+  Add current offers and stock items to your profile page, publish your projects
+  history and present your company to thousands of potential stone buyers every
+  day.</p>
 
 <table class="link-table">
- <tr>
-  <td style="width:50%;">
-   <img src="{% get_static_prefix %}img/icons/nuovext22/gthumb.png" class="link-icon" alt="Add photos">
-   <a href="{% url 'companydb_db_pics' %}">
-   Add photos of your company</a>Upload some photos of your company and your people, to let potential clients know you. It's easy and straight forward, if you have some photos on your PC already.  </td>
-  <td style="width:50%;">
-   <img src="{% get_static_prefix %}img/icons/nuovext22/text-editor.png" class="link-icon" alt="">
-   <a href="{% url 'companydb_db_about' %}">Present your company</a>
-   There are thousands of visitors on Graniteland every day, looking for granite and related products. Tell this already highly targeted audience more about your company and your products.  </td>
- </tr>
- <tr>
-  <td>
-   <img src="{% get_static_prefix %}img/icons/nuovext22/user-info.png" class="link-icon" alt="">
-   <a href="{% url 'companydb_db_details' %}">Update contact details</a>
-   Keep your company's contact details up-to-date easily and offer potential customers simple ways to contact you. All company listings in Graniteland are free of charge.  </td>
-  <td>
-   <img src="{% get_static_prefix %}img/icons/nuovext22/file-manager.png" class="link-icon" alt="">
-   <a href="/company/csx/stock">Current stock items</a>
-   Publish current special offers and stock items. Link them with stone details in the Graniteland database. Simply find the stone on Graniteland, click to add it to your stock items, and add some details and photos.  </td>
- </tr>
- <tr>
-  <td>
-   <img src="{% get_static_prefix %}img/icons/nuovext22/gnome-util.png" class="link-icon" alt="">
-   <a href="/company/csx/projects">Your projects showroom</a>
-   Present your work to thousands of visitors every day. Add your best past projects to your company's projects showroom, add photos and describe the difficulties and special requirements you mastered.  </td>
-  <td>
-   <img src="{% get_static_prefix %}img/icons/nuovext22/users.png" class="link-icon" alt="">
-   <a href="{% url 'companydb_db_areas' %}">Define your business areas</a>
-   Define the areas of business your company is participating, from running a quary to natural stone installers.  </td>
- </tr>
+  <tr>
+
+    <td style="width:50%;">
+      <img src="{% get_static_prefix %}img/icons/nuovext22/gthumb.png" class="link-icon" alt="Add photos"><a href="{% url 'companydb_db_pics' %}">Add
+      photos of your company</a><span>Upload some photos of your company and your people, to let potential clients know you. It's easy and straight forward, if you have some photos on your PC already.</span>
+    </td>
+
+    <td style="width:50%;">
+      <img src="{% get_static_prefix %}img/icons/nuovext22/text-editor.png" class="link-icon" alt="">
+      <a href="{% url 'companydb_db_about' %}">Present your company</a>
+      <span>There are thousands of visitors on Graniteland every day, looking for granite and related products. Tell this already highly targeted audience more about your company and your products.</span>
+    </td>
+
+  </tr>
+  <tr>
+    <td>
+      <img src="{% get_static_prefix %}img/icons/nuovext22/user-info.png" class="link-icon" alt="">
+      <a href="{% url 'companydb_db_details' %}">Update contact details</a>
+      <span>Keep your company's contact details up-to-date easily and offer potential
+      customers simple ways to contact you. All company listings in Graniteland
+      are free of charge.</span>
+    </td>
+    <td>
+      <img src="{% get_static_prefix %}img/icons/nuovext22/users.png" class="link-icon" alt="">
+      <a href="{% url 'companydb_db_areas' %}">Define your business areas</a>
+      <span>Define the areas of business your company is participating, from running a
+      quary to natural stone installers.</span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="{% get_static_prefix %}img/icons/nuovext22/gnome-util.png" class="link-icon" alt="">
+      <a href="/company/csx/projects">Your projects showroom</a>
+      <span>Present your work to thousands of visitors every day. Add your best past
+      projects to your company's projects showroom, add photos and describe the
+      difficulties and special requirements you mastered.</span>
+    </td>
+    <td>
+      <img src="{% get_static_prefix %}img/icons/nuovext22/file-manager.png" class="link-icon" alt="">
+      <a href="/company/csx/stock">Current stock items</a>
+      <span>Publish current special offers and stock items. Link them with stone
+      details in the Graniteland database. Simply find the stone on Graniteland,
+      click to add it to your stock items, and add some details and photos.</span>
+    </td>
+  </tr>
 </table>
 
 <h2>More settings</h2>

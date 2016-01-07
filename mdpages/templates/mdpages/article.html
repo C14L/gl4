@@ -1,4 +1,6 @@
 {% extends 'gl4app/base.html' %}
+{% load markdown_deux_tags %}
+{% load bleach_tags %}
 
 {% block title %}{{article.title}}{% endblock %}
 
@@ -23,7 +25,7 @@
 
 <table class="layout">
     <tr>
-        <td class="leftcol">{{article.html}}</td>
+        <td class="leftcol">{{ article.text|markdown|bleach }}</td>
         <td class="rightcol" id="fotoscolumn">
             {% if settings.PRODUCTION %}
 

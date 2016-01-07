@@ -1,22 +1,14 @@
 {% extends 'gl4app/base.html' %}
 
-{% block title %}
-Buisiness Types of Granite Companies
-{% endblock %}
+{% block title %}Buisiness Types of Granite Companies{% endblock %}
 
-{% block title2 %}
-Buisiness Types of Granite Companies
-{% endblock %}
+{% block title2 %}Buisiness Types of Granite Companies{% endblock %}
 
-{% block description %}
-Find stone companies related to the granite and marble industry by business type.
-{% endblock %}
+{% block description %}Find stone companies related to the granite and marble industry by business type.{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-{% endblock %}
+{% block body_classes %}user areas{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
@@ -24,7 +16,7 @@ Find stone companies related to the granite and marble industry by business type
 
 {% block main %}
 
-<h1>Buisiness Types of Granite Companies</h1>
+<h1>Natural stone buisiness areas</h1>
 
 <div style="margin:0; padding:15px 0 0 0; border-top:1px solid #c0c0c0;">
   {% if settings.PRODUCTION %}
@@ -43,23 +35,7 @@ Find stone companies related to the granite and marble industry by business type
   {% endif %}
 </div>
 
-<div class="list2">
-  <table>
-    <tr>
-      {% for item in groups %}
-        <td class="picture">
-          <a href="{% url 'companydb_list' item.slug '1' %}">
-            <img src="/static/companies/en/{{item.slug}}.jpg" alt="{{item.name}}" style="width:200px">
-          </a>
-        </td>
-        <td class="description">
-          <strong><a href="{% url 'companydb_list' item.slug '1' %}">{{item.name}}</a></strong><br><span class="small">({{item.count_members}} companies)</span><br>{{item.description}}
-        </td>
-        {% if forloop.counter|divisibleby:2 and not forloop.last %}</tr><tr>{% endif %}
-      {% endfor %}
-    </tr>
-  </table>
-</div>
+{% include 'companydb/partial_group_list.html' %}
 
 <div style="margin:0; padding:15px 0; border-top:1px solid #c0c0c0; border-bottom:1px solid #c0c0c0;">
   {% if settings.PRODUCTION %}
