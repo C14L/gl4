@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
 
-from companydb.forms import PicUploadForm, CompanyDetailsForm, CompanyAboutForm, \
-    CompanyProjectForm
+from companydb.forms import PicUploadForm, CompanyDetailsForm, \
+    CompanyAboutForm, CompanyProjectForm
 from companydb.models import Group, Pic, Stock, Project
 from mdpages.models import Article
 from stonedb.models import Stone
@@ -224,6 +224,13 @@ def db_projects(request, pk=None):
             return HttpResponseRedirect(redirect_url)
     else:
         form = CompanyProjectForm(instance=project)
+
+    tpl = 'companydb/db_project.html'
+    ctx = {'form': form}
+    return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def db_stock(request, pk=None):
 
     tpl = 'companydb/db_project.html'
     ctx = {'form': form}

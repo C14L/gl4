@@ -58,8 +58,8 @@ groups-home
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script></p>
 {% else %}
-      <p class="ad"><div style="width:300px; height:350px; background:gray;"></div></p>
-      <p class="ad"><div style="width:300px; height:350px; background:gray;"></div></p>
+      <div class="ad"><div style="width:300px; height:350px; background:gray;"></div></div>
+      <div class="ad"><div style="width:300px; height:350px; background:gray;"></div></div>
 {% endif %}
 
     </td>
@@ -79,9 +79,15 @@ groups-home
           {% for item in members %}
             <tr id="groupmemberlist{{item.id}}">
               <td class="picture" style="width:100px">
-                <a href="{% url 'companydb_item' item.username %}"><img src="/img/nofoto100.jpg"></a>
+                <a href="{% url 'companydb_item' item.username %}">
+                  {% if item.profile.title_foto_url %}
+                    <img src="{{ item.profile.title_foto_url }}">
+                  {% else %}
+                    <img src="{% static 'img/nofoto100.jpg' %}">
+                  {% endif %}
+                </a>
               </td>
-              <td class="description" style="width:100%">
+              <td class="description" style="width:100%;">
                 <strong><a href="{% url 'companydb_item' item.username %}">{{item.profile.name}}</a></strong><br><em>({{item.profile.city}}, {{item.profile.country_name}})</em><br>{{item.profile.about|truncatewords:25}}
               </td>
             </tr>
