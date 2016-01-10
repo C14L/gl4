@@ -9,7 +9,7 @@ from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
 
 from companydb.forms import PicUploadForm, CompanyDetailsForm, \
-    CompanyAboutForm, CompanyProjectForm
+    CompanyAboutForm, CompanyProjectForm, CompanyStockForm
 from companydb.models import Group, Pic, Stock, Project
 from mdpages.models import Article
 from stonedb.models import Stone
@@ -212,26 +212,41 @@ def db_projects(request, pk=None):
     :param pk: Optionally, the pk of an existing Project.
     :return:
     """
-    project = None
     if pk:
-        project = get_object_or_404(Project, pk=pk)
+        item = get_object_or_404(Project, pk=pk)
+    else:
+        item = None
 
     if request.method == 'POST':
-        form = CompanyProjectForm(request.POST, instance=project)
+        form = CompanyProjectForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
             redirect_url = reverse('companydb_projects')
             return HttpResponseRedirect(redirect_url)
     else:
-        form = CompanyProjectForm(instance=project)
+        form = CompanyProjectForm(instance=item)
 
-    tpl = 'companydb/db_project.html'
-    ctx = {'form': form}
+    tpl = 'companydb/db_projects.html'
+    ctx = {'form': form, 'project': item}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 def db_stock(request, pk=None):
+    if pk:
+        item = get_object_or_404(Stock, pk=pk)
+    else:
+        item = None
 
-    tpl = 'companydb/db_project.html'
-    ctx = {'form': form}
+    if request.method == 'POST':
+        form = CompanyStockForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            redirect_url = reverse('companydb_stock')
+            return HttpResponseRedirect(redirect_url)
+    else:
+        form = CompanyStockForm(instance=item)
+
+    tpl = 'companydb/db_stock.html'
+    ctx = {'form': form, 'stock': item}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
+

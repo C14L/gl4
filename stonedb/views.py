@@ -1,13 +1,15 @@
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response as rtr
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
+from django.utils.text import slugify
 from django.views.decorators.http import require_http_methods
-from stonedb.models import Stone, Classification, Color, Country, Texture
+from stonedb.models import Stone, Classification, Color, Country, Texture, \
+    StoneName
 from companydb.models import Stock, Project, Pic
 from toolbox import force_int
 
@@ -160,6 +162,12 @@ def filter(request, color, country, texture, classif, p=1):
     """Return a list of stones for a specific color+type+origin.
 
     Exampe: /stone/sandstone/blue/veined/france/
+    :param request:
+    :param color:
+    :param country:
+    :param texture:
+    :param classif:
+    :param p:
     """
     url = ''
     p = force_int(p) or 1
@@ -225,3 +233,32 @@ def item(request, q):
            'classification': stone.classification, 'country': stone.country,
            'stocks': stocks, 'projects': projects, 'pics': pics}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
+
+
+def api_search(request):
+    LIMIT = 50
+    q = request.GET.get('q', '')
+    p = request.GET.get('p', None)
+    print('--> api_search() --> q=={}'.format(q))
+    print('--> api_search() --> p=={}'.format(p))
+    q = slugify(q)  # query string
+    if len(q) < 3:
+        return JsonResponse({'items': []})
+
+    # First find stones that have a name that begins with the search query.
+    li = StoneName.objects.filter(slug__startswith=q).distinct('stone__name') \
+                  .order_by('stone__name').prefetch_related('stone')[:LIMIT]
+    items = [{'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
+              'pic': x.stone.get_pic_thumb()} for x in li]
+
+    # If there are few results, then also find stones that have the search
+    # query somewhere in their names.
+    if len(items) < LIMIT:
+        li = StoneName.objects.filter(slug__contains=q).distinct('stone__name')\
+                      .order_by('stone__name').prefetch_related('stone')[:LIMIT]
+        items += [{'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
+                  'pic': x.stone.get_pic_thumb()} for x in li]
+
+    items = items[:LIMIT]
+    print('Result length: {}'.format(len(items)))
+    return JsonResponse({'items': items})

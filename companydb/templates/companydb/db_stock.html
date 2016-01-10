@@ -1,5 +1,6 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}Add your current stock items{% endblock %}
 
@@ -15,13 +16,13 @@
 <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
 <a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
 <a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
-<a href="{% url 'companydb_db_project' %}">Add Project</a> &raquo;
+<a href="{% url 'companydb_db_projects' %}">Add Project</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
 <h1>Add a stock item</h1>
 
-<p></p>
+{% crispy form %}
 
 {% endblock %}

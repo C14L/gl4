@@ -59,14 +59,14 @@
   <tr>
     <td>
       <img src="{% get_static_prefix %}img/icons/nuovext22/gnome-util.png" class="link-icon" alt="">
-      <a href="/company/csx/projects">Your projects showroom</a>
+      <a href="{% url 'companydb_db_projects' %}">Your projects showroom</a>
       <span>Present your work to thousands of visitors every day. Add your best past
       projects to your company's projects showroom, add photos and describe the
       difficulties and special requirements you mastered.</span>
     </td>
     <td>
       <img src="{% get_static_prefix %}img/icons/nuovext22/file-manager.png" class="link-icon" alt="">
-      <a href="/company/csx/stock">Current stock items</a>
+      <a href="{% url 'companydb_db_stock' %}">Current stock items</a>
       <span>Publish current special offers and stock items. Link them with stone
       details in the Graniteland database. Simply find the stone on Graniteland,
       click to add it to your stock items, and add some details and photos.</span>

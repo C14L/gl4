@@ -217,7 +217,9 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr class="stone">
           <td class="title">Name of natural stone:</td>
           <td class="data">
-            <strong><a href="{% url 'stonedb_item' item.stone.id %}">{{item.stone.name}}</a></strong>
+            {% for item_stone in item.get_stones_list %}
+            <a href="{% url 'stonedb_item' item_stone.id %}">{{item_stone.name}}</a>
+            {% endfor %}
           </td>
         </tr>
         <tr class="user">

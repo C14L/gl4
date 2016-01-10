@@ -107,32 +107,17 @@ class UserProfile(models.Model):
 
 
 class CommonProjectsStocksManager(models.Manager):
-
-    def all_public(self):
-        return self.exclude(is_blocked=True, is_deleted=True)\
-                   .prefetch_related('stone', 'user', 'user__profile')
-
-    def all_for_stone(self, stone):
-        return self.all_public().filter(stone=stone)
-
     def all_for_user(self, user):
         return self.all_public().filter(user=user)
 
 
 class CommonProjectsStocks(models.Model):
-
     user = models.ForeignKey(User, db_index=True, editable=False)
     created = models.DateTimeField(default=now, editable=False)  # time
-    description = models.TextField(
-        default='', blank=True, verbose_name='Project description',
-        help_text='Describe the project, the challenges you met, the problems '
-                  'you solved, the time it took, etc.')
     is_blocked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_recommended = models.BooleanField(default=False)
     count_views = models.PositiveIntegerField(default=0, editable=False)
-
-    objects = CommonProjectsStocksManager()
 
     class Meta:
         abstract = True
@@ -141,8 +126,23 @@ class CommonProjectsStocks(models.Model):
         return '{} --> {}'.format(self.user.profile.name, self.stone.name)
 
 
+class StockManager(CommonProjectsStocksManager):
+    def all_for_stone(self, stone):
+        return self.all_public().filter(stone=stone)
+
+    def all_public(self):
+        return self.exclude(is_blocked=True, is_deleted=True)\
+                   .prefetch_related('stone', 'user', 'user__profile')
+
+
 class Stock(CommonProjectsStocks):
     stone = models.ForeignKey(Stone, db_index=True, null=True, default=None)
+    description = models.TextField(
+        default='', blank=True, verbose_name='Stock items description',
+        help_text='Please add any information about the stock items here, '
+                  'i.e. sizes, surface treatment, borders, etc.')
+
+    objects = StockManager()
 
     class Meta:
         verbose_name = "Stock"
@@ -153,14 +153,30 @@ class Stock(CommonProjectsStocks):
         return Pic.objects.all_for_stock(self)
 
 
+class ProjectsManager(CommonProjectsStocksManager):
+    def all_for_stone(self, stone):
+        """Return all projects that contain "stone" in their "stones" list."""
+        return self.all_public().filter(stones=stone)
+
+    def all_public(self):
+        return self.exclude(is_blocked=True, is_deleted=True)\
+                   .prefetch_related('user', 'user__profile')
+
+
 class Project(CommonProjectsStocks):
     stones = models.ManyToManyField(Stone)
+    description = models.TextField(
+        default='', blank=True, verbose_name='Project description',
+        help_text='Describe the project, the challenges you met, the problems '
+                  'you solved, the time it took, etc.')
     location = models.TextField(
         default='', blank=True, verbose_name='Address',
         help_text='ONLY for publicly accessible buildings, provide a street'
                   'address of the project, where it can be visited.')
     lat = models.FloatField(null=True, default=None, editable=False)
     lng = models.FloatField(null=True, default=None, editable=False)
+
+    objects = ProjectsManager()
 
     class Meta:
         verbose_name = "Project"
@@ -170,9 +186,11 @@ class Project(CommonProjectsStocks):
     def get_pics_list(self):
         return Pic.objects.all_for_project(self)
 
+    def get_stones_list(self):
+        return self.stones.all()
+
 
 class PicManager(models.Manager):
-
     def all_public(self):
         return self.exclude(is_blocked=True, is_deleted=True)
 

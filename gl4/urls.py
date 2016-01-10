@@ -58,7 +58,11 @@ urlpatterns = [
         r'(?:/(?P<p>[2-9]))?$',
         stonedb.views.filter, name='stonedb_filter'),
 
+    url(r'api/search/stones/',
+        stonedb.views.api_search, name='stonedb_api_search'),
+
     # tradeshowdb
+
     url(r'^tradeshows$',
         tradeshowdb.views.home, name='tradeshowdb_home'),
     # /tradeshows/2016
@@ -106,6 +110,15 @@ urlpatterns = [
         companydb.views.db_areas, name='companydb_db_areas'),
     url(r'^company/dashboard/photos/$',
         companydb.views.db_pics, name='companydb_db_pics'),
+
+    url(r'^company/dashboard/projects/$',
+        companydb.views.db_projects, name='companydb_db_projects'),
+    url(r'^company/dashboard/projects/(?P<pk>\d+)/$',
+        companydb.views.db_projects, name='companydb_db_projects_item'),
+    url(r'^company/dashboard/stock/$',
+        companydb.views.db_stock, name='companydb_db_stock'),
+    url(r'^company/dashboard/stock/(?P<pk>\d+)/$',
+        companydb.views.db_stock, name='companydb_db_stock_item'),
 ]
 
 
