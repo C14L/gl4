@@ -122,9 +122,6 @@ class CommonProjectsStocks(models.Model):
     class Meta:
         abstract = True
 
-    def __str__(self):
-        return '{} --> {}'.format(self.user.profile.name, self.stone.name)
-
 
 class StockManager(CommonProjectsStocksManager):
     def all_for_stone(self, stone):
@@ -149,6 +146,9 @@ class Stock(CommonProjectsStocks):
         verbose_name_plural = "Stocks"
         ordering = ('-created', )
 
+    def __str__(self):
+        return '{} --> {}'.format(self.user.profile.name, self.stone.name)
+
     def get_pics_list(self):
         return Pic.objects.all_for_stock(self)
 
@@ -164,7 +164,11 @@ class ProjectsManager(CommonProjectsStocksManager):
 
 
 class Project(CommonProjectsStocks):
-    stones = models.ManyToManyField(Stone)
+    stones = models.ManyToManyField(
+        Stone, null=True, default=None, verbose_name='Stones used',
+        help_text='Start typing the name of a stone used in the project, '
+                  'then select the stones from the list. Add all stones used '
+                  'in the project, but not more than ten.')
     description = models.TextField(
         default='', blank=True, verbose_name='Project description',
         help_text='Describe the project, the challenges you met, the problems '
@@ -182,6 +186,9 @@ class Project(CommonProjectsStocks):
         verbose_name = "Project"
         verbose_name_plural = "Projects"
         ordering = ('-created', )
+
+    def __str__(self):
+        return '{} --> {}'.format(self.user.profile.name, self.stones.all())
 
     def get_pics_list(self):
         return Pic.objects.all_for_project(self)
@@ -407,6 +414,23 @@ class Pic(models.Model):  # cc__fotos
             pass
 
         return None
+
+    def attach_to(self, module_id, module=None):
+        """
+        Attach the instance to a specific object of a module, and commit it.
+        If no module name is provided, the instance's existing module name
+        is used.
+
+        :param module_id: the pk of an object in the instances attached module.
+        :param module: optional module identifier string.
+        :return:
+        """
+        if module:
+            self.module = module
+        if module not in [x[0] for x in Pic.MODULE_CHOICES]:
+            raise ValueError('"{}" is not a valid module choice'.format(module))
+        self.module_id = module_id
+        self.save()
 
 
 class Group(models.Model):

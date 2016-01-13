@@ -1,38 +1,32 @@
-from crispy_forms.bootstrap import FormActions, InlineCheckboxes
+from crispy_forms.bootstrap import FormActions
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
 
 from companydb.models import UserProfile, Pic, Project, Stock
-from stonedb.models import Stone
 
 
 class CompanyProjectForm(forms.ModelForm):
-    stones = forms.ModelMultipleChoiceField(
-        queryset=Stone.objects.all(), widget=forms.CheckboxSelectMultiple())
-
     class Meta:
         model = Project
-        fields = ['stones', 'description', 'location']
-        widgets = {
-        }
+        fields = ['description', ]
 
-    """
     def __init__(self, *args, **kwargs):
         super(CompanyProjectForm, self).__init__(*args, **kwargs)
+
         self.helper = FormHelper()
         self.helper.form_id = 'id_company-project-form'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'companydb_db_projects'
+        self.helper.form_action = ''
         self.helper.layout = Layout(
-            # InlineCheckboxes('stones'),
+            'description',
 
             FormActions(
                 Submit('save', 'Submit'),
                 # Button('cancel', 'Cancel')
             )
         )
-    """
+
 
 class CompanyStockForm(forms.ModelForm):
     class Meta:

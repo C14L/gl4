@@ -212,22 +212,41 @@ def db_projects(request, pk=None):
     :param pk: Optionally, the pk of an existing Project.
     :return:
     """
+
     if pk:
-        item = get_object_or_404(Project, pk=pk)
+        item = get_object_or_404(Project, user=request.user, pk=pk)
     else:
         item = None
 
     if request.method == 'POST':
         form = CompanyProjectForm(request.POST, instance=item)
+        # manually add stones selection
+        stone_pks = request.POST.getlist('stones', [])
+        stones = Stone.objects.filter(pk__in=stone_pks)
+        # manually add uploaded pics selection
+        pics_pks = request.POST.getlist('pics', [])
+        pics = Pic.objects.all_for_user(request.user) \
+                          .filter(pk__in=pics_pks, module='projects')
         if form.is_valid():
-            form.save()
-            redirect_url = reverse('companydb_projects')
+            project = form.save(commit=False)
+            project.stones = stones
+            project.user = request.user
+            project.save()
+
+            # point pictures to the new Project item
+            for p in pics:
+                p.attach_to(project.id)
+
+            redirect_url = reverse('companydb_db_projects_item',
+                                   kwargs={'pk': project.id})
             return HttpResponseRedirect(redirect_url)
     else:
         form = CompanyProjectForm(instance=item)
 
+    li = request.user.project_set.all()
+
     tpl = 'companydb/db_projects.html'
-    ctx = {'form': form, 'project': item}
+    ctx = {'form': form, 'projects': li, 'project': item}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 

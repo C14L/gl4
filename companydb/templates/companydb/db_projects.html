@@ -10,7 +10,7 @@
 
 {% block head %}
 <style>
-  .select2-result-stones { display: block; text-align: left; height: 30px; }
+  .select2-result-stones { display: block; text-align: left; height: 30px; overflow: hidden; white-space: nowrap;  }
   .select2-result-stones .pic { display: inline-block; }
   .select2-result-stones .pic img { width: 200px; height: 30px; border: 0; background: gray; }
   .select2-result-stones .names { display: inline-block; }
@@ -35,19 +35,49 @@
 
 {% block main %}
 
-<h1>Add a project</h1>
-
-<form action="" method="POST" class="form-horizontal">{% csrf_token %}
-  <div id="div_id_stones" class="form-group">
-    <label for="id_stones" class="control-label col-lg-2 requiredField">
-      Stones used
-    </label>
-    <div class="controls col-lg-8">
-      <select multiple class="js-select-stones form-control" id="id_stones"></select>
-      <p id="hint_id_stones" class="help-block">Start typing the name of a stone used in the project, then select the stones from the list. Add all stones used in the project, but not more than ten.</p>
-    </div>
+<div style="display: flex;">
+  <div style="width: 50%;">
+    <h1>Your projects</h1>
+    {% for item in projects %}
+    <p><a href="{% url 'companydb_db_projects_item' item.id %}">{{ item.id }}</a> -- {{ item.description }} -- {{ item.created }} -- {% for x in item.stones.all %} {{ x.name }} {% endfor %}</p>
+    {% endfor %}
   </div>
-</form>
+
+  <div style="box-sizing: border-box; width: 50%; padding: 16px; background: #EEF;">
+    <h2>Add a project</h2>
+    <form  id="id_company-project-form" method="post" >
+      {% csrf_token %}
+      <div id="div_id_stones" class="form-group">
+        <label for="id_stones" class="control-label  requiredField">
+          Stones used<span class="asteriskField">*</span>
+        </label>
+        <div class="controls ">
+          <select multiple="multiple" class="selectmultiple form-control" id="id_stones" name="stones">
+            {% for x in project.stones.all %}
+            <option selected="selected" value="{{ x.id }}">{{ x.name }}</option>
+            {% endfor %}
+          </select>
+          <p id="hint_id_stones" class="help-block">Start typing the name of a stone used in the project, then select the stones from the list. Add all stones used in the project, but not more than ten.</p>
+        </div>
+      </div>
+
+      {{ form.description|as_crispy_field }}
+
+      <div class="form-group">
+        <div class="controls ">
+          <input type="submit" name="save" value="Submit" class="btn btn-primary" id="submit-id-save" />
+        </div>
+      </div>
+    </form>
+
+    == 2016-01-13 ==
+    --> Remove crispy and build form manually.
+    --> Remove "address" field.
+    --> Add field for picture upload for up to 20 pics.
+    --> That's it.
+
+  </div>
+</div>
 
 {% endblock %}
 
@@ -56,39 +86,30 @@
 {% block foot %}
 
 <script>
-$(".js-select-stones").select2({
+$("#id_stones").select2({
   ajax: {
     url: "{% url 'stonedb_api_search' %}",
     dataType: 'json',
     delay: 250,
     data: function (params) {
-      return { q: params.term, page: params.page };
+      return { q: params.term,  };
     },
     processResults: function (data, params) {
-      // parse the results into the format expected by Select2
-      // since we are using custom formatting functions we do not need to
-      // alter the remote JSON data, except to indicate that infinite
-      // scrolling can be used
-      params.page = params.page || 1;
-
-      return {
-        results: data.items,
-        pagination: { more: (params.page * 50) < data.total_count },
-      };
+      return { results: data.items, };
     },
-    cache: true
+    cache: true,
   },
-  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+  escapeMarkup: function (markup) { return markup; },
   minimumInputLength: 3,
   maximumSelectionLength: 10,
-  templateResult: formatResult, // omitted for brevity, see the source of this page
-  templateSelection: formatResultSelection // omitted for brevity, see the source of this page
+  templateResult: formatResult,
+  templateSelection: formatResultSelection,
 });
 
 function formatResult (item) {
-  if (item.loading) return item.text;
+  if (item.loading) return item.name;
 
-  return "<div class='select2-result-stones clearfix'>" +
+  return "<div class='select2-result-stones'>" +
          "  <div class='pic'><img src='" + item.pic + "'></div>" +
          "  <div class='names'>" +
          "    <div class='name'>" + item.name + "</div> " +
@@ -98,7 +119,7 @@ function formatResult (item) {
 }
 
 function formatResultSelection (item) {
-  return item.name
+  return item.text || item.name;
 }
 
 </script>
