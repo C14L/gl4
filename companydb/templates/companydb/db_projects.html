@@ -16,6 +16,10 @@
   .select2-result-stones .names { display: inline-block; }
   .select2-result-stones .names .name { display: inline; }
   .select2-result-stones .names .pseu { display: inline; color: gray; }
+
+  .pic-item-list { padding: 10px 0; }
+  .pic-item-list > .item { display: inline-block; margin: 0 5px 5px 0; }
+  .pic-item-list img { padding: 5px; background: white; border: 1px solid #CCC; box-shadow: 1px 1px 3px rgba(0,0,0,0.28); }
 </style>
 
 {% endblock %}
@@ -47,6 +51,7 @@
     <h2>Add a project</h2>
     <form  id="id_company-project-form" method="post" >
       {% csrf_token %}
+
       <div id="div_id_stones" class="form-group">
         <label for="id_stones" class="control-label  requiredField">
           Stones used<span class="asteriskField">*</span>
@@ -63,19 +68,30 @@
 
       {{ form.description|as_crispy_field }}
 
+      <div id="div_id_pics" class="form-group multi-pic-upload-field">
+        <label for="id_pic_upload_field" class="control-label">
+          Attach pictures
+        </label>
+        <div class="controls ">
+          <div class="pic-upload-field">
+            <input type="file" id="id_pic_upload_field">
+          </div>
+          <div class="pic-item-list">
+            {% for x in project.get_pics_list %}
+            <div class="item" id="id_pics_{{x.id}}"><input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}"><img src="{{ x.url_thumb }}" alt="" width="100" height="100"></div>
+            {% endfor %}
+          </div>
+          <p id="hint_id_pics" class="help-block">Upload up to 20 pictures of this project.</p>
+        </div>
+      </div>
+
       <div class="form-group">
         <div class="controls ">
           <input type="submit" name="save" value="Submit" class="btn btn-primary" id="submit-id-save" />
         </div>
       </div>
+
     </form>
-
-    == 2016-01-13 ==
-    --> Remove crispy and build form manually.
-    --> Remove "address" field.
-    --> Add field for picture upload for up to 20 pics.
-    --> That's it.
-
   </div>
 </div>
 
@@ -86,6 +102,44 @@
 {% block foot %}
 
 <script>
+
+$('#id_pic_upload_field').on('change', function(ev){
+  ev.preventDefault();
+  ev.stopPropagation();
+
+  var postUrl = "{% url 'companydb_db_pics' %}";
+  var file_data = $(this).prop("files")[0];
+	var form_data = new FormData();
+  var oPicItemList = $('.pic-item-list');
+
+	form_data.append("pic", file_data);
+	form_data.append("module", "projects");
+	form_data.append("csrfmiddlewaretoken", Cookies.get("csrftoken"));
+
+  console.log('BEGIN UPLOAD...');
+
+	$.ajax({
+	  url: postUrl,
+    dataType: 'json',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+
+    success: function( json ) {
+      console.log( 'SUCCESS.', json );
+      $(oPicItemList).prepend( '<div class="item" id="id_pics_' + json.pic.id + '"><input style="display: none;" type="checkbox" checked="checked" name="pics" value="' + json.pic.id + '"><img src="' + json.pic.url_thumb + '" alt="" width="100" height="100"></div>' );
+    },
+    error: function( xhr, status, errorThrown ) {
+      console.log( 'ERROR.', xhr, status );
+    },
+    complete: function( xhr, status ) {
+      console.log('UPLOAD COMPLETE.');
+    },
+  });
+});
+
 $("#id_stones").select2({
   ajax: {
     url: "{% url 'stonedb_api_search' %}",

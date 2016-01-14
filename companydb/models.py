@@ -252,7 +252,7 @@ class PicManager(models.Manager):
             pk = pk.pk
         return self.all_public().filter(module='pages', module_id=pk)
 
-    def add_upload(self, user, file, module, module_id, title='', caption=''):
+    def add_upload(self, user, file, module, module_id=0, title='', caption=''):
         """
         Store an uploaded image file, create all image sizes, and then return
         the new image's Pic instance.
@@ -427,8 +427,12 @@ class Pic(models.Model):  # cc__fotos
         """
         if module:
             self.module = module
-        if module not in [x[0] for x in Pic.MODULE_CHOICES]:
+        else:
+            pass  # self.module is already set correctly.
+
+        if self.module not in [x[0] for x in Pic.MODULE_CHOICES]:
             raise ValueError('"{}" is not a valid module choice'.format(module))
+
         self.module_id = module_id
         self.save()
 

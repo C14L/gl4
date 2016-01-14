@@ -178,20 +178,35 @@ def db_areas(request):
 
 
 def db_pics(request):
+    print('DB_PICS')
     if request.method == 'POST':
+        module = request.POST.get('module', 'profile')
+        if module not in [x[0] for x in Pic.MODULE_CHOICES]:
+            raise ValueError('Module does not exist.')
+
+        print('POSTED')
         form = PicUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            pic = Pic.objects.add_to_profile(request.user,
-                                             request.FILES['pic'],
-                                             form.cleaned_data['title'])
+            print('FORM VALID')
+            if module == 'profile':
+                pic = Pic.objects.add_to_profile(request.user,
+                                                 request.FILES['pic'],
+                                                 form.cleaned_data['title'])
+            else:
+                pic = Pic.objects.add_upload(request.user,
+                                             request.FILES['pic'], module)
+
             if request.is_ajax():
+                print('REQUEST AJAX')
                 return JsonResponse({'pic': {
+                    'id': pic.id,
                     'url_thumb': pic.url_thumb,
                     'url_small': pic.url_small,
                     'url_medium': pic.url_medium,
                     'url_large': pic.url_large,
                 }})
             else:
+                print('REQUEST HTML')
                 return HttpResponseRedirect(request.path)
     else:
         form = PicUploadForm()
@@ -225,8 +240,10 @@ def db_projects(request, pk=None):
         stones = Stone.objects.filter(pk__in=stone_pks)
         # manually add uploaded pics selection
         pics_pks = request.POST.getlist('pics', [])
+        print('pics_pks: ', pics_pks)
         pics = Pic.objects.all_for_user(request.user) \
                           .filter(pk__in=pics_pks, module='projects')
+        print('pics: ', pics)
         if form.is_valid():
             project = form.save(commit=False)
             project.stones = stones
@@ -235,6 +252,7 @@ def db_projects(request, pk=None):
 
             # point pictures to the new Project item
             for p in pics:
+                print('SAVING PIC: ', dir(p))
                 p.attach_to(project.id)
 
             redirect_url = reverse('companydb_db_projects_item',
