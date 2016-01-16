@@ -8,7 +8,42 @@
 
 {% block description %}{% endblock %}
 
-{% block head %}{% endblock %}
+{% block head %}
+<style>
+  .wrapper {  }
+  .wrapper > .left {  }
+  .wrapper > .right { display: none; }
+
+  .stock-add { margin: 0; padding: 10px 5px; font-size: 1.25em; }
+  .stock-add.selected { background: #EEF; }
+  .stock-add a {}
+
+  .list { background: transparent; margin: 0; padding: 0; }
+  .list > .item { margin: 0; padding: 10px 5px; border-top: 1px solid #CCC; }
+  .list > .item.selected { background: #EEF; }
+  .list > .item > div { margin: 5px 0; }
+  .list > .item > div > .tt { font-weight: bold; }
+  .list > .item > .line-date { font-size: 1.15em; }
+  .list > .item > .line-stones {  }
+  .list > .item > .line-pics {  }
+  .list > .item > .line-pics img { width: 50px; height: 50px; margin: 4px 4px 4px 0; padding: 3px; background: white; border: 1px solid #CCC; box-shadow: 1px 1px 2px rgba(0,0,0,0.28); }
+  .list > .item > .line-descr { color: gray; }
+
+  .select2-result-stones { display: block; text-align: left; height: 30px; overflow: hidden; white-space: nowrap;  }
+  .select2-result-stones .pic { display: inline-block; }
+  .select2-result-stones .pic img { width: 200px; height: 30px; border: 0; background: gray; }
+  .select2-result-stones .names { display: inline-block; }
+  .select2-result-stones .names .name { display: inline; }
+  .select2-result-stones .names .pseu { display: inline; color: gray; }
+
+  .pic-item-list { padding: 10px 0; }
+  .pic-item-list > .none { line-height: 50px; text-align: center; }
+  .pic-item-list > .item { display: inline-block; margin: 0 5px 5px 0; position: relative; }
+  .pic-item-list > .item img { padding: 5px; background: white; border: 1px solid #CCC; box-shadow: 1px 1px 3px rgba(0,0,0,0.28); width: 100px; height: 100px; }
+  .pic-item-list > .item .del { background: rgba(0,0,0,0.28); color: black; font-size: 40px; text-shadow: 0 0 2px rgba(255,255,255,0.82); line-height: 100px; padding: 0; width: 100px; height: 100px; text-align: center; position: absolute; top: 0; right: 0; bottom: 0; left: 0; opacity: 0; }
+  .pic-item-list > .item:hover .del { opacity: 1; cursor: pointer; }
+</style>
+{% endblock %}
 
 {% block body_classes %}user settings stock{% endblock %}
 
@@ -16,13 +51,102 @@
 <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
 <a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
 <a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
-<a href="{% url 'companydb_db_projects' %}">Add Project</a> &raquo;
+<a href="{% url 'companydb_db_stock' %}">Current stock items</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>Add a stock item</h1>
+<div class="wrapper">
 
-{% crispy form %}
+  <div class="left">
+    <h1>Current stock items of {{ view_user.profile.name }}</h1>
+    <div class="stock-add {% if not project %} selected {% endif %}">
+      <a href="{% url 'companydb_db_projects' %}">add stock</a>
+    </div>
+    <div class="list">
+      {% for item in stock %}
+      <div class="item {% if item.id == project.id %} selected {% endif %}">
+        <div class="line-date">
+          <span class="tt">Last updated:</span>
+          {{ item.created }} --
+          <a href="{% url 'companydb_projects' user.username %}#{{ item.id }}">view</a> --
+          <a href="{% url 'companydb_db_projects_item' item.id %}">edit</a>
+        </div>
+        <div class="line-stones">
+          <span class="tt">Stones:</span>
+          {% for x in item.get_stones_list %}{{ x.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        </div>
+        <div class="line-pics">
+          {% for x in item.get_pics_list %}
+          {% if forloop.counter < 8 %}<img src="{{ x.url_thumb }}" alt="">{% endif %}
+          {% endfor %}
+        </div>
+        <div class="line-descr">
+          {{ item.description|truncatewords:32 }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="right">
+    <form  id="id_company-project-form" method="post" >{% csrf_token %}
+      <input style="float:right" type="submit" name="save_2" value="Save" class="btn btn-primary" id="submit-id-save-2" />
+
+      {% if project %}
+      <h2>Edit project {{ project.id }}</h2>
+      {% else %}
+      <h2>Add a project</h2>
+      {% endif %}
+
+      <div id="div_id_stones" class="form-group">
+        <label for="id_stones" class="control-label  requiredField">
+          Stones used<span class="asteriskField">*</span>
+        </label>
+        <div class="controls ">
+          <select multiple="multiple" class="selectmultiple form-control" id="id_stones" name="stones">
+            {% for x in project.stones.all %}
+            <option selected="selected" value="{{ x.id }}">{{ x.name }}</option>
+            {% endfor %}
+          </select>
+          <p id="hint_id_stones" class="help-block">Start typing the name of a stone used in the project, then select the stones from the list. Add all stones used in the project, but not more than ten.</p>
+        </div>
+      </div>
+
+      {{ form.description|as_crispy_field }}
+
+      <div id="div_id_pics" class="form-group multi-pic-upload-field">
+        <label for="id_pic_upload_field" class="control-label">
+          Attach pictures
+        </label>
+        <div class="controls ">
+          <div class="pic-upload-field">
+            <input type="file" id="id_pic_upload_field">
+            <span class="loading" style="display:none"><span></span><span></span><span></span></span>
+          </div>
+          <div class="pic-item-list">
+            {% for x in project.get_pics_list %}
+            <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
+              <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
+              <img src="{{ x.url_thumb }}" alt="">
+              <div class="del">X</div>
+            </div>
+            {% empty %}
+            <div class="none">no pictures</div>
+            {% endfor %}
+          </div>
+          <p id="hint_id_pics" class="help-block">Upload up to 20 pictures of this project.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="controls ">
+          <input type="submit" name="save" value="Save" class="btn btn-primary" id="submit-id-save" />
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
 
 {% endblock %}

@@ -10,6 +10,25 @@
 
 {% block head %}
 <style>
+  .wrapper { display: flex; }
+  .wrapper > .left { width: 50%; }
+  .wrapper > .right { box-sizing: border-box; width: 50%; padding: 16px; background: #EEF; }
+
+  .project-add { margin: 0; padding: 10px 5px; font-size: 1.25em; }
+  .project-add.selected { background: #EEF; }
+  .project-add a {}
+
+  .list { background: transparent; margin: 0; padding: 0; }
+  .list > .item { margin: 0; padding: 10px 5px; border-top: 1px solid #CCC; }
+  .list > .item.selected { background: #EEF; }
+  .list > .item > div { margin: 5px 0; }
+  .list > .item > div > .tt { font-weight: bold; }
+  .list > .item > .line-date { font-size: 1.15em; }
+  .list > .item > .line-stones {  }
+  .list > .item > .line-pics {  }
+  .list > .item > .line-pics img { width: 50px; height: 50px; margin: 4px 4px 4px 0; padding: 3px; background: white; border: 1px solid #CCC; box-shadow: 1px 1px 2px rgba(0,0,0,0.28); }
+  .list > .item > .line-descr { color: gray; }
+
   .select2-result-stones { display: block; text-align: left; height: 30px; overflow: hidden; white-space: nowrap;  }
   .select2-result-stones .pic { display: inline-block; }
   .select2-result-stones .pic img { width: 200px; height: 30px; border: 0; background: gray; }
@@ -18,10 +37,12 @@
   .select2-result-stones .names .pseu { display: inline; color: gray; }
 
   .pic-item-list { padding: 10px 0; }
-  .pic-item-list > .item { display: inline-block; margin: 0 5px 5px 0; }
-  .pic-item-list img { padding: 5px; background: white; border: 1px solid #CCC; box-shadow: 1px 1px 3px rgba(0,0,0,0.28); }
+  .pic-item-list > .none { line-height: 50px; text-align: center; }
+  .pic-item-list > .item { display: inline-block; margin: 0 5px 5px 0; position: relative; }
+  .pic-item-list > .item img { padding: 5px; background: white; border: 1px solid #CCC; box-shadow: 1px 1px 3px rgba(0,0,0,0.28); width: 100px; height: 100px; }
+  .pic-item-list > .item .del { background: rgba(0,0,0,0.28); color: black; font-size: 40px; text-shadow: 0 0 2px rgba(255,255,255,0.82); line-height: 100px; padding: 0; width: 100px; height: 100px; text-align: center; position: absolute; top: 0; right: 0; bottom: 0; left: 0; opacity: 0; }
+  .pic-item-list > .item:hover .del { opacity: 1; cursor: pointer; }
 </style>
-
 {% endblock %}
 
 {% block body_classes %}user settings project{% endblock %}
@@ -32,25 +53,54 @@
 <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
 <a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
 <a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
-<a href="{% url 'companydb_db_projects' %}">Add Project</a> &raquo;
+<a href="{% url 'companydb_db_projects' %}">Projects showroom</a> &raquo;
 {% endblock %}
-
 
 
 {% block main %}
 
-<div style="display: flex;">
-  <div style="width: 50%;">
+<div class="wrapper">
+  <div class="left">
     <h1>Your projects</h1>
-    {% for item in projects %}
-    <p><a href="{% url 'companydb_db_projects_item' item.id %}">{{ item.id }}</a> -- {{ item.description }} -- {{ item.created }} -- {% for x in item.stones.all %} {{ x.name }} {% endfor %}</p>
-    {% endfor %}
-  </div>
+    <div class="project-add {% if not project %} selected {% endif %}">
+      <a href="{% url 'companydb_db_projects' %}">add a project</a>
+    </div>
+    <div class="list">
+      {% for item in projects %}
+      <div class="item {% if item.id == project.id %} selected {% endif %}">
+        <div class="line-date">
+          <span class="tt">Last updated:</span>
+          {{ item.created }} --
+          <a href="{% url 'companydb_projects' user.username %}#{{ item.id }}">view</a> --
+          <a href="{% url 'companydb_db_projects_item' item.id %}">edit</a>
+        </div>
+        <div class="line-stones">
+          <span class="tt">Stones:</span>
+          {% for x in item.get_stones_list %}{{ x.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        </div>
+        <div class="line-pics">
+          {% for x in item.get_pics_list %}
+          {% if forloop.counter < 8 %}<img src="{{ x.url_thumb }}" alt="">{% endif %}
+          {% endfor %}
+        </div>
+        <div class="line-descr">
+          {{ item.description|truncatewords:32 }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
-  <div style="box-sizing: border-box; width: 50%; padding: 16px; background: #EEF;">
-    <h2>Add a project</h2>
-    <form  id="id_company-project-form" method="post" >
-      {% csrf_token %}
+  </div>
+  <div class="right">
+
+    <form  id="id_company-project-form" method="post" >{% csrf_token %}
+      <input style="float:right" type="submit" name="save_2" value="Save" class="btn btn-primary" id="submit-id-save-2" />
+
+      {% if project %}
+      <h2>Edit project {{ project.id }}</h2>
+      {% else %}
+      <h2>Add a project</h2>
+      {% endif %}
 
       <div id="div_id_stones" class="form-group">
         <label for="id_stones" class="control-label  requiredField">
@@ -75,10 +125,17 @@
         <div class="controls ">
           <div class="pic-upload-field">
             <input type="file" id="id_pic_upload_field">
+            <span class="loading" style="display:none"><span></span><span></span><span></span></span>
           </div>
           <div class="pic-item-list">
             {% for x in project.get_pics_list %}
-            <div class="item" id="id_pics_{{x.id}}"><input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}"><img src="{{ x.url_thumb }}" alt="" width="100" height="100"></div>
+            <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
+              <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
+              <img src="{{ x.url_thumb }}" alt="">
+              <div class="del">X</div>
+            </div>
+            {% empty %}
+            <div class="none">no pictures</div>
             {% endfor %}
           </div>
           <p id="hint_id_pics" class="help-block">Upload up to 20 pictures of this project.</p>
@@ -87,7 +144,7 @@
 
       <div class="form-group">
         <div class="controls ">
-          <input type="submit" name="save" value="Submit" class="btn btn-primary" id="submit-id-save" />
+          <input type="submit" name="save" value="Save" class="btn btn-primary" id="submit-id-save" />
         </div>
       </div>
 
@@ -103,7 +160,60 @@
 
 <script>
 
-$('#id_pic_upload_field').on('change', function(ev){
+$( '#id_company-project-form' ).on( 'submit', function( ev ){
+  // -> Don't force to define "stones used" because if may be a machinery
+  //    company or similar supply company that doesn't sell stones.
+  // -> Don't force to upload pics, because the user may want to do that at
+  //    a later moment, or doesn't have suitable pics but a good description
+  //    of the project.
+  // -> DO force to provide at least a short description of what the project
+  //    was about.
+  if( ! $( '#id_description' ).val() ) {
+    alert('Please provide a short description of the project.');
+    ev.preventDefault();
+  }
+});
+
+function item_del_onclick(ev){
+  var oItem = $(this).parents('.item');
+  console.log( $(oItem) );
+
+  if( confirm( 'Delete this picture?' ) ) {
+    // stored on server, so make sure it was intentional click
+    var postUrl = $(oItem).data('url');
+    if( ! postUrl ) { alert('No post URL!'); return; }
+    var csrfToken = Cookies.get("csrftoken");
+
+    console.log('csrf token: ', csrfToken);
+    console.log('postUrl: ', postUrl);
+
+    $.ajax({
+      url: postUrl,
+      type: 'post',
+      dataType: 'json',
+      data: {
+        _method: 'DELETE',
+	      module: "projects",
+        csrfmiddlewaretoken: csrfToken,
+      },
+      success: function( json ) {
+        $(oItem).fadeOut(200);
+        setTimeout(function(){ $(oItem).remove(); }, 200);
+        console.log( 'SUCCESS.', json );
+      },
+      error: function( xhr, status, errorThrown ) {
+        console.log( 'ERROR.', xhr, status );
+      },
+      complete: function( xhr, status ) {
+        console.log('COMPLETE.');
+      },
+    });
+  }
+}
+
+$('.pic-item-list > .item .del').on('click', item_del_onclick);
+
+$('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file field changes.
   ev.preventDefault();
   ev.stopPropagation();
 
@@ -117,6 +227,8 @@ $('#id_pic_upload_field').on('change', function(ev){
 	form_data.append("csrfmiddlewaretoken", Cookies.get("csrftoken"));
 
   console.log('BEGIN UPLOAD...');
+  $('.pic-upload-field input').hide();
+  $('.pic-upload-field .loading').show();
 
 	$.ajax({
 	  url: postUrl,
@@ -129,13 +241,18 @@ $('#id_pic_upload_field').on('change', function(ev){
 
     success: function( json ) {
       console.log( 'SUCCESS.', json );
-      $(oPicItemList).prepend( '<div class="item" id="id_pics_' + json.pic.id + '"><input style="display: none;" type="checkbox" checked="checked" name="pics" value="' + json.pic.id + '"><img src="' + json.pic.url_thumb + '" alt="" width="100" height="100"></div>' );
+      var oItem = $( '<div class="item" id="id_pics_' + json.pic.id + '"><input style="display: none;" type="checkbox" checked="checked" name="pics" value="' + json.pic.id + '"><img src="' + json.pic.url_thumb + '" alt="" width="100" height="100"><div class="del">X</div></div>' );
+      oItem.data('url', json.pic.url);
+      oItem.on('click', item_del_onclick);
+      $(oPicItemList).prepend( oItem );
     },
     error: function( xhr, status, errorThrown ) {
       console.log( 'ERROR.', xhr, status );
     },
     complete: function( xhr, status ) {
       console.log('UPLOAD COMPLETE.');
+      $('.pic-upload-field input').show();
+      $('.pic-upload-field .loading').hide();
     },
   });
 });

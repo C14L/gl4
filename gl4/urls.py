@@ -83,9 +83,11 @@ urlpatterns = [
     # /company/xxxxxxxxxx/stock
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/stock$',
         companydb.views.stock, name='companydb_stock'),
+
     # /company/xxxxxxxxxx/projects
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/projects$',
         companydb.views.projects, name='companydb_projects'),
+
     # /company/xxxxxxxxxx/contact
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/contact$',
         companydb.views.contact, name='companydb_contact'),

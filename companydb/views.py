@@ -106,11 +106,22 @@ def pic_item(request, id):
         related = get_object_or_404(Article, pk=pic.module_id)
 
     if request.user.is_authenticated():
+        print('--> pic_item() --> USER AUTH OK')
         if "DELETE" in (request.method, request.POST.get('_method', None)):
+            print('--> pic_item() --> PIC DELETE')
             pic.delete()
+            print('--> pic_item() --> PIC DELETED OK')
+            if request.is_ajax():
+                print('--> pic_item() --> REQUEST AJAX')
+                return JsonResponse({'count': 1})
+            print('--> pic_item() --> REQUEST HTML')
             _next = request.POST.get('next', reverse('companydb_db_pics'))
             return HttpResponseRedirect(_next)
-
+    print('--> pic_item() --> NOT AUTH, NOT DELETE')
+    if request.is_ajax():
+        print('--> pic_item() --> REQUEST AJAX')
+        return JsonResponse({'pic': pic})
+    print('--> pic_item() --> REQUEST HTML')
     tpl = 'companydb/pic_item.html'
     ctx = {'pic': pic, 'related': related, 'view_user': pic.user}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
@@ -184,10 +195,10 @@ def db_pics(request):
         if module not in [x[0] for x in Pic.MODULE_CHOICES]:
             raise ValueError('Module does not exist.')
 
-        print('POSTED')
+        print('--> db_pics() --> POSTED')
         form = PicUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            print('FORM VALID')
+            print('--> db_pics() --> FORM VALID')
             if module == 'profile':
                 pic = Pic.objects.add_to_profile(request.user,
                                                  request.FILES['pic'],
@@ -197,16 +208,17 @@ def db_pics(request):
                                              request.FILES['pic'], module)
 
             if request.is_ajax():
-                print('REQUEST AJAX')
+                print('--> db_pics() --> REQUEST AJAX')
                 return JsonResponse({'pic': {
                     'id': pic.id,
+                    'url': reverse('companydb_pic_item', kwargs={'id': pic.id}),
                     'url_thumb': pic.url_thumb,
                     'url_small': pic.url_small,
                     'url_medium': pic.url_medium,
                     'url_large': pic.url_large,
                 }})
             else:
-                print('REQUEST HTML')
+                print('--> db_pics() --> REQUEST HTML')
                 return HttpResponseRedirect(request.path)
     else:
         form = PicUploadForm()
