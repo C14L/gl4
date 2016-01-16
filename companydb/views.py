@@ -288,14 +288,36 @@ def db_stock(request, pk=None):
 
     if request.method == 'POST':
         form = CompanyStockForm(request.POST, instance=item)
+        # manually add stone selected
+        stone_pk = request.POST.get('stone', None)
+        stone = get_object_or_404(Stone, pk=stone_pk)
+        # manually add uploaded pics selection
+        pics_pks = request.POST.getlist('pics', [])
+        print('pics_pks: ', pics_pks)
+        pics = Pic.objects.all_for_user(request.user) \
+                          .filter(pk__in=pics_pks, module='stock')
+        print('pics: ', pics)
+
         if form.is_valid():
-            form.save()
-            redirect_url = reverse('companydb_stock')
+            stock = form.save(commit=False)
+            stock.stone = stone
+            stock.user = request.user
+            stock.save()
+
+            # point pictures to the new Stone item
+            for p in pics:
+                print('SAVING PIC: ', dir(p))
+                p.attach_to(stock.id)
+
+            redirect_url = reverse('companydb_db_stock_item',
+                                   kwargs={'pk': stock.id})
             return HttpResponseRedirect(redirect_url)
     else:
         form = CompanyStockForm(instance=item)
 
+    li = request.user.stock_set.all()
+
     tpl = 'companydb/db_stock.html'
-    ctx = {'form': form, 'stock': item}
+    ctx = {'form': form, 'stocklist': li, 'stockitem': item}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 

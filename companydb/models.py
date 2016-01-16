@@ -135,8 +135,8 @@ class StockManager(CommonProjectsStocksManager):
 class Stock(CommonProjectsStocks):
     stone = models.ForeignKey(Stone, db_index=True, null=True, default=None)
     description = models.TextField(
-        default='', blank=True, verbose_name='Stock items description',
-        help_text='Please add any information about the stock items here, '
+        default='', blank=True, verbose_name='Stock item description',
+        help_text='Add any information about the stock item here, '
                   'i.e. sizes, surface treatment, borders, etc.')
 
     objects = StockManager()
