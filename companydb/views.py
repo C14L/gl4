@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
@@ -127,12 +128,14 @@ def pic_item(request, id):
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
+@login_required
 def dashboard(request):
     tpl = 'companydb/dashboard.html'
     ctx = {}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
+@login_required
 def db_details(request):
     if request.method == 'POST':
         form = CompanyDetailsForm(request.POST, instance=request.user.profile)
@@ -167,6 +170,7 @@ def db_about(request):
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
+@login_required
 def db_areas(request):
     if request.method == 'POST':
         group = get_object_or_404(Group, pk=request.POST.get('group', None))
@@ -188,6 +192,7 @@ def db_areas(request):
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
+@login_required
 def db_pics(request):
     print('DB_PICS')
     if request.method == 'POST':
@@ -228,6 +233,7 @@ def db_pics(request):
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
+@login_required
 def db_projects(request, pk=None):
     """
     Provide a form to add a "project" to a company profile. A project includes
@@ -280,6 +286,7 @@ def db_projects(request, pk=None):
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
+@login_required
 def db_stock(request, pk=None):
     if pk:
         item = get_object_or_404(Stock, pk=pk)
