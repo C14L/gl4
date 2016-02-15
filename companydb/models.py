@@ -133,11 +133,24 @@ class StockManager(CommonProjectsStocksManager):
 
 
 class Stock(CommonProjectsStocks):
+    # Dimension type: depending on this, use square or cubic centimeter.
+    DIM_TYPE_CHOICES = ((0, 'not specified'), (1, 'blocks'), (2, 'slabs'),
+                        (3, 'tiles'), (4, 'cobblestone'), (9, 'other'), )
+    DIM_USE_CUBIC = {1, 4, }
+
     stone = models.ForeignKey(Stone, db_index=True, null=True, default=None)
     description = models.TextField(
         default='', blank=True, verbose_name='Stock item description',
         help_text='Add any information about the stock item here, '
                   'i.e. sizes, surface treatment, borders, etc.')
+    dim_type = models.PositiveSmallIntegerField(
+        choices=DIM_TYPE_CHOICES, default=0, blank=True,
+        verbose_name='Product type',
+        help_text='Specify the product type of of your stock item.')
+    # total amount in square meters or cubic meters
+    dim_total = models.PositiveIntegerField(
+        default=0, blank=True, verbose_name='Total amount',
+        help_text='Total amount in square meters or cubic meters.')
 
     objects = StockManager()
 
@@ -151,6 +164,18 @@ class Stock(CommonProjectsStocks):
 
     def get_pics_list(self):
         return Pic.objects.all_for_stock(self)
+
+    def get_dim_unit_name(self):
+        if self.dim_type in self.DIM_USE_CUBIC:
+            return 'cubic meters'
+        else:
+            return 'square meters'
+
+    def get_dim_unit_short(self):
+        if self.dim_type in self.DIM_USE_CUBIC:
+            return 'm²'
+        else:
+            return 'm³'
 
 
 class ProjectsManager(CommonProjectsStocksManager):

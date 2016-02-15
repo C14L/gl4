@@ -208,3 +208,4 @@ BLEACH_DEFAULT_WIDGET = 'wysiwyg.widgets.WysiwygWidget'
 STONES_PER_PAGE = 50
 
 WATERMARK_FONT_FILENAME = os.path.join(BASE_DIR, 'Verdana.ttf')
+

@@ -12,12 +12,26 @@
 <style>
   .wrapper {  }
 
-  .stock-add { margin: 0; padding: 10px 5px; }
+  .stock-add { margin: 0; padding: 15px; }
   .stock-add > a { font-size: 1.25em; }
   .stock-add.selected { background: #EEF; }
   .stock-add > form { display: none; }
   .stock-add.selected > form { display: block; }
   .stock-add > form select { width: 350px; }
+
+  .stock-add > form .two-cols { display: flex; }
+  .stock-add > form .two-cols .left { width: 50%; margin-right: 20px; }
+  .stock-add > form .two-cols .right { width: 50%; margin-left: 20px; }
+
+  .stock-add .dim-type-total {  }
+  .stock-add .dim-type-total div.form-group { display: inline-block; width: 150px; vertical-align: top; }
+  .stock-add .dim-type-total label { white-space: nowrap; }
+  .stock-add .dim-type-total div select { width: 100%; }
+  .stock-add .dim-type-total div#div_id_dim_type { width: 140px; }
+  .stock-add .dim-type-total div#div_id_dim_total { width: 100px; }
+  .stock-add .dim-type-total div#div_id_dim_unit { width: 130px; }
+
+  .stock-add textarea[name="description"] { width: 100%; height: 100px; }
 
   .list { background: transparent; margin: 0; padding: 0; }
   .list > .item { margin: 0; padding: 10px 5px; border-top: 1px solid #CCC; }
@@ -62,44 +76,71 @@
   <div class="stock-add {% if stock %} selected {% endif %}">
     <a href="#add-stock-item">add stock</a>
 
-    <form  id="id_company-stock-form" method="post" >{% csrf_token %}
-      <div id="div_id_stone" class="form-group">
-        <label for="id_stone" class="control-label  requiredField">
-          Stone in stock<span class="asteriskField">*</span>
-        </label>
-        <div class="controls ">
-          <select class="form-control" id="id_stone" name="stone">
-            {% if stockitem %}
-            <option selected="selected" value="{{ stockitem.stone.id }}">{{ stockitem.stone.name }}</option>
-            {% endif %}
-          </select>
-          <p id="hint_id_stones" class="help-block">Start typing the name of the stone, then select it from the list.</p>
-        </div>
-      </div>
-
-      {{ form.description|as_crispy_field }}
-
-      <div id="div_id_pics" class="form-group multi-pic-upload-field">
-        <label for="id_pic_upload_field" class="control-label">
-          Attach pictures
-        </label>
-        <div class="controls ">
-          <div class="pic-upload-field">
-            <input type="file" id="id_pic_upload_field">
-            <span class="loading" style="display:none"><span></span><span></span><span></span></span>
-          </div>
-          <div class="pic-item-list">
-            {% for x in stockitem.get_pics_list %}
-            <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
-              <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
-              <img src="{{ x.url_thumb }}" alt="">
-              <div class="del">X</div>
+    <form id="id_company-stock-form" method="post" >{% csrf_token %}
+      <div class="two-cols">
+        <div class="left">
+          <div id="div_id_stone" class="form-group">
+            <label for="id_stone" class="control-label  requiredField">
+              Stone in stock<span class="asteriskField">*</span>
+            </label>
+            <div class="controls ">
+              <select class="form-control" id="id_stone" name="stone">
+                {% if stockitem %}
+                <option selected="selected" value="{{ stockitem.stone.id }}">{{ stockitem.stone.name }}</option>
+                {% endif %}
+              </select>
+              <p id="hint_id_stones" class="help-block">Start typing the name of the stone, then select it from the list.</p>
             </div>
-            {% empty %}
-            <div class="none">no pictures</div>
-            {% endfor %}
           </div>
-          <p id="hint_id_pics" class="help-block">Upload up to 20 pictures of this project.</p>
+
+          <div class="dim-type-total">
+            {{ form.dim_type|as_crispy_field }}
+            {{ form.dim_total|as_crispy_field }}
+
+            <div id="div_id_dim_unit" class="form-group">
+              <label for="id_dim_unit" class="control-label ">
+                  Unit
+              </label>
+              <div class="controls ">
+                <select class="select form-control" id="id_dim_unit" name="dim_unit">
+                  <option value="0" selected="selected">square meter</option>
+                  <option value="1">square foot</option>
+                  <option value="2">cubic meter</option>
+                  <option value="3">cubic foot</option>
+                </select>
+                <p id="hint_id_dim_unit" class="help-block">Select a unit of measurement.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="right">
+
+          {{ form.description|as_crispy_field }}
+
+          <div id="div_id_pics" class="form-group multi-pic-upload-field">
+            <label for="id_pic_upload_field" class="control-label">
+              Attach pictures
+            </label>
+            <div class="controls ">
+              <div class="pic-upload-field">
+                <input type="file" id="id_pic_upload_field">
+                <span class="loading" style="display:none"><span></span><span></span><span></span></span>
+              </div>
+              <div class="pic-item-list">
+                {% for x in stockitem.get_pics_list %}
+                <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
+                  <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
+                  <img src="{{ x.url_thumb }}" alt="">
+                  <div class="del">X</div>
+                </div>
+                {% empty %}
+                <div class="none">no pictures</div>
+                {% endfor %}
+              </div>
+              <p id="hint_id_pics" class="help-block">Upload up to 20 pictures of this project.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -176,7 +217,7 @@ function item_del_onclick(ev){
       dataType: 'json',
       data: {
         _method: 'DELETE',
-	      module: "projects",
+	      module: "stock",
         csrfmiddlewaretoken: csrfToken,
       },
       success: function( json ) {
@@ -206,7 +247,7 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
   var oPicItemList = $('.pic-item-list');
 
 	form_data.append("pic", file_data);
-	form_data.append("module", "projects");
+	form_data.append("module", "stock");
 	form_data.append("csrfmiddlewaretoken", Cookies.get("csrftoken"));
 
   console.log('BEGIN UPLOAD...');
@@ -263,13 +304,7 @@ $("#id_stone").select2({
 function formatResult (item) {
   if (item.loading) return item.name;
 
-  return "<div class='select2-result-stones'>" +
-         "  <div class='pic'><img src='" + item.pic + "'></div>" +
-         "  <div class='names'>" +
-         "    <div class='name'>" + item.name + "</div> " +
-         "    <div class='pseu'>" + item.pseu + "</div>";
-         "  </div>" +
-         "</div>";
+  return "<div class='select2-result-stones'><div class='pic'><img src='" + item.pic + "'></div><div class='names'><div class='name'>" + item.name + "</div><div class='pseu'> - " + item.pseu + "</div></div></div>";
 }
 
 function formatResultSelection (item) {

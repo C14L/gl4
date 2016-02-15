@@ -31,7 +31,25 @@ class CompanyProjectForm(forms.ModelForm):
 class CompanyStockForm(forms.ModelForm):
     class Meta:
         model = Stock
-        fields = ['stone', 'description']
+        fields = ['stone', 'dim_type', 'dim_total', 'description']
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyStockForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_company-stock-form'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'companydb_db_stock'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.layout = Layout(
+            'stone', 'dim_type', 'dim_total', 'description',
+
+            FormActions(
+                Submit('save', 'Submit'),
+                # Button('cancel', 'Cancel')
+            )
+        )
 
 
 class CompanyAboutForm(forms.ModelForm):

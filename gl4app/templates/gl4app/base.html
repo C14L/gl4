@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="{% static 'base-lt-750.css' %}" media="only screen and (max-width: 750px)">
+    <script>
+      var bgStones = ['mossobe', 'azul-do-macaubas', 'branco-polar', 'juparana-gold', 'jura-beige']
+    </script>
 
     {% if settings.PRODUCTION %}
       <script type="text/javascript">
@@ -85,7 +88,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
                     <select size="1" name="country" id="search_country">
                       <option value="">All countries of origin</option>
                       {% for item in search_countries %}
-                        <option value="{{item.id}}"{% if item.id == country.id %} selected{% endif %}>{{item.name}}</option>
+                        <option value="{{item.id}}" {% if item.id == country.id %} selected {% endif %}>{{item.name}}</option>
                       {% endfor %}
                     </select>
                   </td>
@@ -93,7 +96,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
                     <select size="1" name="texture" id="search_texture">
                       <option value="">All textures</option>
                       {% for item in search_textures %}
-                        <option value="{{item.id}}"{% if item.id == texture.id %} selected{% endif %}>{{item.name}}</option>
+                        <option value="{{item.id}}" {% if item.id == texture.id %} selected {% endif %} >{{item.name}}</option>
                       {% endfor %}
                     </select>
                   </td>
@@ -228,9 +231,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     </div>
 
     <div id="fb-root"></div>
-    <div id="showbginfo">
-      <a href="/stone/amazonia-brown"><strong>The background stone is Amazonia Brown from Brazil.</strong></a>
-    </div>
+
     <script>
       (function(){ /* auto-submit search for onchange */
         //document.querySelector('#tpl-search-form input[type="submit"]').style.display = "none";
@@ -250,6 +251,15 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+    <script>
+      if ( $('body').css('background-image') == 'none' ) {
+        var bgStone = bgStones[Math.floor(bgStones.length*Math.random())];
+        var bgUrl = '/stonespics/' + bgStone + '.jpg';
+        $('body').css('background-image', 'url(' + bgUrl + ')');
+        $('body').append('<div id="showbginfo"><a href="/stone/amazonia-brown">More about background stone...</a></div>');
+      }
+    </script>
 
     {% block foot %}{% endblock %}
 
