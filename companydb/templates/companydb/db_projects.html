@@ -1,24 +1,30 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block title %}Add a project your company has finished{% endblock %}
+{% block title %}{% trans 'Add projects your company has finished' %}{% endblock %}
 
-{% block title2 %}Add a project your company has finished{% endblock %}
+{% block title2 %}{% trans 'Add projects your company has finished' %}{% endblock %}
 
 {% block description %}{% endblock %}
 
 {% block head %}
 <style>
-  .wrapper { display: flex; }
-  .wrapper > .left { width: 50%; }
-  .wrapper > .right { box-sizing: border-box; width: 50%; padding: 16px; background: #EEF; }
+  .wrapper { }
 
-  .project-add { margin: 0; padding: 10px 5px; font-size: 1.25em; }
+  .project-add { margin: 0; padding: 8px; }
+  .project-add > a { font-size: 1.25em; }
   .project-add.selected { background: #EEF; }
-  .project-add a {}
+  .project-add > form { display: block; }
+  .project-add > form select { width: 350px; }
+  .project-add > form .two-cols { display: flex; }
+  .project-add > form .two-cols .left { width: 50%; margin-right: 20px; }
+  .project-add > form .two-cols .right { width: 50%; margin-left: 20px; }
 
-  .list { background: transparent; margin: 0; padding: 0; }
+  .project-add textarea[name="description"] { width: 100%; height: 300px; }
+
+  .list { background: transparent; margin: 0; padding: 0; min-height: 200px; }
   .list > .item { margin: 0; padding: 10px 5px; border-top: 1px solid #CCC; }
   .list > .item.selected { background: #EEF; }
   .list > .item > div { margin: 5px 0; }
@@ -28,6 +34,8 @@
   .list > .item > .line-pics {  }
   .list > .item > .line-pics img { width: 50px; height: 50px; margin: 4px 4px 4px 0; padding: 3px; background: white; border: 1px solid #CCC; box-shadow: 1px 1px 2px rgba(0,0,0,0.28); }
   .list > .item > .line-descr { color: gray; }
+  .list > .empty { color: black; padding-top: 80px; text-align: center;
+  font-style: italic; }
 
   .select2-result-stones { display: block; text-align: left; height: 30px; overflow: hidden; white-space: nowrap;  }
   .select2-result-stones .pic { display: inline-block; }
@@ -50,32 +58,43 @@
 
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
 <a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
-<a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
-<a href="{% url 'companydb_db_projects' %}">Projects showroom</a> &raquo;
+<a href="{% url 'companydb_dashboard' %}">{% trans 'Dashboard' %}</a> &raquo;
+<a href="{% url 'companydb_projects' user.username %}">{% trans 'Projects showroom' %}</a> &raquo;
+{% if project %}
+  <a href="{% url 'companydb_projects' user.username %}#{{ project.id }}">{{ project.id }}</a> &raquo;
+{% endif %}
 {% endblock %}
 
 
 {% block main %}
 
 <div class="wrapper">
-  <div class="left">
-    <h1>Your projects</h1>
-    <div class="project-add {% if not project %} selected {% endif %}">
-      <a href="{% url 'companydb_db_projects' %}">add a project</a>
-    </div>
-    <div class="list">
-      {% for item in projects %}
+  {% if project %}
+    <form method="POST" action="{% url 'companydb_db_projects_item' project.id %}" onsubmit="return confirm('{% trans 'Delete this project from your company profile?' %}');">
+      {% csrf_token %}
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="submit" class="btn btn-default btn-sm" style="float: right;">{% trans 'delete this project' %}</button>
+    </form>
+    <h1 data-id="{{project.id}}">{% trans 'Edit project' %} {{ project.id }}</h1>
+  {% else %}
+    <h1>{% trans 'Add a project' %}</h1>
+  {% endif %}
+
+<!--
+  <div class="list">
+    {% for item in projects %}
       <div class="item {% if item.id == project.id %} selected {% endif %}">
         <div class="line-date">
-          <span class="tt">Last updated:</span>
+          <span class="tt">{% trans 'Last updated' %}:</span>
           {{ item.created }} --
-          <a href="{% url 'companydb_projects' user.username %}#{{ item.id }}">view</a> --
-          <a href="{% url 'companydb_db_projects_item' item.id %}">edit</a>
+          <a href="{% url 'companydb_projects' user.username %}#{{ item.id }}">{% trans 'view' %}</a> --
+          <a href="{% url 'companydb_db_projects_item' item.id %}">{% trans 'edit' %}</a> --
+          <a href="{% url 'companydb_db_projects_item' item.id %}">{% trans 'delete' %}</a>
         </div>
         <div class="line-stones">
-          <span class="tt">Stones:</span>
+          <span class="tt">{% trans 'Stones' %}:</span>
           {% for x in item.get_stones_list %}{{ x.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
         </div>
         <div class="line-pics">
@@ -84,72 +103,72 @@
           {% endfor %}
         </div>
         <div class="line-descr">
-          {{ item.description|truncatewords:32 }}
+          {{ item.description|truncatewords:80 }}
         </div>
       </div>
-      {% endfor %}
-    </div>
-
+    {% empty %}
+      <div class="empty">{% trans 'projects list is empty' %}</div>
+    {% endfor %}
   </div>
-  <div class="right">
+-->
 
+  <div id="add" class="project-add">
     <form  id="id_company-project-form" method="post" >{% csrf_token %}
-      <input style="float:right" type="submit" name="save_2" value="Save" class="btn btn-primary" id="submit-id-save-2" />
+      <div class="two-cols">
+        <div class="left">
+          {{ form.description|as_crispy_field }}
 
-      {% if project %}
-      <h2>Edit project {{ project.id }}</h2>
-      {% else %}
-      <h2>Add a project</h2>
-      {% endif %}
-
-      <div id="div_id_stones" class="form-group">
-        <label for="id_stones" class="control-label  requiredField">
-          Stones used<span class="asteriskField">*</span>
-        </label>
-        <div class="controls ">
-          <select multiple="multiple" class="selectmultiple form-control" id="id_stones" name="stones">
-            {% for x in project.stones.all %}
-            <option selected="selected" value="{{ x.id }}">{{ x.name }}</option>
-            {% endfor %}
-          </select>
-          <p id="hint_id_stones" class="help-block">Start typing the name of a stone used in the project, then select the stones from the list. Add all stones used in the project, but not more than ten.</p>
-        </div>
-      </div>
-
-      {{ form.description|as_crispy_field }}
-
-      <div id="div_id_pics" class="form-group multi-pic-upload-field">
-        <label for="id_pic_upload_field" class="control-label">
-          Attach pictures
-        </label>
-        <div class="controls ">
-          <div class="pic-upload-field">
-            <input type="file" id="id_pic_upload_field">
-            <span class="loading" style="display:none"><span></span><span></span><span></span></span>
-          </div>
-          <div class="pic-item-list">
-            {% for x in project.get_pics_list %}
-            <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
-              <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
-              <img src="{{ x.url_thumb }}" alt="">
-              <div class="del">X</div>
+          <div class="form-group">
+            <div class="controls ">
+              <input type="hidden" name="next" value="{% url 'companydb_projects' user.username %}">
+              <button type="submit" name="save" class="btn btn-primary" id="submit-id-save">{% trans 'Publish' %}</button>
             </div>
-            {% empty %}
-            <div class="none">no pictures</div>
-            {% endfor %}
           </div>
-          <p id="hint_id_pics" class="help-block">Upload up to 20 pictures of this project.</p>
+
+        </div>
+        <div class="right">
+          <div id="div_id_stones" class="form-group">
+            <label for="id_stones" class="control-label  requiredField">
+              {% trans 'Stones used' %}<span class="asteriskField">*</span>
+            </label>
+            <div class="controls ">
+              <select multiple="multiple" class="selectmultiple form-control" id="id_stones" name="stones">
+                {% for x in project.stones.all %}
+                <option selected="selected" value="{{ x.id }}">{{ x.name }}</option>
+                {% endfor %}
+              </select>
+              <p id="hint_id_stones" class="help-block">{% trans 'Start typing the name of a stone used in the project, then select the stones from the list. Add all stones used in the project, but not more than ten.' %}</p>
+            </div>
+          </div>
+
+          <div id="div_id_pics" class="form-group multi-pic-upload-field">
+            <label for="id_pic_upload_field" class="control-label">
+              {% trans 'Attach pictures' %}
+            </label>
+            <div class="controls ">
+              <div class="pic-upload-field">
+                <input type="file" id="id_pic_upload_field">
+                <span class="loading" style="display:none"><span></span><span></span><span></span></span>
+              </div>
+              <div class="pic-item-list">
+                {% for x in project.get_pics_list %}
+                <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
+                  <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
+                  <img src="{{ x.url_thumb }}" alt="">
+                  <div class="del">X</div>
+                </div>
+                {% empty %}
+                <div class="none">{% trans 'no pictures' %}</div>
+                {% endfor %}
+              </div>
+              <p id="hint_id_pics" class="help-block">{% trans 'Upload up to 20 pictures of this project.' %}</p>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="form-group">
-        <div class="controls ">
-          <input type="submit" name="save" value="Save" class="btn btn-primary" id="submit-id-save" />
-        </div>
-      </div>
-
     </form>
   </div>
+
 </div>
 
 {% endblock %}
@@ -159,6 +178,11 @@
 {% block foot %}
 
 <script>
+
+$('a[href="#add-project-item"]').on('click', function(ev){
+  ev.preventDefault();
+  $('.project-add').toggleClass('selected');
+});
 
 $( '#id_company-project-form' ).on( 'submit', function( ev ){
   // -> Don't force to define "stones used" because if may be a machinery
@@ -174,7 +198,7 @@ $( '#id_company-project-form' ).on( 'submit', function( ev ){
   }
 });
 
-function item_del_onclick(ev){
+function pic_del_onclick(ev){
   var oItem = $(this).parents('.item');
   console.log( $(oItem) );
 
@@ -211,7 +235,7 @@ function item_del_onclick(ev){
   }
 }
 
-$('.pic-item-list > .item .del').on('click', item_del_onclick);
+$('.pic-item-list > .item .del').on('click', pic_del_onclick);
 
 $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file field changes.
   ev.preventDefault();
@@ -219,19 +243,19 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
 
   var postUrl = "{% url 'companydb_db_pics' %}";
   var file_data = $(this).prop("files")[0];
-	var form_data = new FormData();
+  var form_data = new FormData();
   var oPicItemList = $('.pic-item-list');
 
-	form_data.append("pic", file_data);
-	form_data.append("module", "projects");
-	form_data.append("csrfmiddlewaretoken", Cookies.get("csrftoken"));
+  form_data.append("pic", file_data);
+  form_data.append("module", "projects");
+  form_data.append("csrfmiddlewaretoken", Cookies.get("csrftoken"));
 
   console.log('BEGIN UPLOAD...');
   $('.pic-upload-field input').hide();
   $('.pic-upload-field .loading').show();
 
-	$.ajax({
-	  url: postUrl,
+  $.ajax({
+    url: postUrl,
     dataType: 'json',
     cache: false,
     contentType: false,
@@ -243,7 +267,7 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
       console.log( 'SUCCESS.', json );
       var oItem = $( '<div class="item" id="id_pics_' + json.pic.id + '"><input style="display: none;" type="checkbox" checked="checked" name="pics" value="' + json.pic.id + '"><img src="' + json.pic.url_thumb + '" alt="" width="100" height="100"><div class="del">X</div></div>' );
       oItem.data('url', json.pic.url);
-      oItem.on('click', item_del_onclick);
+      oItem.on('click', pic_del_onclick);
       $(oPicItemList).prepend( oItem );
     },
     error: function( xhr, status, errorThrown ) {

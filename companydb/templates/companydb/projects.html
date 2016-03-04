@@ -1,4 +1,5 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n %}
 {% load markdown_deux_tags %}
 {% load bleach_tags %}
 
@@ -23,47 +24,56 @@
 
 {% with 'projects' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
 
-  {% for item in projects %}
-    <div class="stock-list item" id="{{ item.id }}">
-      <div class="header-line">
-        <table class="stock-table-header-table">
-          <tr class="date">
-            <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
-            <td class="title">Project added on:</td>
-            <td class="data">{{ item.created }}</td>
-          </tr>
-          <tr class="stone">
-            <td class="title">Name of natural stones:</td>
-            <td class="data">
-              {% for x in item.get_stones_list %}
-              <a href="{% url 'stonedb_item' x.slug %}">{{ x.name }}</a>{% if not forloop.last %}, {% endif %}
-              {% endfor %}
-            </td>
-          </tr>
-          <tr class="user">
-            <td class="title">More information:</td>
-            <td class="data">
-              <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="text-html content-line">
-        {{ item.description|markdown|bleach }}
-      </div>
-      <div class="fotoslist" id="fotoslist{{item.id}}">
-        <div class="list">
-          {% for pic in item.get_pics_list %}
-            <div class="item">
-              <a href="/fotos/{{pic.id}}">
-                <img src="/media/en/fotos_small/{{pic.id}}.{{pic.ext}}" alt="">
-              </a>
-            </div>
-          {% endfor %}
-        </div>
+{% if user.is_authenticated and user.id == view_user.id %}
+  <p style="text-align: center;">
+    <a class="btn btn-primary" href="{% url 'companydb_db_projects' %}">{% trans 'add a project' %}</a>
+  </p>
+{% endif %}
+
+{% for item in projects %}
+  <div class="stock-list item" id="{{ item.id }}">
+    <div class="header-line">
+      {% if user.id == item.user.id %}
+        <a class="btn btn-primary" style="float:right" href="{% url 'companydb_db_projects_item' item.id %}">{% trans 'edit' %}</a>
+      {% endif %}
+      <table class="stock-table-header-table">
+        <tr class="date">
+          <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
+          <td class="title">Project added on:</td>
+          <td class="data">{{ item.created }}</td>
+        </tr>
+        <tr class="stone">
+          <td class="title">Name of natural stones:</td>
+          <td class="data">
+            {% for x in item.get_stones_list %}
+            <a href="{% url 'stonedb_item' x.slug %}">{{ x.name }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </td>
+        </tr>
+        <tr class="user">
+          <td class="title">More information:</td>
+          <td class="data">
+            <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="text-html content-line">
+      {{ item.description|markdown|bleach }}
+    </div>
+    <div class="fotoslist" id="fotoslist{{item.id}}">
+      <div class="list">
+        {% for pic in item.get_pics_list %}
+          <div class="item">
+            <a href="/fotos/{{pic.id}}">
+              <img src="/media/en/fotos_small/{{pic.id}}.{{pic.ext}}" alt="">
+            </a>
+          </div>
+        {% endfor %}
       </div>
     </div>
-  {% endfor %}
+  </div>
+{% endfor %}
 
 {% endblock %}
 

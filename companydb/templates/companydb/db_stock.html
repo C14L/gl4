@@ -1,10 +1,11 @@
 {% extends 'gl4app/base.html' %}
 {% load static %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block title %}Add your current stock items{% endblock %}
+{% block title %}{% trans 'Add current stock items' %}{% endblock %}
 
-{% block title2 %}Add your current stock items{% endblock %}
+{% block title2 %}{% trans 'Add current stock items' %}{% endblock %}
 
 {% block description %}{% endblock %}
 
@@ -63,104 +64,26 @@
 {% block body_classes %}user settings stock{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
 <a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
-<a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
-<a href="{% url 'companydb_db_stock' %}">Current stock items</a> &raquo;
+<a href="{% url 'companydb_dashboard' %}">{% trans 'Dashboard' %}</a> &raquo;
+<a href="{% url 'companydb_db_stock' %}">{% trans 'Current stock items' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
 <div class="wrapper">
-  <h1>Current stock items of {{ view_user.profile.name }}</h1>
-  <div class="stock-add {% if stock %} selected {% endif %}">
-    <a href="#add-stock-item">add stock</a>
-
-    <form id="id_company-stock-form" method="post" >{% csrf_token %}
-      <div class="two-cols">
-        <div class="left">
-          <div id="div_id_stone" class="form-group">
-            <label for="id_stone" class="control-label  requiredField">
-              Stone in stock<span class="asteriskField">*</span>
-            </label>
-            <div class="controls ">
-              <select class="form-control" id="id_stone" name="stone">
-                {% if stockitem %}
-                <option selected="selected" value="{{ stockitem.stone.id }}">{{ stockitem.stone.name }}</option>
-                {% endif %}
-              </select>
-              <p id="hint_id_stones" class="help-block">Start typing the name of the stone, then select it from the list.</p>
-            </div>
-          </div>
-
-          <div class="dim-type-total">
-            {{ form.dim_type|as_crispy_field }}
-            {{ form.dim_total|as_crispy_field }}
-
-            <div id="div_id_dim_unit" class="form-group">
-              <label for="id_dim_unit" class="control-label ">
-                  Unit
-              </label>
-              <div class="controls ">
-                <select class="select form-control" id="id_dim_unit" name="dim_unit">
-                  <option value="0" selected="selected">square meter</option>
-                  <option value="1">square foot</option>
-                  <option value="2">cubic meter</option>
-                  <option value="3">cubic foot</option>
-                </select>
-                <p id="hint_id_dim_unit" class="help-block">Select a unit of measurement.</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="right">
-
-          {{ form.description|as_crispy_field }}
-
-          <div id="div_id_pics" class="form-group multi-pic-upload-field">
-            <label for="id_pic_upload_field" class="control-label">
-              Attach pictures
-            </label>
-            <div class="controls ">
-              <div class="pic-upload-field">
-                <input type="file" id="id_pic_upload_field">
-                <span class="loading" style="display:none"><span></span><span></span><span></span></span>
-              </div>
-              <div class="pic-item-list">
-                {% for x in stockitem.get_pics_list %}
-                <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
-                  <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
-                  <img src="{{ x.url_thumb }}" alt="">
-                  <div class="del">X</div>
-                </div>
-                {% empty %}
-                <div class="none">no pictures</div>
-                {% endfor %}
-              </div>
-              <p id="hint_id_pics" class="help-block">Upload up to 20 pictures of this project.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="controls ">
-          <input type="submit" name="save" value="Save" class="btn btn-primary" id="submit-id-save" />
-        </div>
-      </div>
-
-    </form>
-  </div>
+  <a href="#add" style="float:right">{% trans 'add stock' %}</a>
+  <h1>{% trans 'Current stock items' %}</h1>
 
   <div class="list">
     {% for item in stocklist %}
     <div class="item {% if item.id == stockitem.id %} selected {% endif %}">
       <div class="line-date">
-        <span class="tt">Last updated:</span>
+        <span class="tt">{% trans 'Last updated' %}:</span>
         {{ item.created }} --
-        <a href="{% url 'companydb_stock' user.username %}#{{ item.id }}">view</a> --
-        <a href="{% url 'companydb_db_stock_item' item.id %}">edit</a>
+        <a href="{% url 'companydb_stock' user.username %}#{{ item.id }}">{% trans 'view' %}</a> --
+        <a href="{% url 'companydb_db_stock_item' item.id %}">{% trans 'edit' %}</a>
       </div>
       <div class="line-stones">
         <span class="tt">Stones:</span>
@@ -177,6 +100,85 @@
     </div>
     {% endfor %}
   </div>
+
+  <div id="add" class="stock-add">
+    <form id="id_company-stock-form" method="post" >{% csrf_token %}
+      <div class="two-cols">
+        <div class="left">
+          <div id="div_id_stone" class="form-group">
+            <label for="id_stone" class="control-label  requiredField">
+              {% trans 'Stone in stock' %}<span class="asteriskField">*</span>
+            </label>
+            <div class="controls ">
+              <select class="form-control" id="id_stone" name="stone">
+                {% if stockitem %}
+                <option selected="selected" value="{{ stockitem.stone.id }}">{{ stockitem.stone.name }}</option>
+                {% endif %}
+              </select>
+              <p id="hint_id_stones" class="help-block">{% trans 'Start typing the name of the stone, then select it from the list.' %}</p>
+            </div>
+          </div>
+
+          <div class="dim-type-total">
+            {{ form.dim_type|as_crispy_field }}
+            {{ form.dim_total|as_crispy_field }}
+
+            <div id="div_id_dim_unit" class="form-group">
+              <label for="id_dim_unit" class="control-label ">
+                  {% trans 'Unit' %}
+              </label>
+              <div class="controls ">
+                <select class="select form-control" id="id_dim_unit" name="dim_unit">
+                  <option value="0" selected="selected">{% trans 'square meter' %}</option>
+                  <option value="1">{% trans 'square foot' %}</option>
+                  <option value="2">{% trans 'cubic meter' %}</option>
+                  <option value="3">{% trans 'cubic foot' %}</option>
+                </select>
+                <p id="hint_id_dim_unit" class="help-block">{% trans 'Select a unit of measurement.' %}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="right">
+
+          {{ form.description|as_crispy_field }}
+
+          <div id="div_id_pics" class="form-group multi-pic-upload-field">
+            <label for="id_pic_upload_field" class="control-label">
+              {% trans 'Attach pictures' %}
+            </label>
+            <div class="controls ">
+              <div class="pic-upload-field">
+                <input type="file" id="id_pic_upload_field">
+                <span class="loading" style="display:none"><span></span><span></span><span></span></span>
+              </div>
+              <div class="pic-item-list">
+                {% for x in stockitem.get_pics_list %}
+                <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
+                  <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
+                  <img src="{{ x.url_thumb }}" alt="">
+                  <div class="del">X</div>
+                </div>
+                {% empty %}
+                <div class="none">{% trans 'no pictures' %}</div>
+                {% endfor %}
+              </div>
+              <p id="hint_id_pics" class="help-block">{% trans 'Upload up to 20 pictures of this project.' %}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="controls ">
+          <button type="submit" name="save" class="btn btn-primary" id="submit-id-save">{% trans 'Save' %}</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
 </div>
 
 {% endblock %}

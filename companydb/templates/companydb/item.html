@@ -1,28 +1,24 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n %}
 {% load markdown_deux_tags %}
 {% load bleach_tags %}
 
-{% block title %}
-{{view_user.profile.name}}
-{% endblock %}
+{% block title %}{{view_user.profile.name}}{% endblock %}
 
-{% block title2 %}
-{{view_user.profile.name}}
-{% endblock %}
+{% block title2 %}{{view_user.profile.name}}{% endblock %}
 
-{% block description %}
-The company overview for {{view_user.profile.name}}.
-{% endblock %}
+{% block description %}{% blocktrans %}The company overview for {{view_user.profile.name}}.{% endblocktrans %}{% endblock %}
 
 {% block head %}
+<style>
+  section.business-areas { font-size: 20px; text-align: center; margin: 16px 0; }
+</style>
 {% endblock %}
 
-{% block body_classes %}
-profile profile-home
-{% endblock %}
+{% block body_classes %}profile profile-home{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
 <a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
 {% endblock %}
 
@@ -31,6 +27,12 @@ profile profile-home
 <h1 id="about-company-title">{{view_user.profile.name}}</h1>
 
 {% with 'item' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+
+<section class="business-areas">
+  {% for group in view_user.group_set.all %}
+    <a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a>{% if not forloop.last %}, {% endif %}
+  {% endfor %}
+</section>
 
 <table class="layout">
   <tr>
@@ -89,14 +91,6 @@ profile profile-home
 
     <td class="rightcol">
       <div class="tbox">
-        <div class="title">Business areas</div>
-        <div class="content">
-          <ul>
-            {% for group in view_user.group_set.all %}
-              <li><a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
       </div>
     </td>
   </tr>

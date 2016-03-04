@@ -1,12 +1,13 @@
 import os
 
-from os.path import join, isdir, dirname
+from os.path import join, dirname
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
-from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 from mdpages.models import Article
 from stonedb.models import Stone
@@ -19,56 +20,63 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', primary_key=True)
     name = models.CharField(
-        max_length=100, default='', verbose_name='Company name',
-        help_text='The name of your company.')
+        max_length=100, default='',
+        verbose_name=_('Company name'),
+        help_text=_('The name of your company.'))
     contact = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Contact person',
-        help_text='The name of your company.')
+        max_length=100, default='', blank=True,
+        verbose_name=_('Contact person'),
+        help_text=_('The name of your company.'))
     contact_position = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Contact position',
-        help_text='The job title of the contact person (sales, owner, etc.)')
-    slogan = models.CharField(max_length=255, default='', blank=True,
-                              verbose_name='Company slogan',
-                              help_text='A very short sentence thath expresses'
-                              'the company focus and values.')
+        max_length=100, default='', blank=True,
+        verbose_name=_('Contact position'),
+        help_text=_('The job title of the contact person (sales, owner, etc.)'))
+    slogan = models.CharField(
+        max_length=255, default='', blank=True,
+        verbose_name=_('Company slogan'),
+        help_text=_('A very short sentence thath expresses '
+                    'the company focus and values.'))
     street = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Street',
-        help_text='The physical address of the company.')
+        max_length=100, default='', blank=True, verbose_name=_('Street'),
+        help_text=_('The physical address of the company.'))
     city = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='City',
-        help_text='The name of the city or town.')
+        max_length=100, default='', blank=True, verbose_name=_('City'),
+        help_text=_('The name of the city or town.'))
     zip = models.CharField(
-        max_length=16, default='', blank=True, verbose_name='Postal code',
-        help_text='The postal code.')
+        max_length=16, default='', blank=True, verbose_name=_('Postal code'),
+        help_text=_('The postal code.'))
     country_sub_id = models.PositiveIntegerField(db_index=True, default=0)
     country_id = models.PositiveIntegerField(db_index=True, default=0)
     country_sub_name = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Province/Region',
-        help_text='The province or region if applicable.')
+        max_length=100, default='', blank=True,
+        verbose_name=_('Province/Region'),
+        help_text=_('The province or region if applicable.'))
     country_name = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Country name',
-        help_text='The country your company is registered.')
-    postal = models.TextField(default='', verbose_name='Postal address')
+        max_length=100, default='', blank=True,
+        verbose_name=_('Country name'),
+        help_text=_('The country your company is registered.'))
+    postal = models.TextField(default='', verbose_name=_('Postal address'))
     email = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='E-mail',
-        help_text='Official company sales email address.')
+        max_length=100, default='', blank=True, verbose_name=_('E-mail'),
+        help_text=_('Official company sales email address.'))
     fax = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Fax',
-        help_text="Your company's fax number.")
+        max_length=100, default='', blank=True, verbose_name=_('Fax'),
+        help_text=_("Your company's fax number."))
     tel = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Phone',
-        help_text="Your company's phone number, "
-        "including international dialing code for your country.")
+        max_length=100, default='', blank=True, verbose_name=_('Phone'),
+        help_text=_("Your company's phone number, including "
+                    "international dialing code for your country."))
     mobile = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Mobile phone',
-        help_text='Your mobile phone number.')
+        max_length=100, default='', blank=True, verbose_name=_('Mobile phone'),
+        help_text=_('Your mobile phone number.'))
     web = models.CharField(
-        max_length=100, default='', blank=True, verbose_name='Company website',
-        help_text='The official web site of your company, if applicable.')
-    about = models.TextField(default='', blank=True,
-                             verbose_name='About company',
-                             help_text='Provide some background about your '
-                                       'company')
+        max_length=100, default='', blank=True,
+        verbose_name=_('Company website'),
+        help_text=_('The official web site of your company, if applicable.'))
+    about = models.TextField(
+        default='', blank=True,
+        verbose_name=_('About company'),
+        help_text=_('Provide some background about your company'))
     title_foto = models.IntegerField(default=0)
     title_foto_ext = models.CharField(max_length=30, default='')
     signup_ip = models.CharField(max_length=15, default='')
@@ -134,23 +142,27 @@ class StockManager(CommonProjectsStocksManager):
 
 class Stock(CommonProjectsStocks):
     # Dimension type: depending on this, use square or cubic centimeter.
-    DIM_TYPE_CHOICES = ((0, 'not specified'), (1, 'blocks'), (2, 'slabs'),
-                        (3, 'tiles'), (4, 'cobblestone'), (9, 'other'), )
+    DIM_TYPE_CHOICES = ((0, _('not specified')),
+                        (1, _('blocks')),
+                        (2, _('slabs')),
+                        (3, _('tiles')),
+                        (4, _('cobblestone')),
+                        (9, _('other')), )
     DIM_USE_CUBIC = {1, 4, }
 
     stone = models.ForeignKey(Stone, db_index=True, null=True, default=None)
     description = models.TextField(
-        default='', blank=True, verbose_name='Stock item description',
-        help_text='Add any information about the stock item here, '
-                  'i.e. sizes, surface treatment, borders, etc.')
+        default='', blank=True, verbose_name=_('Stock item description'),
+        help_text=_('Add any information about the stock item here, '
+                    'i.e. sizes, surface treatment, borders, etc.'))
     dim_type = models.PositiveSmallIntegerField(
         choices=DIM_TYPE_CHOICES, default=0, blank=True,
-        verbose_name='Product type',
-        help_text='Specify the product type of of your stock item.')
+        verbose_name=_('Product type'),
+        help_text=_('Specify the product type of of your stock item.'))
     # total amount in square meters or cubic meters
     dim_total = models.PositiveIntegerField(
-        default=0, blank=True, verbose_name='Total amount',
-        help_text='Total amount in square meters or cubic meters.')
+        default=0, blank=True, verbose_name=_('Total amount'),
+        help_text=_('Total amount in square meters or cubic meters.'))
 
     objects = StockManager()
 
@@ -190,18 +202,21 @@ class ProjectsManager(CommonProjectsStocksManager):
 
 class Project(CommonProjectsStocks):
     stones = models.ManyToManyField(
-        Stone, null=True, default=None, verbose_name='Stones used',
-        help_text='Start typing the name of a stone used in the project, '
-                  'then select the stones from the list. Add all stones used '
-                  'in the project, but not more than ten.')
+        Stone, null=True, default=None,
+        verbose_name=_('Stones used'),
+        help_text=_('Start typing the name of a stone used in the project, '
+                    'then select the stones from the list. Add all stones used '
+                    'in the project, but not more than ten.'))
     description = models.TextField(
-        default='', blank=True, verbose_name='Project description',
-        help_text='Describe the project, the challenges you met, the problems '
-                  'you solved, the time it took, etc.')
+        default='', blank=True,
+        verbose_name=_('Project description'),
+        help_text=_('Describe the project, the challenges you met, the '
+                    'problems you solved, the time it took, etc.'))
     location = models.TextField(
-        default='', blank=True, verbose_name='Address',
-        help_text='ONLY for publicly accessible buildings, provide a street'
-                  'address of the project, where it can be visited.')
+        default='', blank=True,
+        verbose_name=_('Address'),
+        help_text=_('ONLY for publicly accessible buildings, provide a street'
+                    'address of the project, where it can be visited.'))
     lat = models.FloatField(null=True, default=None, editable=False)
     lng = models.FloatField(null=True, default=None, editable=False)
 
@@ -213,7 +228,7 @@ class Project(CommonProjectsStocks):
         ordering = ('-created', )
 
     def __str__(self):
-        return '{} --> {}'.format(self.user.profile.name, self.stones.all())
+        return '{}'.format(self.pk)
 
     def get_pics_list(self):
         return Pic.objects.all_for_project(self)

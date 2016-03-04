@@ -8,6 +8,7 @@ from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, \
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response as rtr
 from django.template import RequestContext
+from django.views.decorators.http import require_http_methods
 
 from companydb.forms import PicUploadForm, CompanyDetailsForm, \
     CompanyAboutForm, CompanyProjectForm, CompanyStockForm
@@ -234,6 +235,7 @@ def db_pics(request):
 
 
 @login_required
+@require_http_methods(["POST", "GET", "HEAD", "DELETE"])
 def db_projects(request, pk=None):
     """
     Provide a form to add a "project" to a company profile. A project includes
@@ -247,54 +249,65 @@ def db_projects(request, pk=None):
     """
 
     if pk:
-        item = get_object_or_404(Project, user=request.user, pk=pk)
+        view_item = get_object_or_404(Project, user=request.user, pk=pk)
     else:
-        item = None
+        view_item = None
 
-    if request.method == 'POST':
-        form = CompanyProjectForm(request.POST, instance=item)
+    if 'DELETE' in (request.method, request.POST.get('_method', None)):
+        # This deletes the entire view_item and and all attached pics.
+        view_item.delete()
+        kwargs = {'slug': request.user.username}
+        redirect_url = reverse('companydb_projects', kwargs=kwargs)
+        return HttpResponseRedirect(redirect_url)
+
+    if 'POST' == request.method:
+        form = CompanyProjectForm(request.POST, instance=view_item)
         # manually add stones selection
         stone_pks = request.POST.getlist('stones', [])
         stones = Stone.objects.filter(pk__in=stone_pks)
         # manually add uploaded pics selection
         pics_pks = request.POST.getlist('pics', [])
-        print('pics_pks: ', pics_pks)
         pics = Pic.objects.all_for_user(request.user) \
                           .filter(pk__in=pics_pks, module='projects')
-        print('pics: ', pics)
+
         if form.is_valid():
-            project = form.save(commit=False)
-            project.stones = stones
-            project.user = request.user
-            project.save()
+            project_item = form.save(commit=False)
+            project_item.user = request.user
+            project_item.save()
+            print('--> db_projects -> project_item saved.')
+            print(project_item)
+
+            print('--> db_projects -> adding stones to project_item...')
+            project_item.stones = stones
+            print('--> db_projects -> saving project_item again...')
+            project_item.save()
 
             # point pictures to the new Project item
             for p in pics:
-                print('SAVING PIC: ', dir(p))
-                p.attach_to(project.id)
+                p.attach_to(project_item.pk)
 
-            redirect_url = reverse('companydb_db_projects_item',
-                                   kwargs={'pk': project.id})
+            redirect_url = request.POST.get('next', reverse(
+                'companydb_db_projects_item', kwargs={'pk': project_item.id}))
             return HttpResponseRedirect(redirect_url)
     else:
-        form = CompanyProjectForm(instance=item)
+        form = CompanyProjectForm(instance=view_item)
 
     li = request.user.project_set.all()
 
     tpl = 'companydb/db_projects.html'
-    ctx = {'form': form, 'projects': li, 'project': item}
+    ctx = {'form': form, 'projects': li, 'project': view_item}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
 @login_required
 def db_stock(request, pk=None):
     if pk:
-        item = get_object_or_404(Stock, pk=pk)
+        view_item = get_object_or_404(Stock, pk=pk)
     else:
-        item = None
+        view_item = None
 
     if request.method == 'POST':
-        form = CompanyStockForm(request.POST, instance=item)
+        form = CompanyStockForm(request.POST, instance=view_item)
         # manually add stone selected
         stone_pk = request.POST.get('stone', None)
         stone = get_object_or_404(Stone, pk=stone_pk)
@@ -306,25 +319,25 @@ def db_stock(request, pk=None):
         print('pics: ', pics)
 
         if form.is_valid():
-            stock = form.save(commit=False)
-            stock.stone = stone
-            stock.user = request.user
-            stock.save()
+            stock_item = form.save(commit=False)
+            stock_item.stone = stone
+            stock_item.user = request.user
+            stock_item.save()
 
             # point pictures to the new Stone item
             for p in pics:
                 print('SAVING PIC: ', dir(p))
-                p.attach_to(stock.id)
+                p.attach_to(stock_item.id)
 
             redirect_url = reverse('companydb_db_stock_item',
-                                   kwargs={'pk': stock.id})
+                                   kwargs={'pk': stock_item.id})
             return HttpResponseRedirect(redirect_url)
     else:
-        form = CompanyStockForm(instance=item)
+        form = CompanyStockForm(instance=view_item)
 
     li = request.user.stock_set.all()
 
     tpl = 'companydb/db_stock.html'
-    ctx = {'form': form, 'stocklist': li, 'stockitem': item}
+    ctx = {'form': form, 'stocklist': li, 'stockitem': view_item}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
