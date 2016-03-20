@@ -74,8 +74,9 @@ def photos(request, slug):
     page = request.GET.get('page', 1)
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = Pic.objects.all_for_profile(view_user)
+    form = PicUploadForm() if request.user == view_user else None
     tpl = 'companydb/photos.html'
-    ctx = {'view_user': view_user, 'photos': _get_page(li, page)}
+    ctx = {'view_user': view_user, 'form': form, 'photos': _get_page(li, page)}
     return rtr(tpl, ctx, context_instance=RequestContext(request))
 
 
@@ -227,7 +228,10 @@ def db_pics(request):
                 print('--> db_pics() --> REQUEST HTML')
                 return HttpResponseRedirect(request.path)
     else:
-        form = PicUploadForm()
+        # form = PicUploadForm()
+        kwargs = {'slug': request.user.username}
+        _next = reverse('companydb_photos', kwargs=kwargs)
+        return HttpResponseRedirect(_next)
 
     tpl = 'companydb/db_pics.html'
     ctx = {'form': form, 'photos': Pic.objects.all_for_profile(request.user)}

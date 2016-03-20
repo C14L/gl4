@@ -11,7 +11,11 @@
 
 {% block head %}
 <style>
-  section.business-areas { font-size: 20px; text-align: center; margin: 16px 0; }
+  h1 { color: black; font-weight: bold; margin: 16px 0; }
+  section.profile-business-areas { font-size: 20px; text-align: center; margin: 16px 0; }
+  div.profile-info-fotos { display: flex; }
+  div.profile-info-fotos > section { width: 50% !important; box-sizing: border-box; }
+  div.profile-info-fotos > section > .list { width: 100%; box-sizing: border-box; }
 </style>
 {% endblock %}
 
@@ -28,77 +32,49 @@
 
 {% with 'item' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
 
-<section class="business-areas">
+<section class="profile-business-areas">
   {% for group in view_user.group_set.all %}
     <a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a>{% if not forloop.last %}, {% endif %}
   {% endfor %}
 </section>
 
-<table class="layout">
-  <tr>
-    <td class="leftcol">
-      <table class="profile-contact-info">
-        <tr>
-          <td></td>
-          <td>
-            <strong>{{view_user.profile.name}}</strong>
-          </td>
-        </tr>
-        <tr>
-          <td>Contact:</td>
-          <td style="width:100%">{{view_user.profile.contact}} ({{view_user.profile.contact_position}})</td>
-        </tr>
-        <tr>
-          <td>Website:</td>
-          <td><a onClick="recOutLink(this, 'Company Links', '/company/xiamen-heads-import-and-export'); return false;" rel="nofollow" href="{{view_user.profile.web}}">{{view_user.profile.web}}</a></td>
-        </tr>
-        <tr>
-          <td>Email:</td>
-          <td><a href="/company/xiamen-heads-import-and-export/contact">Contact form</a></td>
-        </tr>
-        <tr>
-          <td>Phone:</td>
-          <td>{{view_user.profile.fon}}</td>
-        </tr>
-        <tr>
-          <td>Fax:</td>
-          <td>{{view_user.profile.fax}}</td>
-        </tr>
-        <tr>
-          <td>Address:</td>
-          <td>{{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}}, {{view_user.profile.country_name}}</td>
-        </tr>
-      </table>
+<div class="profile-info-fotos">
+  <section class="profile-contact-info">
+    <dl class="profile-name"><dt>{% trans 'Company' %}:</dt><dd>{{view_user.profile.name}}</dd></dl>
+    <dl class="profile-contact"><dt>{% trans 'Contact' %}:</dt><dd>{{view_user.profile.contact}} ({{view_user.profile.contact_position}})</dd></dl>
+    <dl class="profile-website"><dt>{% trans 'Website' %}:</dt><dd><a rel="nofollow" href="{{view_user.profile.web}}">{{view_user.profile.web}}</a></dd></dl>
+    <dl class="profile-email"><dt>{% trans 'Email' %}:</dt><dd><a rel="nofollow" href="./contact">contact form</a></dd></dl>
+    <dl class="profile-phone"><dt>{% trans 'Phone' %}:</dt><dd>{{view_user.profile.fon}}</dd></dl>
+    <dl class="profile-fax"><dt>Fax:</dt><dd>{{view_user.profile.fax}}</dd></dl>
+    <dl class="profile-address"><dt>{% trans 'Address' %}:</dt><dd>{{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}}, {{view_user.profile.country_name}}</dd></dl>
+  </section>
 
-      <div id="about-company-about">
-        {{view_user.profile.about|markdown|bleach}}
-      </div>
-    </td>
-
-    <td class="middlecol">
-      <div class="fotoslist">
-        <div class="list">
-          {% for pic in pics %}
-            <div class="item">
-              <a href="{% url 'companydb_pic_item' pic.id  %}">
-                <img src="/media/en/fotos_small/{{pic.id}}.jpg" alt="{{pic.title}}">
-              </a>
-            </div>
-          {% endfor %}
+  <section class="fotoslist">
+    <div class="list">
+      {% for pic in pics %}
+        <div class="item">
+          <a href="{% url 'companydb_pic_item' pic.id  %}">
+            <img src="/media/en/fotos_small/{{pic.id}}.jpg" alt="{{pic.title}}">
+          </a>
         </div>
-      </div>
-    </td>
+      {% endfor %}
+    </div>
+  </section>
+</div>
 
-    <td class="rightcol">
-      <div class="tbox">
-      </div>
-    </td>
-  </tr>
-</table>
+<div id="about-company-about">{{view_user.profile.about|markdown|bleach}}</div>
+
+
 
 <p>Last active: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }} </p>
 
 {% endblock %}
 
 {% block foot %}
+<script>
+  $('.profile-website a').on('click', function(ev) {
+    var href = this.attr('href');
+    recOutLink(this, 'Company Links', href);
+  });
+</script>
 {% endblock %}
