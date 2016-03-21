@@ -1,28 +1,24 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n %}
-{% load markdown_deux_tags %}
-{% load bleach_tags %}
+{% load i18n markdown_deux_tags bleach_tags gl4tags %}
 
-{% block title %}{{view_user.profile.name}}{% endblock %}
+{% block title %}{% blocktrans with profile_name=view_user.profile.name %}Projects by {{profile_name}}{% endblocktrans %}{% endblock %}
 
-{% block title2 %}{{view_user.profile.name}}{% endblock %}
+{% block title2 %}{% blocktrans with profile_name=view_user.profile.name %}Projects by {{profile_name}}{% endblocktrans %}{% endblock %}
 
-{% block description %}The company overview for {{view_user.profile.name}}.{% endblock %}
+{% block description %}{% endblock %}
 
 {% block head %}{% endblock %}
 
 {% block body_classes %}profile profile-home{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
 <a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_projects' view_user.username %}">{% trans 'Projects' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
-
-<h1 id="about-company-title">{{view_user.profile.name}}</h1>
-
-{% with 'projects' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+  {% with view='projects' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
 {% if user.is_authenticated and user.id == view_user.id %}
   <p style="text-align: center;">
@@ -39,11 +35,11 @@
       <table class="stock-table-header-table">
         <tr class="date">
           <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
-          <td class="title">Project added on:</td>
+          <td class="title">{% trans 'Project added on' %}:</td>
           <td class="data">{{ item.created }}</td>
         </tr>
         <tr class="stone">
-          <td class="title">Name of natural stones:</td>
+          <td class="title">{% trans 'Name of natural stones' %}:</td>
           <td class="data">
             {% for x in item.get_stones_list %}
             <a href="{% url 'stonedb_item' x.slug %}">{{ x.name }}</a>{% if not forloop.last %}, {% endif %}
@@ -51,7 +47,7 @@
           </td>
         </tr>
         <tr class="user">
-          <td class="title">More information:</td>
+          <td class="title">{% trans 'More information' %}:</td>
           <td class="data">
             <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
           </td>
@@ -65,9 +61,7 @@
       <div class="list">
         {% for pic in item.get_pics_list %}
           <div class="item">
-            <a href="/fotos/{{pic.id}}">
-              <img src="/media/en/fotos_small/{{pic.id}}.{{pic.ext}}" alt="">
-            </a>
+            <a href="{% url 'companydb_pic_item' pic.id %}"><img src="{{ pic|picsrc:'small' }}" alt="{{pic.title}}"></a>
           </div>
         {% endfor %}
       </div>

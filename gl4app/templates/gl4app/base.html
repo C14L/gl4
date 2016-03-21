@@ -16,9 +16,6 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="{% static 'base-lt-750.css' %}" media="only screen and (max-width: 750px)">
-    <script>
-      var bgStones = ['mossobe', 'azul-do-macaubas', 'branco-polar', 'juparana-gold', 'jura-beige']
-    </script>
 
     {% if settings.PRODUCTION %}
       <script type="text/javascript">
@@ -251,24 +248,11 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-
-    <script>
-      if ( $('body').css('background-image') == 'none' ) {
-        var bgStone = bgStones[Math.floor(bgStones.length*Math.random())];
-        var bgUrl = '/stonespics/' + bgStone + '.jpg';
-        $('body').css('background-image', 'url(' + bgUrl + ')');
-        $('body').append('<div id="showbginfo"><a href="/stone/amazonia-brown">More about background stone...</a></div>');
-      }
-    </script>
+    <script src="{% static 'base.js' %}"></script>
 
     {% block foot %}{% endblock %}
 
     <script>var addthis_config = {"data_track_addressbar":false};</script>
     <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yaix"></script>
-    <script>var sc_project=570770;var sc_invisible=1;var sc_partition=4;var sc_security="bb8f16d7";var sc_remove_link=1;</script>
-    <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script>
-    <noscript>
-      <div class="statcounter"><img class="statcounter" src="http://c5.statcounter.com/counter.php?sc_project=570770&amp;java=0&amp;security=bb8f16d7&amp;invisible=1" alt="site stats"></div>
-    </noscript>
   </body>
 </html>

@@ -114,13 +114,13 @@ urlpatterns = [
         companydb.views.db_pics, name='companydb_db_pics'),
 
     url(r'^company/dashboard/projects/$',
-        companydb.views.db_projects, name='companydb_db_projects'),
+        companydb.views.projects_detail, name='companydb_db_projects'),
     url(r'^company/dashboard/projects/(?P<pk>\d+)/$',
-        companydb.views.db_projects, name='companydb_db_projects_item'),
+        companydb.views.projects_detail, name='companydb_db_projects_item'),
     url(r'^company/dashboard/stock/$',
-        companydb.views.db_stock, name='companydb_db_stock'),
+        companydb.views.stock_detail, name='companydb_db_stock'),
     url(r'^company/dashboard/stock/(?P<pk>\d+)/$',
-        companydb.views.db_stock, name='companydb_db_stock_item'),
+        companydb.views.stock_detail, name='companydb_db_stock_item'),
 ]
 
 

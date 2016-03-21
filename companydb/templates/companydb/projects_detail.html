@@ -1,7 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static %}
-{% load i18n %}
-{% load crispy_forms_tags %}
+{% load static i18n crispy_forms_tags %}
 
 {% block title %}{% trans 'Add projects your company has finished' %}{% endblock %}
 
@@ -60,10 +58,10 @@
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
 <a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
-<a href="{% url 'companydb_dashboard' %}">{% trans 'Dashboard' %}</a> &raquo;
-<a href="{% url 'companydb_projects' user.username %}">{% trans 'Projects showroom' %}</a> &raquo;
 {% if project %}
-  <a href="{% url 'companydb_projects' user.username %}#{{ project.id }}">{{ project.id }}</a> &raquo;
+  <a href="{% url 'companydb_projects' user.username %}#{{ project.id }}">{% trans 'Update project information' %}</a> &raquo;
+{% else %}
+  <a href="{% url 'companydb_projects' user.username %}">{% trans 'Add new project' %}</a> &raquo;
 {% endif %}
 {% endblock %}
 
@@ -71,6 +69,8 @@
 {% block main %}
 
 <div class="wrapper">
+  {% with view_user=user view='projects' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+
   {% if project %}
     <form method="POST" action="{% url 'companydb_db_projects_item' project.id %}" onsubmit="return confirm('{% trans 'Delete this project from your company profile?' %}');">
       {% csrf_token %}

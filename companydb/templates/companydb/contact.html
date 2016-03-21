@@ -26,10 +26,7 @@ profile profile-contact
 {% endblock %}
 
 {% block main %}
-
-<h1 id="about-company-title">Contact {{view_user.profile.name}}</h1>
-
-{% with 'contact' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+ {% with view='contact' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
 <div class="box-input">
  <h2>Contact</h2>

@@ -1,31 +1,24 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n markdown_deux_tags bleach_tags gl4tags %}
 
-{% block title %}
-{{pic.title}}
-{% endblock %}
+{% block title %}{{pic.title}}{% endblock %}
 
-{% block title2 %}
-{{pic.title}}
-{% endblock %}
+{% block title2 %}{{pic.title}}{% endblock %}
 
-{% block description %}
-{{pic.title}}
-{% endblock %}
+{% block description %}{{pic.title}}{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-profile fotos fotos-{{pic.module}}
-{% endblock %}
+{% block body_classes %}profile fotos fotos-{{pic.module}}{% endblock %}
+
 
 {% block breadcrumb %}
-  <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+  <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
   <a href="{% url 'companydb_item' pic.user.username %}">{{pic.user.profile.name}}</a> &raquo;
   {% if pic.module == 'projects' %}
-    <a href="{% url 'companydb_projects' pic.user.username %}">Project</a> &raquo;
+    <a href="{% url 'companydb_projects' pic.user.username %}">{% trans 'Project' %}</a> &raquo;
   {% elif pic.module == 'stock' %}
-    <a href="{% url 'companydb_stock' pic.user.username %}">Stock</a> &raquo;
+    <a href="{% url 'companydb_stock' pic.user.username %}">{% trans 'Stock' %}</a> &raquo;
   {% elif pic.module == 'stones' %}
     <a href="{% url 'stonedb_item' related.slug %}">{{related.name}}</a> &raquo;
   {% endif %}
@@ -35,21 +28,17 @@ profile fotos fotos-{{pic.module}}
 {% block main %}
 
   {% if pic.module == 'projects' %}
-    {% with 'projects' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+    {% with 'projects' as view %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
   {% elif pic.module == 'stock' %}
-    {% with 'stock' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+    {% with 'stock' as view %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
   {% elif pic.module == 'profile' %}
-    {% with 'photos' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
-    {% if user.is_authenticated %}
-      <p>
-        <a href="{% url 'companydb_db_pics' %}">{{pic.user.name}} pictures dashboard</a>
-        <form method="POST" action="{% url 'companydb_pic_item' pic.id %}"
-              onsubmit="return confirm('Delete this picture?');">
-          {% csrf_token %}
-          <input type="hidden" name="_method" value="DELETE">
-          <input type="submit" value="delete this picture">
-        </form>
-      </p>
+    {% with 'photos' as view %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+    {% if user.is_authenticated and pic.user.id == user.id %}
+    <form method="POST" action="{% url 'companydb_pic_item' pic.id %}" onsubmit="return confirm('Delete this picture?');">
+      {% csrf_token %}
+      <input type="hidden" name="_method" value="DELETE">
+      <input type="submit" value="delete this picture">
+    </form>
     {% endif %}
   {% endif %}
 
@@ -66,11 +55,13 @@ profile fotos fotos-{{pic.module}}
         {% elif pic.module == 'stones' %}
           <b><a class="back" href="{% url 'stonedb_item' related.slug %}">Back</a></b>
         {% endif %}
-        | <a href="/media/en/fotos_large/{{pic.id}}.jpg">Download large photo</a> | Uploaded on {{pic.created}} by <a href="{% url 'companydb_item' pic.user.username %}">{{pic.user.profile.name}}</a>
+        | <a href="{{pic|picsrc:'large'}}">{% trans 'Download large photo' %}</a>
+        | {% blocktrans with created=pic.created %}Uploaded on {{created}} by:{% endblocktrans %}
+        <a href="{% url 'companydb_item' pic.user.username %}">{{pic.user.profile.name}}</a>
       </div>
-      <img class="pic" src="/media/en/fotos_medium/{{pic.id}}.jpg" alt="{{pic.title}}">
+      <img class="pic" src="{{pic|picsrc:'medium'}}" alt="{{pic.title}}">
     </div>
-    <div name="caption" id="view-caption">{{pic.caption}}</div>
+    <div class="caption" id="view-caption">{{pic.caption}}</div>
   </div>
 {% endblock %}
 

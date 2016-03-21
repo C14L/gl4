@@ -1,0 +1,49 @@
+{% load i18n %}
+
+<div class="user-profile-header">
+
+  <h1 id="about-company-title">
+    <a href="{% url 'companydb_item' view_user.username %}">
+      {% if view == 'item' %}
+        {{view_user.profile.name}}
+      {% elif view == 'stock' %}
+        {% blocktrans with profile_name=view_user.profile.name %}Natural Stone in stock at {{profile_name}}{% endblocktrans %}
+      {% elif view == 'projects' %}
+        {% blocktrans with profile_name=view_user.profile.name %}Projects by {{profile_name}}{% endblocktrans %}
+      {% elif view == 'photos' %}
+        {% blocktrans with profile_name=view_user.profile.name %}Photos of {{profile_name}}{% endblocktrans %}
+      {% elif view == 'contact' %}
+        {% blocktrans with profile_name=view_user.profile.name %}Contact {{profile_name}}{% endblocktrans %}
+      {% endif %}
+    </a>
+  </h1>
+
+  <ul id="tabnavi2" class="user-profile-nav">
+    <li>
+      <a {% if view == 'item' %}id="current"{% endif %} href="{% url 'companydb_item' view_user.username %}">
+        <span>Home</span>
+      </a>
+    </li>
+    <li>
+      <a {% if view == 'stock' %}id="current"{% endif %} href="{% url 'companydb_stock' view_user.username %}">
+        <span>Stones on Stock ({{view_user.profile.stock_count}})</span>
+      </a>
+    </li>
+    <li>
+      <a {% if view == 'projects' %}id="current"{% endif %} href="{% url 'companydb_projects' view_user.username %}">
+        <span>Projects Showroom ({{view_user.profile.project_count}})</span>
+      </a>
+    </li>
+    <li>
+      <a {% if view == 'photos' %}id="current"{% endif %} href="{% url 'companydb_photos' view_user.username %}">
+        <span>Company Photos ({{view_user.profile.pic_count}})</span>
+      </a>
+    </li>
+    <li class="last">
+      <a {% if view == 'contact' %}id="current"{% endif %} href="{% url 'companydb_contact' view_user.username %}">
+        <span>Contact Us</span>
+      </a>
+    </li>
+  </ul>
+
+</div>

@@ -1,18 +1,11 @@
 {% extends 'gl4app/base.html' %}
-{% load crispy_forms_tags %}
-{% load i18n %}
+{% load crispy_forms_tags i18n gl4tags %}
 
-{% block title %}
-{% blocktrans %}Photos of {{view_user.profile.name}}{% endblocktrans %}
-{% endblock %}
+{% block title %}{% blocktrans with profile_name=view_user.profile.name %}Photos of {{profile_name}}{% endblocktrans %}{% endblock %}
 
-{% block title2 %}
-{% blocktrans %}Photos of {{view_user.profile.name}}{% endblocktrans %}
-{% endblock %}
+{% block title2 %}{% blocktrans with profile_name=view_user.profile.name %}Photos of {{profile_name}}{% endblocktrans %}{% endblock %}
 
-{% block description %}
-{% blocktrans %}The company overview for {{view_user.profile.name}}.{% endblocktrans %}
-{% endblock %}
+{% block description %}{% endblock %}
 
 {% block head %}
 <style>
@@ -23,22 +16,18 @@
   .fotoslist .item { position: relative; overflow: hidden; }
   .fotoslist .item .del { background: rgba(0,0,0,0.28); color: black; font-size: 56px; text-shadow: 0 0 2px rgba(255,255,255,0.82); line-height: 56px; width: 56px; height: 56px; padding: 0; text-align: center; position: absolute; top: 4px; left: 4px; opacity: 0; }
   .fotoslist .item:hover .del { opacity: 1; cursor: pointer; }
-
 </style>
 {% endblock %}
 
 {% block body_classes %}profile profile-home{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
 <a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
-
-<h1 id="about-company-title">{% blocktrans %}Photos of {{view_user.profile.name}}{% endblocktrans %}</h1>
-
-{% with 'photos' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+  {% with view='photos' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
 {% if user.is_authenticated and user == view_user %}
 <section class="photo-upload-form">
@@ -47,12 +36,18 @@
 {% endif %}
 
 <div class="fotoslist" id="fotoslist">
-  <p class="count">There are currently {{photos.paginator.count}} photos of the company {{view_user.profile.name}} here.</p>
+  <p class="count">
+    {% blocktrans trimmed count photo_count=photos.paginator.count with profile_name=view_user.profile.name %}
+    There is currently only one photo of the company {{profile_name}} here.
+    {% plural %}
+    There are currently {{photo_count}} photos of the company {{profile_name}} here.
+    {% endblocktrans %}
+  </p>
   <div class="list">
     {% for item in photos %}
       <div class="item">
         <a href="{% url 'companydb_pic_item' item.id %}">
-          <img src="/media/en/fotos_small/{{item.id}}.jpg" alt="">
+          <img src="{{item|picsrc:'small'}}" alt="{{pic.title}}">
           {% if user.is_authenticated and user == view_user %}
             <div class="del">X</div>
           {% endif %}
@@ -72,13 +67,19 @@
   });
 
   $('.fotoslist .item .del').on('click', function(ev) {
-    ev.preventDefault();
-    ev.stopPropagation();
+    ev.preventDefault(); ev.stopPropagation();
+    var item = $(this).parents('.item');
+    var errMsg = "{% trans 'An error occurred, picture could not be deleted!' %}";
 
     if (confirm('Delete this picture?')) {
-      $.ajax({
-
-      });
+      $.ajax({ url: $(item).find('a').attr('href'), method: 'DELETE' }).then(
+        function(data, textStatus, xhr) {
+          $(item).fadeOut(300);
+        },
+        function(xhr, textStatus, errorThrown) {
+          alert(errMsg + ' [textStatus: ' + textStatus + ', errorThrown: ' + errorThrown + ']');
+        }
+      );
     }
   });
 </script>

@@ -1,4 +1,5 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n markdown_deux_tags bleach_tags gl4tags %}
 
 {% block title %}
 Stock items of {{view_user.profile.name}}
@@ -20,16 +21,19 @@ profile profile-home
 {% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
 <a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
-<a href="{% url 'companydb_stock' view_user.username %}">Stock</a> &raquo;
+<a href="{% url 'companydb_stock' view_user.username %}">{% trans 'Stock' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
+  {% with view='stock' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
-  <h1 id="about-company-title">Buy Natural Stone at {{view_user.profile.name}}</h1>
-
-  {% with 'stock' as view %}{% include 'companydb/tabnavi2.html' %}{% endwith %}
+  {% if user.is_authenticated and user.id == view_user.id %}
+    <p style="text-align: center;">
+      <a class="btn btn-primary" href="{% url 'companydb_db_stock' %}">{% trans 'add a stock item' %}</a>
+    </p>
+  {% endif %}
 
   {% for item in stock %}
     <div class="stock-list item">
@@ -37,17 +41,17 @@ profile profile-home
         <table class="stock-table-header-table">
           <tr class="date">
             <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
-            <td class="title">Added to stock on:</td>
+            <td class="title">{% trans 'Added to stock on' %}:</td>
             <td class="data">{{item.created}}</td>
           </tr>
           <tr class="stone">
-            <td class="title">Name of natural stone:</td>
+            <td class="title">{% trans 'Name of natural stone' %}:</td>
             <td class="data">
               <strong><a href="{% url 'stonedb_item' item.stone.slug %}">{{item.stone.name}}</a></strong>
             </td>
           </tr>
           <tr class="user">
-            <td class="title">More information:</td>
+            <td class="title">%{ trans 'More information' %}:</td>
             <td class="data">
               <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
             </td>
@@ -55,15 +59,13 @@ profile profile-home
         </table>
       </div>
       <div class="text-html content-line">
-        {{item.description}}
+        {{ item.description|markdown|bleach }}
       </div>
       <div class="fotoslist" id="fotoslist{{item.id}}">
         <div class="list">
           {% for pic in item.pic_set.all %}
             <div class="item">
-              <a href="/fotos/{{pic.id}}">
-                <img src="/media/en/fotos_small/{{pic.id}}.{{pic.ext}}" alt="">
-              </a>
+              <a href="/fotos/{{pic.id}}"><img src="{{pic|picsrc:'small'}}" alt="{{pic.title}}"></a>
             </div>
           {% endfor %}
         </div>
