@@ -63,7 +63,7 @@ urlpatterns = [
 
     # tradeshowdb
 
-    url(r'^tradeshows$',
+    url(r'^tradeshows/?$',
         tradeshowdb.views.home, name='tradeshowdb_home'),
     # /tradeshows/2016
     url(r'^tradeshows/(?P<y>[12][0-9]{3})$',
