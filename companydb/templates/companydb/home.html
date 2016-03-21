@@ -1,22 +1,23 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n %}
 
-{% block title %}Buisiness Types of Granite Companies{% endblock %}
+{% block title %}{% trans 'Buisiness Types of Granite Companies' %}{% endblock %}
 
-{% block title2 %}Buisiness Types of Granite Companies{% endblock %}
+{% block title2 %}{% trans 'Buisiness Types of Granite Companies' %}{% endblock %}
 
-{% block description %}Find stone companies related to the granite and marble industry by business type.{% endblock %}
+{% block description %}{% trans 'Find stone companies related to the granite and marble industry by business type.' %}{% endblock %}
 
 {% block head %}{% endblock %}
 
 {% block body_classes %}user areas{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>Natural stone buisiness areas</h1>
+<h1>{% trans 'Natural stone buisiness areas' %}</h1>
 
 <div style="margin:0; padding:15px 0 0 0; border-top:1px solid #c0c0c0;">
   {% if settings.PRODUCTION %}

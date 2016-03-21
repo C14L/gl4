@@ -2,8 +2,7 @@
   {% for item in groups %}
   <div class="item {% if item in user.group_set.all %}is-member{% else %}not-member{% endif %}">
     <div class="picture">
-      <a href="{% url 'companydb_list' item.slug '1' %}"
-         style="background-image: url(/static/companies/en/{{item.slug}}.jpg)"></a>
+      <a href="{% url 'companydb_list' item.slug '1' %}" style="background-image: url({{item.title_foto}})"></a>
     </div>
     <div class="about">
       <a class="name" href="{% url 'companydb_list' item.slug '1' %}">{{item.name}}</a>

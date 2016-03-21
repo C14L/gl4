@@ -1,27 +1,18 @@
 {% extends 'gl4app/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}
-{{group.name}}
-{% endblock %}
+{% block title %}{{group.name}}{% endblock %}
 
-{% block title2 %}
-{{group.name}}
-{% endblock %}
+{% block title2 %}{{group.name}}{% endblock %}
 
-{% block description %}
-{{group.description}}
-{% endblock %}
+{% block description %}{{group.description}}{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-groups-home
-{% endblock %}
+{% block body_classes %}groups-home{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
+<a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
 <a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a> &raquo;
 {% endblock %}
 
@@ -32,7 +23,7 @@ groups-home
 <table class="layout">
   <tr>
     <td class="leftcol">
-      <p class="logo"><img src="{% get_static_prefix %}companies/en/{{group.slug}}.jpg"></p>
+      <p class="logo"><img src="{{group.title_photo}}"><!-- {% get_static_prefix %}companies/en/{{group.slug}}.jpg --></p>
       <p class="info"><strong>{{group.name}}</strong> has {{group.count_members}} members.</p>
       <p class="about">{{group.about}}</p>
 

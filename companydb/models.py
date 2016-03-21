@@ -483,7 +483,7 @@ class Group(models.Model):
     about = models.TextField(default='')  # intro text for group page
     description = models.CharField(max_length=255, default='')
     keywords = models.CharField(max_length=255, default='')
-    title_foto = models.ForeignKey(Pic, null=True, default=None)
+    title_foto = models.CharField(max_length=100, default='')
     count_members = models.PositiveSmallIntegerField(default=0)
     created = models.DateTimeField(default=now)  # created_time
     members = models.ManyToManyField(User)
