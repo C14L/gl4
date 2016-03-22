@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rosetta',
     'crispy_forms',
     'markdown_deux',
     'django_bleach',
@@ -98,6 +99,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -142,14 +144,15 @@ AUTHENTICATION_BACKENDS = (
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 LANGUAGE_SHORT = 'en'
-LANGUAGES = (('en-us', 'english'), ('de-de', 'deutsch'), )
+LANGUAGES = [('en', 'english'), ('de', 'deutsch'), ]
 
 TIME_ZONE = 'UTC'
 USE_TZ = True
 USE_I18N = True
 USE_L10N = True
+USE_ETAGS = True
 
 STATIC_URL = '/static/'
 

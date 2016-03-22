@@ -1,0 +1,491 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-22 14:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: companydb/models.py:24
+msgid "Company name"
+msgstr ""
+
+#: companydb/models.py:25 companydb/models.py:29
+msgid "The name of your company."
+msgstr ""
+
+#: companydb/models.py:28
+msgid "Contact person"
+msgstr ""
+
+#: companydb/models.py:32
+msgid "Contact position"
+msgstr ""
+
+#: companydb/models.py:33
+msgid "The job title of the contact person (sales, owner, etc.)"
+msgstr ""
+
+#: companydb/models.py:36
+msgid "Company slogan"
+msgstr ""
+
+#: companydb/models.py:37
+msgid "A very short sentence that expresses the company focus and values."
+msgstr ""
+
+#: companydb/models.py:40
+msgid "Street"
+msgstr ""
+
+#: companydb/models.py:41
+msgid "The physical address of the company."
+msgstr ""
+
+#: companydb/models.py:43
+msgid "City"
+msgstr ""
+
+#: companydb/models.py:44
+msgid "The name of the city or town."
+msgstr ""
+
+#: companydb/models.py:46
+msgid "Postal code"
+msgstr ""
+
+#: companydb/models.py:47
+msgid "The postal code."
+msgstr ""
+
+#: companydb/models.py:52
+msgid "Province/Region"
+msgstr ""
+
+#: companydb/models.py:53
+msgid "The province or region if applicable."
+msgstr ""
+
+#: companydb/models.py:56
+msgid "Country name"
+msgstr ""
+
+#: companydb/models.py:57
+msgid "The country your company is registered."
+msgstr ""
+
+#: companydb/models.py:58
+msgid "Postal address"
+msgstr ""
+
+#: companydb/models.py:60
+msgid "E-mail"
+msgstr ""
+
+#: companydb/models.py:61
+msgid "Official company sales email address."
+msgstr ""
+
+#: companydb/models.py:63
+msgid "Fax"
+msgstr ""
+
+#: companydb/models.py:64
+msgid "Your company's fax number."
+msgstr ""
+
+#: companydb/models.py:66 companydb/templates/companydb/item.html:46
+msgid "Phone"
+msgstr ""
+
+#: companydb/models.py:67
+msgid ""
+"Your company's phone number, including international dialing code for your "
+"country."
+msgstr ""
+
+#: companydb/models.py:70
+msgid "Mobile phone"
+msgstr ""
+
+#: companydb/models.py:71
+msgid "Your mobile phone number."
+msgstr ""
+
+#: companydb/models.py:74
+msgid "Company website"
+msgstr ""
+
+#: companydb/models.py:75
+msgid "The official web site of your company, if applicable."
+msgstr ""
+
+#: companydb/models.py:78
+msgid "About company"
+msgstr ""
+
+#: companydb/models.py:79
+msgid "Provide some background about your company"
+msgstr ""
+
+#: companydb/models.py:145
+msgid "not specified"
+msgstr ""
+
+#: companydb/models.py:146
+msgid "blocks"
+msgstr ""
+
+#: companydb/models.py:147
+msgid "slabs"
+msgstr ""
+
+#: companydb/models.py:148
+msgid "tiles"
+msgstr ""
+
+#: companydb/models.py:149
+msgid "cobblestone"
+msgstr ""
+
+#: companydb/models.py:150
+msgid "other"
+msgstr ""
+
+#: companydb/models.py:155
+msgid "Stock item description"
+msgstr ""
+
+#: companydb/models.py:156
+msgid ""
+"Add any information about the stock item here, i.e. sizes, surface "
+"treatment, borders, etc."
+msgstr ""
+
+#: companydb/models.py:160
+msgid "Product type"
+msgstr ""
+
+#: companydb/models.py:161
+msgid "Specify the product type of of your stock item."
+msgstr ""
+
+#: companydb/models.py:164
+msgid "Total amount"
+msgstr ""
+
+#: companydb/models.py:165
+msgid "Total amount in square meters or cubic meters."
+msgstr ""
+
+#: companydb/models.py:206
+#: companydb/templates/companydb/projects_detail.html:132
+msgid "Stones used"
+msgstr ""
+
+#: companydb/models.py:207
+#: companydb/templates/companydb/projects_detail.html:140
+msgid ""
+"Start typing the name of a stone used in the project, then select the stones "
+"from the list. Add all stones used in the project, but not more than ten."
+msgstr ""
+
+#: companydb/models.py:212
+msgid "Project description"
+msgstr ""
+
+#: companydb/models.py:213
+msgid ""
+"Describe the project, the challenges you met, the problems you solved, the "
+"time it took, etc."
+msgstr ""
+
+#: companydb/models.py:217 companydb/templates/companydb/item.html:48
+msgid "Address"
+msgstr ""
+
+#: companydb/models.py:218
+msgid ""
+"ONLY for publicly accessible buildings, provide a streetaddress of the "
+"project, where it can be visited."
+msgstr ""
+
+#: companydb/templates/companydb/db_details.html:15
+#: companydb/templates/companydb/photos.html:25
+#: companydb/templates/companydb/pic_item.html:16
+#: companydb/templates/companydb/projects.html:15
+#: companydb/templates/companydb/stock.html:24
+msgctxt "Breadcrumb"
+msgid "Natural Stone Company Directory"
+msgstr ""
+
+#: companydb/templates/companydb/home.html:4
+#: companydb/templates/companydb/home.html:6
+msgid "Buisiness Types of Granite Companies"
+msgstr ""
+
+#: companydb/templates/companydb/home.html:8
+msgid ""
+"Find stone companies related to the granite and marble industry by business "
+"type."
+msgstr ""
+
+#: companydb/templates/companydb/home.html:15
+#: companydb/templates/companydb/item.html:22
+#: companydb/templates/companydb/list.html:15
+#: companydb/templates/companydb/projects_detail.html:59
+#: companydb/templates/companydb/stock_detail.html:65
+msgid "Natural Stone Company Directory"
+msgstr ""
+
+#: companydb/templates/companydb/home.html:20
+msgid "Natural stone buisiness areas"
+msgstr ""
+
+#: companydb/templates/companydb/item.html:8
+#, python-format
+msgid "Company overview for %(profile_name)s."
+msgstr ""
+
+#: companydb/templates/companydb/item.html:39
+#: companydb/templates/companydb/item.html:65
+#: companydb/templates/companydb/projects.html:33
+#: companydb/templates/companydb/projects_detail.html:93
+#: companydb/templates/companydb/stock_detail.html:83
+msgid "edit"
+msgstr ""
+
+#: companydb/templates/companydb/item.html:42
+msgid "Company"
+msgstr ""
+
+#: companydb/templates/companydb/item.html:43
+msgid "Contact"
+msgstr ""
+
+#: companydb/templates/companydb/item.html:44
+msgid "Website"
+msgstr ""
+
+#: companydb/templates/companydb/item.html:45
+msgid "Email"
+msgstr ""
+
+#: companydb/templates/companydb/photos.html:4
+#: companydb/templates/companydb/photos.html:6
+#: companydb/templates/companydb/user-profile-header.html:14
+#, python-format
+msgid "Photos of %(profile_name)s"
+msgstr ""
+
+#: companydb/templates/companydb/photos.html:40
+#, python-format
+msgid "There is currently only one photo of the company %(profile_name)s here."
+msgid_plural ""
+"There are currently %(photo_count)s photos of the company %(profile_name)s "
+"here."
+msgstr[0] ""
+msgstr[1] ""
+
+#: companydb/templates/companydb/photos.html:72
+msgid "An error occurred, picture could not be deleted!"
+msgstr ""
+
+#: companydb/templates/companydb/pic_item.html:19
+msgid "Project"
+msgstr ""
+
+#: companydb/templates/companydb/pic_item.html:21
+#: companydb/templates/companydb/stock.html:26
+msgid "Stock"
+msgstr ""
+
+#: companydb/templates/companydb/pic_item.html:58
+msgid "Download large photo"
+msgstr ""
+
+#: companydb/templates/companydb/pic_item.html:59
+#, python-format
+msgid "Uploaded on %(created)s by:"
+msgstr ""
+
+#: companydb/templates/companydb/projects.html:4
+#: companydb/templates/companydb/projects.html:6
+#: companydb/templates/companydb/user-profile-header.html:12
+#, python-format
+msgid "Projects by %(profile_name)s"
+msgstr ""
+
+#: companydb/templates/companydb/projects.html:17
+msgid "Projects"
+msgstr ""
+
+#: companydb/templates/companydb/projects.html:25
+msgid "add a project"
+msgstr ""
+
+#: companydb/templates/companydb/projects.html:38
+msgid "Project added on"
+msgstr ""
+
+#: companydb/templates/companydb/projects.html:42
+msgid "Name of natural stones"
+msgstr ""
+
+#: companydb/templates/companydb/projects.html:50
+msgid "More information"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:4
+#: companydb/templates/companydb/projects_detail.html:6
+msgid "Add projects your company has finished"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:62
+msgid "Update project information"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:64
+msgid "Add new project"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:75
+msgid "Delete this project from your company profile?"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:78
+msgid "delete this project"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:80
+msgid "Edit project"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:82
+msgid "Add a project"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:90
+#: companydb/templates/companydb/stock_detail.html:80
+msgid "Last updated"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:92
+#: companydb/templates/companydb/stock_detail.html:82
+msgid "view"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:94
+msgid "delete"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:97
+msgid "Stones"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:110
+msgid "projects list is empty"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:124
+msgid "Publish"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:146
+#: companydb/templates/companydb/stock_detail.html:146
+msgid "Attach pictures"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:161
+#: companydb/templates/companydb/stock_detail.html:161
+msgid "no pictures"
+msgstr ""
+
+#: companydb/templates/companydb/projects_detail.html:164
+#: companydb/templates/companydb/stock_detail.html:164
+msgid "Upload up to 20 pictures of this project."
+msgstr ""
+
+#: companydb/templates/companydb/stock.html:34
+msgid "add a stock item"
+msgstr ""
+
+#: companydb/templates/companydb/stock.html:44
+msgid "Added to stock on"
+msgstr ""
+
+#: companydb/templates/companydb/stock.html:48
+msgid "Name of natural stone"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:4
+#: companydb/templates/companydb/stock_detail.html:6
+msgid "Add current stock items"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:67
+#: companydb/templates/companydb/stock_detail.html:74
+msgid "Current stock items"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:73
+msgid "add stock"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:107
+msgid "Stone in stock"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:115
+msgid "Start typing the name of the stone, then select it from the list."
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:125
+msgid "Unit"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:129
+msgid "square meter"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:130
+msgid "square foot"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:131
+msgid "cubic meter"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:132
+msgid "cubic foot"
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:134
+msgid "Select a unit of measurement."
+msgstr ""
+
+#: companydb/templates/companydb/stock_detail.html:172
+msgid "Save"
+msgstr ""
+
+#: companydb/templates/companydb/user-profile-header.html:10
+#, python-format
+msgid "Natural Stone in stock at %(profile_name)s"
+msgstr ""
+
+#: companydb/templates/companydb/user-profile-header.html:16
+#, python-format
+msgid "Contact %(profile_name)s"
+msgstr ""

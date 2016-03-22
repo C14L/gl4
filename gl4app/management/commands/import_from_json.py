@@ -27,7 +27,8 @@ class Command(BaseCommand):
     help = "Import most old Graniteland data from JSON files."
     data_dir = join(dirname(settings.BASE_DIR), 'import_data')
     pics_dir = join(settings.BASE_DIR, 'stonedb/stonesimages')
-    lang = 'en'
+
+    lang = settings.LANGUAGE_CODE
 
     def handle(self, *args, **options):
         print(
@@ -297,7 +298,7 @@ class Command(BaseCommand):
             group.about = row['about']
             group.description = row['description'][:255]
             group.keywords = row['keywords'][:255]
-            group.title_foto = None
+            group.title_foto = '/static/group/{}.jpg'.format(group.slug)
             group.count_members = row['count_members']
             group.created = parse_iso_datetime(row['created_time'])
             group.save()

@@ -34,7 +34,7 @@ class UserProfile(models.Model):
     slogan = models.CharField(
         max_length=255, default='', blank=True,
         verbose_name=_('Company slogan'),
-        help_text=_('A very short sentence thath expresses '
+        help_text=_('A very short sentence that expresses '
                     'the company focus and values.'))
     street = models.CharField(
         max_length=100, default='', blank=True, verbose_name=_('Street'),

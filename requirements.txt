@@ -6,11 +6,14 @@ django-allauth==0.24.1
 django-bleach==0.3.0
 django-crispy-forms==1.5.2
 django-markdown-deux==1.0.5
+django-rosetta==0.7.10
 docutils==0.12
 gunicorn==19.3.0
 html5lib==0.9999999
 markdown2==2.3.0
+microsofttranslator==0.7
 oauthlib==1.0.3
+polib==1.0.7
 psycopg2==2.6.1
 python-dateutil==2.4.2
 python3-openid==3.0.9
