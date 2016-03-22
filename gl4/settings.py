@@ -12,16 +12,17 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 
 # Import private settings.
+from os.path import dirname, abspath, exists, join
+
 from gl4.settings_private import *
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+BASE_DIR = dirname(dirname(abspath(__file__)))
 
 SITE_ID = 1
 SITE_NAME = 'Graniteland.com'
 
-DEBUG = os.path.exists('/islocal.txt')
+DEBUG = exists('/islocal.txt')
 PRODUCTION = False
 
 APPEND_SLASH = True
@@ -155,6 +156,7 @@ USE_L10N = True
 USE_ETAGS = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = join(BASE_DIR, 'static')
 
 # Example: "/media/en/fotos_small/21392.jpg"
 MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
@@ -210,5 +212,6 @@ BLEACH_DEFAULT_WIDGET = 'wysiwyg.widgets.WysiwygWidget'
 
 STONES_PER_PAGE = 50
 
-WATERMARK_FONT_FILENAME = os.path.join(BASE_DIR, 'Verdana.ttf')
+WATERMARK_FONT_FILENAME = join(BASE_DIR, 'Verdana.ttf')
 
+STONE_SEARCH_OPTS_FILE = join(BASE_DIR, 'api_static', 'stone-search-opts.json')

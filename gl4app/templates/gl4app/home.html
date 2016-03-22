@@ -1,23 +1,23 @@
 {% extends 'gl4app/base.html' %}
 {% load i18n %}
 
-{% block title %}GRANITELAND - The Granite and Marble Search Engine{% endblock %}
+{% block title %}{% trans 'GRANITELAND - The Granite and Marble Search Engine' context 'Homepage title' %}{% endblock %}
 
-{% block title2 %}GRANITELAND - The Granite and Marble Search Engine{% endblock %}
+{% block title2 %}{% trans 'GRANITELAND - The Granite and Marble Search Engine' context 'Homepage title' %}{% endblock %}
 
-{% block description %}The Granite and Marble Search Engine. Find info and pictures of 1800 natural stones, granites, marbles, limestone, travertin and other types of natural stone easily. Search our natural stone database by color or type to find the best natural stone granite and marble for your kitchen countertop or flooring tiles.{% endblock %}
+{% block description %}{% trans 'The Granite and Marble Search Engine. Find info and pictures of 1800 natural stones, granites, marbles, limestone, travertin and other types of natural stone easily. Search our natural stone database by color or type to find the best natural stone granite and marble for your kitchen countertop or flooring tiles.' %}{% endblock %}
 
 {% block head %}{% endblock %}
 
 {% block body_classes %}sitehome{% endblock %}
 
 {% block breadcrumb %}
-<a href="/">Find Granite und Marble</a> &raquo;
+<a href="/">{% trans 'Find Granite und Marble' context 'Homepage breadcrumb' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>Granite and Marble Search Engine</h1>
+<h1>{% trans 'Granite and Marble Search Engine' context 'Homepage H1' %}</h1>
 
 <div class="leftcol">
   <div class="top-pic" title="Granite Quary"></div>
@@ -32,36 +32,19 @@
     {% endif %}
   </div>
   <div class="sectionlinks">
-    <h2>Find Granite and Marble</h2>
-    <p>Find granite, marble and other natural stone easily. Graniteland's
-      Natural Stone Database contains information on more than 1600 types of
-      granite and marble.</p>
-    <p>Simply select a color, country of origin or type of stone at the top of
-      this page, and hit the "Find Stones" button. You will get a list of
-      natural stones that match you search options, including a picture and
-      further details.</p>
 
-    <h2><a href="/companies">Natural Stone Company Directory</a></h2>
-    <p>A growing directory of worldwide companies from the granite and marble
-      business. Find wholesale granite suppliers, quarry operator companies, or
-      a granite installers near you. If you run a granite related company
-      business, please add your company and promote your stock items and recent
-      projects. <a href="/companies">Natural Stone Company Directory...</a></p>
+    <h2>{% trans 'Find Granite and Marble' %}</h2>
+    <p>{% blocktrans %}Find granite, marble and other natural stone easily. Graniteland's Natural Stone Database contains information on more than 1600 types of granite and marble. Simply select a color, country of origin or type of stone at the top of this page, and hit the "Find Stones" button. You will get a list of natural stones that match you search options, including a picture and further details.{% endblocktrans %}</p>
 
-    <h2><a href="/tradeshows">Granite Tradeshows</a></h2>
-    <p>We have collected information on some of the most important natural stone
-      exhibitions and construction trade shows worldwide. If you are a granite
-      manufacturer, an architect, a home owner, or granite trader, you can find
-      granite exhibitions near you to visit. <a href="/tradeshows">Granite Trade
-        Shows...</a></p>
+    <h2><a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a></h2>
+    <p>{% blocktrans %}A growing directory of worldwide companies from the granite and marble business. Find wholesale granite suppliers, quarry operator companies, or a granite installers near you. If you run a granite related company business, please add your company and promote your stock items and recent projects.{% endblocktrans %} <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory...' %}</a></p>
 
-    <h2><a href="/infos">Granite + Marble Magazine</a></h2>
-    <p>More information about granite and marble is available at Graniteland's
-      Natural Stone Magazine. We have compiled many interesting articles about
-      granite and marble and about the international natural stone industry.
-      Find out why some granite is expensive and other granite is cheap. And
-      what other types of stone are there besides granite and marble.
-      <a href="/infos">Granite + Marble Magazine...</a></p>
+    <h2><a href="{% url 'tradeshowdb_home' %}">{% trans 'Granite Tradeshows' %}</a></h2>
+    <p>{% blocktrans %}We have collected information on some of the most important natural stone exhibitions and construction trade shows worldwide. If you are a granite manufacturer, an architect, a home owner, or granite trader, you can find granite exhibitions near you to visit.{% endblocktrans %} <a href="{% url 'tradeshowdb_home' %}">{% trans 'Granite Trade Shows...' %}</a></p>
+
+    <h2><a href="{% url 'mdpages_home' %}">{% trans 'Granite + Marble Magazine' %}</a></h2>
+    <p>{% blocktrans %}More information about granite and marble is available at Graniteland's Natural Stone Magazine. We have compiled many interesting articles about granite and marble and about the international natural stone industry. Find out why some granite is expensive and other granite is cheap. And what other types of stone are there besides granite and marble.{% endblocktrans %} <a href="{% url 'mdpages_home' %}">{% trans 'Granite + Marble Magazine...' %}</a></p>
+
   </div>
 
   <div class="tbox currstock">

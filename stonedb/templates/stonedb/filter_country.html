@@ -1,35 +1,23 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n %}
 
-{% block title %}Browse {{q.name}} marbles and granites{% endblock %}
+{% block title %}{% blocktrans with name=q.name %}Browse {{name}} marbles and granites{% endblocktrans %}{% endblock %}
 
-{% block title2 %}Browse {{q.name}} marbles and granites{% endblock %}
+{% block title2 %}{% blocktrans with name=q.name %}Browse {{name}} marbles and granites{% endblocktrans %}{% endblock %}
 
-{% block description %}Browse all {{q.name}} marbles and granites listed in Graniteland.{% endblock %}
+{% block description with name=q.name %}{% blocktrans %}Browse all {{name}} marbles and granites listed in Graniteland.{% endblocktrans %}{% endblock %}
 
 {% block head %}
 <style>
-.stone-property-list {
-  list-style: none;
-  margin: 0; padding: 0;
-  -webkit-column-count: 4;
-  -moz-column-count: 4;
-  -ms-column-count: 4;
-  -o-column-count: 4;
-  column-count: 4;
-}
-.stone-property-list li {
-  margin: 4px 0; padding: 8px 0;
-  background-color: #F3F3F3;
-  text-align: center;
-}
+.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
+.stone-property-list li { margin: 4px 0; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
 .stone-property-list li a { text-decoration: inherit; }
 .stone-property-list li a:hover { text-decoration: underline; }
 .stone-property-list li .count { color: #999; }
 </style>
 {% endblock %}
 
-{% block body_classes %}
-{% endblock %}
+{% block body_classes %}{% endblock %}
 
 {% block breadcrumb %}
 {% include 'stonedb/simple-filter-breadcrumb.html' %}
@@ -37,18 +25,18 @@
 
 {% block main %}
 
-<h1>Types of stone from {{q.name}}</h1>
-<p>You are viewing natural stones grouped by country {{q.name}}.</p>
+<h1>{% blocktrans with name=q.name %}Types of stone from {{name}}{% endblocktrans %}</h1>
+<p>{% blocktrans with name=q.name %}You are viewing natural stones grouped by country {{name}}.{% endblocktrans %}</p>
 
 <div class="browse-stones browse-countries">
 
-  <h2>Photos of stone from {{q.name}}</h2>
+  <h2>{% blocktrans with name=q.name %}Photos of stone from {{name}}{% endblocktrans %}</h2>
 
   {% include 'stonedb/simple-filter-prevnext.html'%}
   {% include 'stonedb/stone-list-1.html'%}
   {% include 'stonedb/simple-filter-prevnext.html'%}
 
-  <h2>Natural Stone by country</h2>
+  <h2>{% blocktrans %}Natural Stone by country{% endblocktrans %}</h2>
 
   {% include 'stonedb/simple-filter-proplist.html' %}
 </div>

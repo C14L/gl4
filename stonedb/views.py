@@ -3,31 +3,27 @@ from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.http import Http404, JsonResponse
 from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import render_to_response as rtr
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import render
 from django.utils.text import slugify
 from django.views.decorators.http import require_http_methods
+
+from companydb.models import Stock, Project, Pic
 from stonedb.models import Stone, Classification, Color, Country, Texture, \
     StoneName
-from companydb.models import Stock, Project, Pic
 from toolbox import force_int
-
 
 FILTER_URL_NO_VALUE = 'all'
 STONES_PER_PAGE = getattr(settings, 'STONES_PER_PAGE', 50)
 
 
 def home(request):
-    tpl = 'stonedb/home.html'
-    ctx = {
+    return render(request, 'stonedb/home.html', {
         'classifications': Classification.objects.all_with_stones(),
         'colors': Color.objects.all_with_stones(),
         'countries': Country.objects.all_with_stones(),
         'textures': Texture.objects.all_with_stones(),
-    }
-
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    })
 
 
 @require_http_methods(["GET"])
@@ -87,12 +83,8 @@ def property_list(request, f):
     """
     Simple links page with links to all "colors" or all "countries".
 
-    f -> filter (color, country, type)
-
-    Example: /stone/color
-             /stone/country
-             /stone/type
-             /stone/texture
+    :type request: object
+    :type f: str 'color', 'country', 'type', 'texture'
     """
     f = f.lower()
     fk = f
@@ -109,18 +101,16 @@ def property_list(request, f):
     else:
         raise Http404
 
-    tpl = 'stonedb/property_list.html'
     ctx = {'items': li, 'f': f, 'fk': fk}
-
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return render(request, 'stonedb/property_list.html', ctx)
 
 
 def simple_filter(request, f, q, p):
     """Return a list of stones for one filter, e.g. color.
 
-    f -> filter (color, country, type)
-    q -> query (color name, etc.)
-    p -> page number (always None for page 1)
+    :type f: str -> filter (color, country, type)
+    :type q: str -> query (color name, etc.)
+    :type p: int -> page number (always None for page 1)
 
     Example: /stone/color/blue/
     """
@@ -145,10 +135,9 @@ def simple_filter(request, f, q, p):
         raise Http404
 
     paginator = Paginator(Stone.objects.filter(**{fk: q}), STONES_PER_PAGE)
-    tpl = 'stonedb/filter_{}.html'.format(fk)
-    ctx = {'stones': paginator.page(p), 'f': f, 'q': q, 'more': more, fk: q}
-
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return render(request, 'stonedb/filter_{}.html'.format(fk), {
+        'stones': paginator.page(p), 'more': more, 'f': f, 'q': q, fk: q,
+        'selected_{}'.format(fk): q.pk})
 
 
 def _filter_cleanup_val(k):
@@ -216,10 +205,14 @@ def filter(request, color, country, texture, classif, p=1):
         li = li.filter(classification=classif)
 
     paginator = Paginator(li, STONES_PER_PAGE)
-    tpl = 'stonedb/filter.html'
-    ctx = {'stones': paginator.page(p), 'color': color, 'country': country,
-           'texture': texture, 'classification': classif}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return render(request, 'stonedb/filter.html', {
+        'stones': paginator.page(p),
+        'color': color, 'country': country,
+        'texture': texture, 'classification': classif,
+        'selected_classification': getattr(classif, 'id', ''),
+        'selected_color': getattr(color, 'id', ''),
+        'selected_country': getattr(country, 'id', ''),
+        'selected_texture': getattr(texture, 'id', '')})
 
 
 def item(request, q):
@@ -228,37 +221,40 @@ def item(request, q):
     stocks = Stock.objects.all_for_stone(stone)
     projects = Project.objects.all_for_stone(stone)
     pics = Pic.objects.all_for_stone(stone)
-    tpl = 'stonedb/item.html'
-    ctx = {'stone': stone, 'color': stone.color, 'texture': stone.texture,
-           'classification': stone.classification, 'country': stone.country,
-           'stocks': stocks, 'projects': projects, 'pics': pics}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return render(request, 'stonedb/item.html', {
+        'stone': stone, 'color': stone.color, 'texture': stone.texture,
+        'classification': stone.classification, 'country': stone.country,
+        'stocks': stocks, 'projects': projects, 'pics': pics,
+        'selected_classification': getattr(stone.classification, 'id', ''),
+        'selected_color': getattr(stone.color, 'id', ''),
+        'selected_country': getattr(stone.country, 'id', ''),
+        'selected_texture': getattr(stone.texture, 'id', '')})
 
 
 def api_search(request):
-    LIMIT = 50
-    q = request.GET.get('q', '')
-    p = request.GET.get('p', None)
-    print('--> api_search() --> q=={}'.format(q))
-    print('--> api_search() --> p=={}'.format(p))
-    q = slugify(q)  # query string
+    """
+    Search stones by name for the autocomplete input box.
+
+    :param request: HttpRequest
+    :return: JsonResponse
+    """
+    limit = 50
+    q = slugify(request.GET.get('q', ''))  # query string
     if len(q) < 3:
         return JsonResponse({'items': []})
 
     # First find stones that have a name that begins with the search query.
-    li = StoneName.objects.filter(slug__startswith=q).distinct('stone__name') \
-                  .order_by('stone__name').prefetch_related('stone')[:LIMIT]
+    li = StoneName.objects.filter(slug__startswith=q).distinct('stone__name')\
+                  .order_by('stone__name').prefetch_related('stone')[:limit]
     items = [{'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
               'pic': x.stone.get_pic_thumb()} for x in li]
 
     # If there are few results, then also find stones that have the search
     # query somewhere in their names.
-    if len(items) < LIMIT:
+    if len(items) < limit:
         li = StoneName.objects.filter(slug__contains=q).distinct('stone__name')\
-                      .order_by('stone__name').prefetch_related('stone')[:LIMIT]
+                      .order_by('stone__name').prefetch_related('stone')[:limit]
         items += [{'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
                   'pic': x.stone.get_pic_thumb()} for x in li]
 
-    items = items[:LIMIT]
-    print('Result length: {}'.format(len(items)))
-    return JsonResponse({'items': items})
+    return JsonResponse({'items': items[:limit]})

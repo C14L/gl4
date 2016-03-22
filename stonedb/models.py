@@ -1,7 +1,13 @@
+import json
+
 from django.conf import settings
+
 from django.db import models
 from django.db.models import Count
+from django.db.models.signals import post_save, pre_delete, post_delete
+from django.dispatch import receiver
 from django.utils.timezone import now
+from os.path import join
 
 
 class CommonStonePropertyManager(models.Manager):
@@ -95,13 +101,17 @@ class Stone(models.Model):
     lng = models.FloatField(null=True, default=None, blank=True)
 
     country = models.ForeignKey(Country, null=True, default=None,
-                                related_name='stones', blank=True)
+                                related_name='stones', blank=True,
+                                on_delete=models.SET_NULL)
     texture = models.ForeignKey(Texture, null=True, default=None,
-                                related_name='stones', blank=True)
-    classification = models.ForeignKey(Classification, blank=True, null=True,
-                                       default=None, related_name='stones')
+                                related_name='stones', blank=True,
+                                on_delete=models.SET_NULL)
+    classification = models.ForeignKey(Classification, null=True, default=None,
+                                       related_name='stones', blank=True,
+                                       on_delete=models.SET_NULL)
     color = models.ForeignKey(Color, null=True, default=None,
-                              related_name='stones', blank=True)
+                              related_name='stones', blank=True,
+                              on_delete=models.SET_NULL)
     secondary_colors = models.ManyToManyField(Color, blank=True)
 
     # + + +  not used, just for import verification  + + +
@@ -177,3 +187,27 @@ class StoneName(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@receiver(post_save, sender=Classification)
+@receiver(post_save, sender=Color)
+@receiver(post_save, sender=Country)
+@receiver(post_save, sender=Texture)
+@receiver(post_delete, sender=Classification)
+@receiver(post_delete, sender=Color)
+@receiver(post_delete, sender=Country)
+@receiver(post_delete, sender=Texture)
+def _updated_stone_property(sender, **kwargs):
+    """
+    If any searchable property is changed, rebuild the JSON file that is used
+    for the stone search UI.
+    """
+    update_stone_properties()
+
+
+def update_stone_properties():
+    li = {m.__name__.lower(): list(m.objects.all_with_stones().values('id',
+          'slug', 'name')) for m in (Classification, Color, Country, Texture)}
+
+    with open(settings.STONE_SEARCH_OPTS_FILE, 'wt', encoding='utf-8') as fh:
+        json.dump(li, fh)

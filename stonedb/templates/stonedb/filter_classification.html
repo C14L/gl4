@@ -1,27 +1,16 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n %}
 
-{% block title %}Browse {{q.name}} stones{% endblock %}
+{% block title %}{% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}{% endblock %}
 
-{% block title2 %}Browse {{q.name}} stones{% endblock %}
+{% block title2 %}{% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}{% endblock %}
 
-{% block description %}Browse all {{q.name}} natural stones listed in Graniteland.{% endblock %}
+{% block description %}{% blocktrans with name=q.name %}Browse all {{name}} natural stones listed in Graniteland.{% endblocktrans %}{% endblock %}
 
 {% block head %}
 <style>
-.stone-property-list {
-  list-style: none;
-  margin: 0; padding: 0;
-  -webkit-column-count: 4;
-  -moz-column-count: 4;
-  -ms-column-count: 4;
-  -o-column-count: 4;
-  column-count: 4;
-}
-.stone-property-list li {
-  margin: 4px; padding: 8px 0;
-  background-color: #F3F3F3;
-  text-align: center;
-}
+.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
+.stone-property-list li { margin: 4px; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
 .stone-property-list li a { text-decoration: inherit; }
 .stone-property-list li a:hover { text-decoration: underline; }
 .stone-property-list li .count { color: #999; }
@@ -36,18 +25,18 @@
 
 {% block main %}
 
-<h1>Browse {{q.name}} stones</h1>
-<p>Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{q.name|title}} stone. Note however, that in stone trade many stone types like {{q.name}} are grouped into either being "marble" or "granite", for being very similar. Here are 100 {{q.name}} stones with photos and further data.</p>
+<h1>{% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}</h1>
+<p>{% blocktrans with name=q.name tname=q.name|title %}Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{tname}} stone. Note however, that in stone trade many stone types like {{name}} are grouped into either being "marble" or "granite", for being very similar. Here are 100 {{name}} stones with photos and further data.{% endblocktrans %}</p>
 
 <div class="browse-stones browse-classifications">
 
-  <h2>Natural stone classification {{q.name}}</h2>
+  <h2>{% endblocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
 
   {% include 'stonedb/simple-filter-prevnext.html'%}
   {% include 'stonedb/stone-list-1.html'%}
   {% include 'stonedb/simple-filter-prevnext.html'%}
 
-  <h2>Types of natural stone / stone by classification</h2>
+  <h2>{% trans 'Types of natural stone / stone by classification' %}</h2>
 
   {% include 'stonedb/simple-filter-proplist.html' %}
 </div>

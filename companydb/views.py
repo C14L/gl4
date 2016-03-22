@@ -6,8 +6,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, \
     HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.shortcuts import render_to_response as rtr
-from django.template import RequestContext
 from django.views.decorators.http import require_http_methods
 
 from companydb.forms import PicUploadForm, CompanyDetailsForm, \

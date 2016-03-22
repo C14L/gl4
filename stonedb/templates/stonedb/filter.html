@@ -1,54 +1,40 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n %}
 
-{% block title %}{{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}{% endblock %}
+{% block title %}{% blocktrans with t_texture_name=texture.name|capfirst color_name=color.name classification_name=classification.name country_name=country.name %}{{t_texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}{% endblock %}
 
-{% block title2 %}All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}{% endblock %}
+{% block title2 %}{% blocktrans with texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}All {{texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}{% endblock %}
 
-{% block description %}All {{texture.name}} {{color.name}} {{classification.name}} stones from {{country.name}}{% endblock %}
+{% block description %}{% blocktrans with texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}All {{texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}{% endblock %}
 
 {% block head %}
 <style>
-.stone-property-list {
-  list-style: none;
-  margin: 0; padding: 0;
-  -webkit-column-count: 4;
-  -moz-column-count: 4;
-  -ms-column-count: 4;
-  -o-column-count: 4;
-  column-count: 4;
-}
-.stone-property-list li {
-  margin: 4px; padding: 8px 0;
-  background-color: #F3F3F3;
-  text-align: center;
-}
+.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
+.stone-property-list li { margin: 4px; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
 .stone-property-list li a { text-decoration: inherit; }
 .stone-property-list li a:hover { text-decoration: underline; }
 .stone-property-list li .count { color: #999; }
 </style>
 {% endblock %}
 
-{% block body_classes %}
-{% endblock %}
+{% block body_classes %}{% endblock %}
 
 {% block breadcrumb %}
-<a href="/stone">Stones</a> &raquo;
-<a href="/stone/country/{{country.slug}}">{{country.name}}</a> &raquo;
-<a href="/stone/{{country.slug}}/{{texture.slug}}/all/all">{{texture.name}}</a> &raquo;
-<a href="/stone/{{country.slug}}/{{texture.slug}}/{{color.slug}}/all">{{color.name}}</a> &raquo;
-<a href="/stone/{{country.slug}}/{{texture.slug}}/{{color.slug}}/{{classification.slug}}">{{ classification.name}}</a> &raquo;
+{% blocktrans asvar tr_country %}country{% endblocktrans %}
+<a href="{% url 'stonedb_home' %}">{% trans 'Stones' %}</a> &raquo;
+{% if country %}<a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">{{country.name}}</a> &raquo;{% endif %}
+{% if texture %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug 'all' 'all' %}">{{texture.name}}</a> &raquo;{% endif %}
+{% if color %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug 'all' %}">{{color.name}}</a> &raquo;{% endif %}
+{% if classification %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug|default:'all' classification.slug %}">{{classification.name}}</a> &raquo;{% endif %}
 {% endblock %}
 
 {% block main %}
 
 <div class="browse-stones browse-filter">
 
-  <h1>
-      {{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}
-  </h1>
-  <p>
-      Browse <strong>{{stones.paginator.count}} different types of {{texture.name|capfirst}} {{color.name}} {{classification.name}} stones from {{country.name}}</strong>. Click on a stone image to see more about a particular natural stone.
-  </p>
+  <h1>{% blocktrans with t_texture_name=texture.name|capfirst color_name=color.name classification_name=classification.name country_name=country.name %}{{t_texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}</h1>
+
+  <p>{% blocktrans with count=stones.paginator.count texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{count}} different types of {{texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
 
   <div class="list-pages">
     {% for i in stones.paginator.page_range %}

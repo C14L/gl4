@@ -134,10 +134,15 @@ if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
     urlpatterns += static('/stonesindex/', document_root=join(
         settings.BASE_DIR, 'stonedb/stonesimages/stonesindex'))
+
     urlpatterns += static('/stonespics/', document_root=join(
         settings.BASE_DIR, 'stonedb/stonesimages/stonespics'))
+
+    urlpatterns += static('/api_static/', document_root=join(
+        settings.BASE_DIR, 'api_static'))
 
     # urlpatterns += static('/stonespics/', document_root=settings.MEDIA_ROOT)
     # static files (images, css, javascript, etc.)

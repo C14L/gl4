@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n gl4tags %}
 <!DOCTYPE html>
 <html xmlns:fb="http://ogp.me/ns/fb#">
   <head>
@@ -48,53 +48,33 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     <div id="tpl-wrap">
       <div id="tpl-title">
         <div>
-          <!-- <div class="sponsor-ad">
-            <div>Sponsored by:</div>
-            <div><a rel="nofollow" onClick="recOutLink(this, 'Sponsor Links', 'NatursteinHilfe'); return false;" href="http://www.NatursteinHilfe.de/"><img src="{% static 'img/sponsor-nh.jpg' %}" alt="NatursteinHilfe"></a></div>
-          </div> -->
           <div id="tpl-search">
-            <form method="get" action="/stone/search.php" id="tpl-search-form">
+            <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form">
               <div><input type="hidden" name="p" value="1"></div>
               <table>
                 <tr>
-                  <td id="tpl-site-logo"><a href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="Graniteland - marble and granite information online."></a></td>
+                  <td id="tpl-site-logo">
+                    <a href="/"><img src="{% static 'img/tt-logo-small.gif' %}"
+                       alt="{% trans 'Graniteland - marble and granite information online.' context 'Main site logo alt text' %}"></a>
+                  </td>
                   <td>
-                    <select size="1" name="color" id="search_color">
-                      <option value="">All colors</option>
-                      {% for item in search_colors %}
-                      <option value="{{item.id}}"{% if item.id == color.id %} selected{% endif %}>{{item.name}}</option>
-                      {% endfor %}
+                    <select size="1" name="color" id="search_color" data-selected="{{selected_color}}">
+                      <option value="">{% trans 'All colors' %}</option>
                     </select>
                   </td>
                   <td>
-                    <select size="1" name="type" id="search_type">
-                      <option value="">All stone types</option>
-                        <!--
-                      <optgroup label="Simplefied">
-                        <option value="m">Granite-like</option>
-                        <option value="g">Marble-like</option>
-                      </optgroup>
-                      <optgroup label="Geological"> -->
-                        {% for item in search_classifications %}
-                          <option value="{{item.id}}"{% if item.id == classification.id %} selected{% endif %}>{{item.name}}</option>
-                        {% endfor %}
-                      <!-- </optgroup> -->
+                    <select size="1" name="type" id="search_type" data-selected="{{selected_classification}}">
+                      <option value="">{% trans 'All stone types' %}</option>
                     </select>
                   </td>
                   <td>
-                    <select size="1" name="country" id="search_country">
-                      <option value="">All countries of origin</option>
-                      {% for item in search_countries %}
-                        <option value="{{item.id}}" {% if item.id == country.id %} selected {% endif %}>{{item.name}}</option>
-                      {% endfor %}
+                    <select size="1" name="country" id="search_country" data-selected="{{selected_country}}">
+                      <option value="">{% trans 'All countries of origin' %}</option>
                     </select>
                   </td>
                   <td>
-                    <select size="1" name="texture" id="search_texture">
-                      <option value="">All textures</option>
-                      {% for item in search_textures %}
-                        <option value="{{item.id}}" {% if item.id == texture.id %} selected {% endif %} >{{item.name}}</option>
-                      {% endfor %}
+                    <select size="1" name="texture" id="search_texture" data-selected="{{selected_texture}}">
+                      <option value="">{% trans 'All textures' %}</option>
                     </select>
                   </td>
                   <td><input type="submit" value="Search"></td>
@@ -104,14 +84,14 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
           </div>
           <div id="tpl-menu">
             <a class="menu-link home-link" href="/">Graniteland</a>
-            <a class="menu-link" href="{% url 'stonedb_home' %}">Natural Stone</a>
-            <a class="menu-link" href="{% url 'tradeshowdb_home'%}">Trade shows</a>
-            <a class="menu-link" href="{% url 'mdpages_home' %}">Stone Infos</a>
-            <a class="menu-link" href="{% url 'companydb_home' %}">Stone Companies</a>
+            <a class="menu-link" href="{% url 'stonedb_home' %}">{% trans 'Natural Stone' %}</a>
+            <a class="menu-link" href="{% url 'tradeshowdb_home'%}">{% trans 'Trade shows' %}</a>
+            <a class="menu-link" href="{% url 'mdpages_home' %}">{% trans 'Stone Infos' %}</a>
+            <a class="menu-link" href="{% url 'companydb_home' %}">{% trans 'Stone Companies' %}</a>
             {% if user.is_authenticated %}
-            <a class="menu-link dashboard-link" href="{% url 'companydb_dashboard' %}">Dashboard for {{user.profile.name}}</a>
+            <a class="menu-link dashboard-link" href="{% url 'companydb_dashboard' %}">{% blocktrans with profile_name=user.profile.name %}{{profile_name}} Company Profile{% endblocktrans %}</a>
             {% else %}
-            <a class="menu-link login-link" href="{% url 'account_login' %}">Login</a>
+            <a class="menu-link login-link" href="{% url 'account_login' %}">{% trans 'Login' %}</a>
             {% endif %}
           </div>
         </div>
@@ -120,7 +100,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         <table>
           <tr>
             <td>
-              <a href="/">Graniteland.com</a> &raquo;
+              <a href="/">Graniteland</a> &raquo;
               {% block breadcrumb %}{% endblock %}
             </td>
             <td>
@@ -146,7 +126,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
           <tr>
             <td style="white-space:nowrap; padding:10px;">
               <p>
-                <a href="/stone/color"><strong>Natural stone by color:</strong></a>
+                <a href="/stone/color"><strong>{% trans 'Natural stone by color' %}:</strong></a>
               </p>
               <p>
                 <a href="/stone/color/beige">Beige natural stone</a><br>
@@ -167,7 +147,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             </td>
             <td style="white-space:nowrap; padding:10px;">
               <p>
-                <a href="/stone/country"><strong>Natural stone by country of origin:</strong></a>
+                <a href="/stone/country"><strong>{% trans 'Natural stone by country of origin' %}:</strong></a>
               </p>
               <p>
                 <a href="/stone/country/brazil">Granite and marble from Brazil</a><br>
@@ -182,7 +162,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             </td>
             <td style="white-space:nowrap; padding:10px;">
               <p>
-                <a href="/stone/type"><strong>Natural stones by type of stone:</strong></a>
+                <a href="/stone/type"><strong>{% trans 'Natural stones by type of stone' %}:</strong></a>
               </p>
               <p>
                 <a href="/stone/type/granite">Granite</a><br>
@@ -198,17 +178,17 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             </td>
             <td style="padding:10px;">
               <p>
-                <a href="/report-abuse?url=/stone" title="Please report user submitted content that violates the Terms of Service." rel="nofollow">Report abuse</a> &middot;
-                <a href="/tos" rel="nofollow">Terms of Service</a> &middot;
-                <a href="/privacy" rel="nofollow">Privacy</a> &middot;
+                <a href="mailto:admin-graniteland@C14L.com" title="{% trans 'Please report user submitted content that violates the Terms of Service.' %}" rel="nofollow">{% trans 'Report abuse' %}</a> &middot;
+                <a href="/tos" rel="nofollow">{% trans 'Terms of Service' %}</a> &middot;
+                <a href="/privacy" rel="nofollow">{% trans 'Privacy' %}</a> &middot;
                 </p>
               <p>
-                <a href="/contact" rel="nofollow">Contact</a> &middot;
+                <a href="/contact" rel="nofollow">{% trans 'Contact' %}</a> &middot;
                 <a href="/contact" rel="nofollow">Impressum</a> &middot;
-                <a href="#" title="Jump to the top of this page.">Top of page</a>
+                <a href="#" title="Jump to the top of this page.">{% trans 'Top of page' %}</a>
               </p>
               <br>
-              <p>Information is provided without warranty of any kind and may contain errors or may be outdated.<br>It is strongly advised to contact a competent granite professional to confirm any information found on Graniteland.</p>
+              <p>{% trans 'All information is provided without warranty of any kind and may contain errors or may be outdated.<br>It is strongly advised to contact a competent granite professional to confirm any information found on Graniteland.' %}</p>
               <p><img src="/static/img/flags/gb.png" alt="Find granite and marble..."><a href="http://www.graniteland.com/">Find granite and marble online</a></p>
               <p><img src="/static/img/flags/de.png" alt="Naturstein finden..."><a href="http://www.graniteland.de/">Graniteland, die Naturstein-Suchmaschine</a></p>
               <p>&copy; {% now "Y" %} by Graniteland</p>
@@ -219,7 +199,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
       </div><!-- /footer -->
     </div><!-- /wrap -->
 
-    <script>if(screen.availWidth<=750){document.getElementById('tpl-site-logo').addEventListener('click',function(e){e.preventDefault();document.getElementById('tpl-menu').classList.toggle('open');return false;});}</script>
+    <script>/* On small screens, have the menu items as drop-down when logo is touched. */ if(screen.availWidth<=750){document.getElementById('tpl-site-logo').addEventListener('click',function(e){e.preventDefault();document.getElementById('tpl-menu').classList.toggle('open');return false;});}</script>
 
     <div id="tpl-msg">
       {% for message in messages %}
@@ -229,25 +209,11 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
 
     <div id="fb-root"></div>
 
-    <script>
-      (function(){ /* auto-submit search for onchange */
-        //document.querySelector('#tpl-search-form input[type="submit"]').style.display = "none";
-        var oSel = document.querySelectorAll('#tpl-search-form select');
-        var oBtn = document.querySelector('#tpl-search-form input[type="submit"]');
-        for (var i=0; i<oSel.length; i++){
-          oSel[i].addEventListener('change', function(e){
-            this.form.submit();
-            oBtn.disabled = "disabled";
-            for (var i=0; i<oSel.length; i++) oSel[i].disabled = "disabled";
-          });
-        }
-      })(window);
-    </script>
-
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
     <script src="{% static 'base.js' %}"></script>
 
     {% block foot %}{% endblock %}
