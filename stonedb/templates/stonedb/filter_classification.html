@@ -30,11 +30,9 @@
 
 <div class="browse-stones browse-classifications">
 
-  <h2>{% endblocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
+  <h2>{% blocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
 
-  {% include 'stonedb/simple-filter-prevnext.html'%}
   {% include 'stonedb/stone-list-1.html'%}
-  {% include 'stonedb/simple-filter-prevnext.html'%}
 
   <h2>{% trans 'Types of natural stone / stone by classification' %}</h2>
 

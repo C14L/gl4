@@ -308,7 +308,7 @@ img.link-icon { width:64px; height:64px; border:0; float:left; padding:0; margin
 
 /* This is based on the idea of ".stared-stone-link" and displays a stone picture in the background of every line of the <ul>-list. */
 
-ul.enhanced-stone-list { clear:left; list-style-type:none; padding:0; margin:0; }
+ul.enhanced-stone-list { clear: left; overflow: hidden; list-style-type: none; padding: 0; margin: 0; }
 ul.enhanced-stone-list li { padding:0; margin:5px 10px; width:200px; float:left; }
 ul.enhanced-stone-list li a { border-radius:5px 5px 0 0; border:1px solid #909090; display: block; color:#000; background:top left repeat; padding:30px 0 0 0; margin:0; color:#000; text-decoration:none; overflow:hidden; }
 ul.enhanced-stone-list li a:hover { border-color:#606060; }

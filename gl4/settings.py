@@ -210,7 +210,8 @@ BLEACH_DEFAULT_WIDGET = 'wysiwyg.widgets.WysiwygWidget'
 
 # --- my own settings ----------------------------------------------------------
 
-STONES_PER_PAGE = 50
+STONES_PER_PAGE = 500  # Do not use pagination, better all on one page and then
+                       # use JS on-demand loading of images when user scrolls.
 
 WATERMARK_FONT_FILENAME = join(BASE_DIR, 'Verdana.ttf')
 

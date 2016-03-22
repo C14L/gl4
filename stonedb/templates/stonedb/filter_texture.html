@@ -30,9 +30,7 @@
   <h1>{% blocktrans with name=q.name tname=q.name|capfirst %}{{name}} granite and {{name}} marble{% endblocktrans %}</h1>
   <p>{% blocktrans with name=q.name page_count=stones.paginator.count %}Browse <strong>{{page_count}} different types of {{name}} marble and {{name}} granite</strong>. Click on a stone image to see more about a particular natural stone. Natural stone with a {{name}} texture on Graniteland.{% endblocktrans %}</p>
 
-  {% include 'stonedb/simple-filter-prevnext.html'%}
   {% include 'stonedb/stone-list-1.html'%}
-  {% include 'stonedb/simple-filter-prevnext.html'%}
 
   <h2>{% blocktrans with tname=q.name|capfirst %}{{name}} stone and other natural stone textures{% endblocktrans %}</h2>
 

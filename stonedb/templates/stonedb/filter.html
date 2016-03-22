@@ -36,38 +36,20 @@
 
   <p>{% blocktrans with count=stones.paginator.count texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{count}} different types of {{texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
 
-  <div class="list-pages">
-    {% for i in stones.paginator.page_range %}
-      {% if i == stones.number %}
-        <b>[ {{i}} ]</b>
-      {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q.slug}}">1</a>
-      {% else %}
-        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
-      {% endif %}
-    {% endfor %}
-  </div>
-
   {% include 'stonedb/stone-list-1.html'%}
-  
-  <div class="list-pages">
-    {% for i in stones.paginator.page_range %}
-      {% if i == stones.number %}
-        <b>[ {{i}} ]</b>
-      {% elif i == 1 %}
-        <a href="/stone/{{f}}/{{q.slug}}">1</a>
-      {% else %}
-        <a href="/stone/{{f}}/{{q.slug}}/{{i}}">{{i}}</a>
-      {% endif %}
-    {% endfor %}
-  </div>
 
-  <h2>{{q.name|capfirst}} stone and other natural stone colors</h2>
+  <h2>{% blocktrans with tname=q.name|capfirst %}{{tname}} stone and other natural stone colors{% endblocktrans %}</h2>
+
   <ul class="stone-property-list">
+    {% blocktrans asvar tr_color %}color{% endblocktrans %}
     {% for item in more %}
-      <li><a href="/stone/color/{{item.slug}}">{{item.name|capfirst}} granite or marble</a> <span class="count">({{item.stones__count}})</span></li>
+      <li>
+        <a href="{% url 'stonedb_simple_filter' tr_color item.slug %}">{% blocktrans with tname=item.name|capfirst %}{{tname}} granite or marble{% endblocktrans%}</a>
+        <span class="count">({{item.stones__count}})</span>
+      </li>
     {% endfor %}
   </ul>
+
 </div>
 
 {% endblock main %}
