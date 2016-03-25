@@ -1,11 +1,14 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, \
-    HttpResponse, JsonResponse
+    HttpResponse, JsonResponse, Http404
+from django.http.response import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, render
+from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
 from companydb.forms import PicUploadForm, CompanyDetailsForm, \
@@ -13,6 +16,7 @@ from companydb.forms import PicUploadForm, CompanyDetailsForm, \
 from companydb.models import Group, Pic, Stock, Project
 from mdpages.models import Article
 from stonedb.models import Stone
+from toolbox import get_login_url
 
 
 def _get_page(o, p):
@@ -35,16 +39,23 @@ def itemlist(request, slug, p):
     members_qs = members_qs.order_by('profile__name')
     members = _get_page(members_qs, p)
 
-    ctx = {'group': group, 'members': members,
-           'range_pages': range(1, members.paginator.num_pages+1)}
-    return render(request, 'companydb/list.html', ctx)
+    return render(request, 'companydb/list.html', {
+        'group': group, 'members': members,
+        'range_pages': range(1, members.paginator.num_pages+1)})
 
 
 def item(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     pics = Pic.objects.filter(user=view_user, module='profile')
-    ctx = {'view_user': view_user, 'pics': pics}
-    return render(request, 'companydb/item.html', ctx)
+    return render(request, 'companydb/item.html', {
+        'view_user': view_user, 'pics': pics})
+
+
+@login_required
+def delete(request, slug):
+    if slug != request.user.username:
+        raise Http404
+    return render(request, 'companydb/delete.html')
 
 
 def stock(request, slug):
@@ -55,145 +66,153 @@ def stock(request, slug):
     return render(request, 'companydb/stock.html', ctx)
 
 
-@login_required
-def stock_detail(request, pk=None):
-    if pk:
-        view_item = get_object_or_404(Stock, pk=pk)
-    else:
-        view_item = None
+def stock_detail(request, slug, pk=None):
+    form = None
+    user = get_object_or_404(User, username=slug)
+    view_item = Stock.objects.filter(user=user, pk=pk).first()
+    can_edit = request.user.is_authenticated() and request.user == user
 
-    if request.method == 'POST':
-        form = CompanyStockForm(request.POST, instance=view_item)
-        # manually add stone selected
-        stone_pk = request.POST.get('stone', None)
-        stone = get_object_or_404(Stone, pk=stone_pk)
-        # manually add uploaded pics selection
-        pics_pks = request.POST.getlist('pics', [])
-        print('pics_pks: ', pics_pks)
-        pics = Pic.objects.all_for_user(request.user) \
-                          .filter(pk__in=pics_pks, module='stock')
-        print('pics: ', pics)
+    if not can_edit and not view_item:
+        # Needs auth to see /new page.
+        return HttpResponseRedirect(get_login_url(request))
 
-        if form.is_valid():
-            stock_item = form.save(commit=False)
-            stock_item.stone = stone
-            stock_item.user = request.user
-            stock_item.save()
+    if can_edit:
+        if 'DELETE' in (request.method, request.POST.get('_method', None)):
+            if not view_item:
+                return HttpResponseBadRequest()
 
-            # point pictures to the new Stone item
-            for p in pics:
-                print('SAVING PIC: ', dir(p))
-                p.attach_to(stock_item.id)
-
-            redirect_url = reverse('companydb_db_stock_item',
-                                   kwargs={'pk': stock_item.id})
+            # Delete the entire view_item and and all attached pics.
+            view_item.delete()
+            messages.success(request, _('The item was deleted.'))
+            _next = reverse('companydb_stock', args=[user.username])
             return HttpResponseRedirect(redirect_url)
-    else:
-        form = CompanyStockForm(instance=view_item)
 
-    li = request.user.stock_set.all()
-    ctx = {'form': form, 'stocklist': li, 'stockitem': view_item}
-    return render(request, 'companydb/stock_detail.html', ctx)
+        elif 'POST' in (request.method, request.POST.get('_method', None)):
+            form = CompanyStockForm(request.POST, instance=view_item)
+            # manually add stone selected
+            stone_pk = request.POST.get('stone', None)
+            stone = Stone.objects.filter(pk=stone_pk).first()
+            # manually add uploaded pics selection
+            pics_pks = request.POST.getlist('pics', [])
+            pics = Pic.objects.all_for_user(request.user) \
+                              .filter(pk__in=pics_pks, module='stock')
+
+            if form.is_valid():
+                stock_item = form.save(commit=False)
+                stock_item.stone = stone
+                stock_item.user = request.user
+                stock_item.save()
+                # point pictures to the new Stone item
+                for p in pics:
+                    p.attach_to(stock_item.id)
+
+                _next = reverse('companydb_stock', args=[user.username])
+                return HttpResponseRedirect(request.POST.get('next', _next))
+
+        else:
+            # Return form with the item to edit, or empty form to add new item.
+            form = CompanyStockForm(instance=view_item)
+
+    return render(request, 'companydb/stock_detail.html', {
+        'form': form, 'view_item': view_item, 'view_user': user})
 
 
 def projects(request, slug):
     page = request.GET.get('page', 1)
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = view_user.project_set.filter(is_deleted=False, is_blocked=False)
-    ctx = {'view_user': view_user, 'projects': _get_page(li, page)}
-    return render(request, 'companydb/projects.html', ctx)
+    return render(request, 'companydb/projects.html', {
+        'view_user': view_user, 'projects': _get_page(li, page)})
 
 
-@login_required
 @require_http_methods(["POST", "GET", "HEAD", "DELETE"])
-def projects_detail(request, pk=None):
+def projects_detail(request, slug, pk=None):
     """
     Provide a form to add a "project" to a company profile. A project includes
     a reference to up to 10 Stone items, a description, up to 20 pictures,
     and (in case of a pubic building) a street address, so that it can be
     visited irl.
     """
+    form = None
+    user = get_object_or_404(User, username=slug)
+    view_item = Project.objects.filter(user=user, pk=pk).first()
+    can_edit = request.user.is_authenticated() and request.user == user
 
-    if pk:
-        view_item = get_object_or_404(Project, user=request.user, pk=pk)
-    else:
-        view_item = None
+    if not can_edit and not view_item:
+        # Needs auth to see /new page.
+        return HttpResponseRedirect(get_login_url(request))
 
-    if 'DELETE' in (request.method, request.POST.get('_method', None)):
-        # This deletes the entire view_item and and all attached pics.
-        view_item.delete()
-        kwargs = {'slug': request.user.username}
-        redirect_url = reverse('companydb_projects', kwargs=kwargs)
-        return HttpResponseRedirect(redirect_url)
+    if can_edit:
+        if 'DELETE' in (request.method, request.POST.get('_method', None)):
+            if not view_item:
+                return HttpResponseBadRequest()
 
-    if 'POST' == request.method:
-        form = CompanyProjectForm(request.POST, instance=view_item)
-        # manually add stones selection
-        stone_pks = request.POST.getlist('stones', [])
-        stones = Stone.objects.filter(pk__in=stone_pks)
-        # manually add uploaded pics selection
-        pics_pks = request.POST.getlist('pics', [])
-        pics = Pic.objects.all_for_user(request.user) \
-                          .filter(pk__in=pics_pks, module='projects')
+            # Delete the entire view_item and and all attached pics.
+            view_item.delete()
+            messages.success(request, _('The item was deleted.'))
+            _next = reverse('companydb_projects', args=[user.username])
+            return HttpResponseRedirect(_next)
 
-        if form.is_valid():
-            project_item = form.save(commit=False)
-            project_item.user = request.user
-            project_item.save()
-            print('--> projects_detail -> project_item saved.')
-            print(project_item)
+        elif 'POST' == request.method:
+            form = CompanyProjectForm(request.POST, instance=view_item)
+            # manually add stones selection
+            stone_pks = request.POST.getlist('stones', [])
+            stones = Stone.objects.filter(pk__in=stone_pks)
+            # manually add uploaded pics selection
+            pics_pks = request.POST.getlist('pics', [])
+            pics = Pic.objects.all_for_user(request.user) \
+                              .filter(pk__in=pics_pks, module='projects')
 
-            print('--> projects_detail -> adding stones to project_item...')
-            project_item.stones = stones
-            print('--> projects_detail -> saving project_item again...')
-            project_item.save()
+            if form.is_valid():
+                project_item = form.save(commit=False)
+                project_item.user = request.user
+                project_item.save()
+                project_item.stones = stones
+                project_item.save()
+                # point pictures to the new Project item
+                for p in pics:
+                    p.attach_to(project_item.pk)
 
-            # point pictures to the new Project item
-            for p in pics:
-                p.attach_to(project_item.pk)
+                _next = reverse('companydb_projects', args=[user.username])
+                return HttpResponseRedirect(request.POST.get('next', _next))
+        else:
+            form = CompanyProjectForm(instance=view_item)
 
-            redirect_url = request.POST.get('next', reverse(
-                'companydb_db_projects_item', kwargs={'pk': project_item.id}))
-            return HttpResponseRedirect(redirect_url)
-    else:
-        form = CompanyProjectForm(instance=view_item)
+    return render(request, 'companydb/projects_detail.html', {
+        'form': form, 'projects': user.project_set.all(),
+        'view_item': view_item, 'view_user': user})
 
-    li = request.user.project_set.all()
-    ctx = {'form': form, 'projects': li, 'project': view_item}
-    return render(request, 'companydb/projects_detail.html', ctx)
+
+def contact(request, slug):
+    view_user = get_object_or_404(User, username=slug, is_active=True)
+    return render(request, 'companydb/contact.html', {'view_user': view_user})
 
 
 def photos(request, slug):
     page = request.GET.get('page', 1)
+    form = None
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = Pic.objects.all_for_profile(view_user)
-    form = PicUploadForm() if request.user == view_user else None
+    can_edit = request.user.is_authenticated() and request.user == view_user
 
-    ctx = {'view_user': view_user, 'form': form, 'photos': _get_page(li, page)}
-    return render(request, 'companydb/photos.html', ctx)
+    if 'POST' in (request.method, request.POST.get('_method', None)):
+        if not can_edit:
+            return HttpResponseRedirect(get_login_url(request))
 
-
-@login_required
-def db_pics(request):
-
-    if request.method == 'POST':
         module = request.POST.get('module', 'profile')
         if module not in [x[0] for x in Pic.MODULE_CHOICES]:
             raise ValueError('Module does not exist.')
 
         form = PicUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            print('--> db_pics() --> FORM VALID')
+            _pic = request.FILES['pic']
             if module == 'profile':
-                pic = Pic.objects.add_to_profile(request.user,
-                                                 request.FILES['pic'],
-                                                 form.cleaned_data['title'])
+                _title = form.cleaned_data['title']
+                pic = Pic.objects.add_to_profile(request.user, _pic, _title)
             else:
-                pic = Pic.objects.add_upload(request.user,
-                                             request.FILES['pic'], module)
+                pic = Pic.objects.add_upload(request.user, _pic, module)
 
             if request.is_ajax():
-                print('--> db_pics() --> REQUEST AJAX')
                 return JsonResponse({'pic': {
                     'id': pic.id,
                     'url': reverse('companydb_pic_item', kwargs={'id': pic.id}),
@@ -203,21 +222,16 @@ def db_pics(request):
                     'url_large': pic.url_large,
                 }})
             else:
-                print('--> db_pics() --> REQUEST HTML')
                 return HttpResponseRedirect(request.path)
-    else:
-        # form = PicUploadForm()
-        kwargs = {'slug': request.user.username}
-        _next = reverse('companydb_photos', kwargs=kwargs)
-        return HttpResponseRedirect(_next)
+        else:
+            pass
+    elif 'GET' in (request.method, ):
+        if can_edit:
+            form = PicUploadForm()
 
-    ctx = {'form': form, 'photos': Pic.objects.all_for_profile(request.user)}
-    return render(request, 'companydb/pics_detail.html', ctx)
-
-
-def contact(request, slug):
-    view_user = get_object_or_404(User, username=slug, is_active=True)
-    return render(request, 'companydb/contact.html', {'view_user': view_user})
+    _photos = _get_page(li, page)
+    return render(request, 'companydb/photos.html', {
+        'view_user': view_user, 'form': form, 'photos': _photos})
 
 
 def photo_redir(request, slug, id):
@@ -245,24 +259,22 @@ def pic_item(request, id):
     if request.user.is_authenticated() and request.user.id == pic.user.id:
         if 'DELETE' in (request.method, request.POST.get('_method', None)):
             pic.delete()
-            _next = request.POST.get('next', reverse('companydb_db_pics'))
-            return HttpResponseRedirect(_next)
+            if request.is_ajax():
+                return HttpResponse()
+            else:
+                messages.success(request, _('The picture was deleted.'))
+                _next = reverse('companydb_photos', args=[request.user.username])
+                return HttpResponseRedirect(request.POST.get('next', _next))
 
     if request.is_ajax():
-        print('--> pic_item() --> REQUEST AJAX')
         return JsonResponse({'pic': pic})
 
-    ctx = {'pic': pic, 'related': related, 'view_user': pic.user}
-    return render(request, 'companydb/pic_item.html', ctx)
+    return render(request, 'companydb/pic_item.html', {
+        'pic': pic, 'related': related, 'view_user': pic.user})
 
 
 @login_required
-def dashboard(request):
-    return render(request, 'companydb/dashboard.html')
-
-
-@login_required
-def db_details(request):
+def db_details(request, slug):
     if request.method == 'POST':
         form = CompanyDetailsForm(request.POST, instance=request.user.profile)
         if form.is_valid():
@@ -275,7 +287,8 @@ def db_details(request):
     return render(request, 'companydb/db_details.html', {'form': form})
 
 
-def db_about(request):
+@login_required
+def db_about(request, slug):
     if request.method == 'POST':
         form = CompanyAboutForm(request.POST, instance=request.user.profile)
         if form.is_valid():
@@ -289,7 +302,7 @@ def db_about(request):
 
 
 @login_required
-def db_areas(request):
+def db_areas(request, slug):
     if request.method == 'POST':
         group = get_object_or_404(Group, pk=request.POST.get('group', None))
 

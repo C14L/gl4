@@ -14,7 +14,7 @@
   .stock-add { margin: 0; padding: 15px; }
   .stock-add > a { font-size: 1.25em; }
   .stock-add.selected { background: #EEF; }
-  .stock-add > form { display: none; }
+  .stock-add > form { }
   .stock-add.selected > form { display: block; }
   .stock-add > form select { width: 350px; }
 
@@ -63,118 +63,110 @@
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
-<a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
-<a href="{% url 'companydb_db_stock' %}">{% trans 'Current stock items' %}</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_stock' view_user.username %}">{% trans 'Stock' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
 <div class="wrapper">
-  <a href="#add" style="float:right">{% trans 'add stock' %}</a>
-  <h1>{% trans 'Current stock items' %}</h1>
+  {% with view='stock' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
-  <div class="list">
-    {% for item in stocklist %}
-    <div class="item {% if item.id == stockitem.id %} selected {% endif %}">
-      <div class="line-date">
-        <span class="tt">{% trans 'Last updated' %}:</span>
-        {{ item.created }} --
-        <a href="{% url 'companydb_stock' user.username %}#{{ item.id }}">{% trans 'view' %}</a> --
-        <a href="{% url 'companydb_db_stock_item' item.id %}">{% trans 'edit' %}</a>
-      </div>
-      <div class="line-stones">
-        <span class="tt">Stones:</span>
-        {% for x in item.get_stones_list %}{{ x.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-      </div>
-      <div class="line-pics">
-        {% for x in item.get_pics_list %}
-        {% if forloop.counter < 8 %}<img src="{{ x.url_thumb }}" alt="">{% endif %}
-        {% endfor %}
-      </div>
-      <div class="line-descr">
-        {{ item.description|truncatewords:32 }}
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+  {% if view_item and form %}
+  <form method="POST" action="" onsubmit="return confirm('{% trans 'Delete item from company stock?' %}');">
+    {% csrf_token %}
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="btn btn-default btn-sm" style="float: right;">{% trans 'delete item' %}</button>
+  </form>
+  <h1 data-id="{{view_item.id}}">{% trans 'Edit stock' %} {{ view_item.id }}</h1>
+  {% else %}
+  <h1>{% trans 'Stock item' %} #{{view_item.pk}}</h1>
+  {% endif %}
 
-  <div id="add" class="stock-add">
-    <form id="id_company-stock-form" method="post" >{% csrf_token %}
-      <div class="two-cols">
-        <div class="left">
-          <div id="div_id_stone" class="form-group">
-            <label for="id_stone" class="control-label  requiredField">
-              {% trans 'Stone in stock' %}<span class="asteriskField">*</span>
-            </label>
-            <div class="controls ">
-              <select class="form-control" id="id_stone" name="stone">
-                {% if stockitem %}
-                <option selected="selected" value="{{ stockitem.stone.id }}">{{ stockitem.stone.name }}</option>
-                {% endif %}
-              </select>
-              <p id="hint_id_stones" class="help-block">{% trans 'Start typing the name of the stone, then select it from the list.' %}</p>
-            </div>
-          </div>
-
-          <div class="dim-type-total">
-            {{ form.dim_type|as_crispy_field }}
-            {{ form.dim_total|as_crispy_field }}
-
-            <div id="div_id_dim_unit" class="form-group">
-              <label for="id_dim_unit" class="control-label ">
-                  {% trans 'Unit' %}
+  {% if form %}
+    <div id="add" class="stock-add">
+      <form id="id_company-stock-form" method="post" action="">
+        {% csrf_token %}
+        <div class="two-cols">
+          <div class="left">
+            <div id="div_id_stone" class="form-group">
+              <label for="id_stone" class="control-label  requiredField">
+                {% trans 'Stone in stock' %}<span class="asteriskField">*</span>
               </label>
               <div class="controls ">
-                <select class="select form-control" id="id_dim_unit" name="dim_unit">
-                  <option value="0" selected="selected">{% trans 'square meter' %}</option>
-                  <option value="1">{% trans 'square foot' %}</option>
-                  <option value="2">{% trans 'cubic meter' %}</option>
-                  <option value="3">{% trans 'cubic foot' %}</option>
+                <select class="form-control" id="id_stone" name="stone">
+                  {% if stockitem %}
+                  <option selected="selected" value="{{ view_item.stone.id }}">{{ view_item.stone.name }}</option>
+                  {% endif %}
                 </select>
-                <p id="hint_id_dim_unit" class="help-block">{% trans 'Select a unit of measurement.' %}</p>
+                <p id="hint_id_stones" class="help-block">{% trans 'Start typing the name of the stone, then select it from the list.' %}</p>
               </div>
             </div>
-          </div>
 
-        </div>
-        <div class="right">
+            <div class="dim-type-total">
+              {{ form.dim_type|as_crispy_field }}
+              {{ form.dim_total|as_crispy_field }}
 
-          {{ form.description|as_crispy_field }}
-
-          <div id="div_id_pics" class="form-group multi-pic-upload-field">
-            <label for="id_pic_upload_field" class="control-label">
-              {% trans 'Attach pictures' %}
-            </label>
-            <div class="controls ">
-              <div class="pic-upload-field">
-                <input type="file" id="id_pic_upload_field">
-                <span class="loading" style="display:none"><span></span><span></span><span></span></span>
-              </div>
-              <div class="pic-item-list">
-                {% for x in stockitem.get_pics_list %}
-                <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
-                  <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
-                  <img src="{{ x.url_thumb }}" alt="">
-                  <div class="del">X</div>
+              <div id="div_id_dim_unit" class="form-group">
+                <label for="id_dim_unit" class="control-label ">
+                    {% trans 'Unit' %}
+                </label>
+                <div class="controls ">
+                  <select class="select form-control" id="id_dim_unit" name="dim_unit">
+                    <option value="0" selected="selected">{% trans 'square meter' %}</option>
+                    <option value="1">{% trans 'square foot' %}</option>
+                    <option value="2">{% trans 'cubic meter' %}</option>
+                    <option value="3">{% trans 'cubic foot' %}</option>
+                  </select>
+                  <p id="hint_id_dim_unit" class="help-block">{% trans 'Select a unit of measurement.' %}</p>
                 </div>
-                {% empty %}
-                <div class="none">{% trans 'no pictures' %}</div>
-                {% endfor %}
               </div>
-              <p id="hint_id_pics" class="help-block">{% trans 'Upload up to 20 pictures of this project.' %}</p>
+            </div>
+
+          </div>
+          <div class="right">
+
+            {{ form.description|as_crispy_field }}
+
+            <div id="div_id_pics" class="form-group multi-pic-upload-field">
+              <label for="id_pic_upload_field" class="control-label">
+                {% trans 'Attach pictures' %}
+              </label>
+              <div class="controls ">
+                <div class="pic-upload-field">
+                  <input type="file" id="id_pic_upload_field">
+                  <span class="loading" style="display:none"><span></span><span></span><span></span></span>
+                </div>
+                <div class="pic-item-list">
+                  {% for x in view_item.get_pics_list %}
+                  <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
+                    <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
+                    <img src="{{ x.url_thumb }}" alt="">
+                    <div class="del">X</div>
+                  </div>
+                  {% empty %}
+                  <div class="none">{% trans 'no pictures' %}</div>
+                  {% endfor %}
+                </div>
+                <p id="hint_id_pics" class="help-block">{% trans 'Upload up to 20 pictures of this project.' %}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <div class="controls ">
-          <button type="submit" name="save" class="btn btn-primary" id="submit-id-save">{% trans 'Save' %}</button>
+        <div class="form-group">
+          <div class="controls ">
+            <button type="submit" name="save" class="btn btn-primary" id="submit-id-save">{% trans 'Save' %}</button>
+          </div>
         </div>
-      </div>
 
-    </form>
-  </div>
+      </form>
+    </div>
+  {% else %}
+
+<p>... Stock item view ...</p>
+
+  {% endif %}
 
 </div>
 
@@ -201,10 +193,10 @@ function item_del_onclick(ev){
   var oItem = $(this).parents('.item');
   console.log( $(oItem) );
 
-  if( confirm( 'Delete this picture?' ) ) {
+  if(confirm('Delete this picture?')) {
     // stored on server, so make sure it was intentional click
     var postUrl = $(oItem).data('url');
-    if( ! postUrl ) { alert('No post URL!'); return; }
+    if(!postUrl) { alert('No post URL!'); return; }
     var csrfToken = Cookies.get("csrftoken");
 
     console.log('csrf token: ', csrfToken);
@@ -212,25 +204,19 @@ function item_del_onclick(ev){
 
     $.ajax({
       url: postUrl,
-      type: 'post',
+      type: 'DELETE',
       dataType: 'json',
-      data: {
-        _method: 'DELETE',
-	      module: "stock",
-        csrfmiddlewaretoken: csrfToken,
-      },
-      success: function( json ) {
+      data: { _method: 'DELETE', module: "stock", csrfmiddlewaretoken: csrfToken },
+    }).then(
+      function(data) {
         $(oItem).fadeOut(200);
         setTimeout(function(){ $(oItem).remove(); }, 200);
-        console.log( 'SUCCESS.', json );
+        console.log('SUCCESS.', data);
       },
-      error: function( xhr, status, errorThrown ) {
+      function(xhr, status, errorThrown) {
         console.log( 'ERROR.', xhr, status );
-      },
-      complete: function( xhr, status ) {
-        console.log('COMPLETE.');
-      },
-    });
+      }
+    );
   }
 }
 
@@ -240,7 +226,7 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
   ev.preventDefault();
   ev.stopPropagation();
 
-  var postUrl = "{% url 'companydb_db_pics' %}";
+  var postUrl = "{% url 'companydb_photos' user.username %}";
   var file_data = $(this).prop("files")[0];
 	var form_data = new FormData();
   var oPicItemList = $('.pic-item-list');

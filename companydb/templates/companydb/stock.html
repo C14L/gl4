@@ -31,7 +31,7 @@ profile profile-home
 
   {% if user.is_authenticated and user.id == view_user.id %}
     <p style="text-align: center;">
-      <a class="btn btn-primary" href="{% url 'companydb_db_stock' %}">{% trans 'add a stock item' %}</a>
+      <a class="btn btn-primary" href="{% url 'companydb_stock_detail_new' user.username %}">{% trans 'add a stock item' %}</a>
     </p>
   {% endif %}
 
@@ -43,6 +43,9 @@ profile profile-home
             <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
             <td class="title">{% trans 'Added to stock on' %}:</td>
             <td class="data">{{item.created}}</td>
+            <td class="data" rowspan="3">
+              <a href="{% url 'companydb_stock_detail' item.user.username item.pk %}">details</a>
+            </td>
           </tr>
           <tr class="stone">
             <td class="title">{% trans 'Name of natural stone' %}:</td>
@@ -51,7 +54,7 @@ profile profile-home
             </td>
           </tr>
           <tr class="user">
-            <td class="title">%{ trans 'More information' %}:</td>
+            <td class="title">{% trans 'More information' %}:</td>
             <td class="data">
               <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
             </td>

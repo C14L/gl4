@@ -13,6 +13,10 @@ from django.conf import settings
 from django.utils.timezone import utc
 
 
+def get_login_url(request):
+    return settings.LOGIN_URL + '?next=' + request.path
+
+
 def resize_copy(raw_fname: str, target_fname: str, resize_type: str,
                 max_w: int, max_h: int, watermark: bool=None) -> bool:
     """

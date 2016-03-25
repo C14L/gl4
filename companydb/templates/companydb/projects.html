@@ -22,7 +22,7 @@
 
 {% if user.is_authenticated and user.id == view_user.id %}
   <p style="text-align: center;">
-    <a class="btn btn-primary" href="{% url 'companydb_db_projects' %}">{% trans 'add a project' %}</a>
+    <a class="btn btn-primary" href="{% url 'companydb_projects_detail_new' user.username %}">{% trans 'add a project' %}</a>
   </p>
 {% endif %}
 
@@ -30,7 +30,7 @@
   <div class="stock-list item" id="{{ item.id }}">
     <div class="header-line">
       {% if user.id == item.user.id %}
-        <a class="btn btn-primary" style="float:right" href="{% url 'companydb_db_projects_item' item.id %}">{% trans 'edit' %}</a>
+        <a class="btn btn-primary" style="float:right" href="{% url 'companydb_projects_detail' item.user.username item.id %}">{% trans 'edit' %}</a>
       {% endif %}
       <table class="stock-table-header-table">
         <tr class="date">

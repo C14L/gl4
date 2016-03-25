@@ -54,15 +54,10 @@
 {% block body_classes %}user settings project{% endblock %}
 
 
-
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
-<a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
-{% if project %}
-  <a href="{% url 'companydb_projects' user.username %}#{{ project.id }}">{% trans 'Update project information' %}</a> &raquo;
-{% else %}
-  <a href="{% url 'companydb_projects' user.username %}">{% trans 'Add new project' %}</a> &raquo;
-{% endif %}
+<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_projects' view_user.username %}">{% trans 'Projects' %}</a> &raquo;
 {% endblock %}
 
 
@@ -71,47 +66,18 @@
 <div class="wrapper">
   {% with view_user=user view='projects' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
-  {% if project %}
-    <form method="POST" action="{% url 'companydb_db_projects_item' project.id %}" onsubmit="return confirm('{% trans 'Delete this project from your company profile?' %}');">
-      {% csrf_token %}
-      <input type="hidden" name="_method" value="DELETE">
-      <button type="submit" class="btn btn-default btn-sm" style="float: right;">{% trans 'delete this project' %}</button>
-    </form>
-    <h1 data-id="{{project.id}}">{% trans 'Edit project' %} {{ project.id }}</h1>
+  {% if view_item and form %}
+  <form method="POST" action="" onsubmit="return confirm('{% trans 'Delete project from company profile?' %}');">
+    {% csrf_token %}
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="btn btn-default btn-sm" style="float: right;">{% trans 'delete item' %}</button>
+  </form>
+  <h1 data-id="{{view_item.id}}">{% trans 'Edit project' %} {{ view_item.id }}</h1>
   {% else %}
-    <h1>{% trans 'Add a project' %}</h1>
+  <h1>{% trans 'Add a project' %}</h1>
   {% endif %}
 
-<!--
-  <div class="list">
-    {% for item in projects %}
-      <div class="item {% if item.id == project.id %} selected {% endif %}">
-        <div class="line-date">
-          <span class="tt">{% trans 'Last updated' %}:</span>
-          {{ item.created }} --
-          <a href="{% url 'companydb_projects' user.username %}#{{ item.id }}">{% trans 'view' %}</a> --
-          <a href="{% url 'companydb_db_projects_item' item.id %}">{% trans 'edit' %}</a> --
-          <a href="{% url 'companydb_db_projects_item' item.id %}">{% trans 'delete' %}</a>
-        </div>
-        <div class="line-stones">
-          <span class="tt">{% trans 'Stones' %}:</span>
-          {% for x in item.get_stones_list %}{{ x.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-        </div>
-        <div class="line-pics">
-          {% for x in item.get_pics_list %}
-          {% if forloop.counter < 8 %}<img src="{{ x.url_thumb }}" alt="">{% endif %}
-          {% endfor %}
-        </div>
-        <div class="line-descr">
-          {{ item.description|truncatewords:80 }}
-        </div>
-      </div>
-    {% empty %}
-      <div class="empty">{% trans 'projects list is empty' %}</div>
-    {% endfor %}
-  </div>
--->
-
+  {% if form %}
   <div id="add" class="project-add">
     <form  id="id_company-project-form" method="post" >{% csrf_token %}
       <div class="two-cols">
@@ -120,7 +86,7 @@
 
           <div class="form-group">
             <div class="controls ">
-              <input type="hidden" name="next" value="{% url 'companydb_projects' user.username %}">
+              <input type="hidden" name="next" value="{% url 'companydb_projects' view_user.username %}">
               <button type="submit" name="save" class="btn btn-primary" id="submit-id-save">{% trans 'Publish' %}</button>
             </div>
           </div>
@@ -133,7 +99,7 @@
             </label>
             <div class="controls ">
               <select multiple="multiple" class="selectmultiple form-control" id="id_stones" name="stones">
-                {% for x in project.stones.all %}
+                {% for x in view_item.stones.all %}
                 <option selected="selected" value="{{ x.id }}">{{ x.name }}</option>
                 {% endfor %}
               </select>
@@ -151,7 +117,7 @@
                 <span class="loading" style="display:none"><span></span><span></span><span></span></span>
               </div>
               <div class="pic-item-list">
-                {% for x in project.get_pics_list %}
+                {% for x in view_item.get_pics_list %}
                 <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
                   <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
                   <img src="{{ x.url_thumb }}" alt="">
@@ -161,12 +127,13 @@
                 <div class="none">{% trans 'no pictures' %}</div>
                 {% endfor %}
               </div>
-              <p id="hint_id_pics" class="help-block">{% trans 'Upload up to 20 pictures of this project.' %}</p>
+              <p id="hint_id_pics" class="help-block">{% trans 'Upload up to 20 pictures of this view_item.' %}</p>
             </div>
           </div>
         </div>
       </div>
     </form>
+    {% endif %}
   </div>
 
 </div>
@@ -189,11 +156,11 @@ $( '#id_company-project-form' ).on( 'submit', function( ev ){
   //    company or similar supply company that doesn't sell stones.
   // -> Don't force to upload pics, because the user may want to do that at
   //    a later moment, or doesn't have suitable pics but a good description
-  //    of the project.
+  //    of the view_item.
   // -> DO force to provide at least a short description of what the project
   //    was about.
   if( ! $( '#id_description' ).val() ) {
-    alert('Please provide a short description of the project.');
+    alert('Please provide a short description of the view_item.');
     ev.preventDefault();
   }
 });
@@ -213,23 +180,20 @@ function pic_del_onclick(ev){
 
     $.ajax({
       url: postUrl,
-      type: 'post',
+      type: 'DELETE',
       dataType: 'json',
       data: {
         _method: 'DELETE',
 	      module: "projects",
         csrfmiddlewaretoken: csrfToken,
       },
-      success: function( json ) {
+      done: function(data) {
         $(oItem).fadeOut(200);
         setTimeout(function(){ $(oItem).remove(); }, 200);
-        console.log( 'SUCCESS.', json );
+        console.log( 'SUCCESS.', data );
       },
-      error: function( xhr, status, errorThrown ) {
+      fail: function() {
         console.log( 'ERROR.', xhr, status );
-      },
-      complete: function( xhr, status ) {
-        console.log('COMPLETE.');
       },
     });
   }
@@ -241,7 +205,7 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
   ev.preventDefault();
   ev.stopPropagation();
 
-  var postUrl = "{% url 'companydb_db_pics' %}";
+  var postUrl = "{% url 'companydb_photos' user.username %}";
   var file_data = $(this).prop("files")[0];
   var form_data = new FormData();
   var oPicItemList = $('.pic-item-list');

@@ -14,7 +14,6 @@
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
 <a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
-<a href="{% url 'companydb_dashboard' %}">Dashboard</a> &raquo;
 {% endblock %}
 
 {% block main %}

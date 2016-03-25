@@ -30,13 +30,16 @@
   {% for group in view_user.group_set.all %}
     <a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a>{% if not forloop.last %}, {% endif %}
   {% endfor %}
+  {% if user.is_authenticated and user.id == view_user.id %}
+    <a class="btn btn-primary" href="{% url 'companydb_areas' user.username %}">{% trans 'edit' %}</a>
+  {% endif %}
 </section>
 
 <div class="profile-info-fotos">
   <section class="profile-contact-info">
     {% if user.is_authenticated and user.id == view_user.id %}
       <div style="float: right;">
-        <a class="btn btn-primary" href="{% url 'companydb_db_details' %}">{% trans 'edit' %}</a>
+        <a class="btn btn-primary" href="{% url 'companydb_details' user.username %}">{% trans 'edit' %}</a>
       </div>
     {% endif %}
     <dl class="profile-name"><dt>{% trans 'Company' %}:</dt><dd>{{view_user.profile.name}}</dd></dl>
@@ -62,13 +65,23 @@
 <div id="about-company-about">
   {% if user.is_authenticated and user.id == view_user.id %}
     <div style="float: right;">
-      <a class="btn btn-primary" href="{% url 'companydb_db_about' %}">{% trans 'edit' %}</a>
+      <a class="btn btn-primary" href="{% url 'companydb_about' user.username %}">{% trans 'edit' %}</a>
     </div>
   {% endif %}
   {{view_user.profile.about|markdown|bleach}}
 </div>
 
 <p>Last active: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }} </p>
+
+{% if user.is_authenticated and user.id == view_user.id %}
+  <hr>
+  <h2>More settings</h2>
+  <ul>
+    <li><a href="{% url 'account_email' %}">Update your Email address</a></li>
+    <li><a href="{% url 'account_change_password' %}">Change your password</a></li>
+    <li><a href="{% url 'companydb_delete' user.username %}">Delete your account</a></li>
+  </ul>
+{% endif %}
 
 {% endblock %}
 

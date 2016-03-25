@@ -77,16 +77,37 @@ urlpatterns = [
     # /companies/memorials-grave-stones/1
     url(r'^companies/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
         companydb.views.itemlist, name='companydb_list'),
+
     # /company/xxxxxxxxxx
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})$',
         companydb.views.item, name='companydb_item'),
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/delete$',
+        companydb.views.delete, name='companydb_delete'),
+
     # /company/xxxxxxxxxx/stock
+    #
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/stock$',
         companydb.views.stock, name='companydb_stock'),
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/stock/(?P<pk>\d+)$',
+        companydb.views.stock_detail, name='companydb_stock_detail'),
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/stock/new$',
+        companydb.views.stock_detail, name='companydb_stock_detail_new'),
 
     # /company/xxxxxxxxxx/projects
+    #
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/projects$',
         companydb.views.projects, name='companydb_projects'),
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/projects/(?P<pk>\d+)$',
+        companydb.views.projects_detail, name='companydb_projects_detail'),
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/projects/new$',
+        companydb.views.projects_detail, name='companydb_projects_detail_new'),
+
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/details/$',
+        companydb.views.db_details, name='companydb_details'),
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/about/$',
+        companydb.views.db_about, name='companydb_about'),
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/business-areas/$',
+        companydb.views.db_areas, name='companydb_areas'),
 
     # /company/xxxxxxxxxx/contact
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/contact$',
@@ -95,32 +116,19 @@ urlpatterns = [
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/photos$',
         companydb.views.photos, name='companydb_photos'),
 
-    # DROP: /company/xxxxxxxxxx/photos/12345 --> REDIR to /fotos/12345
+    # REDIR /company/xxxxxxxxxx/photos/12345 --> /fotos/12345
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/photos/(?P<id>\d+)$',
         companydb.views.photo_redir, name='companydb_photo_redir'),
     # /fotos/12345
     url(r'^fotos/(?P<id>\d+)$',
         companydb.views.pic_item, name='companydb_pic_item'),
 
-    url(r'^company/dashboard/$',
-        companydb.views.dashboard, name='companydb_dashboard'),
-    url(r'^company/dashboard/details/$',
-        companydb.views.db_details, name='companydb_db_details'),
-    url(r'^company/dashboard/about/$',
-        companydb.views.db_about, name='companydb_db_about'),
-    url(r'^company/dashboard/business-areas/$',
-        companydb.views.db_areas, name='companydb_db_areas'),
-    url(r'^company/dashboard/photos/$',
-        companydb.views.db_pics, name='companydb_db_pics'),
-
-    url(r'^company/dashboard/projects/$',
-        companydb.views.projects_detail, name='companydb_db_projects'),
-    url(r'^company/dashboard/projects/(?P<pk>\d+)/$',
-        companydb.views.projects_detail, name='companydb_db_projects_item'),
-    url(r'^company/dashboard/stock/$',
-        companydb.views.stock_detail, name='companydb_db_stock'),
-    url(r'^company/dashboard/stock/(?P<pk>\d+)/$',
-        companydb.views.stock_detail, name='companydb_db_stock_item'),
+    # url(r'^company/dashboard/$',
+    #     companydb.views.dashboard, name='companydb_dashboard'),
+    # url(r'^company/-/projects/$',
+    #     companydb.views.projects_detail, name='companydb_db_projects'),
+    # url(r'^company/-/stock/$',
+    #     companydb.views.stock_detail, name='companydb_db_stock'),
 ]
 
 
