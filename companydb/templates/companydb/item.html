@@ -46,9 +46,8 @@
     <dl class="profile-contact"><dt>{% trans 'Contact' %}:</dt><dd>{{view_user.profile.contact}} ({{view_user.profile.contact_position}})</dd></dl>
     <dl class="profile-website"><dt>{% trans 'Website' %}:</dt><dd><a rel="nofollow" href="{{view_user.profile.web}}">{{view_user.profile.web}}</a></dd></dl>
     <dl class="profile-email"><dt>{% trans 'Email' %}:</dt><dd><a rel="nofollow" href="./contact">contact form</a></dd></dl>
-    <dl class="profile-phone"><dt>{% trans 'Phone' %}:</dt><dd>{{view_user.profile.fon}}</dd></dl>
-    <dl class="profile-fax"><dt>Fax:</dt><dd>{{view_user.profile.fax}}</dd></dl>
-    <dl class="profile-address"><dt>{% trans 'Address' %}:</dt><dd>{{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}}, {{view_user.profile.country_name}}</dd></dl>
+    <dl class="profile-phone"><dt>{% trans 'Phone' %}:</dt><dd>{{view_user.profile.tel}} {% if view_user.profile.mobile %}({% trans 'cel' %}: {{view_user.profile.mobile}}){% endif %}</dd></dl>
+    <dl class="profile-address"><dt>{% trans 'Address' %}:</dt><dd>{{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}}, {% if view_user.profile.country_sub_name %}{{view_user.profile.country_sub_name}}, {% endif %}{{view_user.profile.country_name}}</dd></dl>
   </section>
 
   <section class="fotoslist">

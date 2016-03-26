@@ -38,7 +38,7 @@ class CompanyStockForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'id_company-stock-form'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'companydb_db_stock'
+        self.helper.form_action = ''
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
@@ -62,7 +62,7 @@ class CompanyAboutForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'id_company-about-form'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'companydb_db_about'
+        self.helper.form_action = ''
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
@@ -88,7 +88,7 @@ class CompanyDetailsForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'id_company-details-form'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'companydb_db_details'
+        self.helper.form_action = ''
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
