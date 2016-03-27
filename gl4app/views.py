@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render_to_response as rtr
-from django.template import RequestContext
+from django.shortcuts import render
+
 from companydb.models import Stock, Project
 
 
@@ -25,7 +25,5 @@ def home(request):
             break
 
     projects = Project.objects.all_public()[:10]
-
-    tpl = 'gl4app/home.html'
-    ctx = {'stocks': stocks, 'projects': projects, 'view_users': view_users}
-    return rtr(tpl, ctx, context_instance=RequestContext(request))
+    return render(request, 'gl4app/home.html', {
+        'stocks': stocks, 'projects': projects, 'view_users': view_users})
