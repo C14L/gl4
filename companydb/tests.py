@@ -225,8 +225,8 @@ class CompanydbTestCase(TestCase):
     #     pass
 
     def test_edit_user_profile_about_text(self):
-        profile_url = reverse('companydb_item', self.mainuser.username)
-        target_url = reverse('companydb_about', self.mainuser.username)
+        profile_url = reverse('companydb_item', args=[self.mainuser.username])
+        target_url = reverse('companydb_about', args=[self.mainuser.username])
         redirect_url = reverse('account_login') + '?next=' + target_url
         data = {'about': 'yodf9yfliudskgfskhdlf ksjh fslh'}
 
