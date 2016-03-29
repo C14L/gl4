@@ -72,9 +72,11 @@ def stock_detail(request, slug, pk=None):
     view_item = Stock.objects.filter(user=user, pk=pk).first()
     can_edit = request.user.is_authenticated() and request.user == user
 
-    if not can_edit and not view_item:
-        # Needs auth to see /new page.
-        return HttpResponseRedirect(get_login_url(request))
+    if not can_edit:
+        if request.method not in ['GET', 'HEAD', 'OPTIONS']:
+            return HttpResponseBadRequest()
+        if not view_item:
+            return HttpResponseRedirect(get_login_url(request))
 
     if can_edit:
         if 'DELETE' in (request.method, request.POST.get('_method', None)):
@@ -94,7 +96,7 @@ def stock_detail(request, slug, pk=None):
             stone = Stone.objects.filter(pk=stone_pk).first()
             # manually add uploaded pics selection
             pics_pks = request.POST.getlist('pics', [])
-            pics = Pic.objects.all_for_user(request.user) \
+            pics = Pic.objects.all_for_user(request.user)\
                               .filter(pk__in=pics_pks, module='stock')
 
             if form.is_valid():
