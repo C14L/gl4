@@ -224,3 +224,27 @@ class CompanydbTestCase(TestCase):
     # def test_only_auth_user_can_add_delete_project_photo(self):
     #     pass
 
+    def test_edit_user_profile_about_text(self):
+        profile_url = reverse('companydb_item', self.mainuser.username)
+        target_url = reverse('companydb_about', self.mainuser.username)
+        redirect_url = reverse('account_login') + '?next=' + target_url
+        data = {'about': 'yodf9yfliudskgfskhdlf ksjh fslh'}
+
+        # Anon can not access "edit about" page.
+        response = self.client.get(target_url, follow=True)
+        self.assertRedirects(response, redirect_url)
+        response = self.client.post(target_url, data=data, follow=True)
+        self.assertRedirects(response, redirect_url)
+
+        # Auth user can post about text.
+        self.client.login(username=self.mainuser.username, password='hunter2')
+        response = self.client.get(target_url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="about"')
+        response = self.client.post(target_url, data=data, follow=True)
+        self.assertRedirects(response, profile_url)
+
+        # New about text appears on profile page.
+        response = self.client.get(profile_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, data['about'])
