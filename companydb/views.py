@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, \
@@ -12,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
 from companydb.forms import PicUploadForm, CompanyDetailsForm, \
-    CompanyAboutForm, CompanyProjectForm, CompanyStockForm
+    CompanyAboutForm, CompanyProjectForm, CompanyStockForm, CompanyContactForm
 from companydb.models import Group, Pic, Stock, Project
 from mdpages.models import Article
 from stonedb.models import Stone
@@ -47,8 +48,30 @@ def itemlist(request, slug, p):
 def item(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     pics = Pic.objects.filter(user=view_user, module='profile')
+
+    if 'POST' in (request.method, request.POST.get('_method', None)):
+        form = CompanyContactForm(request.POST)
+        if form.is_valid():
+            to_email = [view_user.email]
+            from_email = settings.COMPANY_CONTACT_FROM_EMAIL
+            subject = _('Message sent from you company profile on Graniteland.')
+            tr_sender_name = _('Sender Name')
+            tr_sender_mail = _('Sender Email')
+
+            message = ('{}: {}\n{}: {}\n{}\n{}\n\n'.format(
+                tr_sender_name, form.cleaned_data['name'],
+                tr_sender_mail, form.cleaned_data['email'],
+                ('-'*60), form.cleaned_data['msg']))
+
+            send_mail(subject, message, from_email, to_email)
+
+            messages.info(request, _('Message sent.'))
+            _next = reverse('companydb_item', args=[view_user.username])
+            return HttpResponseRedirect(request.POST.get('next', _next))
+
     return render(request, 'companydb/item.html', {
-        'view_user': view_user, 'pics': pics})
+        'view_user': view_user, 'pics': pics,
+        'contactform': CompanyContactForm})
 
 
 @login_required

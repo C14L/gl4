@@ -248,3 +248,18 @@ class CompanydbTestCase(TestCase):
         response = self.client.get(profile_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['about'])
+
+    def test_profile_contact_form(self):
+        form_id = 'id_profile-contact-form'
+        profile_url = reverse('companydb_item', args=[self.mainuser.username])
+
+        # Anon can see message form on profile page
+        response = self.client.get(profile_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, form_id)
+
+        # Anon can post message
+        data = {'name': 'etehf', 'email': 'ldj@example.com', 'msg': 's3dfssiud'}
+        response = self.client.post(profile_url, data=data, follow=True)
+        self.assertRedirects(response, profile_url)
+        self.assertEqual(response.status_code, 200)

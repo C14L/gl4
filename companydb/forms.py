@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 from crispy_forms.bootstrap import FormActions
 from django import forms
 from crispy_forms.helper import FormHelper
@@ -22,8 +23,8 @@ class CompanyProjectForm(forms.ModelForm):
             'description',
 
             FormActions(
-                Submit('save', 'Submit'),
-                # Button('cancel', 'Cancel')
+                Submit('save', _('Submit')),
+                # Button('cancel', _('Cancel'))
             )
         )
 
@@ -46,8 +47,8 @@ class CompanyStockForm(forms.ModelForm):
             'stone', 'dim_type', 'dim_total', 'description',
 
             FormActions(
-                Submit('save', 'Submit'),
-                # Button('cancel', 'Cancel')
+                Submit('save', _('Submit')),
+                # Button('cancel', _('Cancel'))
             )
         )
 
@@ -70,8 +71,8 @@ class CompanyAboutForm(forms.ModelForm):
             'about',
 
             FormActions(
-                Submit('save', 'Submit'),
-                # Button('cancel', 'Cancel')
+                Submit('save', _('Submit')),
+                # Button('cancel', _('Cancel'))
             )
         )
 
@@ -98,8 +99,8 @@ class CompanyDetailsForm(forms.ModelForm):
             'email', 'fax', 'tel', 'mobile', 'web',
 
             FormActions(
-                Submit('save', 'Submit'),
-                # Button('cancel', 'Cancel')
+                Submit('save', _('Submit')),
+                # Button('cancel', _('Cancel'))
             )
         )
 
@@ -129,6 +130,25 @@ class PicUploadForm(forms.ModelForm):
         self.helper.layout = Layout(
             'pic', 'title',  # 'caption',
             FormActions(
-                Submit('save', 'Add picture'),
+                Submit('save', _('Add picture')),
             )
         )
+
+
+class CompanyContactForm(forms.Form):
+    name = forms.CharField(max_length=100, required=True, strip=True)
+    email = forms.EmailField(max_length=100, required=True, strip=True)
+    msg = forms.CharField(widget=forms.Textarea,
+                          max_length=100000, required=True, strip=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_profile-contact-form'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''
+        self.helper.layout = Layout(
+            'name', 'email', 'msg',
+            FormActions(
+                Submit('send', _('Send message'))
+            ))

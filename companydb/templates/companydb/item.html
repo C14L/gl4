@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n markdown_deux_tags bleach_tags gl4tags %}
+{% load i18n markdown_deux_tags bleach_tags gl4tags crispy_forms_tags %}
 
 {% block title %}{{view_user.profile.name}}{% endblock %}
 
@@ -68,6 +68,11 @@
     </div>
   {% endif %}
   {{view_user.profile.about|markdown|bleach}}
+</div>
+
+<div class="box-input">
+  <h2>{% blocktrans with name=view_user.profile.name %}Contact {{name}}{% endblocktrans %}</h2>
+  {% crispy contactform %}
 </div>
 
 <p>Last active: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }} </p>

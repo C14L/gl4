@@ -16,20 +16,20 @@ from os.path import dirname, abspath, exists, join
 
 from gl4.settings_private import *
 
+DEBUG = exists('/islocal.txt')
+PRODUCTION = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
 SITE_ID = 1
 SITE_NAME = 'Graniteland.com'
-
-DEBUG = exists('/islocal.txt')
-PRODUCTION = False
+SITE_DOMAIN = 'graniteland.com'  # default canonical domain
 
 APPEND_SLASH = True
 ROOT_URLCONF = 'gl4.urls'
 WSGI_APPLICATION = 'gl4.wsgi.application'
 
-ALLOWED_HOSTS = ['www.graniteland.com', 'localhost']
+ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
 
 EMAIL_HOST = 'localhost'
@@ -216,3 +216,5 @@ STONES_PER_PAGE = 500  # Do not use pagination, better all on one page and then
 WATERMARK_FONT_FILENAME = join(BASE_DIR, 'Verdana.ttf')
 
 STONE_SEARCH_OPTS_FILE = join(BASE_DIR, 'api_static', 'stone-search-opts.json')
+
+COMPANY_CONTACT_FROM_EMAIL = 'contact@' + SITE_DOMAIN
