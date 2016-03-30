@@ -147,6 +147,9 @@ class CompanyContactForm(forms.Form):
         self.helper.form_id = 'id_profile-contact-form'
         self.helper.form_method = 'post'
         self.helper.form_action = ''
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
             'name', 'email', 'msg',
             FormActions(

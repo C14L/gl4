@@ -10,9 +10,37 @@
 {% block head %}
 <style>
   section.profile-business-areas { font-size: 20px; text-align: center; margin: 16px 0; }
-  div.profile-info-fotos { display: flex; }
-  div.profile-info-fotos > section { width: 50% !important; box-sizing: border-box; }
-  div.profile-info-fotos > section > .list { width: 100%; box-sizing: border-box; }
+
+  div.profile-info-fotos { display: flex; height: 400px; }
+  div.profile-info-fotos > section { width: 50% !important; height: 100%; overflow: auto; box-sizing: border-box; }
+  div.profile-info-fotos > section.fotoslist > .list { }
+  div.profile-info-fotos > section.fotoslist > .list > .item { }
+  div.profile-info-fotos > section.fotoslist > .list > .item > a { }
+  div.profile-info-fotos > section.fotoslist > .list > .item > a > img { }
+
+  section.company-about { font-size: 16px; line-height: 24px; text-align: left; }
+
+
+
+  .profile-business-card { text-align: center; padding: 16px; background-color: lightgray; display: flex; flex-flow: column; }
+  .profile-business-card-edit { display: inline-block; position: relative; margin-top: -24px; top: 24px; left: -8px }
+
+  .profile-business-card .line1 { flex-grow: 1; text-align: center; border-bottom: 1px solid gray; padding-top: 0; padding-bottom: 16px; margin-bottom: 8px; }
+  .profile-business-card .line1 .name { font-size: 24px; }
+  .profile-business-card .line1 .web {  }
+
+  .profile-business-card .line2 { flex-grow: 1; text-align: center; padding: 0; margin: 8px 0; }
+  .profile-business-card .line2 dt { display: inline; }
+  .profile-business-card .line2 dd { display: inline; }
+
+  .profile-business-card .line3 { flex-grow: 1000; padding: 0; margin: 16px 0 0 0; justify-content: center; }
+  .profile-business-card .line3 div:nth-child(1) { font-size: 20px; font-weight: bold; color: green; }
+  .profile-business-card .line3 div:nth-child(2) { font-size: 24px;  }
+  .profile-business-card .line3 div:nth-child(3) { font-size: 16px; color: gray;  }
+
+  .profile-business-card .line4 { flex-grow: 1; text-align: center; padding: 0; margin: 0; }
+  .profile-business-card .line4 dt {  }
+  .profile-business-card .line4 dd {  }
 </style>
 {% endblock %}
 
@@ -31,23 +59,50 @@
     <a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a>{% if not forloop.last %}, {% endif %}
   {% endfor %}
   {% if user.is_authenticated and user.id == view_user.id %}
-    <a class="btn btn-primary" href="{% url 'companydb_areas' user.username %}">{% trans 'edit' %}</a>
+    <a class="btn btn-default" href="{% url 'companydb_areas' user.username %}">{% trans 'edit' %}</a>
   {% endif %}
 </section>
 
+{% if user.is_authenticated and user.id == view_user.id %}
+  <a class="profile-business-card-edit btn btn-default" href="{% url 'companydb_details' user.username %}">{% trans 'edit' %}</a>
+{% endif %}
+
 <div class="profile-info-fotos">
-  <section class="profile-contact-info">
-    {% if user.is_authenticated and user.id == view_user.id %}
-      <div style="float: right;">
-        <a class="btn btn-primary" href="{% url 'companydb_details' user.username %}">{% trans 'edit' %}</a>
+  <section class="profile-business-card">
+
+    <div class="line1">
+      <div class="name">{{view_user.profile.name}}</div>
+      {% if view_user.profile.web %}
+      <div class="web"><a rel="nofollow" href="{{view_user.profile.web|fix_external_link}}">{{view_user.profile.web}}</a></div>
+      {% endif %}
+    </div>
+
+    <dl class="line2">
+      <dt>{% trans 'Contact' %}:</dt>
+      <dd>{{view_user.profile.contact}} ({{view_user.profile.contact_position}})</dd>
+    </dl>
+
+    <div class="line3">
+      <a href="#contact-{{view_user.username}}" class="btn btn-primary btn-lg">
+        {% blocktrans with name=view_user.profile.name %}Message {{name}} now{% endblocktrans %}
+      </a>
+      <div class="profile-call-now">
+        <div>{% trans 'or call at:' %}</div>
+        <div>{{view_user.profile.tel}}</div>
+        {% if view_user.profile.mobile %}
+        <div>{% trans 'or mobile:' %} {{view_user.profile.mobile}}</div>
+        {% endif %}
       </div>
-    {% endif %}
-    <dl class="profile-name"><dt>{% trans 'Company' %}:</dt><dd>{{view_user.profile.name}}</dd></dl>
-    <dl class="profile-contact"><dt>{% trans 'Contact' %}:</dt><dd>{{view_user.profile.contact}} ({{view_user.profile.contact_position}})</dd></dl>
-    <dl class="profile-website"><dt>{% trans 'Website' %}:</dt><dd><a rel="nofollow" href="{{view_user.profile.web}}">{{view_user.profile.web}}</a></dd></dl>
-    <dl class="profile-email"><dt>{% trans 'Email' %}:</dt><dd><a rel="nofollow" href="./contact">contact form</a></dd></dl>
-    <dl class="profile-phone"><dt>{% trans 'Phone' %}:</dt><dd>{{view_user.profile.tel}} {% if view_user.profile.mobile %}({% trans 'cel' %}: {{view_user.profile.mobile}}){% endif %}</dd></dl>
-    <dl class="profile-address"><dt>{% trans 'Address' %}:</dt><dd>{{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}}, {% if view_user.profile.country_sub_name %}{{view_user.profile.country_sub_name}}, {% endif %}{{view_user.profile.country_name}}</dd></dl>
+    </div>
+
+    <dl class="line4">
+      <dt>{% trans 'Address' %}:</dt>
+      <dd>
+        {{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}},
+        {% if view_user.profile.country_sub_name %}{{view_user.profile.country_sub_name}}, {% endif %}
+        {{view_user.profile.country_name}}
+      </dd>
+    </dl>
   </section>
 
   <section class="fotoslist">
@@ -61,16 +116,16 @@
   </section>
 </div>
 
-<div id="about-company-about">
+<section id="about-company-about" class="company-about">
   {% if user.is_authenticated and user.id == view_user.id %}
-    <div style="float: right;">
-      <a class="btn btn-primary" href="{% url 'companydb_about' user.username %}">{% trans 'edit' %}</a>
+    <div style="float: left;">
+      <a class="btn btn-default" href="{% url 'companydb_about' user.username %}">{% trans 'edit' %}</a>
     </div>
   {% endif %}
   {{view_user.profile.about|markdown|bleach}}
-</div>
+</section>
 
-<div class="box-input">
+<div class="box-input" id="contact-{{view_user.username}}">
   <h2>{% blocktrans with name=view_user.profile.name %}Contact {{name}}{% endblocktrans %}</h2>
   {% crispy contactform %}
 </div>

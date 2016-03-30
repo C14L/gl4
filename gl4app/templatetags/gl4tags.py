@@ -11,3 +11,15 @@ def picsrc(pic, size='small'):
     picfile = '{}.{}'.format(pic.id, pic.ext)
     sizedir = 'fotos_{}'.format(size)
     return join(settings.MEDIA_URL, sizedir, picfile)
+
+
+@register.filter(name='fix_external_link')
+def fix_external_link(href):
+    """Make sure the external URL has a leading schema etc"""
+    if not href.startswith('http'):
+        href = 'http://' + href
+    if href.startswith('http//'):
+        href = 'http://' + href[6:]
+
+    return href
+
