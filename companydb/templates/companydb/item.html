@@ -83,7 +83,7 @@
     </dl>
 
     <div class="line3">
-      <a href="#contact-{{view_user.username}}" class="btn btn-primary btn-lg">
+      <a href="#contact" class="btn btn-primary btn-lg">
         {% blocktrans with name=view_user.profile.name %}Message {{name}} now{% endblocktrans %}
       </a>
       <div class="profile-call-now">
@@ -125,7 +125,7 @@
   {{view_user.profile.about|markdown|bleach}}
 </section>
 
-<div class="box-input" id="contact-{{view_user.username}}">
+<div class="box-input" id="contact">
   <h2>{% blocktrans with name=view_user.profile.name %}Contact {{name}}{% endblocktrans %}</h2>
   {% crispy contactform %}
 </div>

@@ -4,7 +4,7 @@
 
   <h1 id="about-company-title">
     <a href="{% url 'companydb_item' view_user.username %}">
-      {% if view == 'item' %}
+      {% if 1 == 1 %}
         {{view_user.profile.name}}
       {% elif view == 'stock' %}
         {% blocktrans with profile_name=view_user.profile.name %}Natural Stone in stock at {{profile_name}}{% endblocktrans %}
@@ -32,11 +32,6 @@
     <li>
       <a {% if view == 'photos' %}id="current"{% endif %} href="{% url 'companydb_photos' view_user.username %}">
         <span>{% blocktrans with pic_count=view_user.profile.pic_count %}Company Photos ({{pic_count}}){% endblocktrans %}</span>
-      </a>
-    </li>
-    <li class="last">
-      <a {% if view == 'contact' %}id="current"{% endif %} href="{% url 'companydb_contact' view_user.username %}">
-        <span>{% trans 'Contact Us' %}</span>
       </a>
     </li>
   </ul>
