@@ -23,3 +23,7 @@ def fix_external_link(href):
 
     return href
 
+
+@register.filter(name='iconpath')
+def iconpath(slug):
+    return join(settings.STATIC_URL, 'img/icons/nuovext22', slug + '.png')

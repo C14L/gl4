@@ -62,6 +62,10 @@ class Country(CommonStoneProperty):
         verbose_name_plural = "countries"
         ordering = ('slug', )
 
+    @property
+    def flag_path(self):
+        return join(settings.STATIC_URL, 'img/flags', self.cc + '.png')
+
 
 class Texture(CommonStoneProperty):
 
