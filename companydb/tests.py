@@ -263,3 +263,12 @@ class CompanydbTestCase(TestCase):
         response = self.client.post(profile_url, data=data, follow=True)
         self.assertRedirects(response, profile_url)
         self.assertEqual(response.status_code, 200)
+
+        # Bot can't post message
+        data['leave_this_empty'] = 'oiu0rujo'
+        response = self.client.post(profile_url, data=data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Unexpected value found.')
+        self.assertContains(response, data['leave_this_empty'])
+        self.assertContains(response, data['name'])
+

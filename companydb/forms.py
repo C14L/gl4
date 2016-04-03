@@ -1,8 +1,9 @@
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.bootstrap import FormActions
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout
+from crispy_forms.layout import Submit, Layout, Field
 
 from companydb.models import UserProfile, Pic, Project, Stock
 
@@ -140,6 +141,8 @@ class CompanyContactForm(forms.Form):
     email = forms.EmailField(max_length=100, required=True, strip=True)
     msg = forms.CharField(widget=forms.Textarea,
                           max_length=100000, required=True, strip=True)
+    leave_this_empty = forms.CharField(label='leave empty',
+                                       max_length=50, required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -151,7 +154,14 @@ class CompanyContactForm(forms.Form):
         self.helper.field_class = 'col-lg-8'
         self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
-            'name', 'email', 'msg',
+            'leave_this_empty', 'name', 'email', 'msg',
             FormActions(
                 Submit('send', _('Send message'))
             ))
+
+    def clean_leave_this_empty(self):
+        # Hidden honeypot field that only bots fill in.
+        if self.cleaned_data['leave_this_empty']:
+            raise ValidationError('Unexpected value found.')
+
+        return ''

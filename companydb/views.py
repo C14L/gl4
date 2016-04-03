@@ -48,30 +48,29 @@ def itemlist(request, slug, p):
 def item(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     pics = Pic.objects.filter(user=view_user, module='profile')
+    form = CompanyContactForm()
 
     if 'POST' in (request.method, request.POST.get('_method', None)):
         form = CompanyContactForm(request.POST)
         if form.is_valid():
-            to_email = [view_user.email]
-            from_email = settings.COMPANY_CONTACT_FROM_EMAIL
+            recipients = [view_user.email]
+            sender = settings.COMPANY_CONTACT_FROM_EMAIL
             subject = _('Message sent from you company profile on Graniteland.')
             tr_sender_name = _('Sender Name')
             tr_sender_mail = _('Sender Email')
-
             message = ('{}: {}\n{}: {}\n{}\n{}\n\n'.format(
                 tr_sender_name, form.cleaned_data['name'],
                 tr_sender_mail, form.cleaned_data['email'],
                 ('-'*60), form.cleaned_data['msg']))
 
-            send_mail(subject, message, from_email, to_email)
+            send_mail(subject, message, sender, recipients)
 
             messages.info(request, _('Message sent.'))
             _next = reverse('companydb_item', args=[view_user.username])
             return HttpResponseRedirect(request.POST.get('next', _next))
 
     return render(request, 'companydb/item.html', {
-        'view_user': view_user, 'pics': pics,
-        'contactform': CompanyContactForm})
+        'view_user': view_user, 'pics': pics, 'contactform': form})
 
 
 @login_required
