@@ -18,7 +18,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
 {% block body_classes %}stones-item{% endblock %}
 
 {% block breadcrumb %}
-  <a href="{% url 'stonedb_home' %}">Stones</a> &raquo;
+  <a href="{% url 'stonedb_home' %}">{% trans 'Stones' %}</a> &raquo;
   <a href="{% url 'stonedb_item' stone.slug %}">{{ stone.name }}</a> &raquo;
 {% endblock %}
 

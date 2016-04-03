@@ -1,32 +1,35 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n %}
 
-{% block title %}Marbles and Granites from around the globe{% endblock %}
+{% block title %}{% trans 'Marbles and Granites from around the globe' %}{% endblock %}
 
-{% block description %}Information on granite and marble from around the world, including data and pictures of thousands of natural stones, at the Graniteland online stone database.{% endblock %}
+{% block title2 %}{% trans 'Marbles and Granites from around the globe' %}{% endblock %}
+
+{% block description %}{% trans 'Information on granite and marble from around the world, including data and pictures of thousands of natural stones, at the Graniteland online stone database.' %}{% endblock %}
 
 {% block head %}{% endblock %}
 
 {% block body_classes %}stones-home{% endblock %}
 
 {% block breadcrumb %}
-<a href="/stone">Stones</a> &raquo;
+<a href="{% url 'stonedb_home' %}">{% trans 'Stones' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>Marbles and Granites from around the globe</h1>
+<h1>{% trans 'Marbles and Granites from around the globe' %}</h1>
 
 <table class="layout">
   <tr>
-    <td class="leftcol" style="background:url({{row.get_pic_medium}})">
-      <form method="get" action="/stone/search.php">
+    <td class="leftcol" style="background:url({{ row.get_pic_medium }})">
+      <form method="get" action="{% url 'stonedb_redir_search_php' %}">
         <input type="hidden" name="p" value="1">
         <table>
           <tr>
-            <td><label for="color">Color:</label></td>
+            <td><label for="color">{% trans 'Color' %}:</label></td>
             <td>
               <select size="1" name="color">
-                <option selected="selected" value="">Color</option>
+                <option selected="selected" value="">{% trans 'Color' %}</option>
                 {% for item in colors %}
                 <option value="{{item.id}}">{{item.name}} ({{item.stones__count}})</option>
                 {% endfor %}
@@ -34,10 +37,10 @@
             </td>
           </tr>
           <tr>
-            <td><label for="country">Country:</label></td>
+            <td><label for="country">{% trans 'Country' %}:</label></td>
             <td>
               <select size="1" name="country">
-                <option selected="selected" value="">Country</option>
+                <option selected="selected" value="">{% trans 'Country' %}</option>
                 {% for item in countries %}
                 <option value="{{item.id}}">{{item.name}} ({{item.stones__count}})</option>
                 {% endfor %}
@@ -45,10 +48,10 @@
             </td>
           </tr>
           <tr>
-            <td><label for="classification">Classification:</label></td>
+            <td><label for="classification">{% trans 'Classification' %}:</label></td>
             <td>
               <select size="1" name="classification">
-                <option selected="selected" value="">Classification</option>
+                <option selected="selected" value="">{% trans 'Classification' %}</option>
                 {% for item in classifications %}
                 <option value="{{item.id}}">{{item.name}} ({{item.stones__count}})</option>
                 {% endfor %}
@@ -56,12 +59,12 @@
             </td>
           </tr>
           <tr>
-            <td><label for="color">Stone name:</label></td>
+            <td><label for="color">{% trans 'Stone name' %}:</label></td>
             <td><input type="text" name="pseu" class="search-pseu" id="search_pseu2" value="" maxlength="20"></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="submit" value="Search"></td>
+            <td><input type="submit" value="{% trans 'Search' %}"></td>
           </tr>
         </table>
       </form>
@@ -73,7 +76,7 @@
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="4715830441" data-ad-format="auto"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       {% else %}
-        <div style="width:350px;height:300px;background:#EEE;"></div>
+        <div style="width: 350px; height: 300px; background: #EEE;"></div>
       {% endif %}
     </td>
   </tr>
@@ -81,7 +84,7 @@
 <table class="layout2">
   <tr>
     <td class="leftcol">
-      <h2>Natural stone by color:</h2>
+      <h2><a href="/stone/color">{% trans 'Natural stone by color' %}:</a></h2>
       <ul>
         <li><a href="/stone/color/beige">Beige natural stone</a></li>
         <li><a href="/stone/color/black">Black natural stone</a></li>
@@ -96,11 +99,10 @@
         <li><a href="/stone/color/red">Red natural stone</a></li>
         <li><a href="/stone/color/white">White natural stone</a></li>
         <li><a href="/stone/color/yellow">Yellow natural stone</a></li>
-        <li style="font-weight:bold;"><a href="/stone/color">More...</a></li>
       </ul>
     </td>
     <td class="middlecol">
-      <h2>Natural stone by country of origin:</h2>
+      <h2><a href="/stone/country">{% trans 'Natural stone by country of origin' %}:</a></h2>
       <ul>
         <li><a href="/stone/country/brazil">Natural Stones from Brazil</a></li>
         <li><a href="/stone/country/china">Natural Stones from China</a></li>
@@ -113,11 +115,10 @@
         <li><a href="/stone/country/austria">Natural Stones from Austria</a></li>
         <li><a href="/stone/country/switzerland">Natural Stones from Switzerland</a></li>
         <li><a href="/stone/country/spain">Natural Stones from Spain</a></li>
-        <li style="font-weight:bold;"><a href="/stone/country">More...</a></li>
       </ul>
     </td>
     <td class="rightcol">
-      <h2>Natural stone by classification:</h2>
+      <h2><a href="/stone/type">{% trans 'Natural stone by classification' %}:</a></h2>
       <ul>
         <li><a href="/stone/type/granite">Granite</a></li>
         <li><a href="/stone/type/marble">Marble</a></li>
@@ -130,15 +131,14 @@
         <li><a href="/stone/type/travertine">Travertine</a></li>
         <li><a href="/stone/type/tuff">Tuff</a></li>
         <li><a href="/stone/type/soapstone">Soapstone</a></li>
-        <li style="font-weight:bold;"><a href="/stone/type">More...</a></li>
       </ul>
     </td>
   </tr>
 </table>
-<div style="clear:both;"></div>
+<div style="clear: both;"></div>
 
 {% if settings.PRODUCTION %}
-<div style="margin:0; padding:15px 0; text-align:center; border-top:1px solid #ccc;" class="ad">
+<div style="margin: 0; padding: 15px 0; text-align: center; border-top: 1px solid #ccc;" class="ad">
   <script type="text/javascript"><!--
 google_ad_client = "pub-0795994016573783";
 /* graniteland.de 468x15 page */

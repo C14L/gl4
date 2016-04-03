@@ -46,56 +46,61 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     {% else %}
     {% endif %}
     <div id="tpl-wrap">
-      <div id="tpl-title">
-        <div>
-          <div id="tpl-search">
-            <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form">
-              <div><input type="hidden" name="p" value="1"></div>
-              <table>
-                <tr>
-                  <td id="tpl-site-logo">
-                    <a href="/"><img src="{% static 'img/tt-logo-small.gif' %}"
-                       alt="{% trans 'Graniteland - marble and granite information online.' context 'Main site logo alt text' %}"></a>
-                  </td>
-                  <td>
-                    <select size="1" name="color" id="search_color" data-selected="{{selected_color}}">
-                      <option value="">{% trans 'All colors' %}</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select size="1" name="type" id="search_type" data-selected="{{selected_classification}}">
-                      <option value="">{% trans 'All stone types' %}</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select size="1" name="country" id="search_country" data-selected="{{selected_country}}">
-                      <option value="">{% trans 'All countries of origin' %}</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select size="1" name="texture" id="search_texture" data-selected="{{selected_texture}}">
-                      <option value="">{% trans 'All textures' %}</option>
-                    </select>
-                  </td>
-                  <td><input type="submit" value="Search"></td>
-                </tr>
-              </table>
-            </form>
+      <style>
+
+        header { background-color: lightgray; }
+
+        header > nav { display: flex; }
+        header > nav > a { flex-grow: 1; color: black; font-size: 16px; font-weight: bold; line-height: 64px; text-align: center; text-shadow: 1px 1px 2px rgba(255,255,255,0.75); }
+        header > nav > a:first-child { flex-grow: 0; overflow: hidden; padding: 0 16px; }
+        header > nav > a:first-child > img { height: 24px; }
+
+        header > form { display: flex; justify-content: center; padding: 8px; background-color: rgba(0,0,0,0.075); }
+        header > form > div { padding: 8px; }
+        header > form > div > select {}
+        header > form > div > input[type="submit"] {}
+
+      </style>
+      <header id="header">
+        <nav>
+          <a href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="{% trans 'Graniteland - marble and granite information online.' %}"></a>
+          <a href="{% url 'stonedb_home' %}">{% trans 'Natural Stone' %}</a>
+          <a href="{% url 'tradeshowdb_home'%}">{% trans 'Trade shows' %}</a>
+          <a href="{% url 'mdpages_home' %}">{% trans 'Stone Infos' %}</a>
+          <a href="{% url 'companydb_home' %}">{% trans 'Stone Companies' %}</a>
+          {% if user.is_authenticated %}
+          <a href="{% url 'companydb_item' user.username %}">{% blocktrans with profile_name=user.profile.name %}{{profile_name}} Company Profile{% endblocktrans %}</a>
+          {% else %}
+          <a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
+          {% endif %}
+        </nav>
+        <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form">
+          <div>
+            <select size="1" name="color" id="search_color" data-selected="{{selected_color}}">
+              <option value="">{% trans 'All colors' %}</option>
+            </select>
           </div>
-          <div id="tpl-menu">
-            <a class="menu-link home-link" href="/">Graniteland</a>
-            <a class="menu-link" href="{% url 'stonedb_home' %}">{% trans 'Natural Stone' %}</a>
-            <a class="menu-link" href="{% url 'tradeshowdb_home'%}">{% trans 'Trade shows' %}</a>
-            <a class="menu-link" href="{% url 'mdpages_home' %}">{% trans 'Stone Infos' %}</a>
-            <a class="menu-link" href="{% url 'companydb_home' %}">{% trans 'Stone Companies' %}</a>
-            {% if user.is_authenticated %}
-            <a class="menu-link dashboard-link" href="{% url 'companydb_item' user.username %}">{% blocktrans with profile_name=user.profile.name %}{{profile_name}} Company Profile{% endblocktrans %}</a>
-            {% else %}
-            <a class="menu-link login-link" href="{% url 'account_login' %}">{% trans 'Login' %}</a>
-            {% endif %}
+          <div>
+            <select size="1" name="type" id="search_type" data-selected="{{selected_classification}}">
+              <option value="">{% trans 'All stone types' %}</option>
+            </select>
           </div>
-        </div>
-      </div>
+          <div>
+            <select size="1" name="country" id="search_country" data-selected="{{selected_country}}">
+              <option value="">{% trans 'All countries of origin' %}</option>
+            </select>
+          </div>
+          <div>
+            <select size="1" name="texture" id="search_texture" data-selected="{{selected_texture}}">
+              <option value="">{% trans 'All textures' %}</option>
+            </select>
+          </div>
+          <div>
+            <input type="submit" value="Search">
+          </div>
+        </form>
+      </header>
+
       <div id="tpl-breadcrumb">
         <table>
           <tr>

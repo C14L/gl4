@@ -35,7 +35,7 @@ def redir_search_php(request):
     color = force_int(request.GET.get('color', 0))
     country = force_int(request.GET.get('country', 0))
     texture = force_int(request.GET.get('texture', 0))
-    classif = force_int(request.GET.get('type', 0))
+    classification = force_int(request.GET.get('type', 0))
 
     if color:
         color = get_object_or_404(Color, pk=color)
@@ -43,36 +43,36 @@ def redir_search_php(request):
         country = get_object_or_404(Country, pk=country)
     if texture:
         texture = get_object_or_404(Texture, pk=texture)
-    if classif:
-        classif = get_object_or_404(Classification, pk=classif)
+    if classification:
+        classification = get_object_or_404(Classification, pk=classification)
 
     # Now redirect depending on what values we received.
-    if not (color or country or texture or classif):
+    if not (color or country or texture or classification):
         # no vals at all?!
         url = reverse('stonedb_home')
-    elif color and not (country or texture or classif):
+    elif color and not (country or texture or classification):
         # only color
         url = reverse('stonedb_simple_filter',
                       kwargs={'f': 'color', 'q': color.slug})
-    elif country and not (color or texture or classif):
+    elif country and not (color or texture or classification):
         # only country
         url = reverse('stonedb_simple_filter',
                       kwargs={'f': 'country', 'q': country.slug})
-    elif texture and not (color or country or classif):
+    elif texture and not (color or country or classification):
         # only texture
         url = reverse('stonedb_simple_filter',
                       kwargs={'f': 'texture', 'q': texture.slug})
-    elif classif and not (color or country or texture):
+    elif classification and not (color or country or texture):
         # only classification
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'type', 'q': classif.slug})
+                      kwargs={'f': 'type', 'q': classification.slug})
     else:
         # if there are at least two properties defined, then show filter page.
         url = reverse('stonedb_filter', kwargs={
             'color': getattr(color, 'slug', FILTER_URL_NO_VALUE),
             'country': getattr(country, 'slug', FILTER_URL_NO_VALUE),
             'texture': getattr(texture, 'slug', FILTER_URL_NO_VALUE),
-            'classif': getattr(classif, 'slug', FILTER_URL_NO_VALUE)})
+            'classif': getattr(classification, 'slug', FILTER_URL_NO_VALUE)})
         if p > 1:
             url['p'] = p
 
@@ -95,7 +95,7 @@ def property_list(request, f):
         li = Country.objects.all_with_stones()
     elif f == 'texture':
         li = Texture.objects.all_with_stones()
-    elif f == 'type':
+    elif f in ['type', 'classification']:
         li = Classification.objects.all_with_stones()
         fk = 'classification'
     else:
