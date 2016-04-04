@@ -219,10 +219,13 @@ def filter(request, color, country, texture, classif, p=1):
 
 def item(request, q):
     """Return data page for one stone."""
-    stone = get_object_or_404(Stone, slug=q)
+    stone = Stone.objects.filter(slug=q).first()
+    if not stone:
+        raise Http404
     stocks = Stock.objects.all_for_stone(stone)
     projects = Project.objects.all_for_stone(stone)
     pics = Pic.objects.all_for_stone(stone)
+
     return render(request, 'stonedb/item.html', {
         'stone': stone, 'color': stone.color, 'texture': stone.texture,
         'classification': stone.classification, 'country': stone.country,
