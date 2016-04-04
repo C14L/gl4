@@ -240,26 +240,32 @@ def api_search(request):
     :param request: HttpRequest
     :return: JsonResponse
     """
+    li, limit = [], 100
+    q = slugify(request.GET.get('q', ''))  # query string
+    if len(q) < 3:
+        return JsonResponse({'items': []})
+
     def get_obj(x):
         return {'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
                 'slug': x.stone.slug, 'pic': x.stone.get_pic_thumb(),
                 'url': reverse('stonedb_item', args=[x.stone.slug])}
 
-    limit = 100
-    q = slugify(request.GET.get('q', ''))  # query string
-    if len(q) < 3:
-        return JsonResponse({'items': []})
+    def add_all(qs):
+        for a in qs:
+            if a.id not in [b['id'] for b in li]:
+                li.append(get_obj(a))
 
     # First find stones that have a name that begins with the search query.
-    li = StoneName.objects.filter(slug__startswith=q).distinct('stone__name')\
-                  .order_by('stone__name').prefetch_related('stone')[:limit]
-    items = [get_obj(x) for x in li]
+    add_all(StoneName.objects.filter(slug__startswith=q)
+            .distinct('stone__name').order_by('stone__name')
+            .prefetch_related('stone')[:limit])
 
     # If there are few results, then also find stones that have the search
     # query somewhere in their names.
-    if len(items) < limit:
-        li = StoneName.objects.filter(slug__contains=q).distinct('stone__name')\
-                      .order_by('stone__name').prefetch_related('stone')[:limit]
-        items += [get_obj(x) for x in li]
+    if len(li) < limit:
+        add_all(StoneName.objects.filter(slug__contains=q)
+                .exclude(slug__startswith=q)
+                .distinct('stone__name').order_by('stone__name')
+                .prefetch_related('stone')[:limit])
 
-    return JsonResponse({'items': items[:limit]})
+    return JsonResponse({'items': sorted(li, key=lambda x: x['name'])[:limit]})

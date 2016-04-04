@@ -111,14 +111,28 @@ google_ad_height = 15;
 {% block foot %}
 
 <script>
+(function () {
+  var h = window.location.hash.replace(/^#/, '');
+  $('#id_stone-pseu-form input[name="q"]').val(h)
+  if (h.length >= 3) searchResults(h);
+
+  $('#id_stone-pseu-form').on('submit', function (ev) {
+    var _this = this;
+    ev.preventDefault(); ev.stopPropagation();
+    window.location.hash = $(_this).find('input[name="q"]').val();
+  });
+
   $('#id_stone-pseu-form input[name="q"]').on('keyup', function (ev) {
     var _this = this;
     if (_this.value.length < 3) return;
+    searchResults(_this.value);
+  });
 
+  function searchResults (q) {
     var oResult = $('.stones-home-result');
     oResult.html('<div class="loading"><span></span><span></span><span></span></div>');
 
-    $.get("{% url 'stonedb_api_search' %}", { q: _this.value }, function (response) {
+    $.get("{% url 'stonedb_api_search' %}", { q: q }, function (response) {
       oResult.html('');
       if (response.items) {
         for (var i=0; i<response.items.length; i++) {
@@ -129,7 +143,8 @@ google_ad_height = 15;
         }
       }
     });
-  });
+  }
+})();
 </script>
 
 {% endblock %}
