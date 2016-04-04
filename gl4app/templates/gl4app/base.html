@@ -75,28 +75,25 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
           {% endif %}
         </nav>
         <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form">
-          <div>
-            <select size="1" name="color" id="search_color" data-selected="{{selected_color}}">
+          <div class="controls ">
+            <select class="select form-control" size="1" name="color" id="search_color" data-selected="{{selected_color}}">
               <option value="">{% trans 'All colors' %}</option>
             </select>
           </div>
-          <div>
-            <select size="1" name="type" id="search_type" data-selected="{{selected_classification}}">
+          <div class="controls ">
+            <select class="select form-control" size="1" name="type" id="search_type" data-selected="{{selected_classification}}">
               <option value="">{% trans 'All stone types' %}</option>
             </select>
           </div>
-          <div>
-            <select size="1" name="country" id="search_country" data-selected="{{selected_country}}">
+          <div class="controls ">
+            <select class="select form-control" size="1" name="country" id="search_country" data-selected="{{selected_country}}">
               <option value="">{% trans 'All countries of origin' %}</option>
             </select>
           </div>
-          <div>
-            <select size="1" name="texture" id="search_texture" data-selected="{{selected_texture}}">
+          <div class="controls ">
+            <select class="select form-control" size="1" name="texture" id="search_texture" data-selected="{{selected_texture}}">
               <option value="">{% trans 'All textures' %}</option>
             </select>
-          </div>
-          <div>
-            <input type="submit" value="Search">
           </div>
         </form>
       </header>

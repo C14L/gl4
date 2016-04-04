@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n %}
+{% load i18n crispy_forms_tags %}
 
 {% block title %}{% trans 'Marbles and Granites from around the globe' %}{% endblock %}
 
@@ -19,68 +19,24 @@
 
 <h1>{% trans 'Marbles and Granites from around the globe' %}</h1>
 
-<table class="layout">
-  <tr>
-    <td class="leftcol" style="background:url({{ row.get_pic_medium }})">
-      <form method="get" action="{% url 'stonedb_redir_search_php' %}">
-        <input type="hidden" name="p" value="1">
-        <table>
-          <tr>
-            <td><label for="color">{% trans 'Color' %}:</label></td>
-            <td>
-              <select size="1" name="color">
-                <option selected="selected" value="">{% trans 'Color' %}</option>
-                {% for item in colors %}
-                <option value="{{item.id}}">{{item.name}} ({{item.stones__count}})</option>
-                {% endfor %}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><label for="country">{% trans 'Country' %}:</label></td>
-            <td>
-              <select size="1" name="country">
-                <option selected="selected" value="">{% trans 'Country' %}</option>
-                {% for item in countries %}
-                <option value="{{item.id}}">{{item.name}} ({{item.stones__count}})</option>
-                {% endfor %}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><label for="classification">{% trans 'Classification' %}:</label></td>
-            <td>
-              <select size="1" name="classification">
-                <option selected="selected" value="">{% trans 'Classification' %}</option>
-                {% for item in classifications %}
-                <option value="{{item.id}}">{{item.name}} ({{item.stones__count}})</option>
-                {% endfor %}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><label for="color">{% trans 'Stone name' %}:</label></td>
-            <td><input type="text" name="pseu" class="search-pseu" id="search_pseu2" value="" maxlength="20"></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td><input type="submit" value="{% trans 'Search' %}"></td>
-          </tr>
-        </table>
-      </form>
-    </td>
-    <td class="rightcol">
-      {% if settings.PRODUCTION %}
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- gc resp atf stone search form -->
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="4715830441" data-ad-format="auto"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      {% else %}
-        <div style="width: 350px; height: 300px; background: #EEE;"></div>
-      {% endif %}
-    </td>
-  </tr>
-</table>
+<div class="stones-home-content">
+  <section class="stones-home-search">
+    {% crispy form %}
+    <div class="stones-home-result"></div>
+  </section>
+
+  <section class="stones-home-ad1">
+    {% if settings.PRODUCTION %}
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- gc resp atf stone search form -->
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="4715830441" data-ad-format="auto"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    {% else %}
+      <div style="width: 350px; height: 300px; background: #EEE;"></div>
+    {% endif %}
+  </section>
+</div>
+
 <table class="layout2">
   <tr>
     <td class="leftcol">
@@ -151,3 +107,29 @@ google_ad_height = 15;
 {% endif %}
 
 {% endblock main %}
+
+{% block foot %}
+
+<script>
+  $('#id_stone-pseu-form input[name="q"]').on('keyup', function (ev) {
+    var _this = this;
+    if (_this.value.length < 3) return;
+
+    var oResult = $('.stones-home-result');
+    oResult.html('<div class="loading"><span></span><span></span><span></span></div>');
+
+    $.get("{% url 'stonedb_api_search' %}", { q: _this.value }, function (response) {
+      oResult.html('');
+      if (response.items) {
+        for (var i=0; i<response.items.length; i++) {
+          var pseu = (response.items[i]['name'] == response.items[i]['pseu']) ? ' ' : ' <span class="pseu">(' + response.items[i]['pseu'] + ')</span> ';
+          var name = ' <span class="name">' + response.items[i]['name'] + '</span> ';
+          var bgimg = ' style="background-image: url(' + response.items[i]['pic'] + ')" ';
+          oResult.append('<a href="' + response.items[i]['url'] + '"' + bgimg + '><span>' + name + pseu + '</span></a>');
+        }
+      }
+    });
+  });
+</script>
+
+{% endblock %}

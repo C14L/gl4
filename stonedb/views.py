@@ -9,6 +9,7 @@ from django.utils.text import slugify
 from django.views.decorators.http import require_http_methods
 
 from companydb.models import Stock, Project, Pic
+from stonedb.forms import StoneSearchByNameForm
 from stonedb.models import Stone, Classification, Color, Country, Texture, \
     StoneName
 from toolbox import force_int
@@ -19,6 +20,7 @@ STONES_PER_PAGE = getattr(settings, 'STONES_PER_PAGE', 50)
 
 def home(request):
     return render(request, 'stonedb/home.html', {
+        'form': StoneSearchByNameForm(),
         'classifications': Classification.objects.all_with_stones(),
         'colors': Color.objects.all_with_stones(),
         'countries': Country.objects.all_with_stones(),
@@ -238,7 +240,12 @@ def api_search(request):
     :param request: HttpRequest
     :return: JsonResponse
     """
-    limit = 50
+    def get_obj(x):
+        return {'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
+                'slug': x.stone.slug, 'pic': x.stone.get_pic_thumb(),
+                'url': reverse('stonedb_item', args=[x.stone.slug])}
+
+    limit = 100
     q = slugify(request.GET.get('q', ''))  # query string
     if len(q) < 3:
         return JsonResponse({'items': []})
@@ -246,15 +253,13 @@ def api_search(request):
     # First find stones that have a name that begins with the search query.
     li = StoneName.objects.filter(slug__startswith=q).distinct('stone__name')\
                   .order_by('stone__name').prefetch_related('stone')[:limit]
-    items = [{'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
-              'pic': x.stone.get_pic_thumb()} for x in li]
+    items = [get_obj(x) for x in li]
 
     # If there are few results, then also find stones that have the search
     # query somewhere in their names.
     if len(items) < limit:
         li = StoneName.objects.filter(slug__contains=q).distinct('stone__name')\
                       .order_by('stone__name').prefetch_related('stone')[:limit]
-        items += [{'id': x.stone.id, 'pseu': x.name, 'name': x.stone.name,
-                  'pic': x.stone.get_pic_thumb()} for x in li]
+        items += [get_obj(x) for x in li]
 
     return JsonResponse({'items': items[:limit]})

@@ -402,28 +402,22 @@ body.groups-home .layout .rightcol .switchgroup.right { float:right; }
 
 /* Stones */
 
-body.stones-home .layout { width:100%; margin:10px 0; }
-body.stones-home .layout .leftcol { vertical-align:middle; }
-body.stones-home .layout .leftcol form { padding:0; }
-body.stones-home .layout .leftcol form table { margin:0 auto; border-spacing:5px; }
-body.stones-home .layout .leftcol form td { padding:5px 10px; background-color:rgba(255,255,255,0.6); }
-body.stones-home .layout .leftcol form td:first-child label { display:block; text-align:right; font-weight:bold; }
-body.stones-home .layout .leftcol form td:last-child select { font-size:1.15em; width:220px; }
-body.stones-home .layout .leftcol form td:last-child input[type="text"] { padding-left:5px; padding-right:5px; width:210px; font-size:1.15em; }
-body.stones-home .layout .rightcol { vertical-align:top; width:300px; padding:0 0 0 10px; }
+body.stones-home .stones-home-content { display: flex; flex-direction: row; margin: 16px 0; }
+body.stones-home .stones-home-content .stones-home-search { flex: auto; }
+body.stones-home .stones-home-content .stones-home-ad1 {  margin-left: 16px; width: 350px; }
 
-body.stones-home .layout2 { margin:10px 0; width:100% table-layout:fixed; border-spacing:0; }
+body.stones-home .stones-home-result > a { display: block; color: black; text-decoration: none; cursor: pointer; box-shadow: 0 0 1px rgba(0,0,0,0.75); font-size: 16px; line-height: 30px; overflow: hidden; white-space: nowrap; margin: 8px 0;  }
+body.stones-home .stones-home-result > a > span { display: block; background-color: rgba(255,255,255,0.75); margin-left: 100px; padding-left: 8px; }
+body.stones-home .stones-home-result > a > span > .name {  }
+body.stones-home .stones-home-result > a > span > .pseu {  }
+
+body.stones-home .layout2 { margin: 10px 0; width: 100% table-layout: fixed; border-spacing: 0; }
 body.stones-home .layout2 td { width:33%; vertical-align:top; background:#ddd; }
 body.stones-home .layout2 td h2 { padding:0 10px; margin:10px; color:#666; text-shadow:0 -1px 1px rgba(255,255,255,0.6), 0 1px 1px rgba(0,0,0,0.3); }
 body.stones-home .layout2 td ul { padding:0 10px; margin:10px; list-style:none; }
 body.stones-home .layout2 td ul li {  }
 body.stones-home .layout2 td ul li a { text-decoration:none; display:block; padding:3px 0 3px 10px; margin:0 0 0 -10px; }
 body.stones-home .layout2 td ul li a:hover { background:rgba(255,255,255,0.4); border-radius:9px; }
-
-body.stones-home .layout2 td.leftcol {  }
-body.stones-home .layout2 td.middlecol {  }
-body.stones-home .layout2 td.rightcol {  }
-
 
 /* Pages */
 
