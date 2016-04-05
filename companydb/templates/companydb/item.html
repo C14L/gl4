@@ -9,38 +9,6 @@
 
 {% block head %}
 <style>
-  section.profile-business-areas { font-size: 20px; text-align: center; margin: 16px 0; }
-
-  div.profile-info-fotos { display: flex; height: 400px; }
-  div.profile-info-fotos > section { width: 50% !important; height: 100%; overflow: auto; box-sizing: border-box; }
-  div.profile-info-fotos > section.fotoslist > .list { }
-  div.profile-info-fotos > section.fotoslist > .list > .item { }
-  div.profile-info-fotos > section.fotoslist > .list > .item > a { }
-  div.profile-info-fotos > section.fotoslist > .list > .item > a > img { }
-
-  section.company-about { font-size: 16px; line-height: 24px; text-align: left; }
-
-  #div_id_leave_this_empty { display: none; }
-
-  .profile-business-card { text-align: center; padding: 16px; background-color: lightgray; display: flex; flex-flow: column; }
-  .profile-business-card-edit { display: inline-block; position: relative; margin-top: -24px; top: 24px; left: -8px }
-
-  .profile-business-card .line1 { flex-grow: 1; text-align: center; border-bottom: 1px solid gray; padding-top: 0; padding-bottom: 16px; margin-bottom: 8px; }
-  .profile-business-card .line1 .name { font-size: 24px; }
-  .profile-business-card .line1 .web {  }
-
-  .profile-business-card .line2 { flex-grow: 1; text-align: center; padding: 0; margin: 8px 0; }
-  .profile-business-card .line2 dt { display: inline; }
-  .profile-business-card .line2 dd { display: inline; }
-
-  .profile-business-card .line3 { flex-grow: 1000; padding: 0; margin: 16px 0 0 0; justify-content: center; }
-  .profile-business-card .line3 div:nth-child(1) { font-size: 20px; font-weight: bold; color: green; }
-  .profile-business-card .line3 div:nth-child(2) { font-size: 24px;  }
-  .profile-business-card .line3 div:nth-child(3) { font-size: 16px; color: gray;  }
-
-  .profile-business-card .line4 { flex-grow: 1; text-align: center; padding: 0; margin: 0; }
-  .profile-business-card .line4 dt {  }
-  .profile-business-card .line4 dd {  }
 </style>
 {% endblock %}
 
@@ -134,7 +102,7 @@
 
 {% if user.is_authenticated and user.id == view_user.id %}
   <hr>
-  <h2>More settings</h2>
+  <h2>{% trans 'More settings' %}</h2>
   <ul>
     <li><a href="{% url 'account_email' %}">Update your Email address</a></li>
     <li><a href="{% url 'account_change_password' %}">Change your password</a></li>

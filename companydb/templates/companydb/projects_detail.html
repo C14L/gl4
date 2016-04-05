@@ -64,7 +64,7 @@
 {% block main %}
 
 <div class="wrapper">
-  {% with view_user=user view='projects' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+  {% with view_user=user view='projects-detail' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
   {% if view_item and form %}
   <form method="POST" action="" onsubmit="return confirm('{% trans 'Delete project from company profile?' %}');">

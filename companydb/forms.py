@@ -137,9 +137,11 @@ class PicUploadForm(forms.ModelForm):
 
 
 class CompanyContactForm(forms.Form):
-    name = forms.CharField(max_length=100, required=True, strip=True)
-    email = forms.EmailField(max_length=100, required=True, strip=True)
-    msg = forms.CharField(widget=forms.Textarea,
+    name = forms.CharField(label=_('Sender name'),
+                           max_length=100, required=True, strip=True)
+    email = forms.EmailField(label=_('Sender email'),
+                             max_length=100, required=True, strip=True)
+    msg = forms.CharField(widget=forms.Textarea, label=_('Message'),
                           max_length=100000, required=True, strip=True)
     leave_this_empty = forms.CharField(label='leave empty',
                                        max_length=50, required=False)

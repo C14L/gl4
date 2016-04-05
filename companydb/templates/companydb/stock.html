@@ -29,22 +29,16 @@ profile profile-home
 {% block main %}
   {% with view='stock' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
-  {% if user.is_authenticated and user.id == view_user.id %}
-    <p style="text-align: center;">
-      <a class="btn btn-primary" href="{% url 'companydb_stock_detail_new' user.username %}">{% trans 'add a stock item' %}</a>
-    </p>
-  {% endif %}
-
   {% for item in stock %}
     <div class="stock-list item">
       <div class="header-line">
-        <table class="stock-table-header-table">
+        <table class="stock-table-header-table" style="width: 100%;">
           <tr class="date">
-            <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
-            <td class="title">{% trans 'Added to stock on' %}:</td>
-            <td class="data">{{item.created}}</td>
-            <td class="data" rowspan="3">
-              <a href="{% url 'companydb_stock_detail' item.user.username item.pk %}">details</a>
+            <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;">&nbsp;</td>
+            <td class="title" style="white-space: nowrap;">{% trans 'Added to stock on' %}:</td>
+            <td class="data" style="white-space: nowrap;">{{item.created}}</td>
+            <td class="data" rowspan="3" style="white-space: nowrap; vertical-align: top;">
+              <a href="{% url 'companydb_stock_detail' item.user.username item.pk %}" class="btn btn-primary">details</a>
             </td>
           </tr>
           <tr class="stone">

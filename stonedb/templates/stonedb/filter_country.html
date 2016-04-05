@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n %}
+{% load i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{% blocktrans with name=q.name %}Browse {{name}} marbles and granites{% endblocktrans %}{% endblock %}
 
@@ -17,7 +17,7 @@
 </style>
 {% endblock %}
 
-{% block body_classes %}{% endblock %}
+{% block body_classes %}browse-stones-country{% endblock %}
 
 {% block breadcrumb %}
 {% include 'stonedb/simple-filter-breadcrumb.html' %}
@@ -25,19 +25,25 @@
 
 {% block main %}
 
-<h1>{% blocktrans with name=q.name %}Types of stone from {{name}}{% endblocktrans %}</h1>
+<h1>
+  {% blocktrans with name=q.name %}Types of stone from {{name}}{% endblocktrans %}
+  {% if user.is_staff %}
+    <a href="{% url 'admin:stonedb_country_change' q.id %}" class="btn btn-default">edit</a>
+  {% endif %}
+</h1>
 
-<p>{% blocktrans with name=q.name %}You are viewing natural stones grouped by country {{name}}.{% endblocktrans %}</p>
+{% if q.text %}
+  {{ q.text|markdown|bleach }}
+{% else %}
+  <p>{% blocktrans with name=q.name %}You are viewing natural stones grouped by country {{name}}.{% endblocktrans %}</p>
+{% endif %}
 
-<div class="browse-stones browse-countries">
+<h2>{% blocktrans with count=stones|length name=q.name %}Pictures of {{count}} stones from {{name}}{% endblocktrans %}</h2>
 
-  <h2>{% blocktrans with count=stones|length name=q.name %}Pictures of {{count}} stones from {{name}}{% endblocktrans %}</h2>
+{% include 'stonedb/stone-list-1.html'%}
 
-  {% include 'stonedb/stone-list-1.html'%}
+<h2>{% blocktrans %}Natural Stone by country{% endblocktrans %}</h2>
 
-  <h2>{% blocktrans %}Natural Stone by country{% endblocktrans %}</h2>
-
-  {% include 'stonedb/simple-filter-proplist.html' %}
-</div>
+{% include 'stonedb/simple-filter-proplist.html' %}
 
 {% endblock main %}

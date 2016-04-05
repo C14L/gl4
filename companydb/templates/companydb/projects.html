@@ -18,13 +18,8 @@
 {% endblock %}
 
 {% block main %}
-  {% with view='projects' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
-{% if user.is_authenticated and user.id == view_user.id %}
-  <p style="text-align: center;">
-    <a class="btn btn-primary" href="{% url 'companydb_projects_detail_new' user.username %}">{% trans 'add a project' %}</a>
-  </p>
-{% endif %}
+{% with view='projects' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
 {% for item in projects %}
   <div class="stock-list item" id="{{ item.id }}">

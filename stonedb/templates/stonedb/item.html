@@ -24,13 +24,20 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
 
 {% block main %}
 
-<h1>{{ stone.name }}</h1>
+<h1>
+  {{ stone.name }}
+  {% if user.is_staff %}
+    <a href="{% url 'admin:stonedb_stone_change' stone.id %}" class="btn btn-default">edit</a>
+  {% endif %}
+</h1>
 
 <p><em>
   {% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} is a {{ stone_color }} {{ stone_classification }} from {{ stone_country }}.{% endblocktrans %}
 
   {% if stone.classification.slug == stone.classification.simple_slug %}
-    {% blocktrans with stone_name=stone.name stone_classification=stone.classification.name %}{{ stone_name }} is a real {{ stone_classification }}.{% endblocktrans %}
+    {% if stone.classification %}
+      {% blocktrans with stone_name=stone.name stone_classification=stone.classification.name %}{{ stone_name }} is a real {{ stone_classification }}.{% endblocktrans %}
+    {% endif %}
   {% else %}
     {% blocktrans with stone_name=stone.name stone_simple=stone.classification.simple_name %}In natural stone trade, {{ stone_name }} is often simply called a {{ stone_simple }}.{% endblocktrans %}
   {% endif %}

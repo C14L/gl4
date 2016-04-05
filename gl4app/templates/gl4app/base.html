@@ -45,22 +45,9 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
       <div style="position:fixed;right:0;bottom:0;background:red;color:yellow;font:13px/1em monospace;">DEBUG</div>
     {% else %}
     {% endif %}
+
     <div id="tpl-wrap">
-      <style>
 
-        header { background-color: lightgray; }
-
-        header > nav { display: flex; }
-        header > nav > a { flex-grow: 1; color: black; font-size: 16px; font-weight: bold; line-height: 64px; text-align: center; text-shadow: 1px 1px 2px rgba(255,255,255,0.75); }
-        header > nav > a:first-child { flex-grow: 0; overflow: hidden; padding: 0 16px; }
-        header > nav > a:first-child > img { height: 24px; }
-
-        header > form { display: flex; justify-content: center; padding: 8px; background-color: rgba(0,0,0,0.075); }
-        header > form > div { padding: 8px; }
-        header > form > div > select {}
-        header > form > div > input[type="submit"] {}
-
-      </style>
       <header id="header">
         <nav>
           <a href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="{% trans 'Graniteland - marble and granite information online.' %}"></a>
@@ -69,9 +56,9 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
           <a href="{% url 'mdpages_home' %}">{% trans 'Stone Infos' %}</a>
           <a href="{% url 'companydb_home' %}">{% trans 'Stone Companies' %}</a>
           {% if user.is_authenticated %}
-          <a href="{% url 'companydb_item' user.username %}">{% blocktrans with profile_name=user.profile.name %}{{profile_name}} Company Profile{% endblocktrans %}</a>
+          <a class="profile-link" href="{% url 'companydb_item' user.username %}">{% trans 'Company profile' %}</a>
           {% else %}
-          <a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
+          <a class="login-link" href="{% url 'account_login' %}">{% trans 'Login' %}</a>
           {% endif %}
         </nav>
         <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form">
@@ -123,7 +110,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         {% block main %}{% endblock %}
       </div>
 
-      <div id="tpl-footer">
+      <footer>
         <table style="width:100%" class="top">
           <tr>
             <td style="white-space:nowrap; padding:10px;">
@@ -198,7 +185,8 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
           </tr>
         </table>
         <div style="clear:left;"></div>
-      </div><!-- /footer -->
+      </footer>
+
     </div><!-- /wrap -->
 
     <script>/* On small screens, have the menu items as drop-down when logo is touched. */ if(screen.availWidth<=750){document.getElementById('tpl-site-logo').addEventListener('click',function(e){e.preventDefault();document.getElementById('tpl-menu').classList.toggle('open');return false;});}</script>

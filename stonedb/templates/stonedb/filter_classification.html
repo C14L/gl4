@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n %}
+{% load i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}{% endblock %}
 
@@ -17,7 +17,7 @@
 </style>
 {% endblock %}
 
-{% block body_classes %}{% endblock %}
+{% block body_classes %}browse-stones-classification{% endblock %}
 
 {% block breadcrumb %}
 {% include 'stonedb/simple-filter-breadcrumb.html' %}
@@ -25,18 +25,25 @@
 
 {% block main %}
 
-<h1>{% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}</h1>
-<p>{% blocktrans with name=q.name tname=q.name|title %}Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{tname}} stone. Note however, that in stone trade many stone types like {{name}} are grouped into either being "marble" or "granite", for being very similar. Here are 100 {{name}} stones with photos and further data.{% endblocktrans %}</p>
+<h1>
+  {% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}
+  {% if user.is_staff %}
+    <a href="{% url 'admin:stonedb_classification_change' q.id %}" class="btn btn-default">edit</a>
+  {% endif %}
+</h1>
 
-<div class="browse-stones browse-classifications">
+{% if q.text %}
+  {{ q.text|markdown|bleach }}
+{% else %}
+  <p>{% blocktrans with name=q.name tname=q.name|title %}Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{tname}} stone. Note however, that in stone trade many stone types like {{name}} are grouped into either being "marble" or "granite", for being very similar. Here are 100 {{name}} stones with photos and further data.{% endblocktrans %}</p>
+{% endif %}
 
-  <h2>{% blocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
+<h2>{% blocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
 
-  {% include 'stonedb/stone-list-1.html'%}
+{% include 'stonedb/stone-list-1.html'%}
 
-  <h2>{% trans 'Types of natural stone / stone by classification' %}</h2>
+<h2>{% trans 'Types of natural stone / stone by classification' %}</h2>
 
-  {% include 'stonedb/simple-filter-proplist.html' %}
-</div>
+{% include 'stonedb/simple-filter-proplist.html' %}
 
 {% endblock main %}
