@@ -1,39 +1,40 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n markdown_deux_tags bleach_tags %}
 
-{% block title %}{{topic.title}}{% endblock %}
+{% block title %}{{ topic.title }}{% endblock %}
 
-{% block title2 %}{{topic.title}}{% endblock %}
+{% block title2 %}{{ topic.title }}{% endblock %}
 
-{% block description %}{{topic.description}}{% endblock %}
+{% block description %}{{ topic.description }}{% endblock %}
 
 {% block head %}{% endblock %}
 
 {% block body_classes %}pages topic{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'mdpages_home' %}">Natural Stone Magazine</a> &raquo;
+<a href="{% url 'mdpages_home' %}">{% trans 'Natural Stone Magazine' %}</a> &raquo;
 <a href="{% url 'mdpages_topic' topic.slug %}">{{topic.title}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
 <div class="index">
-    <h1>Home use</h1>
-    <div class="list">
-        {% for item in articles %}
-        <div class="item">
-            <h2><a href="{% url 'mdpages_article' item.topic.slug item.slug %}">{{item.title}}</a>
-            </h2>
-            <p class="intro">{{item.description}}</p>
-        </div>
-        {% endfor %}
+  <h1>{{ topic.title }}</h1>
+  <div class="list">
+    {% for item in articles %}
+      <div class="item">
+        <h2><a href="{% url 'mdpages_article' item.topic.slug item.slug %}">{{ item.title }}</a></h2>
+        <p class="intro">{{ item.description }}</p>
+      </div>
+    {% endfor %}
     </div>
 
     <div class="prevnext">
-        {% for i in articles.paginator.page_range %}
-        {% if i == articles.number %}<b>[ {{i}} ]</b>{% else %}<a
-            href="?p={{i}}">{{i}}</a>{% endif %}
-        {% endfor %}
+      {% for i in articles.paginator.page_range %}
+        {% if i == articles.number %}
+          <b>[ {{i}} ]</b>{% else %}<a href="?p={{i}}">{{i}}</a>
+        {% endif %}
+      {% endfor %}
     </div>
 </div>
 

@@ -1,4 +1,5 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{% endblock %}
 
@@ -11,8 +12,8 @@
 {% block body_classes %}mdpages-author{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'mdpages_home' %}">Articles</a> &raquo;
-<a href="{% url 'mdpages_author' author.slug %}">{{author.name}}</a> &raquo;
+<a href="{% url 'mdpages_home' %}">{% trans 'Articles' %}</a> &raquo;
+<a href="{% url 'mdpages_author' author.slug %}">{{ author.name }}</a> &raquo;
 {% endblock %}
 
 {% block main %}

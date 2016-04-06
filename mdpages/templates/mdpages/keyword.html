@@ -11,7 +11,7 @@
 {% block body_classes %}mdpages-keyword{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'mdpages_home' %}">Articles</a> &raquo;
+<a href="{% url 'mdpages_home' %}">{% trans 'Articles' %}</a> &raquo;
 <a href="{% url 'mdpages_keyword' keyword.slug %}">{{keyword.name}}</a> &raquo;
 {% endblock %}
 

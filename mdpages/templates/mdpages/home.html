@@ -1,54 +1,54 @@
 {% extends 'gl4app/base.html' %}
+{% load i18n markdown_deux_tags bleach_tags %}
 
-{% block title %}Natural Stone Magazine{% endblock %}
+{% block title %}{% trans 'Natural Stone Magazine' %}{% endblock %}
 
-{% block title2 %}Natural Stone Magazine{% endblock %}
+{% block title2 %}{% trans 'Natural Stone Magazine' %}{% endblock %}
 
-{% block description %}Expert texts on granite and marble related topics. The Graniteland Natural Stone Magazine has advice on granite and marble for consumers, as well as background information about the natural stone industry.{% endblock %}
+{% block description %}{% trans 'Expert texts on granite and marble related topics. The Graniteland Natural Stone Magazine has advice on granite and marble for consumers, as well as background information about the natural stone industry.' %}{% endblock %}
 
 {% block head %}{% endblock %}
 
 {% block body_classes %}pages index{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'mdpages_home' %}">Natural Stone Magazine</a> &raquo;
+<a href="{% url 'mdpages_home' %}">{% trans 'Natural Stone Magazine' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
 <div class="topics">
-    <div class="title">Topics:</div>
-    <ul>
-        {% for item in topics %}
-        <li><strong><a href="{% url 'mdpages_topic' item.slug %}">{{item.title}}</a></strong><span>{{item.description}}</span></li>
-        {% endfor %}
-    </ul>
+  <div class="title">{% trans 'Topics' %}:</div>
+  <ul>
+    {% for item in topics %}
+      <li><strong><a href="{% url 'mdpages_topic' item.slug %}">{{ item.title }}</a></strong><span>{{ item.description }}</span></li>
+    {% endfor %}
+  </ul>
 </div>
 
 <div class="index">
-    <h1>Natural Stone Magazine</h1>
-    <p class="intro">
-        The Graniteland Natural Stone Magazine has advice on
-        granite and marble for consumers, as well as background information
-        about the natural stone industry. Currently there are 38 articles
-        available on granite and marble related topics.
-    </p>
+  <h1>{% trans 'Natural Stone Magazine' %}</h1>
+  <p class="intro">{% trans 'The Graniteland Natural Stone Magazine has advice on granite and marble for consumers, as well as background information about the natural stone industry. Currently there are 38 articles available on granite and marble related topics.' %}</p>
 
-    <div class="list">
-        {% for item in articles %}
-        <div class="item">
-            <a class="topic" href="{% url 'mdpages_topic' item.topic.slug %}">{{item.topic.title}}</a>
-            <h2><a href="{% url 'mdpages_article' item.topic.slug item.slug %}">{{item.title}}</a></h2>
-            <p class="intro">{{item.description}}</p>
-        </div>
-        {% endfor %}
-    </div>
+  <div class="list">
+    {% for item in articles %}
+      <div class="item">
+        <a class="topic" href="{% url 'mdpages_topic' item.topic.slug %}">{{ item.topic.title }}</a>
+        <h2><a href="{% url 'mdpages_article' item.topic.slug item.slug %}">{{ item.title }}</a></h2>
+        <p class="intro">{{ item.description }}</p>
+      </div>
+    {% endfor %}
+  </div>
 
-    <div class="prevnext">
-        {% for i in articles.paginator.page_range %}
-        {% if i == articles.number %}<b>[ {{i}} ]</b>{% else %}<a href="?p={{i}}">{{i}}</a>{% endif %}
-        {% endfor %}
-    </div>
+  <div class="prevnext">
+    {% for i in articles.paginator.page_range %}
+      {% if i == articles.number %}
+        <b>[ {{ i }} ]</b>
+      {% else %}
+        <a href="?p={{ i }}">{{ i }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
 </div>
 
 {% endblock main %}

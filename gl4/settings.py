@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Import private settings.
 from os.path import dirname, abspath, exists, join
-
 from gl4.settings_private import *
 
 DEBUG = exists('/islocal.txt')
@@ -207,6 +206,23 @@ BLEACH_STRIP_COMMENTS = True
 
 # Use the CKEditorWidget for bleached HTML fields
 BLEACH_DEFAULT_WIDGET = 'wysiwyg.widgets.WysiwygWidget'
+
+# --- django-markdown-deux -----------------------------------------------------
+
+MARKDOWN_DEUX_STYLES = {
+    "default": {
+        "extras": {
+            "code-friendly": None,
+        },
+        "safe_mode": "escape",
+    },
+    "trusted": {
+        "extras": {
+            "code-friendly": None,
+        },
+        "safe_mode": False,
+    },
+}
 
 # --- my own settings ----------------------------------------------------------
 
