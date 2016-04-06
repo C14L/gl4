@@ -12,6 +12,7 @@ def add_search_mask_options(request):
         'search_textures': Texture.objects.all_with_stones(),
     }
 
+
 def add_settings(request):
     return {
         'DEBUG': settings.DEBUG,

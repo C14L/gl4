@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 
 # Import private settings.
+from collections import OrderedDict
 from os.path import dirname, abspath, exists, join
 from gl4.settings_private import *
 
@@ -128,7 +129,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'gl4app.context_processors.add_settings',
-                'gl4app.context_processors.add_search_mask_options',
             ],
         },
     },
@@ -234,3 +234,39 @@ WATERMARK_FONT_FILENAME = join(BASE_DIR, 'Verdana.ttf')
 STONE_SEARCH_OPTS_FILE = join(BASE_DIR, 'api_static', 'stone-search-opts.json')
 
 COMPANY_CONTACT_FROM_EMAIL = 'contact@' + SITE_DOMAIN
+
+FOOTER_BROWSE_STONES = {
+    'color': (
+        ('beige', 'Beige natural stone'),
+        ('black', 'Black natural stone'),
+        ('blue', 'Blue natural stone'),
+        ('brown', 'Brown natural stone'),
+        ('darkgrey', 'Dark grey natural stone'),
+        ('green', 'Green natural stone'),
+        ('grey', 'Grey natural stone'),
+        ('lightgrey', 'Light grey natural stone'),
+        ('pink', 'Pink natural stone'),
+        ('red', 'Red natural stone'),
+        ('white', 'White natural stone'),
+        ('yellow', 'Yellow natural stone'),
+    ),
+    'country': (
+        ('brazil', 'Granite and marble from Brazil'),
+        ('china', 'Granite and marble from China'),
+        ('germany', 'Granite and marble from Germany'),
+        ('france', 'Granite and marble from France'),
+        ('india', 'Granite and marble from India'),
+        ('italy', 'Granite and marble from Italy'),
+        ('spain', 'Granite and marble from Spain'),
+    ),
+    'type':(
+        ('granite', 'Granite'),
+        ('limestone', 'Limestone'),
+        ('marble', 'Marble'),
+        ('quartzite', 'Quartzite'),
+        ('sandstone', 'Sandstone'),
+        ('slate', 'Slate'),
+        ('soapstone', 'Soapstone'),
+        ('travertine', 'Travertine'),
+    ),
+}

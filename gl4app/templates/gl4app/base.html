@@ -114,67 +114,27 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         <table style="width:100%" class="top">
           <tr>
             <td style="white-space:nowrap; padding:10px;">
-              <p>
-                <a href="/stone/color"><strong>{% trans 'Natural stone by color' %}:</strong></a>
-              </p>
-              <p>
-                <a href="/stone/color/beige">Beige natural stone</a><br>
-                <a href="/stone/color/black">Black natural stone</a><br>
-                <a href="/stone/color/blue">Blue natural stone</a><br>
-                <a href="/stone/color/brown">Brown natural stone</a><br>
-                <a href="/stone/color/colorfull">Colorfull natural stone</a><br>
-                <a href="/stone/color/darkgrey">Dark grey natural stone</a><br>
-                <a href="/stone/color/green">Green natural stone</a><br>
-                <a href="/stone/color/grey">Grey natural stone</a><br>
-                <a href="/stone/color/lightgrey">Light grey natural stone</a><br>
-                <a href="/stone/color/pink">Pink natural stone</a><br>
-                <a href="/stone/color/red">Red natural stone</a><br>
-                <a href="/stone/color/white">White natural stone</a><br>
-                <a href="/stone/color/yellow">Yellow natural stone</a><br>
-                <a href="/stone/color"><strong>More...</strong></a>
-              </p>
+              <p><a href="{% url 'stonedb_property_list' 'color' %}"><strong>{% trans 'Natural stone by color' %}:</strong></a></p>
+              <p>{% for x in settings.FOOTER_BROWSE_STONES.color %}<a href="{% url 'stonedb_simple_filter' 'color' x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
             </td>
             <td style="white-space:nowrap; padding:10px;">
-              <p>
-                <a href="/stone/country"><strong>{% trans 'Natural stone by country of origin' %}:</strong></a>
-              </p>
-              <p>
-                <a href="/stone/country/brazil">Granite and marble from Brazil</a><br>
-                <a href="/stone/country/china">Granite and marble from China</a><br>
-                <a href="/stone/country/germany">Granite and marble from Germany</a><br>
-                <a href="/stone/country/france">Granite and marble from France</a><br>
-                <a href="/stone/country/india">Granite and marble from India</a><br>
-                <a href="/stone/country/italy">Granite and marble from Italy</a><br>
-                <a href="/stone/country/spain">Granite and marble from Spain</a><br>
-                <a href="/stone/country"><strong>More...</strong></a>
-              </p>
+              <p><a href="{% url 'stonedb_property_list' 'country' %}"><strong>{% trans 'Natural stone by country of origin' %}:</strong></a></p>
+              <p>{% for x in settings.FOOTER_BROWSE_STONES.country %}<a href="{% url 'stonedb_simple_filter' 'country' x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
             </td>
             <td style="white-space:nowrap; padding:10px;">
-              <p>
-                <a href="/stone/type"><strong>{% trans 'Natural stones by type of stone' %}:</strong></a>
-              </p>
-              <p>
-                <a href="/stone/type/granite">Granite</a><br>
-                <a href="/stone/type/limestone">Limestone</a><br>
-                <a href="/stone/type/marble">Marble</a><br>
-                <a href="/stone/type/quartzite">Quartzite</a><br>
-                <a href="/stone/type/sandstone">Sandstone</a><br>
-                <a href="/stone/type/slate">Slate</a><br>
-                <a href="/stone/type/soapstone">Soapstone</a><br>
-                <a href="/stone/type/travertine">Travertine</a><br>
-                <a href="/stone/type"><strong>More...</strong></a>
-              </p>
+              <p><a href="{% url 'stonedb_property_list' 'type' %}"><strong>{% trans 'Natural stones by type of stone' %}:</strong></a></p>
+              <p>{% for x in settings.FOOTER_BROWSE_STONES.type %}<a href="{% url 'stonedb_simple_filter' 'type' x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
             </td>
             <td style="padding:10px;">
               <p>
                 <a href="mailto:admin-graniteland@C14L.com" title="{% trans 'Please report user submitted content that violates the Terms of Service.' %}" rel="nofollow">{% trans 'Report abuse' %}</a> &middot;
                 <a href="/tos" rel="nofollow">{% trans 'Terms of Service' %}</a> &middot;
                 <a href="/privacy" rel="nofollow">{% trans 'Privacy' %}</a> &middot;
-                </p>
+              </p>
               <p>
                 <a href="/contact" rel="nofollow">{% trans 'Contact' %}</a> &middot;
-                <a href="/contact" rel="nofollow">Impressum</a> &middot;
-                <a href="#" title="Jump to the top of this page.">{% trans 'Top of page' %}</a>
+                <a href="https://C14L.com/impressum.html" rel="nofollow">Impressum</a> &middot;
+                <a href="#" title="{% trans 'Jump to the top of this page.' %}">{% trans 'Top of page' %}</a>
               </p>
               <br>
               <p>{% trans 'All information is provided without warranty of any kind and may contain errors or may be outdated.<br>It is strongly advised to contact a competent granite professional to confirm any information found on Graniteland.' %}</p>

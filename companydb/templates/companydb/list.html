@@ -9,95 +9,98 @@
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}groups-home{% endblock %}
+{% block body_classes %}groups home{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
-<a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
+<style>
+</style>
+
 <h1>{{group.name}}</h1>
 
-<table class="layout">
-  <tr>
-    <td class="leftcol">
-      <p class="logo"><img src="{{group.title_photo}}"><!-- {% get_static_prefix %}companies/en/{{group.slug}}.jpg --></p>
-      <p class="info"><strong>{{group.name}}</strong> has {{group.count_members}} members.</p>
-      <p class="about">{{group.about}}</p>
+<div class="above">
+  <div class="intro">
+    <div class="logo" style="background-image: url({{ group.title_foto }});"></div>
+    <div class="info">{% blocktrans with group_name=group.name count=group.count_members %}{{ group_name }} has {{ count }} members.{% endblocktrans %}</div>
+    <div class="about">{{ group.about }}</div>
+    {% if user.is_staff %}<a href="{% url 'admin:companydb_group_change' group.pk %}" class="btn btn-primary">edit</a>{% endif %}
+  </div>
+  <div class="ads">
+    {% if settings.PRODUCTION %}
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- gc resp atf companies list -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-0795994016573783"
+           data-ad-slot="9645557647"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    {% else %}
+      <div style="margin: 0; padding: 0; width: 336px; height: 280px; background: gray;"></div>
+    {% endif %}
+  </div>
+</div>
 
-{% if settings.PRODUCTION %}
-      <p class="ad"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- gc resp atf companies list -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0795994016573783"
-     data-ad-slot="9645557647"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-      <p class="ad"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- gc resp btf companies list -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-0795994016573783"
-     data-ad-slot="3599024047"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-{% else %}
-      <div class="ad"><div style="width:300px; height:350px; background:gray;"></div></div>
-      <div class="ad"><div style="width:300px; height:350px; background:gray;"></div></div>
-{% endif %}
+<div class="prevnext">
+  {% for i in range_pages %}
+    {% if i == members.number %}
+      <b>[ {{i}} ]</b>
+    {% else %}
+      <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
+    {% endif %}
+  {% endfor %}
+</div>
 
-    </td>
-    <td class="rightcol">
-      <div class="prevnext">
-        {% for i in range_pages %}
-          {% if i == members.number %}
-            <b>[ {{i}} ]</b>
-          {% else %}
-            <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
-          {% endif %}
-        {% endfor %}
-      </div>
+<div class="company-list">
+  {% for item in members %}
+    <a href="{% url 'companydb_item' item.username %}" class="item" id="groupmemberlist{{item.id}}">
+      <span class="pic" style="background-image: url({{ item.profile.title_foto_url }})"></span>
+      <span class="info">
+        <span class="name">{{item.profile.name}}</span>
+        <span class="location">{{ item.profile.city }}, {{ item.profile.country_name }}</span>
+        <span class="description">{{ item.profile.about|truncatewords:25 }}</span>
+      </span>
+    </a>
+  {% endfor %}
+</div>
 
-      <div class="list2">
-        <table>
-          {% for item in members %}
-            <tr id="groupmemberlist{{item.id}}">
-              <td class="picture" style="width:100px">
-                <a href="{% url 'companydb_item' item.username %}">
-                  {% if item.profile.title_foto_url %}
-                    <img src="{{ item.profile.title_foto_url }}">
-                  {% else %}
-                    <img src="{% static 'img/nofoto100.jpg' %}">
-                  {% endif %}
-                </a>
-              </td>
-              <td class="description" style="width:100%;">
-                <strong><a href="{% url 'companydb_item' item.username %}">{{item.profile.name}}</a></strong><br><em>({{item.profile.city}}, {{item.profile.country_name}})</em><br>{{item.profile.about|truncatewords:25}}
-              </td>
-            </tr>
-          {% endfor %}
-        </table>
-      </div>
+<div class="below">
+  {% if settings.PRODUCTION %}
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- gc resp btf companies list -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-0795994016573783"
+         data-ad-slot="3599024047"
+         data-ad-format="auto"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  {% else %}
+    <div style="max-width: 928px; height: 90px; background: gray;"></div>
+  {% endif %}
+</div>
 
-      <div class="prevnext">
-        {% for i in range_pages %}
-          {% if i == members.number %}
-            <b>[ {{i}} ]</b>
-          {% else %}
-            <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </td>
-  </tr>
-</table>
+<div class="prevnext">
+  {% for i in range_pages %}
+    {% if i == members.number %}
+      <b>[ {{i}} ]</b>
+    {% else %}
+      <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
+    {% endif %}
+  {% endfor %}
+</div>
+
+
+
+
+
 
 
 {% endblock %}

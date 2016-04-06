@@ -20,8 +20,8 @@ from stonedb.models import Stone
 from toolbox import get_login_url
 
 
-def _get_page(o, p):
-    per_page = getattr(settings, 'PER_PAGE', 20)
+def _get_page(o, p, pp=None):
+    per_page = pp or getattr(settings, 'PER_PAGE', 20)
     paginator = Paginator(o, per_page)
     return paginator.page(p)
 
@@ -33,12 +33,10 @@ def home(request):
 
 def itemlist(request, slug, p):
     group = get_object_or_404(Group, slug=slug)
-    members_qs = group.members.filter(is_active=True,
-                                      profile__is_deleted=False,
-                                      profile__is_blocked=False)
-    members_qs = members_qs.prefetch_related('profile')
-    members_qs = members_qs.order_by('profile__name')
-    members = _get_page(members_qs, p)
+    members_qs = group.members.filter(
+        is_active=True, profile__is_deleted=False, profile__is_blocked=False
+        ).prefetch_related('profile').order_by('profile__name')
+    members = _get_page(members_qs, p, 60)
 
     return render(request, 'companydb/list.html', {
         'group': group, 'members': members,

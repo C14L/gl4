@@ -31,6 +31,9 @@ h2 { padding:0; margin:10px 0; font-size:1.25em; }
 h2:first-child { margin-top:0; }
 h3 { padding: 0; margin:10px 0; font-size: 1.1em; }
 
+.prevnext { background: lightgray; margin: 10px 0; padding: 0; font-size: 0; white-space: nowrap; text-align: center; }
+.prevnext a, .prevnext b { display: inline-block; padding: 10px; font-size: 16px; vertical-align: middle; overflow: hidden; font-weight: normal; }
+.prevnext a:hover { background-color: rgba(0,0,0,0.05); box-shadow: 0 0 5px rgba(0,0,0,0.25); }
 
 /* Site header */
 
@@ -133,7 +136,7 @@ table.top td { vertical-align:top; }
 
 /* List with linked page numbers */
 
-.list-pages, .prevnext { margin:15px 0; padding:4px 0 6px 0; border:1px solid #c0c0c0; border-width:1px 0; text-align:center; font-size:1.15em; line-height:1.15em; }
+.list-pages { margin:15px 0; padding:4px 0 6px 0; border:1px solid #c0c0c0; border-width:1px 0; text-align:center; font-size:1.15em; line-height:1.15em; }
 .list-pages > a, .prevnext > a {  }
 .list-pages > b, .prevnext > b {  }
 
@@ -314,23 +317,25 @@ body.tradeshow-item .item-data { }
 body.tradeshow-item .item-data th { text-align:right; padding:5px; font-weight:normal; color:#999; }
 body.tradeshow-item .item-data td { padding:5px; }
 
-
 /* Groups */
 
-body.groups-home h1 { margin-bottom:15px; }
-body.groups-home .layout { width:100%; }
-body.groups-home .layout td { vertical-align:top; padding:0; }
-body.groups-home .layout .leftcol { width:300px; padding-right:10px; }
-body.groups-home .layout .leftcol p { margin:10px 0; }
-body.groups-home .layout .leftcol p.about {  }
-body.groups-home .layout .leftcol p.logo { margin-top:0; }
-body.groups-home .layout .leftcol p.logo img { width:300px; }
-body.groups-home .layout .leftcol p.info { color:#888; }
-body.groups-home .layout .leftcol p.ad {  }
-body.groups-home .layout .rightcol { border-left:1px solid  #999; padding-left:10px; }
-body.groups-home .layout .rightcol .switches { overflow:hidden; }
-body.groups-home .layout .rightcol .switchgroup.left { float:left; }
-body.groups-home .layout .rightcol .switchgroup.right { float:right; }
+body.groups h1 { margin: 0 0 20px 0; }
+
+body.groups.home .above { display: flex; flex-direction: row; margin: 10px 0; padding: 0; }
+body.groups.home .above .intro { flex-grow: 10;  }
+body.groups.home .above .intro .logo { float: left; margin: 0 10px 10px 0; padding: 0; width: 150px; height: 150px; background: lightgray center center no-repeat; background-size: cover; }
+body.groups.home .above .intro .info { font-weight: bold; }
+body.groups.home .above .intro .about { margin: 10px 0; }
+body.groups.home .above .ads { flex-grow: 0; flex-shrink: 0; }
+
+body.groups .company-list { display: flex; flex-flow: row wrap; justify-content: center; align-items: stretch; align-content: stretch; }
+body.groups .company-list > .item { transition: 0.3s ease-out; display: block; padding: 10px; margin: 5px; overflow: hidden; min-width: 250px; max-width: 500px; max-height: 120px; flex: 1 1; color: inherit; text-decoration: inherit; border: 1px solid lightgray; }
+body.groups .company-list > .item:hover { transition: 0.3s ease-out; box-shadow: 0 0 10px rgba(0,0,0,0.25); }
+body.groups .company-list > .item > .pic { display: block; margin-right: 10px; float: left; width: 100px; height: 100px; background: lightgray center center no-repeat; background-size: cover; }
+body.groups .company-list > .item > .info { display: block; }
+body.groups .company-list > .item > .info > .name { display: block; font-size: 14px; font-weight: bold; }
+body.groups .company-list > .item > .info > .location { display: block; }
+body.groups .company-list > .item > .info > .description { display: none; }
 
 /* Stones */
 
