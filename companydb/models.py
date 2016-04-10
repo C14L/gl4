@@ -435,8 +435,13 @@ class Pic(models.Model):  # cc__fotos
 
         return join(settings.MEDIA_ROOT, size, '{}.{}'.format(self.id, ext))
 
-    def make_sizes(self):
-        """Creates all image file sizes Pic.models.SIZE for this instance."""
+    def make_sizes(self, force=False):
+        """
+        Creates all image file sizes Pic.models.SIZE for this instance.
+
+        :param force: When True, overwrite existing resized versions.
+        :return:
+        """
         raw_fname = self.get_filename()
 
         for x in Pic.SIZES:
@@ -445,10 +450,15 @@ class Pic(models.Model):  # cc__fotos
             # Make sure the directory exists
             os.makedirs(dirname(fname), mode=0o755, exist_ok=True)
             # Try to delete any old thumb image file
-            try:
-                os.remove(fname)
-            except OSError:
-                pass
+            if force:
+                try:
+                    os.remove(fname)
+                except OSError:
+                    pass
+            elif os.path.isfile(fname):
+                # file exists and don't force overwrite.
+                continue
+
             resize_copy(raw_fname, fname, resize_type,
                         max_width, max_height, watermark)
             os.chmod(fname, 0o644)

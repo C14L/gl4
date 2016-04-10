@@ -22,13 +22,13 @@ class Command(BaseCommand):
                 pic.make_sizes()
                 print('.', end='', flush=True)
                 count_success += 1
-            except FileNotFoundError:
-                print('E', end='', flush=True)
+            except FileNotFoundError as e:
+                print('[NF]', end='', flush=True)
                 count_notfound += 1
-            except OSError:
-                print('E', end='', flush=True)
+            except OSError as e:
+                print('[OS]', end='', flush=True)
                 count_oserror += 1
 
         print(' done.')
-        print('OSErrpr: {} -- NotFound: {} -- Success: {}\n'.format(
+        print('OS Errpr: {} -- Not Found Error: {} -- Success: {}\n'.format(
             count_oserror, count_notfound, count_success))
