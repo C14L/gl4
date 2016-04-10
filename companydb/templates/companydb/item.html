@@ -7,10 +7,7 @@
 
 {% block description %}{% blocktrans with profile_name=view_user.profile.name %}Company overview for {{profile_name}}.{% endblocktrans %}{% endblock %}
 
-{% block head %}
-<style>
-</style>
-{% endblock %}
+{% block head %}{% endblock %}
 
 {% block body_classes %}profile profile-home{% endblock %}
 
@@ -52,7 +49,7 @@
 
     <div class="line3">
       <a href="#contact" class="btn btn-primary btn-lg">
-        {% blocktrans with name=view_user.profile.name %}Message {{name}} now{% endblocktrans %}
+        {% trans 'Send message now' %}
       </a>
       <div class="profile-call-now">
         <div>{% trans 'or call at:' %}</div>
