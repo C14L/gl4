@@ -49,61 +49,70 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     <div id="tpl-wrap">
 
       <header id="header">
-        <nav>
-          <a href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="{% trans 'Graniteland - marble and granite information online.' %}"></a>
-          <a href="{% url 'stonedb_home' %}">{% trans 'Natural Stone' %}</a>
-          <a href="{% url 'tradeshowdb_home'%}">{% trans 'Trade shows' %}</a>
-          <a href="{% url 'mdpages_home' %}">{% trans 'Stone Infos' %}</a>
-          <a href="{% url 'companydb_home' %}">{% trans 'Stone Companies' %}</a>
+        <nav class="{{ tpl_search_form }}">
+          <a class="logo" href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="{% trans 'Graniteland - marble and granite information online.' %}"></a>
+          <a class="stones" href="{% url 'stonedb_home' %}">{% trans 'Natural Stone' %}</a>
+          <a class="tradeshows" href="{% url 'tradeshowdb_home'%}">{% trans 'Trade shows' %}</a>
+          <a class="infos" href="{% url 'mdpages_home' %}">{% trans 'Stone Infos' %}</a>
+          <a class="companies" href="{% url 'companydb_home' %}">{% trans 'Stone Companies' %}</a>
           {% if user.is_authenticated %}
           <a class="profile-link" href="{% url 'companydb_item' user.username %}">{% trans 'Company profile' %}</a>
           {% else %}
           <a class="login-link" href="{% url 'account_login' %}">{% trans 'Login' %}</a>
           {% endif %}
         </nav>
-        <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form">
-          <div class="controls ">
-            <select class="select form-control" size="1" name="color" id="search_color" data-selected="{{selected_color}}">
-              <option value="">{% trans 'All colors' %}</option>
-            </select>
-          </div>
-          <div class="controls ">
-            <select class="select form-control" size="1" name="type" id="search_type" data-selected="{{selected_classification}}">
-              <option value="">{% trans 'All stone types' %}</option>
-            </select>
-          </div>
-          <div class="controls ">
-            <select class="select form-control" size="1" name="country" id="search_country" data-selected="{{selected_country}}">
-              <option value="">{% trans 'All countries of origin' %}</option>
-            </select>
-          </div>
-          <div class="controls ">
-            <select class="select form-control" size="1" name="texture" id="search_texture" data-selected="{{selected_texture}}">
-              <option value="">{% trans 'All textures' %}</option>
-            </select>
-          </div>
-        </form>
+
+        {% if tpl_search_form == 'companies' %}
+          <form method="get" action="{% url 'companydb_redir_search' %}" id="tpl-search-form" class="company-search">
+            <div class="controls ">
+              <select class="select form-control" size="1" name="business" id="search_company_business" data-selected="{{selected_company_business}}">
+                <option value="">{% trans 'All business areas' %}</option>
+              </select>
+            </div>
+            <div class="controls ">
+              <select class="select form-control" size="1" name="product" id="search_company_product" data-selected="{{selected_company_product}}">
+                <option value="">{% trans 'All products' %}</option>
+              </select>
+            </div>
+            <div class="controls ">
+              <select class="select form-control" size="1" name="country" id="search_company_country" data-selected="{{selected_company_country}}">
+                <option value="">{% trans 'All countries' %}</option>
+              </select>
+            </div>
+          </form>
+        {% elif tpl_search_form == 'tradeshows' %}
+          .........
+        {% elif tpl_search_form == 'infos' %}
+          .........
+        {% elif tpl_search_form == 'stones' or 1 == 1 %}
+          <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form" class="stone-search">
+            <div class="controls ">
+              <select class="select form-control" size="1" name="color" id="search_color" data-selected="{{selected_color}}">
+                <option value="">{% trans 'All colors' %}</option>
+              </select>
+            </div>
+            <div class="controls ">
+              <select class="select form-control" size="1" name="type" id="search_type" data-selected="{{selected_classification}}">
+                <option value="">{% trans 'All stone types' %}</option>
+              </select>
+            </div>
+            <div class="controls ">
+              <select class="select form-control" size="1" name="country" id="search_country" data-selected="{{selected_country}}">
+                <option value="">{% trans 'All countries of origin' %}</option>
+              </select>
+            </div>
+            <div class="controls ">
+              <select class="select form-control" size="1" name="texture" id="search_texture" data-selected="{{selected_texture}}">
+                <option value="">{% trans 'All textures' %}</option>
+              </select>
+            </div>
+          </form>
+        {% endif %}
       </header>
 
       <div id="tpl-breadcrumb">
-        <table>
-          <tr>
-            <td>
-              <a href="/">Graniteland</a> &raquo;
-              {% block breadcrumb %}{% endblock %}
-            </td>
-            <td>
-              {% if settings.DEBUG %}
-              {% else %}
-                <div class="addthis_toolbox addthis_default_style addthis_20x20_style">
-                  <a class="addthis_button addthis_button_facebook_share" fb:share:layout="button"></a>
-                  <a class="addthis_button_pinterest_pinit" pi:pinit:url="http://www.graniteland.com/stone/amazonia-brown" pi:pinit:media="http://www.graniteland.com/stonespics/amazoniabrown.jpg" pi:pinit:layout="none">
-                  <a class="addthis_button_tweet" tw:count="none"></a>
-                </div>
-              {% endif %}
-            </td>
-          </tr>
-        </table>
+        <a href="/">Graniteland</a> &raquo;
+        {% block breadcrumb %}{% endblock %}
       </div>
 
       <div id="tpl-content">

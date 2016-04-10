@@ -30,7 +30,7 @@ def home(request):
 
 @require_http_methods(["GET"])
 def redir_search_php(request):
-    # /stone/search.php?p=1&color=&country=&classification=13&pseu=
+    # /stone/redir_search.php?p=1&color=&country=&classification=13&pseu=
     #  -->
     # /stone/france/coarse-grained/blue/sandstone
     p = force_int(request.GET.get('p', 1))
@@ -169,7 +169,7 @@ def filter(request, color, country, texture, classif, p=1):
 
     # Now redirect depending on what values we received.
     if not (color or country or texture or classif):
-        # no vals at all is not possible, go to search page.
+        # no vals at all is not possible, go to redir_search page.
         url = reverse('stonedb_home')
     elif color and not (country or texture or classif):
         # only color, go to old color page
@@ -258,12 +258,12 @@ def api_search(request):
             if a.id not in [b['id'] for b in li]:
                 li.append(get_obj(a))
 
-    # First find stones that have a name that begins with the search query.
+    # First find stones that have a name that begins with the redir_search query.
     add_all(StoneName.objects.filter(slug__startswith=q)
             .distinct('stone__name').order_by('stone__name')
             .prefetch_related('stone')[:limit])
 
-    # If there are few results, then also find stones that have the search
+    # If there are few results, then also find stones that have the redir_search
     # query somewhere in their names.
     if len(li) < limit:
         add_all(StoneName.objects.filter(slug__contains=q)

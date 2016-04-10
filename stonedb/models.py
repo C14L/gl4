@@ -204,7 +204,7 @@ class StoneName(models.Model):
 def _updated_stone_property(sender, **kwargs):
     """
     If any searchable property is changed, rebuild the JSON file that is used
-    for the stone search UI.
+    for the stone redir_search UI.
     """
     update_stone_properties()
 

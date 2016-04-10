@@ -31,7 +31,7 @@ h2 { padding:0; margin:10px 0; font-size:1.25em; }
 h2:first-child { margin-top:0; }
 h3 { padding: 0; margin:10px 0; font-size: 1.1em; }
 
-.prevnext { background: lightgray; margin: 10px 0; padding: 0; font-size: 0; white-space: nowrap; text-align: center; }
+.prevnext { background: lightgray; margin: 10px 0; padding: 0; font-size: 0; white-space: nowrap; text-align: center; overflow: auto; }
 .prevnext a, .prevnext b { display: inline-block; padding: 10px; font-size: 16px; vertical-align: middle; overflow: hidden; font-weight: normal; }
 .prevnext a:hover { background-color: rgba(0,0,0,0.05); box-shadow: 0 0 5px rgba(0,0,0,0.25); }
 
@@ -43,6 +43,12 @@ header > nav { display: flex; }
 header > nav > a { flex-grow: 1; color: black; font-size: 16px; font-weight: bold; line-height: 64px; text-align: center; text-shadow: 1px 1px 2px rgba(255,255,255,0.75); }
 header > nav > a:first-child { flex-grow: 0; overflow: hidden; padding: 0 16px; }
 header > nav > a:first-child > img { height: 24px; }
+
+header > nav.stones > a.stones,
+header > nav.tradeshows > a.tradeshows,
+header > nav.infos > a.infos,
+header > nav.companies > a.companies { background-color: rgba(0,0,0,0.075); }
+
 header > nav > a.profile-link { background-color: #9B0101; color: #FFFFFF; text-shadow: none; font-weight: normal; flex-grow: 0.8; }
 
 header > form { display: flex; justify-content: center; padding: 8px; background-color: rgba(0,0,0,0.075); }
@@ -95,11 +101,10 @@ footer p a:hover { color:#555; }
 /* User profiles header with title and tab navigation */
 
 .user-profile-header h1 { padding: 0; margin: 32px 0; color: #666; text-align: center; font-size: 3rem; }
-.user-profile-header ul { list-style:none; margin:10px 0; padding:0; border-bottom:1px solid #C00; font-weight:bold; text-align:center; white-space:nowrap; }
-.user-profile-header ul li { display:inline-block; margin:0 5px; padding:0; }
-.user-profile-header ul li a { display:inline-block; text-decoration:none; padding:10px; color:#888; background:#ddd; border-radius:7px 7px 0 0; box-shadow:inset 0 -10px 10px -5px #bbb; }
-.user-profile-header ul li a#current { color:#000; background:#ccc; box-shadow:inset 0 10px 12px -5px rgba(255,255,255,0.5), inset 0 -10px 12px -5px rgba(0,0,0,0.1); }
-.user-profile-header ul li a:hover { color:#666; }
+.user-profile-header ul { list-style: none; margin: 10px 0; padding: 0; border-bottom: 1px solid #C00; font-weight: bold; text-align: center; white-space: nowrap; }
+.user-profile-header ul li { display: inline-block; margin: 0 5px; padding: 0; }
+.user-profile-header ul li a { display: inline-block; font-size: 15px; text-decoration: none; padding: 10px 20px; color: rgba(0,0,0,0.5); background: lightgray; box-shadow: inset 0 -10px 10px -5px #bbb; }
+.user-profile-header ul li a#current { color: #000; box-shadow: inset 0 10px 12px -5px rgba(255,255,255,0.5), inset 0 -10px 12px -5px rgba(0,0,0,0.1); }
 
 /* List of small preview fotos. */
 /* Example: /naturstein/branco-ipanema/fotos */

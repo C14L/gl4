@@ -24,7 +24,7 @@
 
 <section class="profile-business-areas">
   {% for group in view_user.group_set.all %}
-    <a href="{% url 'companydb_list' group.slug '1' %}">{{group.name}}</a>{% if not forloop.last %}, {% endif %}
+    <a href="{% url 'companydb_group' group.slug '1' %}">{{group.name}}</a>{% if not forloop.last %}, {% endif %}
   {% endfor %}
   {% if user.is_authenticated and user.id == view_user.id %}
     <a class="btn btn-default" href="{% url 'companydb_areas' user.username %}">{% trans 'edit' %}</a>

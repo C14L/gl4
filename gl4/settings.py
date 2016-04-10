@@ -230,8 +230,9 @@ STONES_PER_PAGE = 500  # Do not use pagination, better all on one page and then
                        # use JS on-demand loading of images when user scrolls.
 
 WATERMARK_FONT_FILENAME = join(BASE_DIR, 'Verdana.ttf')
-
 STONE_SEARCH_OPTS_FILE = join(BASE_DIR, 'api_static', 'stone-search-opts.json')
+COMPANY_SEARCH_OPTS_FILE = join(BASE_DIR, 'api_static',
+                                'company-search-opts.json')
 
 COMPANY_CONTACT_FROM_EMAIL = 'contact@' + SITE_DOMAIN
 

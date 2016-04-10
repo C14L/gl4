@@ -14,7 +14,7 @@ from django.views.decorators.http import require_http_methods
 
 from companydb.forms import PicUploadForm, CompanyDetailsForm, \
     CompanyAboutForm, CompanyProjectForm, CompanyStockForm, CompanyContactForm
-from companydb.models import Group, Pic, Stock, Project
+from companydb.models import Group, Pic, Stock, Project, Product, Country
 from mdpages.models import Article
 from stonedb.models import Stone
 from toolbox import get_login_url
@@ -26,21 +26,149 @@ def _get_page(o, p, pp=None):
     return paginator.page(p)
 
 
+def _ctx(ctx):
+    ctx['tpl_search_form'] = 'companies'
+    return ctx
+
+
 def home(request):
-    ctx = {'groups': Group.objects.all()}
+    ctx = _ctx({'groups': Group.objects.all()})
     return render(request, 'companydb/home.html', ctx)
 
 
-def itemlist(request, slug, p):
-    group = get_object_or_404(Group, slug=slug)
-    members_qs = group.members.filter(
-        is_active=True, profile__is_deleted=False, profile__is_blocked=False
-        ).prefetch_related('profile').order_by('profile__name')
-    members = _get_page(members_qs, p, 60)
+def redir_search(request):
+    """
+    Called by the header redir_search bar with GET parameters. Redirect to the proper
+    fixed URL, depending on the parameters received.
 
-    return render(request, 'companydb/list.html', {
-        'group': group, 'members': members,
-        'range_pages': range(1, members.paginator.num_pages+1)})
+    - Individual selections:
+        > /companies/consultancy-quality-assurance/1
+        > /companies/china/1
+        > /products/kitchen-countertops/1
+    - Multiple selections:
+        > /companies/[country|all]/[business|all]/[product|all]/1
+
+    """
+    country = request.GET.get('country', None)
+    business = request.GET.get('business', None)
+    product = request.GET.get('product', None)
+
+    if not (business or product or country):
+        # No params at all, go to /companies start page
+        url = reverse('companydb_home')
+    elif business and not (product or country):
+        # /companies/consultancy-quality-assurance/1
+        slug = get_object_or_404(Group, pk=business).slug
+        url = reverse('companydb_list', args=[slug, '1'])
+    elif product and not (business or country):
+        # /products/kitchen-countertops/1
+        slug = get_object_or_404(Product, pk=product).slug
+        url = reverse('companydb_product', args=[slug, '1'])
+        return HttpResponse('Company list for product: {}'.format(url))
+    elif country and not (business or product):
+        # /companies/china/1
+        slug = get_object_or_404(Country, pk=country).slug
+        url = reverse('companydb_country', args=[slug, '1'])
+        # return HttpResponse('Company list for country: {}'.format(url))
+    else:
+        # More than one param selected, make a combined URL path
+        # /companies/[country|all]/[business|all]/[product|all]/1
+        c = get_object_or_404(Country, pk=country).slug if country else 'all'
+        b = get_object_or_404(Group, pk=business).slug if business else 'all'
+        p = get_object_or_404(Product, pk=product).slug if product else 'all'
+        url = reverse('companydb_search', args=[c, b, p, '1'])
+
+    return HttpResponsePermanentRedirect(url)
+
+
+def search(request, country, business, product, p=1):
+    """
+    Display a list of companies that match the search options.
+
+    :param request:
+    :return:
+    """
+    business = Group.objects.filter(slug=business).first()
+    product = Product.objects.filter(slug=product).first()
+    country = Country.objects.filter(slug=country).first()
+    users = User.objects.filter(
+        is_active=True, profile__is_deleted=False, profile__is_blocked=False)
+
+    if business:
+        users = users.filter(group=business)
+    if product:
+        pass  # users = users.filter()
+    if country:
+        users = users.filter(profile__country=country)
+
+    users = _get_page(users, p, 60)
+    return render(request, 'companydb/list_search.html', _ctx({
+        'users': users, 'range_pages': range(1, users.paginator.num_pages+1),
+        'business': business, 'product': product, 'country': country,
+        'selected_company_business': business and business.id,
+        'selected_company_product': product and product.id,
+        'selected_company_country': country and country.id}))
+
+
+def list_by_country(request, slug, p=1):
+    """
+    Display a list of companies from this country.
+
+    :param request:
+    :param slug:
+    :param p:
+    :return:
+    """
+    obj = get_object_or_404(Country, slug=slug)
+    users = User.objects.filter(
+        profile__country=obj, is_active=True,
+        profile__is_deleted=False, profile__is_blocked=False)
+    users = _get_page(users, p, 60)
+
+    return render(request, 'companydb/list_by_country.html', _ctx({
+        'users': users, 'range_pages': range(1, users.paginator.num_pages+1),
+        'obj': obj, 'selected_company_country': obj.id}))
+
+
+def list_by_product(request, slug, p=1):
+    """
+    Display a list of companies that offer this product.
+
+    :param request:
+    :param slug:
+    :param p:
+    :return:
+    """
+    obj = get_object_or_404(Product, slug=slug)
+    users = User.objects.filter(
+        profile__products=obj, is_active=True,
+        profile__is_deleted=False, profile__is_blocked=False)
+    users = _get_page(users, p, 60)
+
+    return render(request, 'companydb/list_by_country.html', _ctx({
+        'users': users, 'range_pages': range(1, users.paginator.num_pages+1),
+        'obj': obj, 'selected_company_product': obj.id}))
+
+
+def list_by_group(request, slug, p):
+    """
+    Display a list of companies that belong to a group (business area/industry).
+
+    :param request:
+    :param slug:
+    :param p:
+    :return:
+    """
+    obj = get_object_or_404(Group, slug=slug)
+    users_qs = obj.members.filter(
+        is_active=True, profile__is_deleted=False, profile__is_blocked=False)\
+        .prefetch_related('profile', 'profile__country')\
+        .order_by('profile__name')
+    users = _get_page(users_qs, p, 60)
+
+    return render(request, 'companydb/list.html', _ctx({
+        'obj': obj, 'users': users, 'selected_company_business': obj.id,
+        'range_pages': range(1, users.paginator.num_pages+1)}))
 
 
 def item(request, slug):
@@ -67,8 +195,8 @@ def item(request, slug):
             _next = reverse('companydb_item', args=[view_user.username])
             return HttpResponseRedirect(request.POST.get('next', _next))
 
-    return render(request, 'companydb/item.html', {
-        'view_user': view_user, 'pics': pics, 'contactform': form})
+    return render(request, 'companydb/item.html', _ctx({
+        'view_user': view_user, 'pics': pics, 'contactform': form}))
 
 
 @login_required
@@ -82,7 +210,7 @@ def stock(request, slug):
     page = request.GET.get('page', 1)
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = view_user.stock_set.filter(is_deleted=False, is_blocked=False)
-    ctx = {'view_user': view_user, 'stock': _get_page(li, page)}
+    ctx = _ctx({'view_user': view_user, 'stock': _get_page(li, page)})
     return render(request, 'companydb/stock.html', ctx)
 
 
@@ -135,16 +263,16 @@ def stock_detail(request, slug, pk=None):
             # Return form with the item to edit, or empty form to add new item.
             form = CompanyStockForm(instance=view_item)
 
-    return render(request, 'companydb/stock_detail.html', {
-        'form': form, 'view_item': view_item, 'view_user': user})
+    return render(request, 'companydb/stock_detail.html', _ctx({
+        'form': form, 'view_item': view_item, 'view_user': user}))
 
 
 def projects(request, slug):
     page = request.GET.get('page', 1)
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = view_user.project_set.filter(is_deleted=False, is_blocked=False)
-    return render(request, 'companydb/projects.html', {
-        'view_user': view_user, 'projects': _get_page(li, page)})
+    return render(request, 'companydb/projects.html', _ctx({
+        'view_user': view_user, 'projects': _get_page(li, page)}))
 
 
 @require_http_methods(["POST", "GET", "HEAD", "DELETE"])
@@ -200,14 +328,15 @@ def projects_detail(request, slug, pk=None):
         else:
             form = CompanyProjectForm(instance=view_item)
 
-    return render(request, 'companydb/projects_detail.html', {
+    return render(request, 'companydb/projects_detail.html', _ctx({
         'form': form, 'projects': user.project_set.all(),
-        'view_item': view_item, 'view_user': user})
+        'view_item': view_item, 'view_user': user}))
 
 
 def contact(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
-    return render(request, 'companydb/contact.html', {'view_user': view_user})
+    return render(request, 'companydb/contact.html',
+                  _ctx({'view_user': view_user}))
 
 
 def photos(request, slug):
@@ -252,8 +381,8 @@ def photos(request, slug):
             form = PicUploadForm()
 
     _photos = _get_page(li, page)
-    return render(request, 'companydb/photos.html', {
-        'view_user': view_user, 'form': form, 'photos': _photos})
+    return render(request, 'companydb/photos.html', _ctx({
+        'view_user': view_user, 'form': form, 'photos': _photos}))
 
 
 def photo_redir(request, slug, id):
@@ -291,8 +420,8 @@ def pic_item(request, id):
     if request.is_ajax():
         return JsonResponse({'pic': pic})
 
-    return render(request, 'companydb/pic_item.html', {
-        'pic': pic, 'related': related, 'view_user': pic.user})
+    return render(request, 'companydb/pic_item.html', _ctx({
+        'pic': pic, 'related': related, 'view_user': pic.user}))
 
 
 @login_required
@@ -306,7 +435,7 @@ def db_details(request, slug):
     else:
         form = CompanyDetailsForm(instance=request.user.profile)
 
-    return render(request, 'companydb/db_details.html', {'form': form})
+    return render(request, 'companydb/db_details.html', _ctx({'form': form}))
 
 
 @login_required
@@ -320,7 +449,7 @@ def db_about(request, slug):
     else:
         form = CompanyAboutForm(instance=request.user.profile)
 
-    return render(request, 'companydb/db_about.html', {'form': form})
+    return render(request, 'companydb/db_about.html', _ctx({'form': form}))
 
 
 @login_required
@@ -340,7 +469,7 @@ def db_areas(request, slug):
         else:
             return HttpResponseRedirect(request.path)
 
-    ctx = {'groups': Group.objects.all()}
+    ctx = _ctx({'groups': Group.objects.all()})
     return render(request, 'companydb/db_areas.html', ctx)
 
 

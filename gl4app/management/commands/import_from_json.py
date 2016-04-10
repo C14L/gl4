@@ -1,3 +1,4 @@
+import csv
 import json
 import os
 
@@ -9,6 +10,7 @@ from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
 from companydb.models import (UserProfile, Stock, Project, Pic, Group)
+from companydb.models import Country as Companydb_Country
 from stonedb.models import (Stone, StoneName,
                             Color, Classification, Texture, Country)
 from tradeshowdb.models import Tradeshow
@@ -32,18 +34,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print(
-            '\nThis will import all old Graniteland data JSON files.\n\n'
-            '1. Import colors, classifications, countries.\n\n'
-            '2. Import user accounts.\n\n'
-            '3. Import profiles and group relations.\n\n'
-            '4. Import stones and stone pictures, renaming jpg files.\n\n'
-            '5. WONT: (mostly spam anyway) ~~Import user stock items~~.\n\n'
-            '6. WONT: (mostly spam anyway) ~~Import user showroom items~~.\n\n'
+            '\nThis will import all old Graniteland data JSON files.\n'
+            '0. Import country names for Company models.\n'
+            '1. Import colors, classifications, countries.\n'
+            '2. Import user accounts.\n'
+            '3. Import profiles and group relations.\n'
+            '4. Import stones and stone pictures, renaming jpg files.\n'
+            '5. Import user stock and showroom items.\n'
+            '6. Import article pages.\n'
             '7. Import user uploaded pictures, keeping relation to profiles, '
-            'stones, stock items, showroom item.\n\n'
+            'stones, stock items, showroom item.\n'
             )
         input('Please press Enter to continue...')
 
+        self.import_company_countries()
         self.import_color()
         self.import_classification()
         self.import_country()
@@ -69,6 +73,48 @@ class Command(BaseCommand):
         if line:
             for row in json.loads(line):
                 yield row
+
+    def import_company_countries(self):
+        # Companydb_Country
+        header = ['iso', 'iso3', 'iso_numeric', 'fips', 'country', 'capital',
+                  'area', 'population', 'continent', 'tld', 'currency_code',
+                  'currency_name', 'phone', 'postal_code_format',
+                  'postal_code_regex', 'languages', 'geonameid', 'neighbours',
+                  'equivalent_fips_code']
+        filename = join(settings.BASE_DIR, '..', 'fixtures', 'countryInfo.txt')
+        Companydb_Country.objects.all().delete()
+
+        with open(filename, newline='') as fh:
+            reader = csv.DictReader(filter(lambda row: row[0] != '#', fh),
+                                    fieldnames=header, delimiter='\t',
+                                    quoting=csv.QUOTE_NONE, lineterminator='\n')
+            for raw in reader:
+                if int(raw['population']) > 50000:
+                    pk = force_int(raw['iso_numeric'])
+                    geonameid = force_int(raw['geonameid'])
+
+                    if not (geonameid and pk):
+                        print('--> INVALID for {}'.format(raw['country']))
+                        continue
+                    # manual filters
+                    if raw['country'] == 'Democratic Republic of the Congo':
+                        raw['country'] = 'D.R.Congo'
+                    if raw['country'] == 'United States':
+                        raw['country'] = 'U.S.A.'
+                    if raw['country'] in (
+                            'Saint Vincent and the Grenadines', 'Reunion',
+                            'Netherlands Antilles', 'Isle of Man',
+                            'Serbia and Montenegro', 'U.S. Virgin Islands',
+                            'Northern Mariana Islands', 'Jersey', ):
+                        continue
+
+                    print('--> Doing: {} (pop.{})'.format(
+                        raw['country'], raw['population']), end=' ', flush=True)
+
+                    Companydb_Country.objects.create(
+                        id=pk, name=raw['country'], geonameid=geonameid,
+                        cc=raw['iso'][:2], phone=raw['phone'][:10])
+                    print('done.')
 
     def import_color(self):
         print('Import colors')
@@ -332,16 +378,30 @@ class Command(BaseCommand):
         "title_foto_ext":""}
         """
         i = 0
-        print('Update user profiles')
+        count = User.objects.all().count()
+        print('Update user profiles for {} users.'.format(count))
+
         for row in self.walkjsondata('user_profiles'):
             i += 1
+            pk = force_int(row['user_id'])
             try:
-                profile = UserProfile.objects.get(user_id=row['user_id'])
+                profile = UserProfile.objects.get(user_id=pk)
             except UserProfile.DoesNotExist:
-                # print('!!! No profile foudn for user {} ({})'.format(
-                #      row['user_id'], row['nick']))
-                print('E', end='', flush=True)
-            # print('{}.-- profile --> updating {}'.format(i, row['user_id']))
+                print('No profile: {} {}'.format(pk, row['name']))
+                continue
+
+            print('{}/{} - Updating profile {}'
+                  .format(i, count, row['name']), end=' ')
+
+            # Figure out the country
+            country_id = force_int(row['country_id'])
+            country = Companydb_Country.objects.filter(pk=country_id).first()
+            if country:
+                print(' country {}'.format(country.name), end=' ')
+                profile.country = country
+            else:
+                print(' no country!'.format(profile.name), end=' ')
+
             profile.contact = row['contact']
             profile.contact_position = row['contact_position']
             profile.slogan = row['slogan']
@@ -349,7 +409,6 @@ class Command(BaseCommand):
             profile.city = row['city']
             profile.zip = row['zip']
             profile.country_sub_id = row['country_sub_id']
-            profile.country_id = row['country_id']
             profile.country_sub_name = row['country_sub_name']
             profile.country_name = row['country_name']
             profile.postal = row['postal']
@@ -361,7 +420,7 @@ class Command(BaseCommand):
             profile.about = row['about']
             profile.save()
             print('.', end='', flush=True)
-        print('done!')
+            print(' done!')
 
     def import_pics(self):
         """
@@ -610,7 +669,7 @@ class Command(BaseCommand):
 
     def fix_all_id(self):
         # Fixed all auto_increment id values for all models. There was a problem
-        # on the companydb.models.Pic model, so just fix them all to be save.
+        # on the companydb.models.Pic model, so just fix them all to be safe.
         os.environ['DJANGO_COLORS'] = 'nocolor'
         commands = StringIO()
         cursor = connection.cursor()

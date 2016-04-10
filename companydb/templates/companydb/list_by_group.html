@@ -1,11 +1,11 @@
 {% extends 'gl4app/base.html' %}
 {% load static i18n %}
 
-{% block title %}{{group.name}}{% endblock %}
+{% block title %}{{obj.name}}{% endblock %}
 
-{% block title2 %}{{group.name}}{% endblock %}
+{% block title2 %}{{obj.name}}{% endblock %}
 
-{% block description %}{{group.description}}{% endblock %}
+{% block description %}{{obj.description}}{% endblock %}
 
 {% block head %}{% endblock %}
 
@@ -17,17 +17,14 @@
 
 {% block main %}
 
-<style>
-</style>
-
-<h1>{{group.name}}</h1>
+<h1>{{obj.name}}</h1>
 
 <div class="above">
   <div class="intro">
-    <div class="logo" style="background-image: url({{ group.title_foto }});"></div>
-    <div class="info">{% blocktrans with group_name=group.name count=group.count_members %}{{ group_name }} has {{ count }} members.{% endblocktrans %}</div>
-    <div class="about">{{ group.about }}</div>
-    {% if user.is_staff %}<a href="{% url 'admin:companydb_group_change' group.pk %}" class="btn btn-primary">edit</a>{% endif %}
+    <div class="logo" style="background-image: url({{ obj.title_foto }});"></div>
+    <div class="info">{% blocktrans with name=obj.name count=obj.count_members %}{{ name }} has {{ count }} members.{% endblocktrans %}</div>
+    <div class="about">{{ obj.about }}</div>
+    {% if user.is_staff %}<a href="{% url 'admin:companydb_group_change' obj.pk %}" class="btn btn-primary">edit</a>{% endif %}
   </div>
   <div class="ads">
     {% if settings.PRODUCTION %}
@@ -47,23 +44,15 @@
   </div>
 </div>
 
-<div class="prevnext">
-  {% for i in range_pages %}
-    {% if i == members.number %}
-      <b>[ {{i}} ]</b>
-    {% else %}
-      <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
-    {% endif %}
-  {% endfor %}
-</div>
+{% include 'companydb/partial_list_prevnext.html' with viewname='companydb_group' %}
 
 <div class="company-list">
-  {% for item in members %}
+  {% for item in users %}
     <a href="{% url 'companydb_item' item.username %}" class="item" id="groupmemberlist{{item.id}}">
       <span class="pic" style="background-image: url({{ item.profile.title_foto_url }})"></span>
       <span class="info">
         <span class="name">{{item.profile.name}}</span>
-        <span class="location">{{ item.profile.city }}, {{ item.profile.country_name }}</span>
+        <span class="location">{{ item.profile.city }}, {{ item.profile.country.name }}</span>
         <span class="description">{{ item.profile.about|truncatewords:25 }}</span>
       </span>
     </a>
@@ -87,21 +76,7 @@
   {% endif %}
 </div>
 
-<div class="prevnext">
-  {% for i in range_pages %}
-    {% if i == members.number %}
-      <b>[ {{i}} ]</b>
-    {% else %}
-      <a href="{% url 'companydb_list' group.slug i %}">{{i}}</a>
-    {% endif %}
-  {% endfor %}
-</div>
-
-
-
-
-
-
+{% include 'companydb/partial_list_prevnext.html' with viewname='companydb_group' %}
 
 {% endblock %}
 

@@ -1,19 +1,35 @@
+import json
+
 import os
-
-from os.path import join, dirname
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from django.utils.text import slugify
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from os.path import join, dirname
 
 from mdpages.models import Article
 from stonedb.models import Stone
-from django.utils.timezone import now
-
 from toolbox import resize_copy
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=30, unique=True)
+    cc = models.CharField(max_length=2, default='xx',
+                          unique=True, editable=False)
+    geonameid = models.PositiveIntegerField(unique=True, editable=False)
+    phone = models.CharField(max_length=10, default='')
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class UserProfile(models.Model):
@@ -46,7 +62,7 @@ class UserProfile(models.Model):
         max_length=16, default='', blank=True, verbose_name=_('Postal code'),
         help_text=_('The postal code.'))
     country_sub_id = models.PositiveIntegerField(db_index=True, default=0)
-    country_id = models.PositiveIntegerField(db_index=True, default=0)
+    country_old_id = models.PositiveIntegerField(db_index=True, default=0)
     country_sub_name = models.CharField(
         max_length=100, default='', blank=True,
         verbose_name=_('Province/Region'),
@@ -55,6 +71,9 @@ class UserProfile(models.Model):
         max_length=100, default='', blank=True,
         verbose_name=_('Country name'),
         help_text=_('The country your company is registered.'))
+    country = models.ForeignKey(Country, null=True, default=None, blank=True,
+                                db_index=True, verbose_name=_('Country'),
+                                help_text=_('Country the company is located.'))
     postal = models.TextField(default='', verbose_name=_('Postal address'))
     email = models.CharField(
         max_length=100, default='', blank=True, verbose_name=_('E-mail'),
@@ -90,6 +109,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.email:
+            self.email = self.user.email
+        super().save(*args, **kwargs)
 
     @property
     def stock_count(self):
@@ -202,7 +226,7 @@ class ProjectsManager(CommonProjectsStocksManager):
 
 class Project(CommonProjectsStocks):
     stones = models.ManyToManyField(
-        Stone, null=True, default=None,
+        Stone,
         verbose_name=_('Stones used'),
         help_text=_('Start typing the name of a stone used in the project, '
                     'then select the stones from the list. Add all stones used '
@@ -477,9 +501,27 @@ class Pic(models.Model):  # cc__fotos
         self.save()
 
 
+class Product(models.Model):
+    name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=30, default='',
+                            unique=True, db_index=True)
+    about = models.TextField(default='')
+    description = models.CharField(max_length=255, default='')
+    title_foto = models.CharField(max_length=100, default='')
+    created = models.DateTimeField(default=now)
+    companies = models.ManyToManyField(User, related_name='products')
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
 class Group(models.Model):
     name = models.CharField(max_length=30, default='')
-    slug = models.CharField(max_length=30, default='')  # url
+    slug = models.SlugField(max_length=30, unique=True)
     about = models.TextField(default='')  # intro text for group page
     description = models.CharField(max_length=255, default='')
     keywords = models.CharField(max_length=255, default='')
@@ -496,6 +538,10 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
 
 @receiver(post_save, sender=User)
 def create_profile_on_user_create(sender, instance=None,
@@ -507,3 +553,21 @@ def create_profile_on_user_create(sender, instance=None,
 @receiver(pre_delete, sender=Pic)
 def delete_related_files_on_pic_delete(sender, instance, using, **kwargs):
     instance.delete_all_files()
+
+
+@receiver(post_save, sender=UserProfile)
+@receiver(post_save, sender=Group)
+def _updated_company_properties(sender, **kwargs):
+    """
+    If any searchable property is changed, rebuild the JSON file.
+    """
+    update_company_properties()
+
+
+def update_company_properties():
+    business = list(Group.objects.all().values('id', 'slug', 'name'))
+    country = list(Country.objects.all().values('id', 'slug', 'name'))
+
+    li = {'business': business, 'country': country}
+    with open(settings.COMPANY_SEARCH_OPTS_FILE, 'wt', encoding='utf-8') as fh:
+        json.dump(li, fh)

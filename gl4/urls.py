@@ -23,8 +23,8 @@ urlpatterns = [
     url(r'^stone$',
         stonedb.views.home, name='stonedb_home'),
 
-    # /stone/search.php --> stonedb_filter
-    url(r'^stone/search.php$',
+    # /stone/redir_search.php --> stonedb_filter
+    url(r'^stone/redir_search.php$',
         stonedb.views.redir_search_php, name='stonedb_redir_search_php'),
 
     # /stone/color
@@ -58,7 +58,7 @@ urlpatterns = [
         r'(?:/(?P<p>[2-9]))?$',
         stonedb.views.filter, name='stonedb_filter'),
 
-    url(r'api/search/stones/',
+    url(r'api/redir_search/stones/',
         stonedb.views.api_search, name='stonedb_api_search'),
 
     # tradeshowdb
@@ -74,9 +74,28 @@ urlpatterns = [
 
     # companydb: /companies
     url(r'^companies$', companydb.views.home, name='companydb_home'),
-    # /companies/memorials-grave-stones/1
+    # /companies/redir_search?country=342&business=memorials-grave-stones
+
+    url(r'^companies/redir_search$',
+        companydb.views.redir_search, name='companydb_redir_search'),
+
+    # /companies/consultancy-quality-assurance/1 <--[group]---
     url(r'^companies/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
-        companydb.views.itemlist, name='companydb_list'),
+        companydb.views.list_by_group, name='companydb_group'),
+    # /companies/kitchen-countertops/1 <--[product]---
+    url(r'^products/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
+        companydb.views.list_by_product, name='companydb_product'),
+    # /companies/kitchen-countertops/1 <--[country]---
+    url(r'^companies/in/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
+        companydb.views.list_by_country, name='companydb_country'),
+
+    # /companies/[country|all]/[business|all]/[product|all]/1
+    url(r'^companies/'
+        r'(?P<country>[a-zA-Z0-9_-]{1,30})/'
+        r'(?P<business>[a-zA-Z0-9_-]{1,30})/'
+        r'(?P<product>[a-zA-Z0-9_-]{1,30})/'
+        r'(?P<p>[1-9][0-9]*)$',
+        companydb.views.search, name='companydb_search'),
 
     # /company/xxxxxxxxxx
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})$',
