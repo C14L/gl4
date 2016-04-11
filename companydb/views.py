@@ -65,7 +65,7 @@ def redir_search(request):
         # /products/kitchen-countertops/1
         slug = get_object_or_404(Product, pk=product).slug
         url = reverse('companydb_product', args=[slug, '1'])
-        return HttpResponse('Company list for product: {}'.format(url))
+        # return HttpResponse('Company list for product: {}'.format(url))
     elif country and not (business or product):
         # /companies/china/1
         slug = get_object_or_404(Country, pk=country).slug
@@ -98,7 +98,7 @@ def search(request, country, business, product, p=1):
     if business:
         users = users.filter(group=business)
     if product:
-        pass  # users = users.filter()
+        users = users.filter(products=product)
     if country:
         users = users.filter(profile__country=country)
 
@@ -147,11 +147,11 @@ def list_by_product(request, slug, p=1):
     """
     obj = get_object_or_404(Product, slug=slug)
     users = User.objects.filter(
-        profile__products=obj, is_active=True,
+        products=obj, is_active=True,
         profile__is_deleted=False, profile__is_blocked=False)
     users = _get_page(users, p, 60)
 
-    return render(request, 'companydb/list_by_country.html', _ctx({
+    return render(request, 'companydb/list_by_product.html', _ctx({
         'users': users, 'range_pages': range(1, users.paginator.num_pages+1),
         'obj': obj, 'selected_company_product': obj.id,
         'canonical': reverse('companydb_product', args=[obj.slug, p])}))
@@ -205,7 +205,8 @@ def item(request, slug):
 
     return render(request, 'companydb/item.html', _ctx({
         'view_user': view_user, 'pics': pics, 'contactform': form,
-        'selected_company_country': view_user.profile.country.id,
+        'selected_company_country':
+            view_user.profile.country and view_user.profile.country.id,
         'canonical': reverse('companydb_item', args=[view_user.username])}))
 
 

@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
-from companydb.models import (UserProfile, Stock, Project, Pic, Group)
+from companydb.models import (UserProfile, Stock, Project, Pic, Group, Product)
 from companydb.models import Country as Companydb_Country
 from stonedb.models import (Stone, StoneName,
                             Color, Classification, Texture, Country)
@@ -35,8 +35,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print(
             '\nThis will import all old Graniteland data JSON files.\n'
-            '0. Import country names for Company models.\n'
-            '1. Import colors, classifications, countries.\n'
+            '0. Import products, country names for Company model.\n'
+            '1. Import colors, classifications, countries for Stone model.\n'
             '2. Import user accounts.\n'
             '3. Import profiles and group relations.\n'
             '4. Import stones and stone pictures, renaming jpg files.\n'
@@ -47,6 +47,7 @@ class Command(BaseCommand):
             )
         input('Please press Enter to continue...')
 
+        self.import_products()
         self.import_company_countries()
         self.import_color()
         self.import_classification()
@@ -73,6 +74,16 @@ class Command(BaseCommand):
         if line:
             for row in json.loads(line):
                 yield row
+
+    def import_products(self):
+        Product.objects.all().delete()
+        filename = 'products_{}.txt'.format(settings.LANGUAGE_SHORT)
+        filename = join(settings.BASE_DIR, '..', 'fixtures', filename)
+        with open(filename) as fh:
+            for row in fh:
+                row = row.rstrip('\n')
+                if row and not row.startswith('#'):
+                    Product.objects.create(name=row)
 
     def import_company_countries(self):
         # Companydb_Country
@@ -677,3 +688,4 @@ class Command(BaseCommand):
             call_command('sqlsequencereset', label, stdout=commands)
             print('Will fix "{}".'.format(label))
         cursor.execute(commands.getvalue())
+

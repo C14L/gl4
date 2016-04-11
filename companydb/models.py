@@ -3,6 +3,7 @@ import json
 import os
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
@@ -26,6 +27,9 @@ class Country(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('companydb_country', args=[self.slug, '1'])
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -114,6 +118,9 @@ class UserProfile(models.Model):
         if not self.email:
             self.email = self.user.email
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('companydb_item', args=[self.user.username])
 
     @property
     def stock_count(self):
@@ -512,12 +519,12 @@ class Pic(models.Model):  # cc__fotos
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=30, default='')
-    slug = models.SlugField(max_length=30, default='',
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, default='',
                             unique=True, db_index=True)
-    about = models.TextField(default='')
-    description = models.CharField(max_length=255, default='')
-    title_foto = models.CharField(max_length=100, default='')
+    about = models.TextField(default='', blank=True)
+    description = models.TextField(default='', blank=True)
+    title_foto = models.CharField(max_length=100, default='', blank=True)
     created = models.DateTimeField(default=now)
     companies = models.ManyToManyField(User, related_name='products')
 
@@ -527,6 +534,9 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('companydb_product', args=[self.slug, '1'])
 
 
 class Group(models.Model):
@@ -552,6 +562,9 @@ class Group(models.Model):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('companydb_group', args=[self.slug, '1'])
+
 
 @receiver(post_save, sender=User)
 def create_profile_on_user_create(sender, instance=None,
@@ -576,8 +589,9 @@ def _updated_company_properties(sender, **kwargs):
 
 def update_company_properties():
     business = list(Group.objects.all().values('id', 'slug', 'name'))
+    product = list(Product.objects.all().values('id', 'slug', 'name'))
     country = list(Country.objects.all().values('id', 'slug', 'name'))
 
-    li = {'business': business, 'country': country}
+    li = {'business': business, 'product': product, 'country': country}
     with open(settings.COMPANY_SEARCH_OPTS_FILE, 'wt', encoding='utf-8') as fh:
         json.dump(li, fh)

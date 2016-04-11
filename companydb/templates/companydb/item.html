@@ -17,6 +17,13 @@
 {% endblock %}
 
 {% block main %}
+  {% if user.is_staff %}
+    <div id="id-staff-links">
+      <a href="{% url 'admin:auth_user_change' view_user.pk %}">edit user</a>
+      <a href="{% url 'admin:companydb_userprofile_change' view_user.pk %}">edit profile</a>
+    </div>
+  {% endif %}
+
   {% with view='item' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
 
 <section class="profile-business-areas">
