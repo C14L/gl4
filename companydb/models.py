@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Count
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
@@ -596,9 +597,14 @@ def _updated_company_properties(sender, **kwargs):
 
 
 def update_company_properties():
+    """
+    Write a JSON file to `settings.COMPANY_SEARCH_OPTS_FILE` with all
+    options for the company search bar.
+    """
     business = list(Group.objects.all().values('id', 'slug', 'name'))
     product = list(Product.objects.all().values('id', 'slug', 'name'))
-    country = list(Country.objects.all().values('id', 'slug', 'name'))
+    country = list(Country.objects.annotate(count=Count('userprofile'))
+                   .filter(count__gt=0).values('id', 'slug', 'name', 'count'))
 
     li = {'business': business, 'product': product, 'country': country}
     with open(settings.COMPANY_SEARCH_OPTS_FILE, 'wt', encoding='utf-8') as fh:
