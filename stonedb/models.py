@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Count
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
+from django.utils.text import slugify
 from django.utils.timezone import now
 from os.path import join
 
@@ -23,7 +24,7 @@ class CommonStonePropertyManager(models.Manager):
 
 class CommonStoneProperty(models.Model):
     name = models.CharField(max_length=100, default='')
-    slug = models.SlugField(max_length=100, default='', db_index=True)
+    slug = models.SlugField(max_length=100, default='')
     text = models.TextField(default='', blank=True)
 
     objects = CommonStonePropertyManager()
@@ -33,6 +34,10 @@ class CommonStoneProperty(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class Classification(CommonStoneProperty):

@@ -47,8 +47,8 @@ class Command(BaseCommand):
             )
         input('Please press Enter to continue...')
 
-        self.import_products()
-        self.import_company_countries()
+        self.import_products(force=True)
+        self.import_company_countries(force=True)
         #self.import_color()
         #self.import_classification()
         #self.import_country()
@@ -75,8 +75,9 @@ class Command(BaseCommand):
             for row in json.loads(line):
                 yield row
 
-    def import_products(self):
-        # Product.objects.all().delete() --> Preserve existing changes!
+    def import_products(self, force=False):
+        if force:
+            Product.objects.all().delete()
         filename = 'products_{}.txt'.format(settings.LANGUAGE_SHORT)
         filename = join(settings.BASE_DIR, '..', 'fixtures', filename)
         with open(filename) as fh:
@@ -88,8 +89,9 @@ class Command(BaseCommand):
                     continue
                 Product.objects.create(name=row)
 
-    def import_company_countries(self):
-        # Companydb_Country.objects.all().delete() --> Preserve existing changes
+    def import_company_countries(self, force=False):
+        if force:
+            Companydb_Country.objects.all().delete()
         header = ['iso', 'iso3', 'iso_numeric', 'fips', 'country', 'capital',
                   'area', 'population', 'continent', 'tld', 'currency_code',
                   'currency_name', 'phone', 'postal_code_format',
@@ -145,15 +147,82 @@ class Command(BaseCommand):
     def fetch_or_create_texture(self, texture_name):
         # return texture name and id
         texture_name = texture_name.lower().strip()
+        tmap = {}
         if texture_name in ['', 'n/a', 'na']:
             return None
+
+        if settings.LANGUAGE_SHORT == 'en':
+            # Fix messed up original data. Valid string values are only
+            #
+            # 'coarse grain', 'medium grain', 'fine grain', 'plain',
+            # 'strongly veined', 'medium veined', 'light veined', 'fossils'
+            tmap = {
+                'coars': 'coarse grain',
+                'coarse': 'coarse grain',
+                'coarse grain': 'coarse grain',
+                'coarse grained': 'coarse grain',
+                'coarse grain, veined': 'coarse grain',
+                'fine': 'fine grain',
+                'fine grain': 'fine grain',
+                'fine grained': 'fine grain',
+                'fine grained, veined': 'fine grain',
+                'fine grained, with plenty of large fossils': 'fossils',
+                'fine, medium': 'medium grain',
+                'fine to medium': 'medium grain',
+                'fine, veined': 'fine grain',
+                'geädert': 'veined',
+                'grob': 'coarse grain',
+                'medium': 'medium grain',
+                'medium - coarse grain': 'medium grain',
+                'medium grain': 'medium grain',
+                'medium grained': 'medium grain',
+                'veined': 'veined', }
+        elif settings.LANGUAGE_SHORT == 'de':
+            # 'grobkörnig', 'mittelkörnig', 'feinkörnig', 'gleichförmig',
+            # 'stark geädert', 'geädert', 'leicht geädert', 'fossil',
+            tmap = {
+                'Besteht hauptsächlich aus Schalen von Muscheln und Brachioden.': 'fossil',
+                'feinkörnig, mit sehr vielen Muscheleinschlüssen': 'fossil',
+                'feinkörnig, mit vielen fossilen Einschlüssen': 'fossil',
+                'Feinkörnig, mit vielen Einschlüssen': 'fossil',
+                'teilweise von weißen und grauen Fossilien durchsetzt,.': 'fossil',
+                'Feinkörnig': 'feinkörnig',
+                'Feinkörnig mit Einschlüssen': 'feinkörnig',
+                'Feinkörnig, mit Einschlüssen': 'feinkörnig',
+                'feinkörnig': 'feinkörnig',
+                'feinkörnig grain': 'feinkörnig',
+                'feinkörnig grained': 'feinkörnig',
+                'feinkörnig mit Muscheleinschlüssen': 'feinkörnig',
+                'feinkörnig mit großen Orthoklas Einschlüssen': 'feinkörnig',
+                'feinkörnig mit weißen Quarzschlieren': 'feinkörnig',
+                'feinkörnig to mittelkörnig': 'mittelkörnig',
+                'feinkörnig, mittelkörnig': 'mittelkörnig',
+                'star geädert mit großen Farbschwankungen': 'stark geädert',
+                'feinkörnig, gewolkt': 'geädert',
+                'geädert': 'geädert',
+                'Geädert': 'geädert',
+                'Helles bis weißliches Blau mit tiefblauen Adern, oft auch große': 'geädert',
+                'veined': 'geädert',
+                'feinkörnig, geädert': 'leicht geädert',
+                'gewolkt': 'leicht geädert',
+                'Grobkörnig': 'grobkörnig',
+                'Grobkörning': 'grobkörnig',
+                'grob': 'grobkörnig',
+                'grobkörnig': 'grobkörnig',
+                'grobkörnig grain': 'grobkörnig',
+                'grobkörnig grain, geädert': 'grobkörnig',
+                'grobkörnig grained': 'grobkörnig',
+                'grobkörnig, geädert': 'grobkörnig',
+                'grobkörning': 'grobkörnig',
+                'fein- bis mittelkörnig': 'mittelkörnig',
+                'mittelkörnig': 'mittelkörnig',
+                'mittelkörnig - grobkörnig grain': 'mittelkörnig',
+                'mittelkörnig grain': 'mittelkörnig',
+                'mittelkörnig grained': 'mittelkörnig', }
+
+        if texture_name in tmap.keys():
+            texture_name = tmap[texture_name]
         item, created = Texture.objects.get_or_create(name=texture_name)
-        if created:
-            item.slug = slugify(item.name)
-            item.save()
-            # print('texture --> added: {} {} -> {}'.format(
-            #    item.id, item.slug, item.name))
-            print('T', end='', flush=True)
         return item
 
     def import_classification(self):
