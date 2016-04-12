@@ -1,26 +1,23 @@
 
 /* HTML tags */
-html, body { min-height:100%; margin:0; padding:0; }
+html, body { min-height: 100%; margin: 0; padding: 0; font-family: sans-serif; font-size: 14px; }
+body { color: black; background-color: white; background-position: center center; background-repeat: repeat; text-align: center; }
 
-body { font-family: sans-serif; font-size: 13px; color: black; background-color: white; background-position: center center; background-repeat: repeat; text-align: center; }
 a, a:link { outline-style: none; }
 table { border-spacing:0; }
 img  { border:0; margin:0; padding:0; }
-form { border:0; margin:0; padding:0; }
+
+form { border: 0; margin: 0; padding: 0; }
 input[type="checkbox"] { vertical-align: middle; border:1px solid #999; }
-input[type="text"], 
-input[type="password"] { border: 1px solid #999; padding:2px 3px; }
-
+input[type="text"], input[type="password"] { border: 1px solid #999; padding:2px 3px; }
 select { border: 1px solid #999; padding: 2px 0px; background: url(/img/input-box-bg.png) bottom repeat-x #FFF; }
-
 textarea { border: 1px solid #999; background: url(/img/input-box-bg.png) bottom repeat-x #FFF; }
-
 input[type="checkbox"]:focus, input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus { border-color: #000; background:#FFF; }
 
-h1 { padding:0; margin:0; font-size:2em; color:#666; }
-h2 { padding:0; margin:10px 0; font-size:1.25em; }
-h2:first-child { margin-top:0; }
-h3 { padding: 0; margin:10px 0; font-size: 1.1em; }
+h1 { padding: 0; margin: 0; font-size: 2rem; line-height: 4rem; color: gray; font-weight: normal; }
+h2 { padding: 0; margin: 10px 0; font-size: 1.5rem; }
+h2:first-child { margin-top: 0; }
+h3 { padding: 0; margin: 10px 0; font-size: 1.15rem; }
 
 .prevnext { background: lightgray; margin: 10px 0; padding: 0; font-size: 0; white-space: nowrap; text-align: center; overflow: auto; }
 .prevnext a, .prevnext b { display: inline-block; padding: 10px; font-size: 16px; vertical-align: middle; overflow: hidden; font-weight: normal; }
@@ -61,15 +58,9 @@ header > form input[type="submit"] { width: 50px; }
 #tpl-msg { display:block; position:fixed; top:0; left:0; right:0; height:0; background:#000; text-align:center; }
 #tpl-msg span { display:inline-block;  padding:15px; margin:0; text-align:center; background:#FF0; color:#F00; font-weight:bold;  border:2px solid #F00; border-top:0;  border-radius:0 0 10px 10px; box-shadow:0 5px 10px rgba(0,0,0,0.4); }
 
-#tpl-breadcrumb { padding:10px 20px 0 20px; font-size:100%; color:#999; }
-#tpl-breadcrumb a { text-decoration:none; color:#666; font-size:85%; }
-#tpl-breadcrumb a:hover { text-decoration:underline; color:#333; }
-#tpl-breadcrumb table { width: 100%; margin: 0; padding: 0; }
-#tpl-breadcrumb table tr td { vertical-align:middle; padding:0; height:24px; }
-#tpl-breadcrumb table tr td:nth-child(1) { width: 600px; }
-#tpl-breadcrumb table tr td:nth-child(2) { width: 380px; text-align: right; }
-#tpl-breadcrumb table tr td:nth-child(2) .addthis_toolbox { float: right; max-height: 20px !important; }
-#tpl-breadcrumb table tr td:nth-child(2) .addthis_toolbox > a { float: right; }
+#tpl-breadcrumb { padding: 10px 10px 0 20px; font-size: 1rem; color: gray; }
+#tpl-breadcrumb a {  }
+#tpl-breadcrumb a:hover {  }
 
 #tpl-content { overflow:auto; padding:0 20px 20px 20px; margin:0; text-align:left; background:#fff; }
 
