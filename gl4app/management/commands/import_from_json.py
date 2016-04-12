@@ -29,8 +29,7 @@ class Command(BaseCommand):
     help = "Import most old Graniteland data from JSON files."
     data_dir = join(dirname(settings.BASE_DIR), 'import_data')
     pics_dir = join(settings.BASE_DIR, 'stonedb/stonesimages')
-
-    lang = settings.LANGUAGE_CODE
+    lang = settings.LANGUAGE_SHORT
 
     def handle(self, *args, **options):
         print(
@@ -49,20 +48,20 @@ class Command(BaseCommand):
 
         self.import_products(force=True)
         self.import_company_countries(force=True)
-        #self.import_color()
-        #self.import_classification()
-        #self.import_country()
-        #self.init_texture()  # only deletes current entries
-        #self.import_user()
-        #self.import_profile()
-        #self.import_stone()
-        #self.import_tradeshow()
-        #self.import_group()
-        #self.import_stock()
-        #self.import_projects()
-        #self.import_pages()
-        #self.import_pics()  # must be last after Article, Stock, etc.
-        #self.fix_all_id()
+        self.import_color()
+        self.import_classification()
+        self.import_country()
+        self.init_texture()  # only deletes current entries
+        self.import_user()
+        self.import_profile()
+        self.import_stone()
+        self.import_tradeshow()
+        self.import_group()
+        self.import_stock()
+        self.import_projects()
+        self.import_pages()
+        self.import_pics()  # must be last after Article, Stock, etc.
+        self.fix_all_id()
 
     def walkjsondata(self, fn):
         line = None
@@ -151,32 +150,36 @@ class Command(BaseCommand):
         if texture_name in ['', 'n/a', 'na']:
             return None
 
+        # Fix messed up original data. Valid string values are only
         if settings.LANGUAGE_SHORT == 'en':
-            # Fix messed up original data. Valid string values are only
-            #
             # 'coarse grain', 'medium grain', 'fine grain', 'plain',
-            # 'strongly veined', 'medium veined', 'light veined', 'fossils'
+            # 'strongly veined', 'medium veined', 'light veined', 'fossiled'
             tmap = {
-                'coars': 'coarse grain',
-                'coarse': 'coarse grain',
-                'coarse grain': 'coarse grain',
-                'coarse grained': 'coarse grain',
-                'coarse grain, veined': 'coarse grain',
-                'fine': 'fine grain',
-                'fine grain': 'fine grain',
-                'fine grained': 'fine grain',
-                'fine grained, veined': 'fine grain',
-                'fine grained, with plenty of large fossils': 'fossils',
-                'fine, medium': 'medium grain',
-                'fine to medium': 'medium grain',
-                'fine, veined': 'fine grain',
+                'fine grained, with plenty of large fossils': 'fossiled',
+
+                'fine': 'fine grained',
+                'fine grain': 'fine grained',
+                'fine grained': 'fine grained',
+                'fine, veined': 'fine grained',
+                'fine grained, veined': 'fine grained',
+
+                'fine, medium': 'medium grained',
+                'fine to medium': 'medium grained',
+                'medium': 'medium grained',
+                'medium - coarse grain': 'medium grained',
+                'medium grain': 'medium grained',
+                'medium grained': 'medium grained',
+
+                'grob': 'coarse grained',
+                'coars': 'coarse grained',
+                'coarse': 'coarse grained',
+                'coarse grain': 'coarse grained',
+                'coarse grained': 'coarse grained',
+                'coarse grain, veined': 'coarse grained',
+
                 'geädert': 'veined',
-                'grob': 'coarse grain',
-                'medium': 'medium grain',
-                'medium - coarse grain': 'medium grain',
-                'medium grain': 'medium grain',
-                'medium grained': 'medium grain',
                 'veined': 'veined', }
+
         elif settings.LANGUAGE_SHORT == 'de':
             # 'grobkörnig', 'mittelkörnig', 'feinkörnig', 'gleichförmig',
             # 'stark geädert', 'geädert', 'leicht geädert', 'fossil',
@@ -186,6 +189,7 @@ class Command(BaseCommand):
                 'feinkörnig, mit vielen fossilen Einschlüssen': 'fossil',
                 'Feinkörnig, mit vielen Einschlüssen': 'fossil',
                 'teilweise von weißen und grauen Fossilien durchsetzt,.': 'fossil',
+
                 'Feinkörnig': 'feinkörnig',
                 'Feinkörnig mit Einschlüssen': 'feinkörnig',
                 'Feinkörnig, mit Einschlüssen': 'feinkörnig',
@@ -195,16 +199,18 @@ class Command(BaseCommand):
                 'feinkörnig mit Muscheleinschlüssen': 'feinkörnig',
                 'feinkörnig mit großen Orthoklas Einschlüssen': 'feinkörnig',
                 'feinkörnig mit weißen Quarzschlieren': 'feinkörnig',
-                'feinkörnig to mittelkörnig': 'mittelkörnig',
-                'feinkörnig, mittelkörnig': 'mittelkörnig',
+
                 'star geädert mit großen Farbschwankungen': 'stark geädert',
+
                 'feinkörnig, gewolkt': 'geädert',
                 'geädert': 'geädert',
                 'Geädert': 'geädert',
                 'Helles bis weißliches Blau mit tiefblauen Adern, oft auch große': 'geädert',
                 'veined': 'geädert',
+
                 'feinkörnig, geädert': 'leicht geädert',
                 'gewolkt': 'leicht geädert',
+
                 'Grobkörnig': 'grobkörnig',
                 'Grobkörning': 'grobkörnig',
                 'grob': 'grobkörnig',
@@ -214,6 +220,9 @@ class Command(BaseCommand):
                 'grobkörnig grained': 'grobkörnig',
                 'grobkörnig, geädert': 'grobkörnig',
                 'grobkörning': 'grobkörnig',
+
+                'feinkörnig to mittelkörnig': 'mittelkörnig',
+                'feinkörnig, mittelkörnig': 'mittelkörnig',
                 'fein- bis mittelkörnig': 'mittelkörnig',
                 'mittelkörnig': 'mittelkörnig',
                 'mittelkörnig - grobkörnig grain': 'mittelkörnig',

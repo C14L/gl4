@@ -19,14 +19,14 @@ class Command(BaseCommand):
 
         for pic in li:
             try:
-                pic.make_sizes()
+                pic.make_sizes(force=True)
                 print('.', end='', flush=True)
                 count_success += 1
             except FileNotFoundError as e:
-                print('[NF]', end='', flush=True)
+                print('[NF:{}]'.format(pic.id), end='', flush=True)
                 count_notfound += 1
             except OSError as e:
-                print('[OS]', end='', flush=True)
+                print('[OS:{}]'.format(pic.id), end='', flush=True)
                 count_oserror += 1
 
         print(' done.')
