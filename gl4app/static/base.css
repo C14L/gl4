@@ -1,12 +1,3 @@
-/*
-
-2012-03-12: Changed color #faf1d7 to #eee
-2012-03-12: Changed color #6AD97B to #ccc
-2012-03-12: Changed color #EFD078 to #6AD97B
-2012-03-12: Color combos from http://wrapbootstrap.com/preview/WB00T81AK
-            and color number #20.
-
- */
 
 /* HTML tags */
 html, body { min-height:100%; margin:0; padding:0; }
@@ -105,10 +96,10 @@ footer p a:hover { color:#555; }
 /* User profiles header with title and tab navigation */
 
 .user-profile-header h1 { padding: 0; margin: 32px 0; color: #666; text-align: center; font-size: 3rem; }
-.user-profile-header ul { list-style: none; margin: 10px 0; padding: 0; border-bottom: 1px solid #C00; font-weight: bold; text-align: center; white-space: nowrap; }
+.user-profile-header ul { list-style: none; margin: 10px 0; padding: 0; font-weight: bold; text-align: center; white-space: nowrap; }
 .user-profile-header ul li { display: inline-block; margin: 0 5px; padding: 0; }
-.user-profile-header ul li a { display: inline-block; font-size: 15px; text-decoration: none; padding: 10px 20px; color: rgba(0,0,0,0.5); background: lightgray; box-shadow: inset 0 -10px 10px -5px #bbb; }
-.user-profile-header ul li a#current { color: #000; box-shadow: inset 0 10px 12px -5px rgba(255,255,255,0.5), inset 0 -10px 12px -5px rgba(0,0,0,0.1); }
+.user-profile-header ul li a { display: inline-block; font-size: 15px; text-decoration: none; padding: 10px 20px; color: rgba(0,0,0,0.5); background: lightgray; border-radius: 3px; }
+.user-profile-header ul li a.current { color: #FFF; background-color: #9B0101; box-shadow: inset 0 10px 12px -5px rgba(255,255,255,0.5); }
 
 /* List of small preview fotos. */
 /* Example: /naturstein/branco-ipanema/fotos */
@@ -328,23 +319,35 @@ body.tradeshow-item .item-data td { padding:5px; }
 
 /* Groups */
 
-body.groups h1 { margin: 0 0 20px 0; }
+body.company.list h1 { margin: 0 0 20px 0; }
 
-body.groups.home .above { display: flex; flex-direction: row; margin: 10px 0; padding: 0; }
-body.groups.home .above .intro { flex-grow: 10;  }
-body.groups.home .above .intro .logo { float: left; margin: 0 10px 10px 0; padding: 0; width: 150px; height: 150px; background: lightgray center center no-repeat; background-size: cover; }
-body.groups.home .above .intro .info { font-weight: bold; }
-body.groups.home .above .intro .about { margin: 10px 0; }
-body.groups.home .above .ads { flex-grow: 0; flex-shrink: 0; }
+body.company.list .above { display: flex; flex-direction: row; margin: 10px 0; padding: 0; }
+body.company.list .above .intro { flex-grow: 10;  }
+body.company.list .above .intro .logo { float: left; margin: 0 10px 10px 0; padding: 0; width: 150px; height: 150px; background: lightgray center center no-repeat; background-size: cover; }
+body.company.list .above .intro .info { font-weight: bold; }
+body.company.list .above .intro .about { margin: 10px 0; }
+body.company.list .above .ads { flex-grow: 0; flex-shrink: 0; }
 
-body.groups .company-list { display: flex; flex-flow: row wrap; justify-content: center; align-items: stretch; align-content: stretch; }
-body.groups .company-list > .item { transition: 0.3s ease-out; display: block; padding: 10px; margin: 5px; overflow: hidden; min-width: 250px; max-width: 500px; max-height: 120px; flex: 1 1; color: inherit; text-decoration: inherit; border: 1px solid lightgray; }
-body.groups .company-list > .item:hover { transition: 0.3s ease-out; box-shadow: 0 0 10px rgba(0,0,0,0.25); }
-body.groups .company-list > .item > .pic { display: block; margin-right: 10px; float: left; width: 100px; height: 100px; background: lightgray center center no-repeat; background-size: cover; }
-body.groups .company-list > .item > .info { display: block; }
-body.groups .company-list > .item > .info > .name { display: block; font-size: 14px; font-weight: bold; }
-body.groups .company-list > .item > .info > .location { display: block; }
-body.groups .company-list > .item > .info > .description { display: none; }
+body.company.list.country .above .ads { order: 1; }
+body.company.list.country .above .intro { order: 2; margin-left: 10px; padding-left: 10px; border-left: 1px solid gray; }
+body.company.list.country .above .intro .flag { width: 50px; border: 0; }
+body.company.list.country .above .intro .info { margin: 10px 0; }
+body.company.list.country .above .intro .about { }
+
+body.company.list .below .ads { width: 100%; height: 90px; }
+body.company.list.search .above .ads { width: 100%; height: 90px; }
+
+body.company.list.group .above .intro { margin-right: 10px; padding-right: 10px; border-right: 1px solid gray; }
+
+body.company.list .company-list { margin: 10px -20px; padding: 10px 20px; display: flex; flex-flow: row wrap; justify-content: center; align-items: stretch; align-content: stretch; box-shadow: inset 0 25px 150px -75px rgba(0,0,0,0.5); }
+
+body.company.list .company-list > .item { transition: 0.3s ease-out; display: block; padding: 10px; margin: 5px; overflow: hidden; min-width: 250px; max-width: 500px; max-height: 120px; flex: 1 1; color: inherit; text-decoration: inherit; border: 1px solid lightgray; background-color: white; }
+body.company.list .company-list > .item:hover { transition: 0.3s ease-out; box-shadow: 0 0 10px rgba(0,0,0,0.25); }
+body.company.list .company-list > .item > .pic { display: block; margin-right: 10px; float: left; width: 100px; height: 100px; background: lightgray center center no-repeat; background-size: cover; }
+body.company.list .company-list > .item > .info { display: block; }
+body.company.list .company-list > .item > .info > .name { display: block; font-size: 14px; font-weight: bold; }
+body.company.list .company-list > .item > .info > .location { display: block; }
+body.company.list .company-list > .item > .info > .description { display: none; }
 
 /* Stones */
 

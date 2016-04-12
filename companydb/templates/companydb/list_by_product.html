@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static i18n %}
+{% load static i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{{obj.name}}{% endblock %}
 
@@ -9,7 +9,7 @@
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}groups home{% endblock %}
+{% block body_classes %}company list product{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
@@ -17,62 +17,75 @@
 
 {% block main %}
 
-<h1>{{obj.name}}</h1>
+{% if user.is_staff %}
+  <div id="id-staff-links">
+    <a href="{% url 'admin:companydb_product_change' obj.pk %}">edit product</a>
+  </div>
+{% endif %}
+
+<h1>{% blocktrans with name=obj.name %}Companies selling {{ name }}{% endblocktrans %}</h1>
 
 <div class="above">
   <div class="intro">
-    <div class="logo" style="background-image: url({{ obj.title_foto }});"></div>
-    <div class="info">{% blocktrans with name=obj.name count=obj.count_members %}{{ name }} has {{ count }} members.{% endblocktrans %}</div>
-    <div class="about">{{ obj.about }}</div>
-    {% if user.is_staff %}<a href="{% url 'admin:companydb_product_change' obj.pk %}" class="btn btn-primary">edit</a>{% endif %}
+    {% if obj.title_foto %}<div class="logo" style="background-image: url({{ obj.title_foto }});"></div>{% endif %}
+    {% if users.paginator.count > 0 %}
+      <div class="info">{% blocktrans with name=obj.name count=users.paginator.count %}Below are {{ count }} companies selling {{ name }}.{% endblocktrans %}</div>
+    {% else %}
+      <div class="info">{% blocktrans with name=obj.name count=users.paginator.count %}Sorry, there are currently no companies here that sell {{ name }}.{% endblocktrans %}</div>
+    {% endif %}
+    <div class="about">{{ obj.about|markdown|bleach }}</div>
   </div>
   <div class="ads">
+    {% if users.paginator.count > 0 %}
+      {% if settings.PRODUCTION %}
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- gc resp atf companies list -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-0795994016573783"
+             data-ad-slot="9645557647"
+             data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      {% else %}
+        <div style="margin: 0; padding: 0; width: 336px; height: 280px; background: gray;"></div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% if users.paginator.count > 0 %}
+  <div class="company-list">
+    {% for item in users %}
+      <a href="{% url 'companydb_item' item.username %}" class="item" id="groupmemberlist{{item.id}}">
+        <span class="pic" style="background-image: url({{ item.profile.title_foto_url }})"></span>
+        <span class="info">
+          <span class="name">{{item.profile.name}}</span>
+          <span class="location">{{ item.profile.city }}, {{ item.profile.country.name }}</span>
+          <span class="description">{{ item.profile.about|truncatewords:25 }}</span>
+        </span>
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="below">
+  {% if users.paginator.count > 0 %}
     {% if settings.PRODUCTION %}
       <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- gc resp atf companies list -->
+      <!-- gc resp btf companies list -->
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-0795994016573783"
-           data-ad-slot="9645557647"
+           data-ad-slot="3599024047"
            data-ad-format="auto"></ins>
       <script>
       (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     {% else %}
-      <div style="margin: 0; padding: 0; width: 336px; height: 280px; background: gray;"></div>
+      <div style="max-width: 928px; height: 90px; background: gray;"></div>
     {% endif %}
-  </div>
-</div>
-
-{% include 'companydb/partial_list_prevnext.html' with viewname='companydb_product' %}
-
-<div class="company-list">
-  {% for item in users %}
-    <a href="{% url 'companydb_item' item.username %}" class="item" id="groupmemberlist{{item.id}}">
-      <span class="pic" style="background-image: url({{ item.profile.title_foto_url }})"></span>
-      <span class="info">
-        <span class="name">{{item.profile.name}}</span>
-        <span class="location">{{ item.profile.city }}, {{ item.profile.country.name }}</span>
-        <span class="description">{{ item.profile.about|truncatewords:25 }}</span>
-      </span>
-    </a>
-  {% endfor %}
-</div>
-
-<div class="below">
-  {% if settings.PRODUCTION %}
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- gc resp btf companies list -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-0795994016573783"
-         data-ad-slot="3599024047"
-         data-ad-format="auto"></ins>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  {% else %}
-    <div style="max-width: 928px; height: 90px; background: gray;"></div>
   {% endif %}
 </div>
 

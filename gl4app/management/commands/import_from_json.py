@@ -49,20 +49,20 @@ class Command(BaseCommand):
 
         self.import_products()
         self.import_company_countries()
-        self.import_color()
-        self.import_classification()
-        self.import_country()
-        self.init_texture()  # only deletes current entries
-        self.import_user()
-        self.import_profile()
-        self.import_stone()
-        self.import_tradeshow()
-        self.import_group()
-        self.import_stock()
-        self.import_projects()
-        self.import_pages()
-        self.import_pics()  # must be last after Article, Stock, etc.
-        self.fix_all_id()
+        #self.import_color()
+        #self.import_classification()
+        #self.import_country()
+        #self.init_texture()  # only deletes current entries
+        #self.import_user()
+        #self.import_profile()
+        #self.import_stone()
+        #self.import_tradeshow()
+        #self.import_group()
+        #self.import_stock()
+        #self.import_projects()
+        #self.import_pages()
+        #self.import_pics()  # must be last after Article, Stock, etc.
+        #self.fix_all_id()
 
     def walkjsondata(self, fn):
         line = None
@@ -76,56 +76,59 @@ class Command(BaseCommand):
                 yield row
 
     def import_products(self):
-        Product.objects.all().delete()
+        # Product.objects.all().delete() --> Preserve existing changes!
         filename = 'products_{}.txt'.format(settings.LANGUAGE_SHORT)
         filename = join(settings.BASE_DIR, '..', 'fixtures', filename)
         with open(filename) as fh:
             for row in fh:
                 row = row.rstrip('\n')
-                if row and not row.startswith('#'):
-                    Product.objects.create(name=row)
+                if not row or row.startswith('#'):
+                    continue
+                if Product.objects.filter(slug=slugify(row)).first():
+                    continue
+                Product.objects.create(name=row)
 
     def import_company_countries(self):
-        # Companydb_Country
+        # Companydb_Country.objects.all().delete() --> Preserve existing changes
         header = ['iso', 'iso3', 'iso_numeric', 'fips', 'country', 'capital',
                   'area', 'population', 'continent', 'tld', 'currency_code',
                   'currency_name', 'phone', 'postal_code_format',
                   'postal_code_regex', 'languages', 'geonameid', 'neighbours',
                   'equivalent_fips_code']
-        filename = join(settings.BASE_DIR, '..', 'fixtures', 'countryInfo.txt')
-        Companydb_Country.objects.all().delete()
+        filename = 'countryInfo_{}.txt'.format(settings.LANGUAGE_SHORT)
+        filename = join(settings.BASE_DIR, '..', 'fixtures', filename)
 
         with open(filename, newline='') as fh:
             reader = csv.DictReader(filter(lambda row: row[0] != '#', fh),
                                     fieldnames=header, delimiter='\t',
                                     quoting=csv.QUOTE_NONE, lineterminator='\n')
             for raw in reader:
-                if int(raw['population']) > 50000:
-                    pk = force_int(raw['iso_numeric'])
-                    geonameid = force_int(raw['geonameid'])
+                pk = force_int(raw['iso_numeric'])
+                geonameid = force_int(raw['geonameid'])
+                if raw['country'] == 'Democratic Republic of the Congo':
+                    raw['country'] = 'D.R.Congo'
+                if raw['country'] == 'United States':
+                    raw['country'] = 'U.S.A.'
 
-                    if not (geonameid and pk):
-                        print('--> INVALID for {}'.format(raw['country']))
-                        continue
-                    # manual filters
-                    if raw['country'] == 'Democratic Republic of the Congo':
-                        raw['country'] = 'D.R.Congo'
-                    if raw['country'] == 'United States':
-                        raw['country'] = 'U.S.A.'
-                    if raw['country'] in (
-                            'Saint Vincent and the Grenadines', 'Reunion',
-                            'Netherlands Antilles', 'Isle of Man',
-                            'Serbia and Montenegro', 'U.S. Virgin Islands',
-                            'Northern Mariana Islands', 'Jersey', ):
-                        continue
+                if int(raw['population']) < 50000:
+                    continue
+                if not (geonameid and pk):
+                    continue
+                if raw['country'] in (
+                        'Saint Vincent and the Grenadines', 'Reunion',
+                        'Netherlands Antilles', 'Isle of Man',
+                        'Serbia and Montenegro', 'U.S. Virgin Islands',
+                        'Northern Mariana Islands', 'Jersey', ):
+                    continue
+                if Companydb_Country.objects.filter(pk=pk).first():
+                    continue
 
-                    print('--> Doing: {} (pop.{})'.format(
-                        raw['country'], raw['population']), end=' ', flush=True)
-
-                    Companydb_Country.objects.create(
-                        id=pk, name=raw['country'], geonameid=geonameid,
-                        cc=raw['iso'][:2], phone=raw['phone'][:10])
-                    print('done.')
+                print('--> Doing: {} (pop.{})'.format(
+                    raw['country'], raw['population']), end=' ', flush=True)
+                Companydb_Country.objects.create(
+                    id=pk, name=raw['country'], geonameid=geonameid,
+                    cc=raw['iso'][:2], phone=raw['phone'][:10])
+                print('done.')
 
     def import_color(self):
         print('Import colors')

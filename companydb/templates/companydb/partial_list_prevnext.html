@@ -1,4 +1,4 @@
-{% if range_pages > 1 %}
+{% if range_pages|last > 1 %}
   <div class="prevnext">
     {% for i in range_pages %}
       {% if i == users.number %}

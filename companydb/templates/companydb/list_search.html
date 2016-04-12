@@ -1,18 +1,21 @@
 {% extends 'gl4app/base.html' %}
 {% load static i18n %}
 
-{% block title %}{{obj.name}}{% endblock %}
+{% block title %}{% blocktrans with business=business.name product=product.name country=country.name %}{{ business }} {{ product }} {{ country }}{% endblocktrans %}{% endblock %}
 
-{% block title2 %}{{obj.name}}{% endblock %}
+{% block title2 %}{% blocktrans with business=business.name product=product.name country=country.name %}{{ business }} {{ product }} {{ country }}{% endblocktrans %}{% endblock %}
 
-{% block description %}{{obj.description}}{% endblock %}
+{% block description %}{% blocktrans with business=business.name product=product.name country=country.name count=users.paginator.count %}Found {{ count }} companies for {{ business }} {{ product }} {{ country }}{% endblocktrans %}{% endblock %}
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}groups home{% endblock %}
+{% block body_classes %}company list search{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
+{% if country %}<a href="{% url 'companydb_country' country.slug '1' %}">{{ country.name }}</a> &raquo;{% endif %}
+{% if business %}<a href="{% url 'companydb_group' business.slug '1' %}">{{ business.name }}</a> &raquo;{% endif %}
+{% if product %}<a href="{% url 'companydb_product' product.slug '1' %}">{{ product.name }}</a> &raquo;{% endif %}
 {% endblock %}
 
 {% block main %}
@@ -32,37 +35,32 @@
 
 {% else %}
 
-  <h1>
-    {% if business %}{{ business.name }}{% endif %}
-    {% if product %}{{ product.name }}{% endif %}
-    {% if country %}from {{ country.name }}{% endif %}
-  </h1>
+  {% if users|length == 1 %}
+    <h1>{% trans 'One company found' %}</h1>
+  {% else %}
+    <h1>{% blocktrans with count=users|length %}{{count}} companies found{% endblocktrans %}</h1>
+  {% endif %}
 
   <div class="above">
-    <div class="intro">
-      <div class="logo" style="background-image: url({{ obj.title_foto }});"></div>
-      <div class="info">{% blocktrans with name=obj.name count=obj.count_members %}{{ name }} has {{ count }} members.{% endblocktrans %}</div>
-      <div class="about">{{ obj.about }}</div>
-    </div>
-    <div class="ads">
-      {% if settings.PRODUCTION %}
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- gc resp atf companies list -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-0795994016573783"
-             data-ad-slot="9645557647"
-             data-ad-format="auto"></ins>
-        <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      {% else %}
-        <div style="margin: 0; padding: 0; width: 336px; height: 280px; background: gray;"></div>
-      {% endif %}
-    </div>
+    {% if users|length > 10 %}
+      <div class="ads">
+        {% if settings.PRODUCTION %}
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <!-- gc resp atf companies list -->
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-0795994016573783"
+               data-ad-slot="9645557647"
+               data-ad-format="auto"></ins>
+          <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        {% else %}
+          <div style="margin: 0; padding: 0; width: 100%; height: 100%; background: gray;"></div>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
-
-  {% include 'companydb/partial_list_prevnext.html' with viewname='companydb_search' %}
 
   <div class="company-list">
     {% for item in users %}
@@ -78,19 +76,23 @@
   </div>
 
   <div class="below">
-    {% if settings.PRODUCTION %}
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- gc resp btf companies list -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-0795994016573783"
-           data-ad-slot="3599024047"
-           data-ad-format="auto"></ins>
-      <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    {% else %}
-      <div style="max-width: 928px; height: 90px; background: gray;"></div>
+    {% if users|length > 10 %}
+      <div class="ads">
+        {% if settings.PRODUCTION %}
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <!-- gc resp btf companies list -->
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-0795994016573783"
+               data-ad-slot="3599024047"
+               data-ad-format="auto"></ins>
+          <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        {% else %}
+          <div style="max-width: 100%; height: 100%; background: gray;"></div>
+        {% endif %}
+      </div>
     {% endif %}
   </div>
 

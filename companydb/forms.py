@@ -82,7 +82,7 @@ class CompanyDetailsForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['name', 'contact', 'contact_position',
-                  'street', 'city', 'zip', 'country_sub_name', 'country_name',
+                  'street', 'city', 'zip', 'country_sub_name', 'country',
                   'email', 'fax', 'tel', 'mobile', 'web', ]
 
     def __init__(self, *args, **kwargs):
@@ -96,7 +96,7 @@ class CompanyDetailsForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.layout = Layout(
             'name', 'contact', 'contact_position',
-            'street', 'city', 'zip', 'country_sub_name', 'country_name',
+            'street', 'city', 'zip', 'country_sub_name', 'country',
             'email', 'fax', 'tel', 'mobile', 'web',
 
             FormActions(

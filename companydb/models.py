@@ -23,7 +23,12 @@ class Country(models.Model):
     cc = models.CharField(max_length=2, default='xx',
                           unique=True, editable=False)
     geonameid = models.PositiveIntegerField(unique=True, editable=False)
-    phone = models.CharField(max_length=10, default='')
+    phone = models.CharField(max_length=10, default='', blank=True)
+    about = models.TextField(default='', blank=True)
+    description = models.CharField(max_length=255, default='', blank=True)
+
+    class Meta:
+        ordering = ('name', )
 
     def __str__(self):
         return self.name
@@ -40,7 +45,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', primary_key=True)
     name = models.CharField(
-        max_length=100, default='',
+        max_length=100, default='', blank=False,
         verbose_name=_('Company name'),
         help_text=_('The name of your company.'))
     contact = models.CharField(
@@ -519,14 +524,17 @@ class Pic(models.Model):  # cc__fotos
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=False)
     slug = models.SlugField(max_length=100, default='',
                             unique=True, db_index=True)
     about = models.TextField(default='', blank=True)
-    description = models.TextField(default='', blank=True)
+    description = models.CharField(max_length=255, default='', blank=True)
     title_foto = models.CharField(max_length=100, default='', blank=True)
     created = models.DateTimeField(default=now)
     companies = models.ManyToManyField(User, related_name='products')
+
+    class Meta:
+        ordering = ('name', )
 
     def __str__(self):
         return self.name
@@ -540,12 +548,12 @@ class Product(models.Model):
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=30, default='')
+    name = models.CharField(max_length=30, default='', blank=False)
     slug = models.SlugField(max_length=30, unique=True)
-    about = models.TextField(default='')  # intro text for group page
-    description = models.CharField(max_length=255, default='')
-    keywords = models.CharField(max_length=255, default='')
-    title_foto = models.CharField(max_length=100, default='')
+    about = models.TextField(default='', blank=True)  # intro text for group page
+    description = models.CharField(max_length=255, default='', blank=True)
+    keywords = models.CharField(max_length=255, default='', blank=True)
+    title_foto = models.CharField(max_length=100, default='', blank=True)
     count_members = models.PositiveSmallIntegerField(default=0)
     created = models.DateTimeField(default=now)  # created_time
     members = models.ManyToManyField(User)
