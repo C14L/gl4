@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.http import Http404, JsonResponse
 from django.http import HttpResponsePermanentRedirect
@@ -18,14 +18,29 @@ FILTER_URL_NO_VALUE = 'all'
 STONES_PER_PAGE = getattr(settings, 'STONES_PER_PAGE', 50)
 
 
+def _get_page(o, p, pp=None):
+    paginator = Paginator(o, pp or getattr(settings, 'STONES_PER_PAGE', 100))
+    try:
+        page = paginator.page(p)
+    except PageNotAnInteger:
+        raise Http404
+    except EmptyPage:
+        raise Http404
+    return page
+
+
+def _ctx(ctx):
+    ctx['tpl_search_form'] = 'stones'
+    return ctx
+
+
 def home(request):
-    return render(request, 'stonedb/home.html', {
+    return render(request, 'stonedb/home.html', _ctx({
         'form': StoneSearchByNameForm(),
         'classifications': Classification.objects.all_with_stones(),
         'colors': Color.objects.all_with_stones(),
         'countries': Country.objects.all_with_stones(),
-        'textures': Texture.objects.all_with_stones(),
-    })
+        'textures': Texture.objects.all_with_stones(), }))
 
 
 @require_http_methods(["GET"])
@@ -104,7 +119,7 @@ def property_list(request, f):
         raise Http404
 
     ctx = {'items': li, 'f': f, 'fk': fk}
-    return render(request, 'stonedb/property_list.html', ctx)
+    return render(request, 'stonedb/property_list.html', _ctx(ctx))
 
 
 def simple_filter(request, f, q, p):
@@ -136,10 +151,11 @@ def simple_filter(request, f, q, p):
     else:
         raise Http404
 
-    paginator = Paginator(Stone.objects.filter(**{fk: q}), STONES_PER_PAGE)
-    return render(request, 'stonedb/filter_{}.html'.format(fk), {
-        'stones': paginator.page(p), 'more': more, 'f': f, 'q': q, fk: q,
-        'selected_{}'.format(fk): q.pk})
+    stones = _get_page(Stone.objects.filter(**{fk: q}), p, 60)
+    return render(request, 'stonedb/filter_{}.html'.format(fk), _ctx({
+        'range_pages': range(1, stones.paginator.num_pages+1),
+        'stones': stones, 'more': more, 'f': f, 'q': q, fk: q,
+        'selected_{}'.format(fk): q.pk}))
 
 
 def _filter_cleanup_val(k):
@@ -206,15 +222,26 @@ def filter(request, color, country, texture, classif, p=1):
         classif = get_object_or_404(Classification, slug=classif)
         li = li.filter(classification=classif)
 
-    paginator = Paginator(li, STONES_PER_PAGE)
-    return render(request, 'stonedb/filter.html', {
-        'stones': paginator.page(p),
-        'color': color, 'country': country,
-        'texture': texture, 'classification': classif,
+    # Canonical is the URI with NO page number
+    stones = _get_page(li, p, 60)
+    canonical = reverse('stonedb_filter', args=[
+                        country and country.slug or 'all',
+                        texture and texture.slug or 'all',
+                        color and color.slug or 'all',
+                        classif and classif.slug or 'all'])
+
+    return render(request, 'stonedb/filter.html', _ctx({
+        'range_pages': range(1, stones.paginator.num_pages+1),
+        'canonical': canonical,
+        'stones': stones,
+        'classification': classif,
+        'color': color,
+        'country': country,
+        'texture': texture,
         'selected_classification': getattr(classif, 'id', ''),
         'selected_color': getattr(color, 'id', ''),
         'selected_country': getattr(country, 'id', ''),
-        'selected_texture': getattr(texture, 'id', '')})
+        'selected_texture': getattr(texture, 'id', '')}))
 
 
 def item(request, q):
@@ -226,14 +253,19 @@ def item(request, q):
     projects = Project.objects.all_for_stone(stone)
     pics = Pic.objects.all_for_stone(stone)
 
-    return render(request, 'stonedb/item.html', {
-        'stone': stone, 'color': stone.color, 'texture': stone.texture,
-        'classification': stone.classification, 'country': stone.country,
-        'stocks': stocks, 'projects': projects, 'pics': pics,
+    return render(request, 'stonedb/item.html', _ctx({
+        'stone': stone,
+        'classification': stone.classification,
+        'color': stone.color,
+        'country': stone.country,
+        'texture': stone.texture,
+        'pics': pics,
+        'projects': projects,
+        'stocks': stocks,
         'selected_classification': getattr(stone.classification, 'id', ''),
         'selected_color': getattr(stone.color, 'id', ''),
         'selected_country': getattr(stone.country, 'id', ''),
-        'selected_texture': getattr(stone.texture, 'id', '')})
+        'selected_texture': getattr(stone.texture, 'id', '')}))
 
 
 def api_search(request):
@@ -258,7 +290,7 @@ def api_search(request):
             if a.id not in [b['id'] for b in li]:
                 li.append(get_obj(a))
 
-    # First find stones that have a name that begins with the redir_search query.
+    # First find stones that have a name that begins with redir_search query.
     add_all(StoneName.objects.filter(slug__startswith=q)
             .distinct('stone__name').order_by('stone__name')
             .prefetch_related('stone')[:limit])

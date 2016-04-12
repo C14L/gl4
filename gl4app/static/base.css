@@ -49,7 +49,7 @@ header > form input[type="submit"] { width: 50px; }
 
 /* Template page elements */
 
-#tpl-wrap { padding:0; margin:0 auto 500px auto; border:0; text-align:left; width:920px; background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 0 12px -2px #000; }
+#tpl-wrap { padding: 0; margin: 0 auto 500px auto; border: 0; text-align: left; width: 980px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 0 12px -2px #000; }
 
 #tpl-login { width:800px; box-shadow:inset 0 -10px 10px -5px #aaa; border-radius:10px 10px 0 0; padding:10px; margin:0 auto; background:#fff; color:#666; }
 #tpl-login a { color:#00F; text-decoration:underline; }
@@ -241,15 +241,24 @@ table.link-table td a { font-weight:bold; display:block; padding:0; margin:0 0 5
 img.link-icon { width:64px; height:64px; border:0; float:left; padding:0; margin:0 10px 10px 0; }
 
 
-/* This is based on the idea of ".stared-stone-link" and displays a stone picture in the background of every line of the <ul>-list. */
+/* All stone result lists. TODO: re-make with flex box. */
 
 ul.enhanced-stone-list { clear: left; overflow: hidden; list-style-type: none; padding: 0; margin: 0; }
-ul.enhanced-stone-list li { padding:0; margin:5px 10px; width:200px; float:left; }
-ul.enhanced-stone-list li a { border-radius:5px 5px 0 0; border:1px solid #909090; display: block; color:#000; background:top left repeat; padding:30px 0 0 0; margin:0; color:#000; text-decoration:none; overflow:hidden; }
-ul.enhanced-stone-list li a:hover { border-color:#606060; }
-ul.enhanced-stone-list li a span.capt { display: block; height:2.5em; padding:2px 5px; margin:0; background:#fff; opacity:.7; overflow:hidden; }
-ul.enhanced-stone-list li a span.capt span.name { color:#00f; text-decoration:underline; }
-ul.enhanced-stone-list li a span.capt span.pseu { display:none; }
+ul.enhanced-stone-list li { padding: 0; margin: 5px 10px; width: 215px; float: left; }
+ul.enhanced-stone-list li a { border-radius: 3px 3px 0 0; border: 1px solid gray; display: block; color: #000; background: top left repeat; padding: 30px 0 0 0; margin: 0; color: #000; text-decoration: none; overflow: hidden; transition: 0.3s ease-out; }
+ul.enhanced-stone-list li a:hover { box-shadow: 0 0 8px rgba(0,0,0,0.5); transition: 0.3s ease-out; }
+ul.enhanced-stone-list li a span.capt { display: block; height: 3.25em; padding: 2px 5px; margin: 0; background: #fff; opacity: 0.75; overflow: hidden; }
+ul.enhanced-stone-list li a span.capt span.name { color: #00f; text-decoration: underline; }
+ul.enhanced-stone-list li a span.capt span.pseu { display: none; }
+
+
+/* The list of "more of the same filter" below a stone list. */
+
+.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
+.stone-property-list li { margin: 4px; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
+.stone-property-list li a { text-decoration: inherit; }
+.stone-property-list li a:hover { text-decoration: underline; }
+.stone-property-list li .count { color: #999; }
 
 
 /* Browse photos in table overview. */
@@ -541,3 +550,13 @@ body.user.settings.areas .list .item .picture { opacity: 0.75; float: left; marg
 body.user.settings.areas .list .item .about { opacity: 0.75; }
 body.user.settings.areas .list .item.is-member .picture { opacity: 1; }
 body.user.settings.areas .list .item.is-member .about { opacity: 1; }
+
+
+/* Ads */
+
+.fake.ads { background-color: gray; }
+.ads.gc-resp-atf-stone-browse-1 { width: 928px; height: 90px; margin: 20px auto; }
+.ads.gc-resp-btf-stone-browse-3 { width: 928px; height: 90px; margin: 20px auto; }
+
+
+

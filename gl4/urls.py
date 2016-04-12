@@ -55,7 +55,7 @@ urlpatterns = [
         r'/(?P<texture>[a-zA-Z0-9_-]{1,30})'
         r'/(?P<color>[a-zA-Z0-9_-]{1,30})'
         r'/(?P<classif>[a-zA-Z0-9_-]{1,30})'
-        r'(?:/(?P<p>[2-9]))?$',
+        r'(?:/(?P<p>\d))?$',
         stonedb.views.filter, name='stonedb_filter'),
 
     url(r'api/redir_search/stones/',
@@ -65,14 +65,17 @@ urlpatterns = [
 
     url(r'^tradeshows/?$',
         tradeshowdb.views.home, name='tradeshowdb_home'),
+
     # /tradeshows/2016
     url(r'^tradeshows/(?P<y>[12][0-9]{3})$',
         tradeshowdb.views.home, name='tradeshowdb_by_year'),
+
     # /tradeshows/2015/construction-architecture
     url(r'^tradeshows/(?P<y>[12][0-9]{3})/(?P<slug>[a-zA-Z0-9_-]{1,100})$',
         tradeshowdb.views.item, name='tradeshowdb_item'),
 
     # companydb: /companies
+
     url(r'^companies$', companydb.views.home, name='companydb_home'),
     # /companies/redir_search?country=342&business=memorials-grave-stones
 
@@ -82,9 +85,11 @@ urlpatterns = [
     # /companies/consultancy-quality-assurance/1 <--[group]---
     url(r'^companies/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_group, name='companydb_group'),
+
     # /companies/kitchen-countertops/1 <--[product]---
     url(r'^products/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_product, name='companydb_product'),
+
     # /companies/kitchen-countertops/1 <--[country]---
     url(r'^companies/in/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_country, name='companydb_country'),

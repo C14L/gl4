@@ -1,55 +1,39 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n %}
+{% load gl4tags i18n %}
 
-{% block title %}{% blocktrans with t_texture_name=texture.name|capfirst color_name=color.name classification_name=classification.name country_name=country.name %}{{t_texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}{% endblock %}
+{% block title %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endblock %}
 
-{% block title2 %}{% blocktrans with texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}All {{texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}{% endblock %}
+{% block title2 %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endblock %}
 
-{% block description %}{% blocktrans with texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}All {{texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}{% endblock %}
+{% block description %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endblock %}
 
-{% block head %}
-<style>
-.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
-.stone-property-list li { margin: 4px; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
-.stone-property-list li a { text-decoration: inherit; }
-.stone-property-list li a:hover { text-decoration: underline; }
-.stone-property-list li .count { color: #999; }
-</style>
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}{% endblock %}
+{% block body_classes %}stones search filter{% endblock %}
 
 {% block breadcrumb %}
 {% blocktrans asvar tr_country %}country{% endblocktrans %}
 <a href="{% url 'stonedb_home' %}">{% trans 'Stones' %}</a> &raquo;
-{% if country %}<a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">{{country.name}}</a> &raquo;{% endif %}
-{% if texture %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug 'all' 'all' %}">{{texture.name}}</a> &raquo;{% endif %}
-{% if color %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug 'all' %}">{{color.name}}</a> &raquo;{% endif %}
-{% if classification %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug|default:'all' classification.slug %}">{{classification.name}}</a> &raquo;{% endif %}
+{% if country %}<a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">{{ country.name }}</a> &raquo;{% endif %}
+{% if texture %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug 'all' 'all' %}">{{ texture.name }}</a> &raquo;{% endif %}
+{% if color %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug 'all' %}">{{ color.name }}</a> &raquo;{% endif %}
+{% if classification %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug|default:'all' classification.slug %}">{{ classification.name }}</a> &raquo;{% endif %}
 {% endblock %}
 
 {% block main %}
 
-<div class="browse-stones browse-filter">
+<h1>{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}{{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}</h1>
 
-  <h1>{% blocktrans with t_texture_name=texture.name|capfirst color_name=color.name classification_name=classification.name country_name=country.name %}{{t_texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}{% endblocktrans %}</h1>
+{% if stones|length == 0 %}
+  <p>{% trans 'Sorry, no stones match the search settings.' %}</p>
+{% else %}
+  <p>{% blocktrans with count=stones.paginator.count texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{ count }} different types of {{ texture_name }} {{ color_name }} {{ classification_name }} stones from {{ country_name }}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
 
-  <p>{% blocktrans with count=stones.paginator.count texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{count}} different types of {{texture_name}} {{color_name}} {{classification_name}} stones from {{country_name}}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
-
+  {% include 'stonedb/partial_list_prevnext.html' with simple_filter=0 %}
+  {% if stones|length > 10 %}{% adsense '8587626845' 'gc resp atf stone browse 1' %}{% endif %}
   {% include 'stonedb/stone-list-1.html'%}
-
-  <h2>{% blocktrans with tname=q.name|capfirst %}{{tname}} stone and other natural stone colors{% endblocktrans %}</h2>
-
-  <ul class="stone-property-list">
-    {% blocktrans asvar tr_color %}color{% endblocktrans %}
-    {% for item in more %}
-      <li>
-        <a href="{% url 'stonedb_simple_filter' tr_color item.slug %}">{% blocktrans with tname=item.name|capfirst %}{{tname}} granite or marble{% endblocktrans%}</a>
-        <span class="count">({{item.stones__count}})</span>
-      </li>
-    {% endfor %}
-  </ul>
-
-</div>
+  {% if stones|length > 10 %}{% adsense '5494559644' 'gc resp btf stone browse 3' %}{% endif %}
+  {% include 'stonedb/partial_list_prevnext.html' with simple_filter=0 %}
+{% endif %}
 
 {% endblock main %}

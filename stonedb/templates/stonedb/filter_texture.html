@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n markdown_deux_tags bleach_tags %}
+{% load gl4tags i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{% blocktrans with name=q.name %}All {{name}} marbles and {{name}} granites{% endblocktrans %}{% endblock %}
 
@@ -7,15 +7,7 @@
 
 {% block description %}{% blocktrans with name=q.name %}Browse {{name}} marbles and granites with pictures listed in Graniteland.{% endblocktrans %}{% endblock %}
 
-{% block head %}
-<style>
-.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
-.stone-property-list li { margin: 4px; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
-.stone-property-list li a { text-decoration: inherit; }
-.stone-property-list li a:hover { text-decoration: underline; }
-.stone-property-list li .count { color: #999; }
-</style>
-{% endblock %}
+{% block head %}{% endblock %}
 
 {% block body_classes %}browse-stones-texture{% endblock %}
 
@@ -25,12 +17,13 @@
 
 {% block main %}
 
-<h1>
-  {% blocktrans with name=q.name tname=q.name|capfirst %}{{name}} granite and {{name}} marble{% endblocktrans %}
-  {% if user.is_staff %}
-    <a href="{% url 'admin:stonedb_texture_change' q.id %}" class="btn btn-default">edit</a>
-  {% endif %}
-</h1>
+{% if user.is_staff %}
+  <div id="id-staff-links">
+    <a href="{% url 'admin:stonedb_texture_change' q.id %}">edit texture</a>
+  </div>
+{% endif %}
+
+<h1>{% blocktrans with texture=q.name capfirst_texture=q.name|capfirst %}{{ capfirst_texture }} granite and {{ texture }} marble{% endblocktrans %}</h1>
 
 {% if q.text %}
   {{ q.text|markdown|bleach }}
@@ -38,7 +31,15 @@
   <p>{% blocktrans with name=q.name page_count=stones.paginator.count %}Browse <strong>{{page_count}} different types of {{name}} marble and {{name}} granite</strong>. Click on a stone image to see more about a particular natural stone. Natural stone with a {{name}} texture on Graniteland.{% endblocktrans %}</p>
 {% endif %}
 
+{% include 'stonedb/partial_list_prevnext.html'%}
+
+{% adsense '8587626845' 'gc resp atf stone browse 1' %}
+
 {% include 'stonedb/stone-list-1.html'%}
+
+{% adsense '5494559644' 'gc resp btf stone browse 3' %}
+
+{% include 'stonedb/partial_list_prevnext.html'%}
 
 <h2>{% blocktrans with tname=q.name|capfirst %}{{name}} stone and other natural stone textures{% endblocktrans %}</h2>
 

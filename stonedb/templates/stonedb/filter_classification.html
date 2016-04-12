@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n markdown_deux_tags bleach_tags %}
+{% load gl4tags i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}{% endblock %}
 
@@ -7,15 +7,7 @@
 
 {% block description %}{% blocktrans with name=q.name %}Browse all {{name}} natural stones listed in Graniteland.{% endblocktrans %}{% endblock %}
 
-{% block head %}
-<style>
-.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
-.stone-property-list li { margin: 4px; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
-.stone-property-list li a { text-decoration: inherit; }
-.stone-property-list li a:hover { text-decoration: underline; }
-.stone-property-list li .count { color: #999; }
-</style>
-{% endblock %}
+{% block head %}{% endblock %}
 
 {% block body_classes %}browse-stones-classification{% endblock %}
 
@@ -25,12 +17,13 @@
 
 {% block main %}
 
-<h1>
-  {% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}
-  {% if user.is_staff %}
-    <a href="{% url 'admin:stonedb_classification_change' q.id %}" class="btn btn-default">edit</a>
-  {% endif %}
-</h1>
+{% if user.is_staff %}
+  <div id="id-staff-links">
+    <a href="{% url 'admin:stonedb_classification_change' q.id %}">edit classification</a>
+  </div>
+{% endif %}
+
+<h1>{% blocktrans with classification=q.name capfirst_classification=q.name|capfirst %}Browse {{ classification }} stones{% endblocktrans %}</h1>
 
 {% if q.text %}
   {{ q.text|markdown|bleach }}
@@ -40,7 +33,15 @@
 
 <h2>{% blocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
 
+{% include 'stonedb/partial_list_prevnext.html'%}
+
+{% adsense '8587626845' 'gc resp atf stone browse 1' %}
+
 {% include 'stonedb/stone-list-1.html'%}
+
+{% adsense '5494559644' 'gc resp btf stone browse 3' %}
+
+{% include 'stonedb/partial_list_prevnext.html'%}
 
 <h2>{% trans 'Types of natural stone / stone by classification' %}</h2>
 
