@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n markdown_deux_tags bleach_tags %}
+{% load gl4tags i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{{ topic.title }}{% endblock %}
 
@@ -17,6 +17,10 @@
 {% endblock %}
 
 {% block main %}
+
+<div class="topics">
+  {% adsense '6831692040' 'gc resp atf text section' %}
+</div>
 
 <div class="index">
   <h1>{{ topic.title }}</h1>

@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n markdown_deux_tags bleach_tags %}
+{% load gl4tags i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{{ article.title }}{% endblock %}
 
@@ -18,48 +18,21 @@
 
 {% block main %}
 
-<style>
-  body.pages.page .layout { display: flex; flex-direction: row; margin: 10px 0; }
-  body.pages.page .layout aside.left { width: 160px; }
-  body.pages.page .layout aside.right { width: 160px; }
-  body.pages.page .layout article { flex-grow: 10; margin: 0 20px; line-height: 2rem; }
-  body.pages.page .layout article h1 { margin: 10px 0; padding: 0; }
-  body.pages.page .layout article h2 { margin: 20px 0; padding: 0; font-size: 2rem; font-weight: bold; }
-  body.pages.page .layout article .staff { margin: 10px 0; padding: 0; }
-</style>
+<div class="layout">
+  <aside class="sidebar">
+    {% adsense '9785158445' 'gc resp atf text item' %}
+  </aside>
 
-  <div class="layout">
-    <aside class="left">
-      <div style="width: 160px; height: 600px; background: grey;"></div>
-    </aside>
-
-    <article>
-      <h1>{{ article.title }}</h1>
-      {% if user.is_staff %}
-        <div class="staff">
-          <a href="{% url 'admin:mdpages_article_change' article.pk %}" class="btn btn-primary">edit</a>
-          <a href="{% url 'admin:mdpages_article_changelist' %}" class="btn btn-default">list</a>
-        </div>
-      {% endif %}
-      {{ article.text|safe|markdown:'trusted' }}
-    </article>
-
-    <aside class="right">
-      {% if settings.PRODUCTION %}
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- gc resp atf text item -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-0795994016573783"
-             data-ad-slot="9785158445"
-             data-ad-format="auto"></ins>
-        <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      {% else %}
-        <div style="width: 160px; height: 600px; background: grey;"></div>
-      {% endif %}
-    </aside>
-  </div>
+  <article>
+    <h1>{{ article.title }}</h1>
+    {% if user.is_staff %}
+      <div class="staff">
+        <a href="{% url 'admin:mdpages_article_change' article.pk %}" class="btn btn-primary">edit</a>
+        <a href="{% url 'admin:mdpages_article_changelist' %}" class="btn btn-default">list</a>
+      </div>
+    {% endif %}
+    {{ article.text|safe|markdown:'trusted' }}
+  </article>
+</div>
 
 {% endblock main %}

@@ -370,40 +370,31 @@ body.stones-home .layout2 td ul li a:hover { background:rgba(255,255,255,0.4); b
 
 /* Pages */
 
-body.pages .topics { padding:0; margin:0; float:right; width:300px; }
-body.pages .topics .title { font-size:1.5em; font-weight:bold; color:#666; padding:0; margin:0; }
-body.pages .topics .info { font-weight:bold; }
-body.pages .topics .intro {  }
-body.pages .topics ul { margin:0; padding:0; list-style:none; }
-body.pages .topics ul li { margin:10px 0; padding:15px; background:#eee; }
-body.pages .topics ul strong { display:block; font-size:1.5em;}
-body.pages .topics ul span { display:block; color:#666; }
-body.pages .topics .ad { padding:10px 0; }
-body.pages h1 { padding:0 0 15px 0; margin:15px 0; }
-body.pages .index { margin-right:320px; }
-body.pages .index > h1 { padding:0; margin:15px 0; }
-body.pages .index > .intro { padding:0; margin:15px 0; }
-body.pages .index .item { border-top:1px solid #ccc; padding:15px 0; }
-body.pages .index .topic { display:block; color:#666; font-style:italic; }
-body.pages .index a { text-decoration:none; }
-body.pages .index h2 { padding:0; margin:5px 0; }
-body.pages .index h2 a { text-decoration:underline; }
-body.pages .index .list .intro { padding:0; margin:0; }
+body.pages .topics { padding: 0; margin: 0; float: right; width: 300px; }
+body.pages .topics .title { font-size: 1.5rem; font-weight: bold; color: gray; }
+body.pages .topics ul { margin: 0; padding: 0; list-style: none; }
+body.pages .topics ul li { margin: 10px 0; padding: 15px; background: #F3F3F3; }
+body.pages .topics ul strong { display: block; font-size: 1.5rem; }
+body.pages .topics ul span { display: block; color: gray; }
 
-body.pages.page h1 { color:#333; }
-body.pages.page .layout { width:100%; }
-body.pages.page .layout td { vertical-align:top; }
-body.pages.page .leftcol { font-size:1.15em; line-height:1.5em; padding:0 20px 0 0; text-align:justify; }
-body.pages.page .leftcol > p:first-child { margin-top:0; }
-body.pages.page .leftcol .ad { margin:20px 0; padding:10px 0; text-align:center; }
-body.pages.page .rightcol { width:300px; }
-body.pages.page .rightcol > div > a > img { width:300px; }
+body.pages .index { margin-right: 320px; }
+body.pages .index .item { border-bottom: 1px solid #ccc; padding: 15px 0; }
+body.pages .index .item:last-child { border-bottom: none; }
+body.pages .index .topic { display: block; color: gray; font-style: italic; }
+
+body.pages.page .layout { display: flex; flex-direction: row; }
+body.pages.page .layout .sidebar { order: 2; flex: 0 0; width: 300px; }
+body.pages.page .layout article { order: 1; flex: 1 1; line-height: 2rem; margin-right: 20px; }
+body.pages.page .layout article h1 { margin: 20px 0; padding: 0; line-height: 1.25em; }
+body.pages.page .layout article h2 { margin: 20px 0; padding: 0; font-size: 1.5rem; font-weight: bold; }
+body.pages.page .layout article .staff { margin: 10px 0; padding: 0; }
 
 body.pages.page .author { background:#ddd; margin:20px 0; padding:15px; text-align:left; }
 body.pages.page .author .title { font-weight:bold; color:#666; }
 body.pages.page .author .content { margin-top:10px; }
 body.pages.page .author .name { display:block; font-size:1.5em; }
 body.pages.page .author .about { display:block; }
+
 
 /* Profiles of users */
 
@@ -550,4 +541,5 @@ body.user.settings.areas .list .item.is-member .about { opacity: 1; }
 .ads.gc-resp-atf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
 .ads.gc-resp-btf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
 .ads.gc-resp-atf-homepage { width: 160px; height: 600px; }
-
+.ads.gc-resp-atf-text-section { width: 300px; height: 600px; }
+.ads.gc-resp-atf-text-item { width: 300px; height: 600px; }
