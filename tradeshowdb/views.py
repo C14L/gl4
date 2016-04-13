@@ -1,7 +1,7 @@
 from datetime import date
 
 from django.core.urlresolvers import reverse
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponsePermanentRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 
 from toolbox import force_int
@@ -27,13 +27,17 @@ def home(request, y=None):
         li.append({'idx': idx, 'name': a, 'tradeshows': tss})
 
     return render(request, 'tradeshowdb/home.html', {
-        'years': range((this_year-1), (this_year+4)),
-        'view_year': view_year, 'tradeshows': li,
-        'ts_total': ts_total, 'tpl_search_form': 'tradeshows'})
+        'years': range((this_year-1), (this_year+4)), 'view_year': view_year,
+        'tradeshows': li, 'ts_total': ts_total,
+        'tpl_search_form': 'tradeshows'})
 
 
 def item(request, y, slug):
+    this_year = date.today().year
     year = force_int(y)
-    tradeshow = get_object_or_404(Tradeshow, begins__year=year, url=slug)
-    ctx = {'tradeshow': tradeshow, 'view_year': year}
-    return render(request, 'tradeshowdb/item.html', ctx)
+    tradeshow = Tradeshow.objects.filter(begins__year=year, url=slug).first()
+    if not tradeshow:
+        raise Http404()
+    return render(request, 'tradeshowdb/item.html', {
+        'years': range((this_year-1), (this_year+4)), 'tradeshow': tradeshow,
+        'view_year': year, 'tpl_search_form': 'tradeshows'})

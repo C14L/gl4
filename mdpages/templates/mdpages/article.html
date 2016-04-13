@@ -31,7 +31,7 @@
         <a href="{% url 'admin:mdpages_article_changelist' %}" class="btn btn-default">list</a>
       </div>
     {% endif %}
-    {{ article.text|safe|markdown:'trusted' }}
+    {{ article.text|markdown|bleach }}
   </article>
 </div>
 

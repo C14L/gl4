@@ -27,7 +27,8 @@
     <img src="{% get_static_prefix %}tradeshow-logos/nologo.png" alt="{{ tradeshow.name }}">
   {% endif %}
   <strong>{% blocktrans with name=tradeshow.name country=tradeshow.country_name begins=tradeshow.begins ends=tradeshow.ends %}{{ name }} is a trade show in {{ country }} from {{ begins }} until {{ ends }}.{% endblocktrans %}</strong>
-  <em>{{ tradeshow.keywords }}</em></div>
+  <em>{{ tradeshow.keywords|truncatewords:20 }}</em>
+</div>
 
 <table class="item-data">
   <tr>

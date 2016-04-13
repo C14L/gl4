@@ -14,7 +14,7 @@ select { border: 1px solid #999; padding: 2px 0px; background: url(/img/input-bo
 textarea { border: 1px solid #999; background: url(/img/input-box-bg.png) bottom repeat-x #FFF; }
 input[type="checkbox"]:focus, input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus { border-color: #000; background:#FFF; }
 
-h1 { padding: 0; margin: 0; font-size: 2rem; line-height: 4rem; color: gray; font-weight: normal; }
+h1 { padding: 0; margin: 20px 0; font-size: 2rem; line-height: 1.5em; color: gray; font-weight: normal; }
 h2 { padding: 0; margin: 10px 0; font-size: 1.5rem; }
 h2:first-child { margin-top: 0; }
 h3 { padding: 0; margin: 10px 0; font-size: 1.15rem; }
@@ -285,8 +285,6 @@ div.list2 table td.picture { width:100px; text-align:center; background:#EEE; bo
 
 /* Tradeshow */
 
-/* Display a group of button style links of which only one is active. */
-
 body.tradeshows .yearswitch { padding: 10px; background-color: rgba(0,0,0,0.075); }
 
 body.tradeshows .switchgroup { display: flex; background: #F0F0F0; border: 1px solid #888; overflow: hidden; border-radius: 5px; font-size: 20px;  }
@@ -298,19 +296,17 @@ body.tradeshows .switchgroup .item.active { box-shadow:inset 0 0.5em 0.35em -0.2
 body.tradeshows .switchgroup .item > img { opacity:0.7; }
 body.tradeshows .switchgroup .item:hover > img { opacity:1; }
 
-body.tradeshows.index .list { margin:25px 0; }
-body.tradeshows.index .list h2 { margin:15px 0; font-size:1.5em; }
-body.tradeshows.index .list table { margin:15px 0; width:100%; table-layout:fixed; border-bottom:1px dotted #ccc; }
-body.tradeshows.index .list .item { vertical-align:top; width:50%; margin:0; padding:0; }
-body.tradeshows.index .list .item a { display:block; padding:10px; text-decoration:none; overflow:hidden; border-top:1px dotted #ccc; }
-body.tradeshows.index .list .item img { width:50px; height:50px; float:left; border-radius:5px; }
-body.tradeshows.index .list .item span { display:block; margin:0 0 0 60px; }
-body.tradeshows.index .list .item .name { font-size:1.15em; font-weight:bold; }
-body.tradeshows.index .list .item .aka { color:#888; }
-body.tradeshows.index .list .item .dateplace { color:#000; }
+body.tradeshows.index h2 { margin: 20px 0; font-size: 1.5rem; }
+body.tradeshows.index .list { display: flex; flex-flow: row wrap; }
+body.tradeshows.index .list .item { flex: 1 auto; min-width: 300; max-width: 450px; width: 350px; margin: 5px; padding: 10px; text-decoration: none; overflow: hidden; transition: 0.3s ease-out; }
+body.tradeshows.index .list .item:hover { box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: 0.3s ease-out; }
+body.tradeshows.index .list .item img { width: 50px; height: 50px; float: left; }
+body.tradeshows.index .list .item span { display: block; margin: 0 0 0 60px; }
+body.tradeshows.index .list .item .name { font-size: 1.15rem; font-weight: bold; }
+body.tradeshows.index .list .item .aka { color: gray; }
+body.tradeshows.index .list .item .dateplace { color: black; }
 
-body.tradeshows.item { margin:10px 0; padding:0; }
-body.tradeshows.item .item-title { margin:0; padding:10px; font-size:1.25em; overflow:hidden; border:1px solid #ccc; border-width:1px 0; line-height:1.5em; }
+body.tradeshows.item .item-title { margin: 0; padding: 10px; font-size: 1.25em; overflow:hidden; border:1px solid #ccc; border-width:1px 0; line-height:1.5em; }
 body.tradeshows.item .item-title > img { width:75px; height:75px; margin:0 10px 0 0; vertical-align:middle; float:left; background:#888; box-shadow:0 0 10px #fff; border-radius:5px; }
 body.tradeshows.item .item-title > strong { display:block; font-weight:strong; }
 body.tradeshows.item .item-title > em { display:block; font-style:normal; color:#999; }

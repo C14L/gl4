@@ -1,17 +1,8 @@
 /* Style fixes for display on screen sizes <500px */
 
-body {
-    margin: 0; margin-top: 112px; padding: 0;
-    font-size: 16px;
-}
-#tpl-lema {
-    display: none;
-}
-#tpl-wrap {
-    width: 100vw;
-    overflow: hidden;
-    border-radius: 0;
-}
+body { margin: 0; margin-top: 112px; padding: 0; font-size: 16px; }
+#tpl-lema { display: none; }
+#tpl-wrap { width: 100vw; overflow: hidden; border-radius: 0; }
 
 /* -- #tpl-title ------------------------------------------------------------ */
 
@@ -299,3 +290,10 @@ body.pages.page .author .title { font-weight: normal; color:#666; }
 body.pages.page .author .content { margin-top:10px; }
 body.pages.page .author .name { font-size: 16px; }
 body.pages.page .author .about {  }
+
+/* Tradeshow */
+
+body.tradeshows.item .item-title {  }
+body.tradeshows.item .item-title > img { margin: 10px auto; float: none; display: block; }
+body.tradeshows.item .item-title > strong { text-align: center; }
+body.tradeshows.item .item-title > em { margin: 10px 0; font-size: 16px; line-height: 1.15em; }

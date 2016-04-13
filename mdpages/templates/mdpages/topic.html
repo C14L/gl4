@@ -13,7 +13,7 @@
 
 {% block breadcrumb %}
 <a href="{% url 'mdpages_home' %}">{% trans 'Natural Stone Magazine' %}</a> &raquo;
-<a href="{% url 'mdpages_topic' topic.slug %}">{{topic.title}}</a> &raquo;
+<a href="{% url 'mdpages_topic' topic.slug %}">{{ topic.title }}</a> &raquo;
 {% endblock %}
 
 {% block main %}
