@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n %}
+{% load gl4tags i18n static %}
 
 {% block title %}{% trans 'GRANITELAND - The Granite and Marble Search Engine' context 'Homepage title' %}{% endblock %}
 
@@ -20,17 +20,11 @@
 <h1>{% trans 'Granite and Marble Search Engine' context 'Homepage H1' %}</h1>
 
 <div class="leftcol">
-  <div class="top-pic" title="Granite Quary"></div>
-  <div class="left-ad">
-    {% if settings.PRODUCTION %}
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- gc resp atf homepage -->
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="1762364042" data-ad-format="auto"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    {% else %}
-    <div style="width:160px;height:600px;background:grey;"></div>
-    {% endif %}
-  </div>
+
+  <div class="top-pic" title="{% trans 'Granite Quary' %}"></div>
+
+  <div class="left-ad">{% adsense '1762364042' 'gc resp atf homepage' %}</div>
+
   <div class="sectionlinks">
 
     <h2>{% trans 'Find Granite and Marble' %}</h2>
@@ -48,15 +42,15 @@
   </div>
 
   <div class="tbox currstock">
-    <div class="title">Current stock items</div>
+    <div class="title">{% trans 'Current stock items' %}</div>
     <div class="content">
-      <p>A selection of current stock items of companies listed in the
-        Graniteland stone companies directory. For questions regarding a stock
-        item, please contact the company directly.</p>
+      <p>{% trans 'A selection of current stock items of companies listed in the Graniteland stone companies directory. For questions regarding a stock item, please contact the company directly.' %}</p>
       <ul class="imglink">
         {% for item in stocks %}
         <li>
-          <a class="img-link" href="{% url 'companydb_stock' item.user.username %}" style="background:url({{item.stone.get_pic_medium}}) top left repeat;"></a><a class="main-link" href="{% url 'companydb_stock' item.user.username %}"><strong>{{item.user.profile.name}} has {{item.stone.name}} on stock</strong></a><span class="content">{{item.description|truncatewords:25}}</span>
+          <a class="img-link" href="{% url 'companydb_stock' item.user.username %}" style="background:url({{ item.stone.get_pic_medium }}) top left repeat;"></a>
+          <a class="main-link" href="{% url 'companydb_stock' item.user.username %}"><strong>{% blocktrans with company=item.user.profile.name stone=item.stone.name %}{{ company }} has {{ stone }} on stock{% endblocktrans %}</strong></a>
+          <span class="content">{{ item.description|truncatewords:20 }}</span>
         </li>
         {% endfor %}
       </ul>
@@ -67,7 +61,7 @@
 <div class="rightcol">
   <div class="tbox colors">
     <div class="title">
-      <a href="{% url 'stonedb_property_list' 'color' %}">Natural stone by color</a>
+      <a href="{% url 'stonedb_property_list' 'color' %}">{% trans 'Natural stone by color' %}</a>
     </div>
     <div class="content">
       <table>
@@ -75,39 +69,69 @@
           <td>
             <ul>
               <li>
-                <a href="/stone/color/beige"><span style="background: url(/static/img/stonecolors/beige-marble.jpg)"></span>Beige
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'beige' %}">
+                  <span style="background: url({% static 'img/stonecolors/beige-marble.jpg' %})"></span>
+                  {% trans 'Beige natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/blue"><span style="background: url(/static/img/stonecolors/blue-marble.jpg)"></span>Blue
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'blue' %}">
+                  <span style="background: url({% static 'img/stonecolors/blue-marble.jpg' %})"></span>
+                  {% trans 'Blue natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/brown"><span style="background: url(/static/img/stonecolors/brown-marble.jpg"></span>Brown
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'brown' %}">
+                  <span style="background: url({% static 'img/stonecolors/brown-marble.jpg' %}"></span>
+                  {% trans 'Brown natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/yellow"><span style="background: url(/static/img/stonecolors/yellow-marble.jpg)"></span>Yellow
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'yellow' %}">
+                  <span style="background: url({% static 'img/stonecolors/yellow-marble.jpg' %})"></span>
+                  {% trans 'Yellow natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/grey"><span style="background: url(/static/img/stonecolors/grey-marble.jpg)"></span>Grey
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'grey' %}">
+                  <span style="background: url({% static 'img/stonecolors/grey-marble.jpg' %})"></span>
+                  {% trans 'Grey natural stone' %}
+                </a>
+              </li>
             </ul>
           </td>
           <td>
             <ul>
               <li>
-                <a href="/stone/color/green"><span style="background: url(/static/img/stonecolors/green-marble.jpg)"></span>Green
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'green' %}">
+                  <span style="background: url({% static 'img/stonecolors/green-marble.jpg' %})"></span>
+                  {% trans 'Green natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/pink"><span style="background: url(/static/img/stonecolors/pink-marble.jpg)"></span>Pink
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'pink' %}">
+                  <span style="background: url({% static 'img/stonecolors/pink-marble.jpg' %})"></span>
+                  {% trans 'Pink natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/red"><span style="background: url(/static/img/stonecolors/red-marble.jpg)"></span>Red
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'red' %}">
+                  <span style="background: url({% static 'img/stonecolors/red-marble.jpg' %})"></span>
+                  {% trans 'Red natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/black"><span style="background: url(/static/img/stonecolors/black-marble.jpg)"></span>Black
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'black' %}">
+                  <span style="background: url({% static 'img/stonecolors/black-marble.jpg' %})"></span>
+                  {% trans 'Black natural stone' %}
+                </a>
+              </li>
               <li>
-                <a href="/stone/color/white"><span style="background: url(/static/img/stonecolors/white-marble.jpg)"></span>White
-                  natural stone</a></li>
+                <a href="{% url 'stonedb_simple_filter' 'color' 'white' %}">
+                  <span style="background: url({% static 'img/stonecolors/white-marble.jpg' %})"></span>
+                  {% trans 'White natural stone' %}
+                </a>
+              </li>
             </ul>
           </td>
         </tr>
@@ -117,11 +141,11 @@
 
   {% if user.is_authenticated %}
   <div class="tbox login">
-    <div class="title">Login</div>
+    <div class="title">{% trans 'Login' %}</div>
     <div class="content">
-      <p>Signed in as {{user.profile.name}}</p>
+      <p>{% blocktrans with name=user.profile.name %}Signed in as {{ name }}{% endblocktrans %}</p>
       <form action="{% url 'account_logout' %}" method="get">
-        <input type="submit" value="Sign out">
+        <input class="btn btn-primary" type="submit" value="Sign out">
       </form>
     </div>
   </div>
@@ -136,121 +160,116 @@
         {% endif %}
         <table>
           <tr>
-            <td>Login:</td>
+            <td>{% trans 'Login' %}:</td>
             <td><input type="text" name="login" value=""></td>
           </tr>
           <tr>
-            <td>Password:</td>
+            <td>{% trans 'Password' %}:</td>
             <td><input type="password" name="password" value=""></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="submit" name="submit" value="Login"></td>
+            <td><input type="submit" name="submit" value="{% trans 'Login' %}"></td>
           </tr>
         </table>
       </form>
-      <div class="links"><b><a href="{% url 'account_signup' %}">Register now!</a></b> |
-        <a href="{% url 'account_reset_password' %}">Password reminder</a></div>
+      <div class="links">
+        <b><a href="{% url 'account_signup' %}">{% trans 'Register now!' %}</a></b> |
+        <a href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a>
+      </div>
     </div>
   </div>
   {% endif %}
 
   <div class="tbox">
-    <div class="title">Granite + Marble Magazine</div>
+    <div class="title">{% trans 'Granite + Marble Magazine' %}</div>
     <div class="content staticpages">
       <ul>
-        <li><strong><a href="/infos/home">Home use</a></strong><br>Tipps and
-          tricks for the installation and use of granite and marble stone at
-          home.
+        <li>
+          <strong><a href="{% url 'mdpages_topic' 'home' %}">{% trans 'Home use' %}</a></strong><br>
+          {% trans 'Tipps and tricks for the installation and use of granite and marble stone at home.' %}
         </li>
-        <li><strong><a href="/infos/professional">Stone
-          professional</a></strong><br>Natural stone for professional builders
-          and designers, from architecture to facade building and the
-          installation of marble and granite flooring.
+        <li>
+          <strong><a href="{% url 'mdpages_topic' 'professional' %}">{% trans 'Stone professional' %}</a></strong><br>
+          {% trans 'Natural stone for professional builders and designers, from architecture to facade building and the installation of marble and granite flooring.' %}
         </li>
-        <li><strong><a href="/infos/production">Quary and
-          Production</a></strong><br>Information for natural stone companies,
-          quarying of granite and marble, cutting of slabs and tiles, with
-          information on machinery and current trends.
+        <li>
+          <strong><a href="{% url 'mdpages_topic' 'production' %}">{% trans 'Quary and Production' %}</a></strong><br>
+          {% trans 'Information for natural stone companies, quarying of granite and marble, cutting of slabs and tiles, with information on machinery and current trends.' %}
         </li>
-        <li><strong><a href="/infos/misc">Misc</a></strong><br>Other natural
-          stone related events that do not fit into any of the above topics.
+        <li>
+          <strong><a href="{% url 'mdpages_topic' 'misc' %}">{% trans 'Misc' %}</a></strong><br>
+          {% trans 'Other natural stone related events that do not fit into any of the above topics.' %}
         </li>
-        <li><strong><a href="/infos/help">Graniteland Help</a></strong><br>How
-          to use Graniteland, explains how to find quickly the right natural
-          stone. And for stone companies, how to present your company online.
+        <li>
+          <strong><a href="{% url 'mdpages_topic' 'help' %}">{% trans 'Graniteland Help' %}</a></strong><br>
+          {% trans 'How to use Graniteland, explains how to find quickly the right natural stone. And for stone companies, how to present your company online.' %}
         </li>
       </ul>
     </div>
   </div>
 
   <div class="tbox companies">
-    <div class="title">Stone Companies online</div>
+    <div class="title">{% trans 'Stone Companies online' %}</div>
     <div class="content">
-      <p>Many companies specialized in natural stone and related products are
-        already listed in the Graniteland Company Directory.</p>
+      <p>{% trans 'Many companies specialized in natural stone and related products are already listed in the Graniteland Company Directory.' %}</p>
       <ul>
         {% for item in view_users %}
         <li>
-          <img src="{{item.profile.title_foto_url}}"><strong><a href="{% url 'companydb_item' item.username %}">{{item.profile.name}}</a></strong><br><em>({{item.profile.city}}, {{item.profile.country_name}})</em>
+          <img src="{{item.profile.title_foto_url}}">
+          <strong><a href="{% url 'companydb_item' item.username %}">{{item.profile.name}}</a></strong><br>
+          <em>({{item.profile.city}}, {{item.profile.country_name}})</em>
         </li>
         {% endfor %}
       </ul>
-      <p><a href="{{settings.SIGNUP_URL}}">Register now!</a></p>
+      <p><a href="{{settings.SIGNUP_URL}}">{% trans 'Register now!' %}</a></p>
     </div>
   </div>
 
   <div class="tbox countries">
     <div class="title">
-      <a href="{% url 'stonedb_property_list' 'country' %}">Natural stone by country of origin</a>
+      <a href="{% url 'stonedb_property_list' 'country' %}">{% trans 'Natural stone by country of origin' %}</a>
     </div>
     <div class="content">
       <ul>
-        <li><a href="/stone/country/brazil">Granite and marble from Brazil</a>
-        </li>
-        <li><a href="/stone/country/china">Granite and marble from China</a>
-        </li>
-        <li><a href="/stone/country/germany">Granite and marble from Germany</a>
-        </li>
-        <li><a href="/stone/country/france">Granite and marble from France</a>
-        </li>
-        <li><a href="/stone/country/india">Granite and marble from India</a>
-        </li>
-        <li><a href="/stone/country/italy">Granite and marble from Italy</a>
-        </li>
-        <li><a href="/stone/country/spain">Granite and marble from Spain</a>
-        </li>
-        <li><a href=""><strong>More...</strong></a></li>
+        <li><a href="{% url 'stonedb_simple_filter' 'country' 'brazil' %}">{% trans 'Granite and marble from Brazil' %}</a></li>
+        <li><a href="{% url 'stonedb_simple_filter' 'country' 'china' %}">{% trans 'Granite and marble from China' %}</a></li>
+        <li><a href="{% url 'stonedb_simple_filter' 'country' 'germany' %}">{% trans 'Granite and marble from Germany' %}</a></li>
+        <li><a href="{% url 'stonedb_simple_filter' 'country' 'france' %}">{% trans 'Granite and marble from France' %}</a></li>
+        <li><a href="{% url 'stonedb_simple_filter' 'country' 'india' %}">{% trans 'Granite and marble from India' %}</a></li>
+        <li><a href="{% url 'stonedb_simple_filter' 'country' 'italy' %}">{% trans 'Granite and marble from Italy' %}</a></li>
+        <li><a href="{% url 'stonedb_simple_filter' 'country' 'spain' %}">{% trans 'Granite and marble from Spain' %}</a></li>
+        <li><a href=""><strong>{% trans 'More' %}...</strong></a></li>
       </ul>
     </div>
   </div>
 
   <div class="tbox classes">
     <div class="title">
-      <a href="{% url 'stonedb_property_list' 'type' %}">Natural stone by classification</a>
+      <a href="{% url 'stonedb_property_list' 'type' %}">{% trans 'Natural stone by classification' %}</a>
     </div>
     <div class="content">
       <table class="wide top">
         <tr>
           <td>
             <ul>
-              <li><a href="/stone/type/granite">Granite</a></li>
-              <li><a href="/stone/type/limestone">Limestone</a></li>
-              <li><a href="/stone/type/marble">Marble</a></li>
+              <li><a href="/stone/type/granite">{% trans 'Granite' %}</a></li>
+              <li><a href="/stone/type/limestone">{% trans 'Limestone' %}</a></li>
+              <li><a href="/stone/type/marble">{% trans 'Marble' %}</a></li>
             </ul>
           </td>
           <td>
             <ul>
-              <li><a href="/stone/type/quartzite">Quartzite</a></li>
-              <li><a href="/stone/type/sandstone">Sandstone</a></li>
-              <li><a href="/stone/type/slate">Slate</a></li>
+              <li><a href="/stone/type/quartzite">{% trans 'Quartzite' %}</a></li>
+              <li><a href="/stone/type/sandstone">{% trans 'Sandstone' %}</a></li>
+              <li><a href="/stone/type/slate">{% trans 'Slate' %}</a></li>
             </ul>
           </td>
           <td>
             <ul>
-              <li><a href="/stone/type/soapstone">Soapstone</a></li>
-              <li><a href="/stone/type/travertine">Travertine</a></li>
-              <li><a href=""><strong>More...</strong></a></li>
+              <li><a href="/stone/type/soapstone">{% trans 'Soapstone' %}</a></li>
+              <li><a href="/stone/type/travertine">{% trans 'Travertine' %}</a></li>
+              <li><a href=""><strong>{% trans 'More' %}...</strong></a></li>
             </ul>
           </td>
         </tr>

@@ -3,7 +3,7 @@
 <ul class="enhanced-stone-list">
   {% for item in stones %}
     <li>
-      <a href="{% url 'stonedb_item' item.slug %}" data-thumb="{{item.get_pic_thumb}}" style="background-image:url({{item.get_pic_thumb}});" title="{% blocktrans with pseu=item.get_pseudonyms %}Other trade names are {{pseu}}{% endblocktrans %}"><span class="capt">{% blocktrans trimmed with name=item.name color=item.color.name classification=item.classification.name simple=item.classification.simple_name country=item.country.name %}<span class="name">{{name}}</span> is a {{color}} {{classification}} ({{simple}}-like) from {{country}}{% endblocktrans %}</span></a>
+      <a href="{% url 'stonedb_item' item.slug %}" data-thumb="{{item.get_pic_thumb}}" style="background-image:url({{ item.get_pic_thumb }});" title="{% blocktrans with pseu=item.get_pseudonyms %}Other trade names are {{ pseu }}{% endblocktrans %}"><span class="capt">{% blocktrans trimmed with name=item.name color=item.color.name classification=item.classification.name simple=item.classification.simple_name country=item.country.name %}<span class="name">{{ name }}</span> is a {{ color }} {{ classification }} from {{ country }}{% endblocktrans %}</span></a>
     </li>
   {% endfor %}
 </ul>

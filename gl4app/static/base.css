@@ -46,7 +46,7 @@ header > form input[type="submit"] { width: 50px; }
 
 /* Template page elements */
 
-#tpl-wrap { padding: 0; margin: 0 auto 500px auto; border: 0; text-align: left; width: 980px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 0 12px -2px #000; }
+#tpl-wrap { padding: 0; margin: 0 auto 500px auto; border: 0; text-align: left; width: 920px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 0 12px -2px #000; }
 
 #tpl-login { width:800px; box-shadow:inset 0 -10px 10px -5px #aaa; border-radius:10px 10px 0 0; padding:10px; margin:0 auto; background:#fff; color:#666; }
 #tpl-login a { color:#00F; text-decoration:underline; }
@@ -55,8 +55,8 @@ header > form input[type="submit"] { width: 50px; }
 
 #tpl-lema { display:block; white-space:nowrap; font-family:tahoma,serif; padding:1px; margin:0; text-align:center; color:#fff; text-shadow:0 0 3px #000; }
 
-#tpl-msg { display:block; position:fixed; top:0; left:0; right:0; height:0; background:#000; text-align:center; }
-#tpl-msg span { display:inline-block;  padding:15px; margin:0; text-align:center; background:#FF0; color:#F00; font-weight:bold;  border:2px solid #F00; border-top:0;  border-radius:0 0 10px 10px; box-shadow:0 5px 10px rgba(0,0,0,0.4); }
+#tpl-msg { display: block; position: fixed; top: 0; left: 0; right: 0; height: 0; background: #000; text-align: center; }
+#tpl-msg span { display: inline-block; padding: 15px; margin: 0; text-align: center; background: #FF0; color: #F00; font-weight: bold;  border: 2px solid #F00; border-top: 0;  border-radius: 0 0 10px 10px; box-shadow: 0 5px 10px rgba(0,0,0,0.4); }
 
 #tpl-breadcrumb { padding: 10px 10px 0 20px; font-size: 1rem; color: gray; }
 #tpl-breadcrumb a {  }
@@ -235,21 +235,21 @@ img.link-icon { width:64px; height:64px; border:0; float:left; padding:0; margin
 /* All stone result lists. TODO: re-make with flex box. */
 
 ul.enhanced-stone-list { clear: left; overflow: hidden; list-style-type: none; padding: 0; margin: 0; }
-ul.enhanced-stone-list li { padding: 0; margin: 5px 10px; width: 215px; float: left; }
-ul.enhanced-stone-list li a { border-radius: 3px 3px 0 0; border: 1px solid gray; display: block; color: #000; background: top left repeat; padding: 30px 0 0 0; margin: 0; color: #000; text-decoration: none; overflow: hidden; transition: 0.3s ease-out; }
-ul.enhanced-stone-list li a:hover { box-shadow: 0 0 8px rgba(0,0,0,0.5); transition: 0.3s ease-out; }
-ul.enhanced-stone-list li a span.capt { display: block; height: 3.25em; padding: 2px 5px; margin: 0; background: #fff; opacity: 0.75; overflow: hidden; }
-ul.enhanced-stone-list li a span.capt span.name { color: #00f; text-decoration: underline; }
-ul.enhanced-stone-list li a span.capt span.pseu { display: none; }
+ul.enhanced-stone-list li { padding: 0; margin: 5px 10px; width: 200px; float: left; }
+ul.enhanced-stone-list li > a { border-radius: 3px; display: block; color: #000; background: lightgray top left repeat; padding: 30px 0 0 0; margin: 0; color: #000; text-decoration: none; overflow: hidden; transition: 0.3s ease-out; }
+ul.enhanced-stone-list li > a:hover { box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: 0.3s ease-out; }
+ul.enhanced-stone-list li > a span.capt { display: block; height: 3.25em; padding: 2px 5px; margin: 0; background: #fff; opacity: 0.75; overflow: hidden; }
+ul.enhanced-stone-list li > a span.capt span.name { color: #00f; text-decoration: underline; }
+ul.enhanced-stone-list li > a span.capt span.pseu { display: none; }
 
 
 /* The list of "more of the same filter" below a stone list. */
 
-.stone-property-list { list-style: none; margin: 0; padding: 0; -webkit-column-count: 4; -moz-column-count: 4; -ms-column-count: 4; -o-column-count: 4; column-count: 4; }
-.stone-property-list li { margin: 4px; padding: 8px 0; background-color: #F3F3F3; text-align: center; }
+.stone-property-list { display: flex; list-style: none; margin: 0; padding: 0; flex-flow: row wrap; }
+.stone-property-list li { margin: 2px; padding: 10px; background-color: #F3F3F3; text-align: center; flex: 1 0; white-space: nowrap; }
 .stone-property-list li a { text-decoration: inherit; }
 .stone-property-list li a:hover { text-decoration: underline; }
-.stone-property-list li .count { color: #999; }
+.stone-property-list li .count { color: gray; }
 
 
 /* Browse photos in table overview. */
@@ -524,30 +524,30 @@ body.stones-fotos h1 { margin:5px 0 15px 0; }
 
 /* List of groups (business areas), without and with added dashboard items. */
 
-body.user.areas .list { overflow: hidden; }
-body.user.areas .list .item { position: relative; overflow: hidden; width: 50%; height: 100px; float: left; margin: 10px 0; }
-body.user.areas .list .item .picture { float: left; margin-right: 10px; }
-body.user.areas .list .item .picture a { display: block; width: 100px; height: 100px; background-position: center center; background-repeat: no-repeat; background-size: cover; }
-body.user.areas .list .item .about { }
-body.user.areas .list .item .about .name {  }
-body.user.areas .list .item .about .count {  }
-body.user.areas .list .item .about .description { display: block; }
+body.company.groups .list { overflow: hidden; }
+body.company.groups .list .item { position: relative; overflow: hidden; width: 50%; height: 130px; float: left; border: 1px solid transparent; margin: 0; padding: 10px; }
+body.company.groups .list .item .picture { float: left; margin-right: 10px; }
+body.company.groups .list .item .picture a { display: block; width: 100px; height: 100px; background-position: center center; background-repeat: no-repeat; background-size: cover; border-radius: 3px; }
+body.company.groups .list .item .about { }
+body.company.groups .list .item .about .name { display: block; font-size: 1.35rem; }
+body.company.groups .list .item .about .count { display: block; color: gray; }
+body.company.groups .list .item .about .description { display: block; }
 
-body.user.areas .list .item .group-form { display: block; padding: 10px 0 0 10px; position: absolute; bottom: 0; right: 0; left: 100px; background-color: rgba(255,255,255,0.75); }
-body.user.areas .list .item .group-form.join-form {  }
-body.user.areas .list .item .group-form.leave-form {  }
+body.company.groups .list .item .group-form { display: block; padding: 10px 0 0 10px; position: absolute; bottom: 0; right: 0; left: 100px; background-color: rgba(255,255,255,0.75); }
+body.company.groups .list .item .group-form.join-form {  }
+body.company.groups .list .item .group-form.leave-form {  }
 
 body.user.settings.areas .list .item .picture { opacity: 0.75; float: left; margin-right: 10px; }
 body.user.settings.areas .list .item .about { opacity: 0.75; }
 body.user.settings.areas .list .item.is-member .picture { opacity: 1; }
 body.user.settings.areas .list .item.is-member .about { opacity: 1; }
 
-
 /* Ads */
 
 .fake.ads { background-color: gray; }
-.ads.gc-resp-atf-stone-browse-1 { width: 928px; height: 90px; margin: 20px auto; }
-.ads.gc-resp-btf-stone-browse-3 { width: 928px; height: 90px; margin: 20px auto; }
-
-
+.ads.gc-resp-atf-stone-browse-1 { width: 728px; height: 90px; margin: 20px auto; }
+.ads.gc-resp-btf-stone-browse-3 { width: 728px; height: 90px; margin: 20px auto; }
+.ads.gc-resp-atf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
+.ads.gc-resp-btf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
+.ads.gc-resp-atf-homepage { width: 160px; height: 600px; }
 

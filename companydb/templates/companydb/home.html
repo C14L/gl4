@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n %}
+{% load gl4tags i18n %}
 
 {% block title %}{% trans 'Buisiness Types of Granite Companies' %}{% endblock %}
 
@@ -9,7 +9,7 @@
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}user areas{% endblock %}
+{% block body_classes %}company groups{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
@@ -19,37 +19,12 @@
 
 <h1>{% trans 'Natural stone buisiness areas' %}</h1>
 
-<div style="margin:0; padding:15px 0 0 0; border-top:1px solid #c0c0c0;">
-  {% if settings.PRODUCTION %}
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- gc resp atf companies sections -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-0795994016573783"
-         data-ad-slot="3738624848"
-         data-ad-format="auto"></ins>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  {% else %}
-    <div style="margin:0; padding:0; height:90px; background:gray;"></div>
-  {% endif %}
-</div>
+{% adsense '3738624848' 'gc resp atf companies sections' %}
 
 {% include 'companydb/partial_group_list.html' %}
 
-<div style="margin:0; padding:15px 0; border-top:1px solid #c0c0c0; border-bottom:1px solid #c0c0c0;">
-  {% if settings.PRODUCTION %}
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <!-- gc resp btf companies sections -->
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="6692091242" data-ad-format="auto"></ins>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-  {% else %}
-  <div style="margin:0; padding:0; height:90px; background:gray;"></div>
-  {% endif %}
-</div>
+{% adsense '6692091242' 'gc resp btf companies sections' %}
+
 {% endblock %}
 
 {% block foot %}

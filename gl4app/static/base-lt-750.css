@@ -1,7 +1,7 @@
 /* Style fixes for display on screen sizes <500px */
 
 body {
-    margin: 0; margin-top: 56px; padding: 0;
+    margin: 0; margin-top: 112px; padding: 0;
     font-size: 16px;
 }
 #tpl-lema {
@@ -15,117 +15,26 @@ body {
 
 /* -- #tpl-title ------------------------------------------------------------ */
 
-#tpl-title { 
-    display: block;
-    margin: 0; padding: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-}
-#tpl-title > div {
-    margin: 0; padding: 0;
-}
-#tpl-title .sponsor-ad {
-    display: none;
-}
-#tpl-title #tpl-search {
-    display: block;
-    margin: 0; padding: 0;
-}
-#tpl-title #tpl-search > form {
-    display: block;
-    margin: 0; padding: 0;
-}
-#tpl-title #tpl-search > form > table {
-    display: block;
-    margin: 0; padding: 0;
-}
-#tpl-title #tpl-search > form > table tr {
-    display: block;
-    width: 100vw;
-    margin: 0; padding: 0;
-    overflow: hidden;
-}
-#tpl-title #tpl-search > form > table tr td {
-    display: block;
-    margin: 0; padding: 16px;
-    border-top: 1px solid rgba(0,0,0,0.12);
-    text-align: center;
-    display: none;
-}
-#tpl-title #tpl-search > form > table tr td:first-child {
-    display: block;
-    margin: 0; padding: 0;
-    position: fixed; top: 0; left: 0; right: 0; height: 56px;
-    background: #CCCCCC;
-    box-shadow: inset 0 20px 25px -10px rgba(255,255,255,0.5), 
-                inset 0 -20px 25px -10px rgba(0,0,0,0.1), 0 3px 5px #888;
-    text-align: center;
-    z-index: 1000;
-}
-#tpl-title #tpl-search > form > table tr td:first-child img {
-    height: 22px;
-    margin: 0; padding: 0; padding: 17px 16px;
-}
-#tpl-title #tpl-search > form > table tr td:last-child { /* hide login/logout */
-    display: none;
-}
+header { z-index: 999; position: fixed; top: 0; left: 0; right: 0; background-color: lightgray; }
+header > nav { flex-flow: column nowrap; }
+header > nav > a { display: none; line-height: 48px; }
+header.open > nav > a { display: block; }
+header > nav > a.logo { display: block; align-self: center; }
 
-/* Nope: searches should only be done from search page, no additional overlay!
-#tpl-title.open { 
-    background: #D9D9D9;
-}
-#tpl-title.open #tpl-search > form > table tr td {
-    display: block; 
-} */
-
-
-#tpl-menu {
-    display: none;
-    margin: 0; padding: 0;
-    z-index: 999;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.62);
-}
-#tpl-menu.open {
-    display: block;
-    position: fixed; top: 57px; left: 0; right: 0; 
-    background: #D9D9D9;
-}
-#tpl-menu.open .menu-link {
-    display: block;
-    border-radius: 0;
-    margin: 0; padding: 16px 24px;
-    border: 0; border-top: 1px solid rgba(0,0,0,0.12);
-}
-#tpl-menu.open .menu-link:hover {
-}
-#tpl-menu.open .menu-link:active { 
-}
-#tpl-menu .menu-link.home-link { display: block; }
-#tpl-menu .menu-link.login-link { display: none; }
-#tpl-menu .menu-link.logout-link { display: none; }
+header > form { }
+header > form.stone-search > .controls-country { display: none; }
 
 /* -- #tpl-breadcrumb ---------------- */
 
-#tpl-breadcrumb {
-    display: none;
-}
+#tpl-breadcrumb { display: none; }
 
 /* -- #tpl-content ---------------- */
 
-#tpl-content {
-    display: block;
-    width: 100%;
-    overflow: hidden;
-    margin: 0; padding: 0;
-}
+#tpl-content { display: block; width: 100%; overflow: hidden; margin: 0; padding: 0; }
 #tpl-content h1 { margin: 16px 8px; font-size: 20px; }
 #tpl-content h2 { margin: 16px 8px; font-size: 16px; }
 #tpl-content p { margin: 8px; }
-
-#tpl-content ~ .ad { /* the "keyword list" ad right aove the footer */
-    display: none;
-}
+#tpl-content ~ .ad { /* the "keyword list" ad right aove the footer */ display: none; }
 
 /* -- #tpl-footer ---------------- */
 
