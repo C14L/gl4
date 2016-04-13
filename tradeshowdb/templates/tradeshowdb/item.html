@@ -1,77 +1,76 @@
 {% extends 'gl4app/base.html' %}
+{% load static i18n gl4tags %}
 
-{% block title %}{{tradeshow.name}}{% endblock %}
+{% block title %}{{ tradeshow.name }}{% endblock %}
 
-{% block title2 %}{{tradeshow.name}}{% endblock %}
+{% block title2 %}{{ tradeshow.name }}{% endblock %}
 
 {% block description %}{% endblock %}
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}tradeshow-item{% endblock %}
+{% block body_classes %}tradeshows item{% endblock %}
 
 {% block breadcrumb %}
-  <a href="{% url 'tradeshowdb_by_year' view_year %}">Tradeshows {{view_year}}</a> &raquo;
-  <a href="{% url 'tradeshowdb_item' view_year tradeshow.slug %}">{{tradeshow.name}}</a> &raquo;
+  <a href="{% url 'tradeshowdb_by_year' view_year %}">{% blocktrans %}Tradeshows {{ view_year }}{% endblocktrans %}</a> &raquo;
+  <a href="{% url 'tradeshowdb_item' view_year tradeshow.slug %}">{{ tradeshow.name }}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>{{tradeshow.name}}</h1>
+<h1>{{ tradeshow.name }}</h1>
 
 <div class="item-title">
   {% if tradeshow.logo %}
-    <img src="/static/tradeshow-logos/{{tradeshow.logo}}" alt="{{tradeshow.name}}">
+    <img src="{% get_static_prefix %}tradeshow-logos/{{ tradeshow.logo }}" alt="{{ tradeshow.name }}">
   {% else %}
-    <img src="/static/tradeshow-logos/nologo.png" alt="{{tradeshow.name}}">
+    <img src="{% get_static_prefix %}tradeshow-logos/nologo.png" alt="{{ tradeshow.name }}">
   {% endif %}
-  <strong>{{tradeshow.name}} is a trade show in {{tradeshow.country_name}} from {{tradeshow.begins}} until {{tradeshow.ends}}.</strong>
-  <em>{{tradeshow.keywords}}</em></div>
+  <strong>{% blocktrans with name=tradeshow.name country=tradeshow.country_name begins=tradeshow.begins ends=tradeshow.ends %}{{ name }} is a trade show in {{ country }} from {{ begins }} until {{ ends }}.{% endblocktrans %}</strong>
+  <em>{{ tradeshow.keywords }}</em></div>
 
 <table class="item-data">
   <tr>
-    <th>Name of the trade show:</th>
-    <td>{{tradeshow.name}}</td>
+    <th>{% trans 'Name of the trade show' %}:</th>
+    <td>{{ tradeshow.name }}</td>
   </tr>
   <tr>
-    <th>Start date:</th>
-    <td>{{tradeshow.begins}}</td>
+    <th>{% trans 'Start date' %}:</th>
+    <td>{{ tradeshow.begins }}</td>
   </tr>
   <tr>
-    <th>End date:</th>
-    <td>{{tradeshow.ends}}</td>
+    <th>{% trans 'End date' %}:</th>
+    <td>{{ tradeshow.ends }}</td>
   </tr>
   <tr>
-    <th>City:</th>
-    <td>{{tradeshow.city_name}}</td>
+    <th>{% trans 'City' %}:</th>
+    <td>{{ tradeshow.city_name }}</td>
   </tr>
   <tr>
-    <th>Country:</th>
-    <td>{{tradeshow.country_name}}</td>
+    <th>{% trans 'Country' %}:</th>
+    <td>{{ tradeshow.country_name }}</td>
   </tr>
   <tr>
-    <th>Contact information:</th>
-    <td>{{tradeshow.contact}}</td>
+    <th>{% trans 'Contact information' %}:</th>
+    <td>{{ tradeshow.contact }}</td>
   </tr>
   <tr>
-    <th>Web site:</th>
+    <th>{% trans 'Web site' %}:</th>
     <td>
-      {% if tradeshow.web %}
-        <a href="{{tradeshow.web}}">{{tradeshow.web}}</a>
-      {% endif %}
+      {% if tradeshow.web %}<a href="{{ tradeshow.web }}">{{ tradeshow.web }}</a>{% endif %}
     </td>
   </tr>
   <tr>
-    <th>More information:</th>
+    <th>{% trans 'More information' %}:</th>
     <td>
-      <a href="//www.auma.de/_pages/MesseDetailListe.aspx?id={{tradeshow.aumaid}}">AUMA data sheet</a>,
-      <a href="">Location on OpenStreetMaps</a>,
-      <a href="//duckduckgo.com/?q={{tradeshow.name|urlencode}}+{{tradeshow.country_name|urlencode}}">Search on DuckDuckGo</a>
+      <a href="http://www.auma.de/_pages/MesseDetailListe.aspx?id={{tradeshow.aumaid}}">{% trans 'AUMA data sheet' %}</a>,
+      <a href="https://openstreetmap.org">{% trans 'Location on OpenStreetMaps' %}</a>,
+      <a href="https://duckduckgo.com/?q={{tradeshow.name|urlencode}}+{{tradeshow.country_name|urlencode}}">{% trans 'Search on DuckDuckGo' %}</a>
     </td>
   </tr>
   <tr>
-    <th>Travel preparations:</th>
-    <td><a href="http://www.hotelscombined.de/City/{{tradeshow.city_name}}.htm?a_aid=27504&amp;label=gl_ts_city">Book a hotel in {{tradeshow.city_name}}</a></td>
+    <th>{% trans 'Travel preparations' %}:</th>
+    <td><a href="http://www.hotelscombined.de/City/{{tradeshow.city_name}}.htm?a_aid=27504&amp;label=gl_ts_city">{% blocktrans with city=tradeshow.city_name %}Book a hotel in {{ city }}{% endblocktrans %}</a></td>
   </tr>
 </table>
 

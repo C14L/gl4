@@ -81,10 +81,14 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             <input type="submit" value="&gt;" class="btn btn-submit">
           </form>
         {% elif tpl_search_form == 'tradeshows' %}
-          .........
-        {% elif tpl_search_form == 'infos' %}
-          .........
-        {% elif tpl_search_form == 'stones' or 1 == 1 %}
+          <div class="yearswitch">
+            <div class="switchgroup">
+              {% for year in years %}
+                <a class="item {% if view_year == year %}active{% endif %}" href="{% url 'tradeshowdb_by_year' year %}">{{ year }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
           <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form" class="stone-search">
             <div class="controls controls-color">
               <select class="select form-control" size="1" name="color" id="search_color" data-selected="{{ selected_color }}">

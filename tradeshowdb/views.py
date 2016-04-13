@@ -26,10 +26,10 @@ def home(request, y=None):
         tss = [b for b in tradeshows if b.begins.month == idx]
         li.append({'idx': idx, 'name': a, 'tradeshows': tss})
 
-    years = range((this_year - 1), (this_year + 4))
-    ctx = {'years': years, 'view_year': view_year,
-           'tradeshows': li, 'ts_total': ts_total}
-    return render(request, 'tradeshowdb/home.html', ctx)
+    return render(request, 'tradeshowdb/home.html', {
+        'years': range((this_year-1), (this_year+4)),
+        'view_year': view_year, 'tradeshows': li,
+        'ts_total': ts_total, 'tpl_search_form': 'tradeshows'})
 
 
 def item(request, y, slug):

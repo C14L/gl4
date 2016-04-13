@@ -1,46 +1,42 @@
 {% extends 'gl4app/base.html' %}
+{% load static i18n gl4tags %}
 
-{% block title %}Granite and Marble Tradeshows Worldwide{% endblock %}
+{% block title %}{% trans 'Granite and Marble Tradeshows Worldwide' %}{% endblock %}
 
-{% block title2 %}Granite and Marble Tradeshows Worldwide{% endblock %}
+{% block title2 %}{% trans 'Granite and Marble Tradeshows Worldwide' %}{% endblock %}
 
-{% block description %}Tradeshows worldwide related to the natural stone industry. Exhibitions and fairs specialized in granite and marble products.{% endblock %}
+{% block description %}{% trans 'Tradeshows worldwide related to the natural stone industry. Exhibitions and fairs specialized in granite and marble products.' %}{% endblock %}
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}tradeshow-index{% endblock %}
+{% block body_classes %}tradeshows index{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'tradeshowdb_by_year' view_year %}">Tradeshows {{view_year}}</a> &raquo;
+<a href="{% url 'tradeshowdb_by_year' view_year %}">{% blocktrans %}Tradeshows {{ view_year }}{% endblocktrans %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-<h1>Granite and Marble Tradeshows {{view_year}}</h1>
-<p>Currently we have information on {{ts_total}} granite and marble related trade shows worldwide.</p>
+<h1>{% blocktrans %}Granite and Marble Tradeshows {{ view_year }}{% endblocktrans %}</h1>
 
-<div class="switchgroup">
-  {% for year in years %}
-    <a class="item{% if view_year == year %} active{% endif %}" href="{% url 'tradeshowdb_by_year' year %}">{{year}}</a>
-  {% endfor %}
-</div>
+{% adsense 'x' 'gc resp atf tradeshows' %}
 
 <div class="list">
   {% for month in tradeshows %}
-    <h2>{{month.name}} {{view_year}} natural stone related tradeshows</h2>
+    <h2>{% blocktrans with month=month.name %}{{ month }} {{ view_year }} natural stone related tradeshows{% endblocktrans %}</h2>
     <table>
       <tr>
         {% for item in month.tradeshows %}
           <td class="item">
             <a href="{% url 'tradeshowdb_item' view_year item.slug %}">
               {% if item.logo %}
-                <img src="/static/tradeshow-logos/{{item.logo}}" class="icon" alt="Tradeshow {{item.name}}">
+                <img src="{% get_static_prefix %}tradeshow-logos/{{ item.logo }}" class="icon" alt="{% blocktrans with name=item.name %}Tradeshow {{ name }}{% endblocktrans %}">
               {% else %}
-                <img src="/static/tradeshow-logos/nologo.png" class="icon" alt="Tradeshow {{item.name}}">
+                <img src="{% get_static_prefix %}tradeshow-logos/nologo.png" class="icon" alt="{% blocktrans with name=item.name %}Tradeshow {{ name }}{% endblocktrans %}">
               {% endif %}
-              <span class="name">{{item.name}}</span>
-              <span class="aka">{{item.aka}}</span>
-              <span class="dateplace">Starts on {{item.begins}} in {{item.city_name}}, {{item.country_name}}</span>
+              <span class="name">{{ item.name }}</span>
+              <span class="aka">{{ item.aka }}</span>
+              <span class="dateplace">{% blocktrans with begins=item.begins city=item.city_name country=item.country_name %}Starts on {{ begins }} in {{ city }}, {{ country }}{% endblocktrans %}</span>
             </a>
           </td>
           {% if forloop.counter|divisibleby:2 and not forloop.last %}</tr><tr>{% endif %}
@@ -50,11 +46,6 @@
   {% endfor %}
 </div>
 
-<div class="tbox">
- <div class="title">
-  Did we forget a trade show? </div>
- <div class="content">
-  <a href="/contact.php">Drop us a line</a> about any natural stone or construction related trade show you feel should be included into the Graniteland trade shows list. </div>
-</div>
+{% adsense 'x' 'gc resp atf tradeshows' %}
 
 {% endblock %}
