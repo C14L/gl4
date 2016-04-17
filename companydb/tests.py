@@ -1,36 +1,52 @@
-from django.core.urlresolvers import reverse
-from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from companydb.models import UserProfile, Stock, Project, Group
+from django.core.urlresolvers import reverse
+from django.test import TestCase
+
+from companydb.initial_data import import_company_countries
+from companydb.models import UserProfile, Stock, Project, Group, Country
 from stonedb.models import Stone
 
 
+def setUpModule():
+    import_company_countries(force=False, silent=False)
+
+
+def tearDownModule():
+    pass
+
+
 class CompanydbTestCase(TestCase):
+
     def setUp(self):
-        args = ['mainuser', 'mainuser@example.com', 'hunter2']
-        self.mainuser = User.objects.create_user(*args)
+        self.username = 'mainuser'
+        self.email = 'mainuser@example.com'
+        self.password = 'hunter2'
+        args = [self.username, self.email, self.password]
+        self.user = User.objects.create_user(*args)
         self.stone = Stone.objects.create(name='Test Stone', slug='test-stone')
         self.group = Group.objects.create(name='Test Group', slug='test-group')
 
     def tearDown(self):
-        self.mainuser.delete()
-        self.stone.delete()
-        self.group.delete()
+        if self.user and self.user.pk:
+            self.user.delete()
+        if self.stone and self.stone.pk:
+            self.stone.delete()
+        if self.group and self.group.pk:
+            self.group.delete()
 
     def test_create_delete_user(self):
         """
         User, Stock, Project, and Group membership can be created. And when the
         user is deleted, all related items are removed as well.
         """
-        user = User.objects.create_user('testuser')
-        Stock.objects.create(user=user, stone=self.stone)
-        Project.objects.create(user=user).stones.add(self.stone)
-        self.group.members.add(user)
+        Stock.objects.create(user=self.user, stone=self.stone)
+        Project.objects.create(user=self.user).stones.add(self.stone)
+        self.group.members.add(self.user)
 
-        qs1 = UserProfile.objects.filter(user=user)
-        qs2 = Stock.objects.filter(user=user, stone=self.stone)
-        qs3 = Project.objects.filter(user=user, stones=self.stone)
-        qs4 = self.group.members.filter(pk=user.id)
+        qs1 = UserProfile.objects.filter(user=self.user)
+        qs2 = Stock.objects.filter(user=self.user, stone=self.stone)
+        qs3 = Project.objects.filter(user=self.user, stones=self.stone)
+        qs4 = self.group.members.filter(pk=self.user.id)
 
         # assert they all exist
         self.assertTrue(qs1.exists())
@@ -38,7 +54,7 @@ class CompanydbTestCase(TestCase):
         self.assertTrue(qs3.exists())
         self.assertTrue(qs4.exists())
 
-        user.delete()
+        self.user.delete()
 
         # assert all related objects are gone too
         self.assertFalse(qs1.exists())
@@ -55,7 +71,7 @@ class CompanydbTestCase(TestCase):
                  'companydb_delete', 'companydb_details',
                  'companydb_about', 'companydb_areas']
         for p in pages:
-            request_url = reverse(p, args=[self.mainuser.username])
+            request_url = reverse(p, args=[self.user.username])
             redirect_url = reverse('account_login') + '?next=' + request_url
             response = self.client.get(request_url, follow=True)
             self.assertRedirects(response, redirect_url, msg_prefix=p)
@@ -65,7 +81,7 @@ class CompanydbTestCase(TestCase):
         A user's profile page should be viewable.
         """
         x = 'jd432resb98ghl'
-        user = self.mainuser
+        user = self.user
         user.profile.about = x
         user.profile.save()
         Stock.objects.create(user=user, stone=self.stone, description=x)
@@ -91,7 +107,7 @@ class CompanydbTestCase(TestCase):
         For anon and auth user, look for upload form on photos page and POST
         to upload URL.
         """
-        target_url = reverse('companydb_photos', args=[self.mainuser.username])
+        target_url = reverse('companydb_photos', args=[self.user.username])
         redirect_url = reverse('account_login') + '?next=' + target_url
 
         response = self.client.get(target_url)
@@ -100,7 +116,7 @@ class CompanydbTestCase(TestCase):
         response = self.client.post(target_url)
         self.assertRedirects(response, redirect_url)
 
-        self.client.login(username=self.mainuser.username, password="hunter2")
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get(target_url)
         self.assertContains(response, 'multipart/form-data')
         response = self.client.post(target_url)
@@ -110,12 +126,14 @@ class CompanydbTestCase(TestCase):
         pass
 
     def test_only_auth_user_can_edit_profile(self):
-        url = reverse('companydb_details', args=[self.mainuser.username])
+        url = reverse('companydb_details', args=[self.user.username])
         response = self.client.get(url)
         self.assertNotEqual(response.status_code, 200)
-        self.client.login(username=self.mainuser, password='hunter2')
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+        country = Country.objects.get(cc__iexact='DE')
         data = {'name': 'yioljdjkghlksdhlgskgh',
                 'contact': '894yirlgyfuygfidbyl',
                 'contact_position': 'oie7rykifhdshg',
@@ -123,7 +141,7 @@ class CompanydbTestCase(TestCase):
                 'city': 'fsfdglydflgdfkh',
                 'zip': 'f98alaighflskhf',
                 'country_sub_name': 'e0piqweyhgfbvk',
-                'country_name': '29olhglk.,jufa',
+                'country': country.id,
                 'tel': 'fowhfljsdfljs',
                 'mobile': 'r8oiuqgehldjflakdh',
                 'web': 'wfyeloufkdhlfjs', }
@@ -132,7 +150,7 @@ class CompanydbTestCase(TestCase):
             self.assertContains(response, v)
 
     def test_only_auth_user_can_add_edit_delete_stock(self):
-        a = {'args': [self.mainuser.username]}
+        a = {'args': [self.username]}
         stock_url = reverse('companydb_stock', **a)
         new_stock_url = reverse('companydb_stock_detail_new', **a)
 
@@ -147,7 +165,7 @@ class CompanydbTestCase(TestCase):
         self.assertRedirects(response, redirect_url)
 
         # Auth user sees a button to add new item.
-        self.client.login(username=self.mainuser.username, password='hunter2')
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get(stock_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, new_stock_url)
@@ -178,7 +196,7 @@ class CompanydbTestCase(TestCase):
         self.assertContains(response, self.stone.name)
 
     def test_only_auth_user_can_add_edit_delete_project(self):
-        a = {'args': [self.mainuser.username]}
+        a = {'args': [self.username]}
         proj_url = reverse('companydb_projects', **a)
         new_proj_url = reverse('companydb_projects_detail_new', **a)
 
@@ -193,7 +211,7 @@ class CompanydbTestCase(TestCase):
         self.assertRedirects(response, redirect_url)
 
         # Auth user sees a button to add new item.
-        self.client.login(username=self.mainuser.username, password='hunter2')
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get(proj_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, new_proj_url)
@@ -225,8 +243,8 @@ class CompanydbTestCase(TestCase):
     #     pass
 
     def test_edit_user_profile_about_text(self):
-        profile_url = reverse('companydb_item', args=[self.mainuser.username])
-        target_url = reverse('companydb_about', args=[self.mainuser.username])
+        profile_url = reverse('companydb_item', args=[self.username])
+        target_url = reverse('companydb_about', args=[self.username])
         redirect_url = reverse('account_login') + '?next=' + target_url
         data = {'about': 'yodf9yfliudskgfskhdlf ksjh fslh'}
 
@@ -237,7 +255,7 @@ class CompanydbTestCase(TestCase):
         self.assertRedirects(response, redirect_url)
 
         # Auth user can post about text.
-        self.client.login(username=self.mainuser.username, password='hunter2')
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get(target_url, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'name="about"')
@@ -251,7 +269,7 @@ class CompanydbTestCase(TestCase):
 
     def test_profile_contact_form(self):
         form_id = 'id_profile-contact-form'
-        profile_url = reverse('companydb_item', args=[self.mainuser.username])
+        profile_url = reverse('companydb_item', args=[self.username])
 
         # Anon can see message form on profile page
         response = self.client.get(profile_url)
@@ -271,4 +289,3 @@ class CompanydbTestCase(TestCase):
         self.assertContains(response, 'Unexpected value found.')
         self.assertContains(response, data['leave_this_empty'])
         self.assertContains(response, data['name'])
-
