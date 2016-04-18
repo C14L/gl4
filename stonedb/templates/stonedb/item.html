@@ -1,13 +1,11 @@
 {% extends 'gl4app/base.html' %}
 {% load static i18n gl4tags %}
 
-{% block title %}{% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} - a {{ stone_color }} {{ stone.classification.name }} from {{ stone_country }}{% endblocktrans %}{% endblock %}
+{% block title %}{% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} - a {{ stone_color }} {{ stone_classification }} from {{ stone_country }}{% endblocktrans %}{% endblock %}
 
 {% block title2 %}{% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} - a {{ stone_color }} {{ stone_classification }} from {{ stone_country }}{% endblocktrans %}{% endblock %}
 
-{% block description %}
-
-{% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} is a {{ stone_color }} {{ stone_classification }} from {{ stone_country }}. In natural stone trade, {{ stone_name }} is often simply called a granite.{% endblocktrans %}{% endblock %}
+{% block description %}{% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} is a {{ stone_color }} {{ stone_classification }} from {{ stone_country }}. In natural stone trade, {{ stone_name }} is often simply called a granite.{% endblocktrans %}{% endblock %}
 
 {% block head %}
 <style media="screen">
@@ -43,17 +41,8 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
   {% endif %}
 </em></p>
 
-<div class="ad1">
-  {% if settings.PRODUCTION %}
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- gc resp atf stone item -->
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="8448026040" data-ad-format="auto"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  {% else %}
-    <div style="width:728px;height:90px;background:grey;"></div>
-  {% endif %}
+<div class="ad1" style="width: 728px; height: 90px;">
+  {% adsense '8448026040' 'gc resp atf stone item' %}
 </div>
 
 <table class="stone1">
@@ -65,19 +54,8 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <p>{{ stone.comment }}</p>
       </div>
       <hr>
-      <div class="ad2">
-
-        {% if settings.PRODUCTION %}
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- gc resp btf stone item -->
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0795994016573783" data-ad-slot="3878225647" data-ad-format="auto"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-        {% else %}
-        <div style="width:336px;height:280px;background:grey;"></div>
-        {% endif %}
-
+      <div class="ad2" style="width: 336px; height: 280px;">
+        {% adsense '3878225647' 'gc resp btf stone item' %}
       </div>
     </td>
     <td class="info">

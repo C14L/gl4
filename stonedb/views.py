@@ -122,7 +122,7 @@ def property_list(request, f):
     return render(request, 'stonedb/property_list.html', _ctx(ctx))
 
 
-def simple_filter(request, f, q, p):
+def simple_filter(request, f, q, p=None):
     """Return a list of stones for one filter, e.g. color.
 
     :type f: str -> filter (color, country, type)
@@ -131,6 +131,10 @@ def simple_filter(request, f, q, p):
 
     Example: /stone/color/blue/
     """
+    if p == '1':
+        # Don't show page 1 number in URL. Example: /stone/color/blue/1
+        return HttpResponsePermanentRedirect(request.path[:-2])
+
     p = p or 1  # no page number means page 1
     f = f.lower()
     fk = f  # filter "type" needs "classification" as filter key
@@ -155,7 +159,7 @@ def simple_filter(request, f, q, p):
     return render(request, 'stonedb/filter_{}.html'.format(fk), _ctx({
         'range_pages': range(1, stones.paginator.num_pages+1),
         'stones': stones, 'more': more, 'f': f, 'q': q, fk: q,
-        'selected_{}'.format(fk): q.pk}))
+        'canonical': request.path, 'selected_{}'.format(fk): q.pk}))
 
 
 def _filter_cleanup_val(k):
@@ -176,8 +180,13 @@ def filter(request, color, country, texture, classif, p=1):
     :param classif:
     :param p:
     """
-    url = ''
+    if p == '1':
+        # Don't show page 1 number in URL.
+        # Example: /stone/sandstone/blue/veined/france/1
+        return HttpResponsePermanentRedirect(request.path[:-2])
+
     p = force_int(p) or 1
+    url = ''
     color = _filter_cleanup_val(color)
     country = _filter_cleanup_val(country)
     texture = _filter_cleanup_val(texture)
@@ -262,6 +271,7 @@ def item(request, q):
         'pics': pics,
         'projects': projects,
         'stocks': stocks,
+        'canonical': reverse('stonedb_item', args=[stone.slug]),
         'selected_classification': getattr(stone.classification, 'id', ''),
         'selected_color': getattr(stone.color, 'id', ''),
         'selected_country': getattr(stone.country, 'id', ''),

@@ -32,9 +32,8 @@ def _ctx(ctx):
 
 
 def home(request):
-    ctx = _ctx({'groups': Group.objects.all(),
-                'canonical': reverse('companydb_home')})
-    return render(request, 'companydb/home.html', ctx)
+    return render(request, 'companydb/home.html', _ctx({
+        'groups': Group.objects.all(), 'canonical': reverse('companydb_home')}))
 
 
 def redir_search(request):
@@ -103,16 +102,21 @@ def search(request, country, business, product, p=1):
         users = users.filter(profile__country=country)
 
     users = _get_page(users, p, 60)
+    canonical = reverse('companydb_search', kwargs={
+            'country': country and country.slug or 'all',
+            'business': business and business.slug or 'all',
+            'product': product and product.slug or 'all', 'p': p})
+
     return render(request, 'companydb/list_search.html', _ctx({
-        'users': users, 'range_pages': range(1, users.paginator.num_pages+1),
-        'business': business, 'product': product, 'country': country,
+        'users': users,
+        'business': business,
+        'product': product,
+        'country': country,
         'selected_company_business': business and business.id,
         'selected_company_product': product and product.id,
         'selected_company_country': country and country.id,
-        'canonical': reverse('companydb_search', kwargs={
-            'country': country and country.slug or 'all',
-            'business': business and business.slug or 'all',
-            'product': product and product.slug or 'all', 'p': p})}))
+        'range_pages': range(1, users.paginator.num_pages+1),
+        'canonical': canonical}))
 
 
 def list_by_country(request, slug, p=1):
@@ -129,11 +133,13 @@ def list_by_country(request, slug, p=1):
         profile__country=obj, is_active=True,
         profile__is_deleted=False, profile__is_blocked=False)
     users = _get_page(users, p, 60)
-
+    canonical = reverse('companydb_country', args=[obj.slug, p])
     return render(request, 'companydb/list_by_country.html', _ctx({
-        'users': users, 'range_pages': range(1, users.paginator.num_pages+1),
-        'obj': obj, 'selected_company_country': obj.id,
-        'canonical': reverse('companydb_country', args=[obj.slug, p])}))
+        'obj': obj,
+        'users': users,
+        'canonical': canonical,
+        'range_pages': range(1, users.paginator.num_pages+1),
+        'selected_company_country': obj.id}))
 
 
 def list_by_product(request, slug, p=1):
@@ -150,11 +156,13 @@ def list_by_product(request, slug, p=1):
         products=obj, is_active=True,
         profile__is_deleted=False, profile__is_blocked=False)
     users = _get_page(users, p, 60)
-
+    canonical = reverse('companydb_product', args=[obj.slug, p])
     return render(request, 'companydb/list_by_product.html', _ctx({
-        'users': users, 'range_pages': range(1, users.paginator.num_pages+1),
-        'obj': obj, 'selected_company_product': obj.id,
-        'canonical': reverse('companydb_product', args=[obj.slug, p])}))
+        'obj': obj,
+        'users': users,
+        'canonical': canonical,
+        'range_pages': range(1, users.paginator.num_pages+1),
+        'selected_company_product': obj.id}))
 
 
 def list_by_group(request, slug, p):
@@ -172,11 +180,13 @@ def list_by_group(request, slug, p):
         .prefetch_related('profile', 'profile__country')\
         .order_by('profile__name')
     users = _get_page(users_qs, p, 60)
-
+    canonical = reverse('companydb_group', args=[obj.slug, p])
     return render(request, 'companydb/list_by_group.html', _ctx({
-        'obj': obj, 'users': users, 'selected_company_business': obj.id,
+        'obj': obj,
+        'users': users,
+        'canonical': canonical,
         'range_pages': range(1, users.paginator.num_pages+1),
-        'canonical': reverse('companydb_group', args=[obj.slug, p])}))
+        'selected_company_business': obj.id}))
 
 
 def item(request, slug):
@@ -203,11 +213,15 @@ def item(request, slug):
             _next = reverse('companydb_item', args=[view_user.username])
             return HttpResponseRedirect(request.POST.get('next', _next))
 
+    canonical = reverse('companydb_item', args=[view_user.username])
+
     return render(request, 'companydb/item.html', _ctx({
-        'view_user': view_user, 'pics': pics, 'contactform': form,
-        'selected_company_country':
-            view_user.profile.country and view_user.profile.country.id,
-        'canonical': reverse('companydb_item', args=[view_user.username])}))
+        'pics': pics,
+        'contactform': form,
+        'view_user': view_user,
+        'selected_company_country': (view_user.profile.country and
+                                     view_user.profile.country.id),
+        'canonical': canonical}))
 
 
 @login_required
@@ -222,9 +236,9 @@ def stock(request, slug):
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = view_user.stock_set.filter(is_deleted=False, is_blocked=False)
     canonical = reverse('companydb_stock', args=[view_user.username])
-    ctx = _ctx({'view_user': view_user, 'stock': _get_page(li, page),
-                'canonical': canonical})
-    return render(request, 'companydb/stock.html', ctx)
+    return render(request, 'companydb/stock.html', _ctx({
+        'view_user': view_user, 'stock': _get_page(li, page),
+        'canonical': canonical}))
 
 
 def stock_detail(request, slug, pk=None):
@@ -243,12 +257,11 @@ def stock_detail(request, slug, pk=None):
         if 'DELETE' in (request.method, request.POST.get('_method', None)):
             if not view_item:
                 return HttpResponseBadRequest()
-
             # Delete the entire view_item and and all attached pics.
             view_item.delete()
             messages.success(request, _('The item was deleted.'))
             _next = reverse('companydb_stock', args=[user.username])
-            return HttpResponseRedirect(redirect_url)
+            return HttpResponseRedirect(_next)
 
         elif 'POST' in (request.method, request.POST.get('_method', None)):
             form = CompanyStockForm(request.POST, instance=view_item)
@@ -395,10 +408,9 @@ def photos(request, slug):
         if can_edit:
             form = PicUploadForm()
 
-    _photos = _get_page(li, page)
     canonical = reverse('companydb_photos', args=[view_user.username])
     return render(request, 'companydb/photos.html', _ctx({
-        'view_user': view_user, 'form': form, 'photos': _photos,
+        'view_user': view_user, 'form': form, 'photos': _get_page(li, page),
         'canonical': canonical}))
 
 
@@ -486,10 +498,5 @@ def db_areas(request, slug):
         else:
             return HttpResponseRedirect(request.path)
 
-    ctx = _ctx({'groups': Group.objects.all()})
-    return render(request, 'companydb/db_areas.html', ctx)
-
-
-
-
-
+    return render(request, 'companydb/db_areas.html',
+                  _ctx({'groups': Group.objects.all()}))

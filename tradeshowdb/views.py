@@ -29,6 +29,7 @@ def home(request, y=None):
     return render(request, 'tradeshowdb/home.html', {
         'years': range((this_year-1), (this_year+4)), 'view_year': view_year,
         'tradeshows': li, 'ts_total': ts_total,
+        'canonical': reverse('tradeshowdb_by_year', args=[view_year]),
         'tpl_search_form': 'tradeshows'})
 
 
@@ -40,4 +41,5 @@ def item(request, y, slug):
         raise Http404()
     return render(request, 'tradeshowdb/item.html', {
         'years': range((this_year-1), (this_year+4)), 'tradeshow': tradeshow,
+        'canonical': reverse('tradeshowdb_item', args=[year, tradeshow.slug]),
         'view_year': year, 'tpl_search_form': 'tradeshows'})
