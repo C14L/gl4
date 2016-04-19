@@ -126,11 +126,11 @@ urlpatterns = [
     url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/projects/new$',
         companydb.views.projects_detail, name='companydb_projects_detail_new'),
 
-    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/details/$',
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/details$',
         companydb.views.db_details, name='companydb_details'),
-    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/about/$',
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/about$',
         companydb.views.db_about, name='companydb_about'),
-    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/business-areas/$',
+    url(r'^company/(?P<slug>[a-zA-Z0-9_-]{1,30})/business-areas$',
         companydb.views.db_areas, name='companydb_areas'),
 
     # /company/xxxxxxxxxx/contact
@@ -147,11 +147,11 @@ urlpatterns = [
     url(r'^fotos/(?P<id>\d+)$',
         companydb.views.pic_item, name='companydb_pic_item'),
 
-    # url(r'^company/dashboard/$',
+    # url(r'^company/dashboard$',
     #     companydb.views.dashboard, name='companydb_dashboard'),
-    # url(r'^company/-/projects/$',
+    # url(r'^company/-/projects$',
     #     companydb.views.projects_detail, name='companydb_db_projects'),
-    # url(r'^company/-/stock/$',
+    # url(r'^company/-/stock$',
     #     companydb.views.stock_detail, name='companydb_db_stock'),
 ]
 
