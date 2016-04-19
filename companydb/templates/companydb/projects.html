@@ -1,9 +1,9 @@
 {% extends 'gl4app/base.html' %}
 {% load i18n markdown_deux_tags bleach_tags gl4tags %}
 
-{% block title %}{% blocktrans with profile_name=view_user.profile.name %}Projects by {{profile_name}}{% endblocktrans %}{% endblock %}
+{% block title %}{% blocktrans with name=view_user.profile.name %}Projects by {{ name }}{% endblocktrans %}{% endblock %}
 
-{% block title2 %}{% blocktrans with profile_name=view_user.profile.name %}Projects by {{profile_name}}{% endblocktrans %}{% endblock %}
+{% block title2 %}{% blocktrans with name=view_user.profile.name %}Projects by {{ name }}{% endblocktrans %}{% endblock %}
 
 {% block description %}{% endblock %}
 
@@ -13,13 +13,15 @@
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
-<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{ view_user.profile.name }}</a> &raquo;
 <a href="{% url 'companydb_projects' view_user.username %}">{% trans 'Projects' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
-{% with view='projects' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+{% include 'companydb/partial_profile_options.html' with view='projects' %}
+
+{% include 'companydb/user-profile-header.html' %}
 
 {% for item in projects %}
   <div class="stock-list item" id="{{ item.id }}">
@@ -29,7 +31,7 @@
       {% endif %}
       <table class="stock-table-header-table">
         <tr class="date">
-          <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;"></td>
+          <td class="pic" rowspan="3" style="background:url({{ item.stone.get_pic_medium }}) center center repeat;"></td>
           <td class="title">{% trans 'Project added on' %}:</td>
           <td class="data">{{ item.created }}</td>
         </tr>
@@ -37,14 +39,14 @@
           <td class="title">{% trans 'Name of natural stones' %}:</td>
           <td class="data">
             {% for x in item.get_stones_list %}
-            <a href="{% url 'stonedb_item' x.slug %}">{{ x.name }}</a>{% if not forloop.last %}, {% endif %}
+              <a href="{% url 'stonedb_item' x.slug %}">{{ x.name }}</a>{% if not forloop.last %}, {% endif %}
             {% endfor %}
           </td>
         </tr>
         <tr class="user">
           <td class="title">{% trans 'More information' %}:</td>
           <td class="data">
-            <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
+            <strong><a href="{% url 'companydb_item' item.user.username %}">{{ item.user.profile.name }}</a></strong>
           </td>
         </tr>
       </table>

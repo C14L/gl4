@@ -26,6 +26,7 @@
 
 
 {% block main %}
+  {% include 'companydb/partial_profile_options.html' %}
 
   {% if pic.module == 'projects' %}
     {% with 'projects' as view %}{% include 'companydb/user-profile-header.html' %}{% endwith %}

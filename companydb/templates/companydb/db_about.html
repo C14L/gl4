@@ -18,14 +18,11 @@
 {% endblock %}
 
 {% block main %}
+  {% include 'companydb/partial_profile_options.html' with view_user=user %}
+  {% include 'companydb/user-profile-header.html' with view_user=user view='item' %}
 
-<h1>Edit presentation text</h1>
-
-<div class="box-input">
-  <p>The presentation text is the center part of your company's profile page.
-    What is the history and success story of your company? Where are your strong
-    points?</p>
-  {% crispy form %}
-</div>
-
+  <div class="box-input">
+    <p>The presentation text is the center part of your company's profile page. What is the history and success story of your company? Where are your strong points?</p>
+    {% crispy form %}
+  </div>
 {% endblock %}

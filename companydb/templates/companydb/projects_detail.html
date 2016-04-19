@@ -53,54 +53,50 @@
 
 {% block body_classes %}user settings project{% endblock %}
 
-
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
-<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{ view_user.profile.name }}</a> &raquo;
 <a href="{% url 'companydb_projects' view_user.username %}">{% trans 'Projects' %}</a> &raquo;
 {% endblock %}
 
-
 {% block main %}
-
 <div class="wrapper">
-  {% with view_user=user view='projects-detail' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+  {% include 'companydb/partial_profile_options.html' with view_user=user %}
+  {% include 'companydb/user-profile-header.html' with view_user=user view='projects-detail' %}
 
   {% if view_item and form %}
-  <form method="POST" action="" onsubmit="return confirm('{% trans 'Delete project from company profile?' %}');">
-    {% csrf_token %}
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit" class="btn btn-default btn-sm" style="float: right;">{% trans 'delete item' %}</button>
-  </form>
-  <h1 data-id="{{view_item.id}}">{% trans 'Edit project' %} {{ view_item.id }}</h1>
+    <form method="POST" action="" onsubmit="return confirm('{% trans 'Delete project from company profile?' %}');">
+      {% csrf_token %}
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="submit" class="btn btn-default btn-sm" style="float: right;">{% trans 'delete item' %}</button>
+    </form>
+    <h1 data-id="{{ view_item.id }}">{% trans 'Edit project' %} {{ view_item.id }}</h1>
   {% else %}
-  <h1>{% trans 'Add a project' %}</h1>
+    <h1>{% trans 'Add a project' %}</h1>
   {% endif %}
 
   {% if form %}
   <div id="add" class="project-add">
-    <form  id="id_company-project-form" method="post" >{% csrf_token %}
+    <form  id="id_company-project-form" method="POST" >{% csrf_token %}
       <div class="two-cols">
         <div class="left">
           {{ form.description|as_crispy_field }}
-
           <div class="form-group">
             <div class="controls ">
               <input type="hidden" name="next" value="{% url 'companydb_projects' view_user.username %}">
               <button type="submit" name="save" class="btn btn-primary" id="submit-id-save">{% trans 'Publish' %}</button>
             </div>
           </div>
-
         </div>
         <div class="right">
           <div id="div_id_stones" class="form-group">
-            <label for="id_stones" class="control-label  requiredField">
+            <label for="id_stones" class="control-label requiredField">
               {% trans 'Stones used' %}<span class="asteriskField">*</span>
             </label>
             <div class="controls ">
               <select multiple="multiple" class="selectmultiple form-control" id="id_stones" name="stones">
                 {% for x in view_item.stones.all %}
-                <option selected="selected" value="{{ x.id }}">{{ x.name }}</option>
+                  <option selected="selected" value="{{ x.id }}">{{ x.name }}</option>
                 {% endfor %}
               </select>
               <p id="hint_id_stones" class="help-block">{% trans 'Start typing the name of a stone used in the project, then select the stones from the list. Add all stones used in the project, but not more than ten.' %}</p>
@@ -135,15 +131,10 @@
     </form>
     {% endif %}
   </div>
-
 </div>
-
 {% endblock %}
 
-
-
 {% block foot %}
-
 <script>
 
 $('a[href="#add-project-item"]').on('click', function(ev){
@@ -214,7 +205,6 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
   form_data.append("module", "projects");
   form_data.append("csrfmiddlewaretoken", Cookies.get("csrftoken"));
 
-  console.log('BEGIN UPLOAD...');
   $('.pic-upload-field input').hide();
   $('.pic-upload-field .loading').show();
 
@@ -282,5 +272,4 @@ function formatResultSelection (item) {
 }
 
 </script>
-
 {% endblock %}

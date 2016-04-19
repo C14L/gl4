@@ -17,6 +17,7 @@
 {% endblock %}
 
 {% block main %}
-  {% with view_user=user view='item' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+  {% include 'companydb/partial_profile_options.html' with view_user=user %}
+  {% include 'companydb/user-profile-header.html' with view_user=user view='item' %}
   <div class="box-input">{% crispy form %}</div>
 {% endblock %}

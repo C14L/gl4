@@ -27,35 +27,36 @@
 {% endblock %}
 
 {% block main %}
-  {% with view='photos' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+  {% include 'companydb/partial_profile_options.html' %}
+  {% include 'companydb/user-profile-header.html' with view='photos' %}
 
-{% if user.is_authenticated and user == view_user %}
-<section class="photo-upload-form">
-  {% crispy form %}
-</section>
-{% endif %}
+  {% if user.is_authenticated and user == view_user %}
+    <section class="photo-upload-form">
+      {% crispy form %}
+    </section>
+  {% endif %}
 
-<div class="fotoslist" id="fotoslist">
-  <p class="count">
-    {% blocktrans trimmed count photo_count=photos.paginator.count with profile_name=view_user.profile.name %}
-    There is currently only one photo of the company {{profile_name}} here.
-    {% plural %}
-    There are currently {{photo_count}} photos of the company {{profile_name}} here.
-    {% endblocktrans %}
-  </p>
-  <div class="list">
-    {% for item in photos %}
-      <div class="item">
-        <a href="{% url 'companydb_pic_item' item.id %}">
-          <img src="{{item|picsrc:'small'}}" alt="{{pic.title}}">
-          {% if user.is_authenticated and user == view_user %}
-            <div class="del">X</div>
-          {% endif %}
-        </a>
-      </div>
-    {% endfor %}
+  <div class="fotoslist" id="fotoslist">
+    <p class="count">
+      {% blocktrans trimmed count photo_count=photos.paginator.count with profile_name=view_user.profile.name %}
+      There is currently only one photo of the company {{profile_name}} here.
+      {% plural %}
+      There are currently {{photo_count}} photos of the company {{profile_name}} here.
+      {% endblocktrans %}
+    </p>
+    <div class="list">
+      {% for item in photos %}
+        <div class="item">
+          <a href="{% url 'companydb_pic_item' item.id %}">
+            <img src="{{item|picsrc:'small'}}" alt="{{pic.title}}">
+            {% if user.is_authenticated and user == view_user %}
+              <div class="del">X</div>
+            {% endif %}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
   </div>
-</div>
 
 {% endblock %}
 

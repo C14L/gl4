@@ -1,24 +1,15 @@
 {% extends 'gl4app/base.html' %}
-{% load i18n markdown_deux_tags bleach_tags gl4tags %}
+{% load i18n gl4tags %}
 
-{% block title %}
-Stock items of {{view_user.profile.name}}
-{% endblock %}
+{% block title %}{% blocktrans with name=view_user.profile.name %}Stock items of {{ name }}{% endblocktrans %}{% endblock %}
 
-{% block title2 %}
-Stock items of {{view_user.profile.name}}
-{% endblock %}
+{% block title2 %}{% blocktrans with name=view_user.profile.name %}Stock items of {{ name }}{% endblocktrans %}{% endblock %}
 
-{% block description %}
-Natural stone the company {{view_user.profile.name}} has currently on stock in {{view_user.profile.city}}, {{view_user.profile.country_name}}.
-{% endblock %}
+{% block description %}{% blocktrans with name=view_user.profile.name city=view_user.profile.city country=view_user.profile.country.name %}Natural stone the company {{ name }} has currently on stock in {{ city }}, {{ country }}.{% endblocktrans %}{% endblock %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block body_classes %}
-profile profile-home
-{% endblock %}
+{% block body_classes %}profile profile-home{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
@@ -27,50 +18,11 @@ profile profile-home
 {% endblock %}
 
 {% block main %}
-  {% with view='stock' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
-
+  {% include 'companydb/partial_profile_options.html' with view='stock' %}
+  {% include 'companydb/user-profile-header.html' %}
   {% for item in stock %}
-    <div class="stock-list item">
-      <div class="header-line">
-        <table class="stock-table-header-table" style="width: 100%;">
-          <tr class="date">
-            <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;">&nbsp;</td>
-            <td class="title" style="white-space: nowrap;">{% trans 'Added to stock on' %}:</td>
-            <td class="data" style="white-space: nowrap;">{{item.created}}</td>
-            <td class="data" rowspan="3" style="white-space: nowrap; vertical-align: top;">
-              <a href="{% url 'companydb_stock_detail' item.user.username item.pk %}" class="btn btn-primary">details</a>
-            </td>
-          </tr>
-          <tr class="stone">
-            <td class="title">{% trans 'Name of natural stone' %}:</td>
-            <td class="data">
-              <strong><a href="{% url 'stonedb_item' item.stone.slug %}">{{item.stone.name}}</a></strong>
-            </td>
-          </tr>
-          <tr class="user">
-            <td class="title">{% trans 'More information' %}:</td>
-            <td class="data">
-              <strong><a href="{% url 'companydb_item' item.user.username %}">{{item.user.profile.name}}</a></strong>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="text-html content-line">
-        {{ item.description|markdown|bleach }}
-      </div>
-      <div class="fotoslist" id="fotoslist{{item.id}}">
-        <div class="list">
-          {% for pic in item.pic_set.all %}
-            <div class="item">
-              <a href="/fotos/{{pic.id}}"><img src="{{pic|picsrc:'small'}}" alt="{{pic.title}}"></a>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
+    {% include 'companydb/stock_item_partial.html' with detail_link=1 %}
   {% endfor %}
-
 {% endblock %}
 
-{% block foot %}
-{% endblock %}
+{% block foot %}{% endblock %}

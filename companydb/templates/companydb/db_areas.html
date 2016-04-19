@@ -9,7 +9,7 @@
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}user settings areas{% endblock %}
+{% block body_classes %}company groups settings{% endblock %}
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">Natural Stone Company Directory</a> &raquo;
@@ -17,13 +17,14 @@
 {% endblock %}
 
 {% block main %}
+  {% include 'companydb/partial_profile_options.html' with view_user=user %}
 
-<h1>Areas of Business for {{user.profile.name}}</h1>
+  <h1>Areas of Business for {{user.profile.name}}</h1>
+  <p>Select up to 5 areas of business for your company. Please limit your selection to only those areas your company is actually active in.</p>
 
-<p>Select up to 5 areas of business for your company. Please limit your selection to only those areas your company is actually active in.</p>
-
-{% with is_dashboard=True %}
-{% include 'companydb/partial_group_list.html' %}
-{% endwith %}
-
+  {% include 'companydb/partial_group_list.html' with is_dashboard=True %}
+  <hr>
+  <p style="text-align:center">
+    <a href="{% url 'companydb_item' user.username %}" class="btn btn-primary">Done</a>
+  </p>
 {% endblock %}

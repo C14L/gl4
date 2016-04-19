@@ -1,0 +1,42 @@
+{% load i18n markdown_deux_tags bleach_tags gl4tags %}
+
+<div class="stock-list item">
+  <div class="header-line">
+    <table class="stock-table-header-table" style="width: 100%;">
+      <tr class="date">
+        <td class="pic" rowspan="3" style="background:url(/stonespics/{{item.stone.slug}}.jpg) center center repeat;">&nbsp;</td>
+        <td class="title" style="white-space: nowrap;">{% trans 'Added to stock on' %}:</td>
+        <td class="data" style="white-space: nowrap;">{{item.created}}</td>
+        <td class="data" rowspan="3" style="white-space: nowrap; vertical-align: top;">
+          {% if detail_link %}
+          <a href="{% url 'companydb_stock_detail' item.user.username item.pk %}" class="btn btn-primary">details</a>
+          {% endif %}
+        </td>
+      </tr>
+      <tr class="stone">
+        <td class="title">{% trans 'Name of natural stone' %}:</td>
+        <td class="data">
+          <strong><a href="{% url 'stonedb_item' item.stone.slug %}">{{ item.stone.name }}</a></strong>
+        </td>
+      </tr>
+      <tr class="user">
+        <td class="title">{% trans 'More information' %}:</td>
+        <td class="data">
+          <strong><a href="{% url 'companydb_item' item.user.username %}">{{ item.user.profile.name }}</a></strong>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="text-html content-line">
+    {{ item.description|markdown|bleach }}
+  </div>
+  <div class="fotoslist" id="fotoslist{{ item.id }}">
+    <div class="list">
+      {% for pic in item.pic_set.all %}
+        <div class="item">
+          <a href="/fotos/{{ pic.id }}"><img src="{{ pic|picsrc:'small' }}" alt="{{ pic.title }}"></a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

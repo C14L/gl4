@@ -1,31 +1,31 @@
 <div class="list">
   {% for item in groups %}
-  <div class="item {% if item in user.group_set.all %}is-member{% else %}not-member{% endif %}">
-    <div class="picture">
-      <a href="{% url 'companydb_group' item.slug '1' %}" style="background-image: url({{item.title_foto}})"></a>
+    <div class="item {% if item in user.group_set.all %}is-member{% else %}not-member{% endif %}">
+      <div class="picture">
+        <a href="{% url 'companydb_group' item.slug '1' %}" style="background-image: url({{item.title_foto}})"></a>
+      </div>
+      <div class="about">
+        <a class="name" href="{% url 'companydb_group' item.slug '1' %}">{{ item.name }}</a>
+        <span class="count">({{ item.count_members }} companies)</span>
+
+        {% if is_dashboard and user.is_authenticated %}
+          {% if item in user.group_set.all %}
+            <form class="group-form leave-form" method="POST" action="">{% csrf_token %}
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="hidden" name="group" value="{{ item.id }}">
+              <input class="btn btn-secondary btn-sm" type="submit" value="Remove your company">
+            </form>
+          {% else %}
+            <form class="group-form join-form" method="POST" action="">{% csrf_token %}
+              <input type="hidden" name="_method" value="POST">
+              <input type="hidden" name="group" value="{{ item.id }}">
+              <input class="btn btn-primary btn-sm" type="submit" value="List your company here">
+            </form>
+          {% endif %}
+        {% else %}
+          <span class="description">{{ item.description }}</span>
+        {% endif %}
+      </div>
     </div>
-    <div class="about">
-      <a class="name" href="{% url 'companydb_group' item.slug '1' %}">{{item.name}}</a>
-      <span class="count">({{item.count_members}} companies)</span>
-      <span class="description">{{item.description}}</span>
-    </div>
-    {% if is_dashboard and user.is_authenticated %}
-      {% if item in user.group_set.all %}
-        <form class="group-form leave-form" method="POST" action="">
-          {% csrf_token %}
-          <input type="hidden" name="_method" value="DELETE">
-          <input type="hidden" name="group" value="{{ item.id }}">
-          <input class="btn btn-secondary btn-sm" type="submit" value="Remove your company">
-        </form>
-      {% else %}
-        <form class="group-form join-form" method="POST" action="">
-          {% csrf_token %}
-          <input type="hidden" name="_method" value="POST">
-          <input type="hidden" name="group" value="{{ item.id }}">
-          <input class="btn btn-primary btn-sm" type="submit" value="List your company here">
-        </form>
-      {% endif %}
-    {% endif %}
-  </div>
   {% endfor %}
 </div>

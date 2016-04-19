@@ -17,6 +17,9 @@
 {% endblock %}
 
 {% block main %}
+
+  {% include 'companydb/partial_profile_options.html' %}
+
   {% if user.is_staff %}
     <div id="id-staff-links">
       <a href="{% url 'admin:auth_user_change' view_user.pk %}">edit user</a>
@@ -103,16 +106,6 @@
 </div>
 
 <p>Last active: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }} </p>
-
-{% if user.is_authenticated and user.id == view_user.id %}
-  <hr>
-  <h2>{% trans 'More settings' %}</h2>
-  <ul>
-    <li><a href="{% url 'account_email' %}">Update your Email address</a></li>
-    <li><a href="{% url 'account_change_password' %}">Change your password</a></li>
-    <li><a href="{% url 'companydb_delete' user.username %}">Delete your account</a></li>
-  </ul>
-{% endif %}
 
 {% endblock %}
 

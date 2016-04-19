@@ -65,11 +65,10 @@ header > form input[type="submit"] { width: 50px; }
 #tpl-breadcrumb a {  }
 #tpl-breadcrumb a:hover {  }
 
-#tpl-content { overflow:auto; padding:0 20px 20px 20px; margin:0; text-align:left; background:#fff; }
+#tpl-content { padding:0 20px 20px 20px; margin:0; text-align:left; background:#fff; }
 
 #id-staff-links { position: fixed; bottom: 0; left: 0; background-color: yellow; padding: 5px 10px; }
 #id-staff-links a { padding: 5px 10px; }
-
 
 footer { clear:both; overflow:hidden; padding:5px 20px; border-top:1px #ccc solid; background:#eee; color:#aaa; border-radius:0 0 15px 15px; }
 footer img { vertical-align:middle; margin-right:5px; }
@@ -519,10 +518,12 @@ body.company.groups .list { overflow: hidden; }
 body.company.groups .list .item { position: relative; overflow: hidden; width: 50%; height: 130px; float: left; border: 1px solid transparent; margin: 0; padding: 10px; }
 body.company.groups .list .item .picture { float: left; margin-right: 10px; }
 body.company.groups .list .item .picture a { display: block; width: 100px; height: 100px; background-position: center center; background-repeat: no-repeat; background-size: cover; border-radius: 3px; }
-body.company.groups .list .item .about { }
+body.company.groups .list .item .about { display: block; }
 body.company.groups .list .item .about .name { display: block; font-size: 1.35rem; }
 body.company.groups .list .item .about .count { display: block; color: gray; }
 body.company.groups .list .item .about .description { display: block; }
+body.company.groups .list .item .about form { display: block; margin: 10px 0; padding: 0; position: static; }
+body.company.groups .list .item .about form .btn { }
 
 body.company.groups .list .item .group-form { display: block; padding: 10px 0 0 10px; position: absolute; bottom: 0; right: 0; left: 100px; background-color: rgba(255,255,255,0.75); }
 body.company.groups .list .item .group-form.join-form {  }

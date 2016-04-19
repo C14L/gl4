@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static i18n crispy_forms_tags %}
+{% load gl4tags static i18n markdown_deux_tags bleach_tags crispy_forms_tags %}
 
 {% block title %}{% trans 'Add current stock items' %}{% endblock %}
 
@@ -63,14 +63,15 @@
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
-<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{ view_user.profile.name }}</a> &raquo;
 <a href="{% url 'companydb_stock' view_user.username %}">{% trans 'Stock' %}</a> &raquo;
 {% endblock %}
 
 {% block main %}
 
 <div class="wrapper">
-  {% with view='stock' %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+  {% include 'companydb/partial_profile_options.html' with view_user=user %}
+  {% include 'companydb/user-profile-header.html' with view='stock' %}
 
   {% if view_item and form %}
   <form method="POST" action="" onsubmit="return confirm('{% trans 'Delete item from company stock?' %}');">
@@ -80,7 +81,6 @@
   </form>
   <h1 data-id="{{view_item.id}}">{% trans 'Edit stock' %} {{ view_item.id }}</h1>
   {% else %}
-  <h1>{% trans 'Stock item' %} #{{view_item.pk}}</h1>
   {% endif %}
 
   {% if form %}
@@ -139,7 +139,7 @@
                 </div>
                 <div class="pic-item-list">
                   {% for x in view_item.get_pics_list %}
-                  <div class="item" id="id_pics_{{x.id}}" data-url="{% url 'companydb_pic_item' x.id %}">
+                  <div class="item" id="id_pics_{{ x.id }}" data-url="{% url 'companydb_pic_item' x.id %}">
                     <input style="display: none;" type="checkbox" checked="checked" name="pics" value="{{ x.id }}">
                     <img src="{{ x.url_thumb }}" alt="">
                     <div class="del">X</div>
@@ -159,13 +159,10 @@
             <button type="submit" name="save" class="btn btn-primary" id="submit-id-save">{% trans 'Save' %}</button>
           </div>
         </div>
-
       </form>
     </div>
   {% else %}
-
-<p>... Stock item view ...</p>
-
+    {% include 'companydb/stock_item_partial.html' with item=view_item %}
   {% endif %}
 
 </div>
@@ -226,7 +223,7 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
   ev.preventDefault();
   ev.stopPropagation();
 
-  var postUrl = "{% url 'companydb_photos' user.username %}";
+  var postUrl = "{% url 'companydb_photos' view_user.username %}";
   var file_data = $(this).prop("files")[0];
 	var form_data = new FormData();
   var oPicItemList = $('.pic-item-list');
@@ -235,7 +232,6 @@ $('#id_pic_upload_field').on('change', function(ev){ // Upload pic when file fie
 	form_data.append("module", "stock");
 	form_data.append("csrfmiddlewaretoken", Cookies.get("csrftoken"));
 
-  console.log('BEGIN UPLOAD...');
   $('.pic-upload-field input').hide();
   $('.pic-upload-field .loading').show();
 
