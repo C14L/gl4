@@ -25,6 +25,10 @@ SITE_ID = 1
 SITE_NAME = 'Graniteland.com'
 SITE_DOMAIN = 'graniteland.com'  # default canonical domain
 
+LANGUAGE_CODE = 'en'
+LANGUAGE_SHORT = LANGUAGE_CODE[:2]
+LANGUAGES = [('en', 'english'), ('de', 'deutsch'), ]
+
 APPEND_SLASH = True
 ROOT_URLCONF = 'gl4.urls'
 WSGI_APPLICATION = 'gl4.wsgi.application'
@@ -140,13 +144,6 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.8/topics/i18n/
-
-LANGUAGE_CODE = 'en'
-LANGUAGE_SHORT = 'en'
-LANGUAGES = [('en', 'english'), ('de', 'deutsch'), ]
 
 TIME_ZONE = 'UTC'
 USE_TZ = True
