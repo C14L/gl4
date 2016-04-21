@@ -1,0 +1,38 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-20 13:18+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: mdpages/templates/mdpages/article.html:15
+#: mdpages/templates/mdpages/home.html:4 mdpages/templates/mdpages/home.html:6
+#: mdpages/templates/mdpages/home.html:15
+#: mdpages/templates/mdpages/topic.html:15
+msgid "Natural Stone Magazine"
+msgstr ""
+
+#: mdpages/templates/mdpages/author.html:15
+#: mdpages/templates/mdpages/keyword.html:14
+msgid "Articles"
+msgstr ""
+
+#: mdpages/templates/mdpages/home.html:8
+msgid ""
+"Expert texts on granite and marble related topics. The Graniteland Natural "
+"Stone Magazine has advice on granite and marble for consumers, as well as "
+"background information about the natural stone industry."
+msgstr ""
