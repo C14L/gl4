@@ -19,7 +19,8 @@
 
 {% block main %}
   {% include 'companydb/partial_profile_options.html' with view='stock' %}
-  {% include 'companydb/user-profile-header.html' %}
+  {% include 'companydb/user-profile-header.html' with view='stock' %}
+
   {% for item in stock %}
     {% include 'companydb/stock_item_partial.html' with detail_link=1 %}
   {% endfor %}
