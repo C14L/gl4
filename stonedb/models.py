@@ -155,8 +155,8 @@ class Stone(models.Model):
                           ['color', 'classification', 'country'], ]
         ordering = ['name']
 
+    """Return standard file name for pictures."""
     def get_pic_fname_default(self):
-        """Return standard file name for pictures."""
         return '{}.jpg'.format(self.slug)
 
     def get_pic_fname(self):

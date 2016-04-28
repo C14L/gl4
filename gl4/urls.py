@@ -13,6 +13,12 @@ import tradeshowdb.views
 urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^accounts/login/?$',
+        gl4app.views.MyLoginView.as_view(), name='gl_login'),
+    url(r'^accounts/signup/?',
+        gl4app.views.MySignupView.as_view(), name='gl_signup'),
+
     url(r'^accounts/', include('allauth.urls')),
     url(r'^infos/', include('mdpages.urls')),
 
@@ -146,13 +152,6 @@ urlpatterns = [
     # /fotos/12345
     url(r'^fotos/(?P<id>\d+)$',
         companydb.views.pic_item, name='companydb_pic_item'),
-
-    # url(r'^company/dashboard$',
-    #     companydb.views.dashboard, name='companydb_dashboard'),
-    # url(r'^company/-/projects$',
-    #     companydb.views.projects_detail, name='companydb_db_projects'),
-    # url(r'^company/-/stock$',
-    #     companydb.views.stock_detail, name='companydb_db_stock'),
 ]
 
 

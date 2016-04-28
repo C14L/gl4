@@ -115,7 +115,12 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         {% endif %}
       </header>
 
-      {% for message in messages %}<div class="alert alert-success {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>{% endfor %}
+      {% for message in messages %}
+      <div class="alert alert-success {% if message.tags %}{{ message.tags }}{% endif %}">
+        <span>{{ message }}</span>
+        <button class="btn btn-default btn-xs" style="float:right;" onclick="this.parentNode.remove()">ok</button>
+      </div>
+      {% endfor %}
 
       <div id="tpl-breadcrumb">
         <a href="/">Graniteland</a> &raquo;
