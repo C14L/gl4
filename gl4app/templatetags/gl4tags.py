@@ -33,24 +33,34 @@ def iconpath(slug):
 
 @register.simple_tag(name='adsense')
 def adsense_tag(slot, name):
+    # All ad names start with "gc" (graniteland.com) or "gd" (graniteland.de)
     client = settings.ADSENSE_AD_CLIENT
-    clss = slugify(name)
+    gcgd, clss = name.split(' ', 1)
+    clss = slugify(clss)
+
+    # Only display the correct ads (gd or gc) depending on LANGUAGE_CODE.
+    if gcgd == 'gc' and not settings.LANGUAGE_CODE.startswith('en'):
+        return ''
+    if gcgd == 'gd' and not settings.LANGUAGE_CODE.startswith('de'):
+        return ''
 
     if settings.PRODUCTION:
-        params = {'clss': clss, 'client': client, 'slot': slot, 'name': name}
-        html = '''<div class="ads {clss}">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- {name} -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="{client}"
-                 data-ad-slot="{slot}"
-                 data-ad-format="auto"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script></div>'''
+        params = {'gcgd': gcgd, 'clss': clss,
+                  'client': client, 'slot': slot, 'name': name}
+        html = '''
+<div class="ads {gcgd} {clss}">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- {name} -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="{client}"
+     data-ad-slot="{slot}"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>'''
     else:
-        params = {'clss': clss}
-        html = '''<div class="fake ads {clss}"><div></div></div>'''
+        params = {'gcgd': gcgd, 'clss': clss, 'name': name}
+        html = '''<div class="fake ads {gcgd} {clss}"><div>{name}</div></div>'''
 
     return mark_safe(html.format(**params))

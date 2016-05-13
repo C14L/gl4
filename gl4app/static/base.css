@@ -350,9 +350,10 @@ body.company.list .company-list > .item > .info > .description { display: none; 
 
 /* Stones */
 
-body.stones-home .stones-home-content { display: flex; flex-direction: row; margin: 16px 0; }
-body.stones-home .stones-home-content .stones-home-search { flex: auto; overflow: hidden; }
-body.stones-home .stones-home-content .stones-home-ad1 {  margin-left: 16px; width: 350px; }
+body.stones-home .stones-home-content { margin: 16px; min-height: 300px; }
+body.stones-home h1 { text-align: center; }
+body.stones-home .stones-home-content .stones-home-search { max-width: 600px; min-width: 300px; margin: 16px auto; }
+body.stones-home .stones-home-content .stones-home-ad { margin: 0 auto 25px auto; }
 
 body.stones-home .stones-home-result > a { display: block; color: black; text-decoration: none; cursor: pointer; box-shadow: 0 0 1px rgba(0,0,0,0.75); font-size: 16px; line-height: 30px; overflow: hidden; white-space: nowrap; margin: 8px 0; }
 body.stones-home .stones-home-result > a > span { display: block; background-color: rgba(255,255,255,0.75); margin-left: 100px; padding-left: 8px; }
@@ -538,13 +539,17 @@ body.user.settings.areas .list .item.is-member .about { opacity: 1; }
 
 /* Ads */
 
-.fake.ads { background-color: gray; }
-.ads.gc-resp-atf-stone-browse-1 { width: 728px; height: 90px; margin: 20px auto; }
-.ads.gc-resp-btf-stone-browse-3 { width: 728px; height: 90px; margin: 20px auto; }
-.ads.gc-resp-atf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
-.ads.gc-resp-btf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
-.ads.gc-resp-atf-homepage { width: 160px; height: 600px; }
-.ads.gc-resp-atf-text-section { width: 300px; height: 600px; }
-.ads.gc-resp-atf-text-item { width: 300px; height: 600px; }
-.ads.gc-resp-atf-tradeshows { width: 728px; height: 90px; }
-.ads.gc-resp-btf-tradeshows { width: 728px; height: 90px; }
+.fake.ads { background-color: gray; color: lightgray; text-align: center; }
+.ads.resp-atf-stone-browse-1 { width: 728px; height: 90px; margin: 20px auto; }
+.ads.resp-btf-stone-browse-3 { width: 728px; height: 90px; margin: 20px auto; }
+.ads.resp-atf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
+.ads.resp-btf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
+.ads.resp-atf-homepage { width: 160px; height: 600px; }
+.ads.resp-atf-text-section { width: 300px; height: 600px; }
+.ads.resp-atf-text-item { width: 300px; height: 600px; }
+.ads.resp-atf-tradeshows { width: 728px; height: 90px; }
+.ads.resp-btf-tradeshows { width: 728px; height: 90px; }
+
+.ads.resp-atf-stone-search-form { width: 728px; height: 90px; margin: 20px auto; }
+.ads.resp-atf-stone-item { width: 728px; height: 90px; }
+.ads.resp-btf-stone-item { width: 336px; height: 280px; }
