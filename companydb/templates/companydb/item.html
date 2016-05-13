@@ -105,7 +105,10 @@
   {% crispy contactform %}
 </div>
 
-<p>Last active: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }} </p>
+<div class="last-seen-meta">
+  profile created: {{ view_user.date_joined|date:"SHORT_DATE_FORMAT" }}
+  {% if view_user.last_login %}&mdash; last seen: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }}{% endif %}
+</div>
 
 {% endblock %}
 

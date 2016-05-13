@@ -437,6 +437,8 @@ body.profile-home .profile-business-card .line4 { flex-grow: 1; text-align: cent
 body.profile-home .profile-business-card .line4 dt {  }
 body.profile-home .profile-business-card .line4 dd {  }
 
+body.profile-home .last-seen-meta { text-align: center; color: #666; font-size: 0.85rem; }
+
 /* Home page */
 
 body.sitehome .leftcol { width:520px; margin:0; padding:0; float:left; }
