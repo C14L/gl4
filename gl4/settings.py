@@ -132,6 +132,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'gl4app.context_processors.add_common_translations',
                 'gl4app.context_processors.add_settings',
             ],
         },

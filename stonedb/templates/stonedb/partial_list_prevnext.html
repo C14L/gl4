@@ -7,7 +7,7 @@
         {% if simple_filter != 0 %}
           <a href="{% url 'stonedb_simple_filter' f q.slug i %}">{{ i }}</a>
         {% else %}
-          <a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug|default:'all' classification.slug i %}">{{ i }}</a>
+          <a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug|default:'all' classification.slug|default:'all' i %}">{{ i }}</a>
         {% endif %}
       {% endif %}
     {% endfor %}

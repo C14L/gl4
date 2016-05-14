@@ -49,9 +49,9 @@ header > form input[type="submit"] { width: 50px; }
 
 /* Template page elements */
 
-#tpl-wrap { padding: 0; margin: 0 auto 500px auto; border: 0; text-align: left; width: 920px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 0 12px -2px #000; }
+#tpl-wrap { padding: 0; margin: 0 auto 500px auto; border: 0; text-align: left; max-width: 920px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 0 12px -2px #000; }
 
-#tpl-login { width:800px; box-shadow:inset 0 -10px 10px -5px #aaa; border-radius:10px 10px 0 0; padding:10px; margin:0 auto; background:#fff; color:#666; }
+#tpl-login { max-width: 800px; box-shadow:inset 0 -10px 10px -5px #aaa; border-radius:10px 10px 0 0; padding:10px; margin:0 auto; background:#fff; color:#666; }
 #tpl-login a { color:#00F; text-decoration:underline; }
 #tpl-login form { margin:0; }
 #tpl-login table { border:0; margin:0 auto; padding:0; }
@@ -65,7 +65,7 @@ header > form input[type="submit"] { width: 50px; }
 #tpl-breadcrumb a {  }
 #tpl-breadcrumb a:hover {  }
 
-#tpl-content { padding:0 20px 20px 20px; margin:0; text-align:left; background:#fff; }
+#tpl-content { padding: 0 20px 20px 20px; margin:0; text-align:left; background:#fff; }
 
 #id-staff-links { position: fixed; bottom: 0; left: 0; background-color: yellow; padding: 5px 10px; }
 #id-staff-links a { padding: 5px 10px; }
@@ -350,7 +350,7 @@ body.company.list .company-list > .item > .info > .description { display: none; 
 
 /* Stones */
 
-body.stones-home .stones-home-content { margin: 16px; min-height: 300px; }
+body.stones-home .stones-home-content { margin: 32px 0; padding: 16px 8px 32px 8px; background: #E9E9E9; }
 body.stones-home h1 { text-align: center; }
 body.stones-home .stones-home-content .stones-home-search { max-width: 600px; min-width: 300px; margin: 16px auto; }
 body.stones-home .stones-home-content .stones-home-ad { margin: 0 auto 25px auto; }
@@ -540,16 +540,22 @@ body.user.settings.areas .list .item.is-member .about { opacity: 1; }
 /* Ads */
 
 .fake.ads { background-color: gray; color: lightgray; text-align: center; }
-.ads.resp-atf-stone-browse-1 { width: 728px; height: 90px; margin: 20px auto; }
-.ads.resp-btf-stone-browse-3 { width: 728px; height: 90px; margin: 20px auto; }
-.ads.resp-atf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
-.ads.resp-btf-companies-sections { width: 728px; height: 90px; margin: 20px auto; }
+
+.ads.resp-atf-stone-search-form { max-width: 100%; height: 90px; margin: 20px auto; }
+.ads.resp-atf-stone-browse-1 { width: 100%; height: 90px; margin: 20px auto; }
+.ads.resp-btf-stone-browse-3 { width: 100%; height: 90px; margin: 20px auto; }
+.ads.resp-atf-stone-item { width: 100%; height: 90px; }
+.ads.resp-btf-stone-item { width: 100%; height: 300px; }
+
+.ads.resp-atf-companies-list { width: 300px; height: 280px; }
+.ads.resp-atf-companies-sections { width: 100%; height: 90px; margin: 20px auto; }
+.ads.resp-btf-companies-sections { width: 100%; height: 90px; margin: 20px auto; }
+
 .ads.resp-atf-homepage { width: 160px; height: 600px; }
+
 .ads.resp-atf-text-section { width: 300px; height: 600px; }
 .ads.resp-atf-text-item { width: 300px; height: 600px; }
-.ads.resp-atf-tradeshows { width: 728px; height: 90px; }
-.ads.resp-btf-tradeshows { width: 728px; height: 90px; }
 
-.ads.resp-atf-stone-search-form { width: 728px; height: 90px; margin: 20px auto; }
-.ads.resp-atf-stone-item { width: 728px; height: 90px; }
-.ads.resp-btf-stone-item { width: 336px; height: 280px; }
+.ads.resp-atf-tradeshows { width: 100%; height: 90px; }
+.ads.resp-btf-tradeshows { width: 100%; height: 90px; }
+

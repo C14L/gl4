@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static i18n markdown_deux_tags bleach_tags %}
+{% load gl4tags static i18n markdown_deux_tags bleach_tags %}
 
 {% block title %}{{ obj.name }}{% endblock %}
 
@@ -35,22 +35,13 @@
     {% endif %}
     <div class="about">{{ obj.about|markdown|bleach }}</div>
   </div>
+
   <div class="ads">
     {% if users.paginator.count > 0 %}
-      {% if settings.PRODUCTION %}
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- gc resp atf companies list -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-0795994016573783"
-             data-ad-slot="9645557647"
-             data-ad-format="auto"></ins>
-        <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      {% else %}
-        <div style="margin: 0; padding: 0; width: 336px; height: 280px; background: gray;"></div>
-      {% endif %}
+      <div class="ad1">
+        {% adsense '9645557647' 'gc resp atf companies list' %}
+        {% adsense '2122290844' 'gd resp atf companies list' %}
+      </div>
     {% endif %}
   </div>
 </div>
@@ -71,22 +62,12 @@
 {% endif %}
 
 <div class="below">
-  {% if users.paginator.count > 0 %}
-    {% if settings.PRODUCTION %}
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- gc resp btf companies list -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-0795994016573783"
-           data-ad-slot="3599024047"
-           data-ad-format="auto"></ins>
-      <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    {% else %}
-      <div style="max-width: 928px; height: 90px; background: gray;"></div>
+    {% if users|length > 10 %}
+      <div class="ads">
+          {% adsense '3599024047' 'gc resp btf companies list' %}
+          {% adsense '5075757241' 'gd resp btf companies list' %}
+      </div>
     {% endif %}
-  {% endif %}
 </div>
 
 {% include 'companydb/partial_list_prevnext.html' with viewname='companydb_group' %}

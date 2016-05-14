@@ -31,15 +31,7 @@
   <p>{% blocktrans with name=q.name count=stones.paginator.count %}Browse <strong>{{ count }} types of {{ name }} marble and {{name}} granite stone</strong>. Click on a stone image to see more about a particular natural stone. Find {{ name }} stone and many other colors of stone on Graniteland.{% endblocktrans %}</p>
 {% endif %}
 
-{% include 'stonedb/partial_list_prevnext.html'%}
-
-{% adsense '8587626845' 'gc resp atf stone browse 1' %}
-
-{% include 'stonedb/stone-list-1.html'%}
-
-{% adsense '5494559644' 'gc resp btf stone browse 3' %}
-
-{% include 'stonedb/partial_list_prevnext.html'%}
+{% include 'stonedb/partial_simple_filter_list.html'%}
 
 <h2>{% blocktrans with capfirst_name=q.name|capfirst name=q.name %}{{ capfirst_name }} stone and other natural stone colors{% endblocktrans %}</h2>
 

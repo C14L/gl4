@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static i18n %}
+{% load gl4tags static i18n %}
 
 {% block title %}{% blocktrans with business=business.name product=product.name country=country.name %}{{ business }} {{ product }} {{ country }}{% endblocktrans %}{% endblock %}
 
@@ -44,19 +44,11 @@
   <div class="above">
     {% if users|length > 10 %}
       <div class="ads">
-        {% if settings.PRODUCTION %}
-          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-          <!-- gc resp atf companies list -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-0795994016573783"
-               data-ad-slot="9645557647"
-               data-ad-format="auto"></ins>
-          <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
-        {% else %}
-          <div style="margin: 0; padding: 0; width: 100%; height: 100%; background: gray;"></div>
+        {% if users.paginator.count > 0 %}
+          <div class="ad1">
+            {% adsense '9645557647' 'gc resp atf companies list' %}
+            {% adsense '2122290844' 'gd resp atf companies list' %}
+          </div>
         {% endif %}
       </div>
     {% endif %}
@@ -78,20 +70,8 @@
   <div class="below">
     {% if users|length > 10 %}
       <div class="ads">
-        {% if settings.PRODUCTION %}
-          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-          <!-- gc resp btf companies list -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-0795994016573783"
-               data-ad-slot="3599024047"
-               data-ad-format="auto"></ins>
-          <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
-        {% else %}
-          <div style="max-width: 100%; height: 100%; background: gray;"></div>
-        {% endif %}
+          {% adsense '3599024047' 'gc resp btf companies list' %}
+          {% adsense '5075757241' 'gd resp btf companies list' %}
       </div>
     {% endif %}
   </div>
