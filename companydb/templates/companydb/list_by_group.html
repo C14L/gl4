@@ -5,7 +5,7 @@
 
 {% block title2 %}{% blocktrans with name=obj.name %}Natural stone {{ name }} companies{% endblocktrans %}{% endblock %}
 
-{% block description %}{{obj.description}}{% endblock %}
+{% block description %}{{ obj.description }}{% endblock %}
 
 {% block head %}{% endblock %}
 
@@ -23,7 +23,7 @@
   </div>
 {% endif %}
 
-<h1>{% blocktrans with name=obj.name %}Natural stone {{ name }} companies{% endblocktrans %}</h1>
+<h1>{% blocktrans with name=obj.name %}{{ name }} companies{% endblocktrans %}</h1>
 
 <div class="above">
   <div class="intro">
@@ -37,7 +37,7 @@
   </div>
 
   <div class="ads">
-    {% if users.paginator.count > 0 %}
+    {% if users|length > 0 %}
       <div class="ad1">
         {% adsense '9645557647' 'gc resp atf companies list' %}
         {% adsense '2122290844' 'gd resp atf companies list' %}
@@ -62,12 +62,14 @@
 {% endif %}
 
 <div class="below">
+  <div class="ads">
     {% if users|length > 10 %}
       <div class="ads">
           {% adsense '3599024047' 'gc resp btf companies list' %}
           {% adsense '5075757241' 'gd resp btf companies list' %}
       </div>
     {% endif %}
+  </div>
 </div>
 
 {% include 'companydb/partial_list_prevnext.html' with viewname='companydb_group' %}
