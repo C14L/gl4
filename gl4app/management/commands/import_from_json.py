@@ -1,29 +1,25 @@
-import csv
 import json
-import os
 
-from os import rename
-from os.path import join, isfile, dirname
-# from django.conf import settings
+import os
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
+from django.db import connection
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
+from io import StringIO
+from os import rename
+from os.path import join, isfile, dirname
 
 from companydb.initial_data import import_company_countries
-from companydb.models import (UserProfile, Stock, Project, Pic, Group, Product)
 from companydb.models import Country as Companydb_Country
+from companydb.models import (UserProfile, Stock, Project, Pic, Group, Product)
+from mdpages.models import Article, Author, Keyword, Topic
 from stonedb.models import (Stone, StoneName,
                             Color, Classification, Texture, Country)
-from tradeshowdb.models import Tradeshow
-from mdpages.models import Article, Author, Keyword, Topic
 from toolbox import parse_iso_date, parse_iso_datetime, force_int
-
-from django.core.management import call_command
-from django.conf import settings
-from django.db import connection
-# from django.db.models.loading import get_app
-from io import StringIO
+from tradeshowdb.models import Tradeshow
 
 
 class Command(BaseCommand):
@@ -34,18 +30,33 @@ class Command(BaseCommand):
     lang = settings.LANGUAGE_SHORT
 
     def handle(self, *args, **options):
-        print(
-            '\nThis will import all old Graniteland data JSON files.\n'
-            '0. Import products, country names for Company model.\n'
-            '1. Import colors, classifications, countries for Stone model.\n'
-            '2. Import user accounts.\n'
-            '3. Import profiles and group relations.\n'
-            '4. Import stones and stone pictures, renaming jpg files.\n'
-            '5. Import user stock and showroom items.\n'
-            '6. Import article pages.\n'
-            '7. Import user uploaded pictures, keeping relation to profiles, '
-            'stones, stock items, showroom item.\n'
-            )
+        print('''
+This will import all old Graniteland data JSON files from the directory:
+
+  BASE_DIR/../import_data/*.json
+
+Begin dumping the old DB as JSON using phpmyadmin, then cut the one large JSON
+file into individual files, one per original DB table, using bash/sed/awk:
+
+~$ sed -i.bak -r 's#(// usr_web3_1\.\w+)$#\n\n\1\n\n#gm' usr_web3_1.json
+~$ sed -i.bak3 -z 's/\n\n\n\n//'g usr_web3_1.json
+~$ grep '^\/\/\s*usr_web3_1\.' usr_web3_1.json | \
+      sed -r 's#//\s*usr_web3_1\.##; s/\[/.json>[/1' | \
+      awk -F '>' '{for(i=2;i<=NF;i++) print $i >> $1}'
+
+Using the individual JSON files in `import_data/*.json`, this script will
+
+0. Import products, country names for Company model.
+1. Import colors, classifications, countries for Stone model.
+2. Import user accounts.
+3. Import profiles and group relations.
+4. Import stones and stone pictures, renaming jpg files.
+5. Import user stock and showroom items.
+6. Import article pages.
+7. Import user uploaded pictures, keeping relation to profiles, stones,
+   stock items, showroom item.
+
+        ''')
         input('Please press Enter to continue...')
 
         self.import_products(force=True)
@@ -66,15 +77,18 @@ class Command(BaseCommand):
         self.fix_all_id()
 
     def walkjsondata(self, fn):
-        line = None
+        # line = None
         f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
         with open(f) as fh:
-            for line in fh:  # MySQL adds different kind of comments to the
-                if line.startswith('['):  # data file. Find actual JSON data.
-                    break
-        if line:
-            for row in json.loads(line):
+            for row in json.load(fh, strict=False):
                 yield row
+
+        #    for line in fh:  # MySQL adds different kind of comments to the
+        #        if line.startswith('['):  # data file. Find actual JSON data.
+        #            break
+        #if line:
+        #    for row in json.loads(line, strict=False):
+        #        yield row
 
     def import_products(self, force=False):
         if force:

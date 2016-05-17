@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.management import BaseCommand
 
 from companydb.models import Pic
@@ -13,8 +14,13 @@ class Command(BaseCommand):
         count_success = 0
         li = Pic.objects.all_public()
 
-        print('\nCreate image files for all sizes of each uploaded, public\n'
-              'picture. There are currently {} items.\n'.format(li.count()))
+        print('''
+Create image files for all sizes of each uploaded, public picture. There
+are currently {} items.
+
+Looking for images in "{}"
+
+        '''.format(li.count(), settings.MEDIA_ROOT))
         input('--- Press ENTER to continue ---')
 
         for pic in li:
