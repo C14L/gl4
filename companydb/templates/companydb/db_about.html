@@ -1,6 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% load static i18n crispy_forms_tags %}
 
 {% block title %}About text for {{user.profile.name}}{% endblock %}
 
@@ -22,7 +21,7 @@
   {% include 'companydb/user-profile-header.html' with view_user=user view='item' %}
 
   <div class="box-input">
-    <p>The presentation text is the center part of your company's profile page. What is the history and success story of your company? Where are your strong points?</p>
+    <p>{% trans "The presentation text is the center part of your company's profile page: What are your strength? How can you help your clients?" %}</p>
     {% crispy form %}
   </div>
 {% endblock %}

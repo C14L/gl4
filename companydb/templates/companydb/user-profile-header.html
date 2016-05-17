@@ -15,26 +15,13 @@
     </a>
   </h1>
 
-  <ul id="tabnavi2" class="user-profile-nav">
-    <li>
-      <a {% if 'item' in view %}class="current"{% endif %} href="{% url 'companydb_item' view_user.username %}">
-        <span>{% trans 'Overview' %}</span>
-      </a>
-    </li>
-    <li>
-      <a {% if 'stock' in view %}class="current"{% endif %} href="{% url 'companydb_stock' view_user.username %}">
-        <span>{% blocktrans with stock_count=view_user.profile.stock_count %}Stones on Stock ({{stock_count}}){% endblocktrans %}</span>
-      </a>
-    </li>
-    <li>
-      <a {% if 'projects' in view %}class="current"{% endif %} href="{% url 'companydb_projects' view_user.username %}">
-        <span>{% blocktrans with project_count=view_user.profile.project_count %}Projects Showroom ({{project_count}}){% endblocktrans %}</span>
-      </a>
-    </li>
-    <li>
-      <a {% if 'photos' in view %}class="current"{% endif %} href="{% url 'companydb_photos' view_user.username %}">
-        <span>{% blocktrans with pic_count=view_user.profile.pic_count %}Company Photos ({{pic_count}}){% endblocktrans %}</span>
-      </a>
-    </li>
-  </ul>
+  <div class="text-center" style="padding-bottom: 20px;">
+    <div class="btn-group">
+      <a class="btn btn-default{% if 'item' in view %} active{% endif %}" href="{% url 'companydb_item' view_user.username %}">{% trans 'Overview' %}</a>
+      <a class="btn btn-default{% if 'stock' in view %} active{% endif %}" href="{% url 'companydb_stock' view_user.username %}">{% blocktrans with stock_count=view_user.profile.stock_count %}Stones on Stock ({{stock_count}}){% endblocktrans %}</a>
+      <a class="btn btn-default{% if 'projects' in view %} active{% endif %}" href="{% url 'companydb_projects' view_user.username %}">{% blocktrans with project_count=view_user.profile.project_count %}Projects Showroom ({{project_count}}){% endblocktrans %}</a>
+      <a class="btn btn-default{% if 'photos' in view %} active{% endif %}" href="{% url 'companydb_photos' view_user.username %}">{% blocktrans with pic_count=view_user.profile.pic_count %}Company Photos ({{pic_count}}){% endblocktrans %}</a>
+    </div>
+  </div>
+
 </div>

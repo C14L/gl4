@@ -199,7 +199,7 @@ def item(request, slug):
         if form.is_valid():
             recipients = [view_user.email]
             sender = settings.COMPANY_CONTACT_FROM_EMAIL
-            subject = _('Message sent from you company profile on Graniteland.')
+            subject = _('Message sent from your company profile on Graniteland.')
             tr_sender_name = _('Sender Name')
             tr_sender_mail = _('Sender Email')
             message = ('{}: {}\n{}: {}\n{}\n{}\n\n'.format(

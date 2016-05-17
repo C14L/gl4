@@ -95,6 +95,9 @@
   {% if user.is_authenticated and user.id == view_user.id %}
     <div style="float: left;">
       <a class="btn btn-default" href="{% url 'companydb_about' user.username %}">{% trans 'edit' %}</a>
+      {% if not view_user.profile.about %}
+        <span style="font-style: italic">{% trans "Write a short sales text: what is your company's strength and how can you help your potential clients." %}</span>
+      {% endif %}
     </div>
   {% endif %}
   {{view_user.profile.about|markdown|bleach}}

@@ -9,7 +9,9 @@
 
 {% block head %}
 <style>
-  .wrapper { }
+  .wrapper { border: 2px solid #CCC; background-color: #F3F3F3; margin-top: 50px; }
+  .wrapper > h1 { font-size: 1rem; line-height: 1em; margin: 0; padding: 15px; border-bottom: 1px solid #CCC; }
+  .wrapper > form { float: right; margin: 6px 10px 0 0; }
 
   .project-add { margin: 0; padding: 8px; }
   .project-add > a { font-size: 1.25em; }
@@ -60,10 +62,11 @@
 {% endblock %}
 
 {% block main %}
-<div class="wrapper">
-  {% include 'companydb/partial_profile_options.html' with view_user=user %}
-  {% include 'companydb/user-profile-header.html' with view_user=user view='projects-detail' %}
 
+{% include 'companydb/partial_profile_options.html' with view_user=user %}
+{# include 'companydb/user-profile-header.html' with view_user=user view='projects-detail' #}
+
+<div class="wrapper">
   {% if view_item and form %}
     <form method="POST" action="" onsubmit="return confirm('{% trans 'Delete project from company profile?' %}');">
       {% csrf_token %}
