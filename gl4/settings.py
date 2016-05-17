@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 
 # Import private settings.
-from collections import OrderedDict
 from os.path import dirname, abspath, exists, join
+
 from gl4.settings_private import *
 
 DEBUG = exists('/islocal.txt')
@@ -21,7 +21,7 @@ PRODUCTION = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
-LANGUAGE_CODE = 'de'
+LANGUAGE_CODE = 'en'
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
 LANGUAGES = [('en', 'english'), ('de', 'deutsch'), ]
 
@@ -35,10 +35,12 @@ if LANGUAGE_CODE == 'de':
     SITE_NAME = 'Graniteland.de'
     SITE_DOMAIN = 'graniteland.de'  # default canonical domain
     ROOT_URLCONF = 'gl4.urls_de'
+    DATABASES['default']['NAME'] = 'gd_dev'
 else:
     SITE_NAME = 'Graniteland.com'
     SITE_DOMAIN = 'graniteland.com'  # default canonical domain
     ROOT_URLCONF = 'gl4.urls'
+    DATABASES['default']['NAME'] = 'gc_dev'
 
 ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
@@ -211,7 +213,8 @@ BLEACH_STRIP_TAGS = True
 BLEACH_STRIP_COMMENTS = True
 
 # Use the CKEditorWidget for bleached HTML fields
-BLEACH_DEFAULT_WIDGET = 'wysiwyg.widgets.WysiwygWidget'
+# BLEACH_DEFAULT_WIDGET = 'wysiwyg.widgets.WysiwygWidget'
+# BLEACH_ALLOWED_PROTOCOLS = ['https']
 
 # --- django-markdown-deux -----------------------------------------------------
 
