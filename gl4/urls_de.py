@@ -34,7 +34,7 @@ urlpatterns = [
         stonedb.views.home, name='stonedb_home'),
 
     # /stone/redir_search.php --> stonedb_filter
-    url(r'^/naturstein/search.php$',
+    url(r'^naturstein/search.php$',
         stonedb.views.redir_search_php, name='stonedb_redir_search_php'),
 
     # /stone/color
