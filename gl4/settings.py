@@ -21,17 +21,24 @@ PRODUCTION = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
-SITE_ID = 1
-SITE_NAME = 'Graniteland.com'
-SITE_DOMAIN = 'graniteland.com'  # default canonical domain
-
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'de'
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
 LANGUAGES = [('en', 'english'), ('de', 'deutsch'), ]
 
+# ==============================================================================
+
+SITE_ID = 1
 APPEND_SLASH = True
-ROOT_URLCONF = 'gl4.urls'
 WSGI_APPLICATION = 'gl4.wsgi.application'
+
+if LANGUAGE_CODE == 'de':
+    SITE_NAME = 'Graniteland.de'
+    SITE_DOMAIN = 'graniteland.de'  # default canonical domain
+    ROOT_URLCONF = 'gl4.urls_de'
+else:
+    SITE_NAME = 'Graniteland.com'
+    SITE_DOMAIN = 'graniteland.com'  # default canonical domain
+    ROOT_URLCONF = 'gl4.urls'
 
 ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])

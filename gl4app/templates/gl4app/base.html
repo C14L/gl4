@@ -149,8 +149,8 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             <td style="padding:10px;">
               <p>
                 <a href="mailto:admin-graniteland@C14L.com" title="{% trans 'Please report user submitted content that violates the Terms of Service.' %}" rel="nofollow">{% trans 'Report abuse' %}</a> &middot;
-                <a href="/tos" rel="nofollow">{% trans 'Terms of Service' %}</a> &middot;
-                <a href="/privacy" rel="nofollow">{% trans 'Privacy' %}</a> &middot;
+                <a href="https://C14L.com/impressum.html" rel="nofollow">{% trans 'Terms of Service' %}</a> &middot;
+                <a href="https://C14L.com/impressum.html" rel="nofollow">{% trans 'Privacy' %}</a> &middot;
               </p>
               <p>
                 <a href="/contact" rel="nofollow">{% trans 'Contact' %}</a> &middot;
@@ -181,19 +181,12 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
       });
     }
     </script>
-
-    <div id="fb-root"></div>
-
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-
     <script src="{% static 'base.js' %}"></script>
 
     {% block foot %}{% endblock %}
-
-    <script>var addthis_config = {"data_track_addressbar":false};</script>
-    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=yaix"></script>
   </body>
 </html>
