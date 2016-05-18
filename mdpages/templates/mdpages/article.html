@@ -19,11 +19,6 @@
 {% block main %}
 
 <div class="layout">
-  <aside class="sidebar">
-    {% adsense '9785158445' 'gc resp atf text item' %}
-    {% adsense '2261891648' 'gd resp atf text item' %}
-  </aside>
-
   <article>
     <h1>{{ article.title }}</h1>
     {% if user.is_staff %}
@@ -32,7 +27,27 @@
         <a href="{% url 'admin:mdpages_article_changelist' %}" class="btn btn-default">list</a>
       </div>
     {% endif %}
-    {{ article.text|bleach }}
+    <aside class="sidebar">
+      {% adsense '9785158445' 'gc resp atf text item' %}
+      {% adsense '2261891648' 'gd resp atf text item' %}
+    </aside>
+    {{ article.text|markdown:"trusted"|bleach }}
+    {% if article.author and article.author.name %}
+      <aside class="author">
+        <p class="title">
+          <strong>{{ article.title }}</strong> &mdash;
+          <span>{% trans 'written by:' %}</span>
+          {% if article.author.url %}
+            <a href="{{ article.author.url }}">{{ article.author.name }}</a>
+          {% else %}
+            <span>{{ article.author.name }}</span>
+          {% endif %}
+        </p>
+        <p class="about">
+          {{ article.author.about }}
+        </p>
+      </aside>
+    {% endif %}
   </article>
 </div>
 
