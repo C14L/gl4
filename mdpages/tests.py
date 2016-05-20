@@ -24,6 +24,8 @@ class MdpagesTestCase(TestCase):
         self.article = Article.objects.create(
             title=self.page_title, text=self.page_text,
             user=self.mainuser, topic=self.topic, is_published=True)
+        self.url = reverse('mdpages_article',
+                           args=[self.topic.slug, self.article.slug])
 
     def tearDown(self):
         # self.mainuser.delete()
@@ -42,6 +44,24 @@ class MdpagesTestCase(TestCase):
         response = self.client.get(url)
         self.assertContains(response, self.page_title)
         self.assertContains(response, self.page_text)
+
+    def test_view_page_with_safe_html_and_markdown(self):
+        """Assert that markdown and safe HTML is rendered."""
+        res1 = '<a href="https://example.com">link</a>'
+        res2 = '<a href="https://example.org/">markdown text</a>'
+        self.article.text = ('Text <a href="https://example.com">link</a>.\n\n'
+                             'And [markdown text](https://example.org/) too.')
+        self.article.save()
+        response = self.client.get(self.url)
+        self.assertContains(response, res1)
+        self.assertContains(response, res2)
+
+    def test_view_page_with_unsafe_html(self):
+        """Assert that unsafe HTML is removed when pages render."""
+        self.article.text = '<a href="javascript:alert(\'h4x0R\')">3v1l</a>'
+        self.article.save()
+        response = self.client.get(self.url)
+        self.assertNotContains(response, self.article.text)
 
     def test_display_edit_btn_only_for_auth_user(self):
         args = [self.article.pk]

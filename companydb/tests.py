@@ -7,10 +7,12 @@ from companydb.models import UserProfile, Stock, Project, Group, Country
 from stonedb.models import Stone
 
 
+# noinspection PyPep8Naming
 def setUpModule():
     import_company_countries(force=False, silent=False)
 
 
+# noinspection PyPep8Naming
 def tearDownModule():
     pass
 
@@ -266,6 +268,31 @@ class CompanydbTestCase(TestCase):
         response = self.client.get(profile_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, data['about'])
+
+    def test_profile_about_with_safe_html_and_markdown(self):
+        """Assert that unsafe HTML is removed when profile about renders."""
+        profile_url = reverse('companydb_item', args=[self.username])
+
+        res1 = '<a href="https://example.com">link</a>'
+        res2 = '<a href="https://example.org/">markdown text</a>'
+        html = ('Text <a href="https://example.com">link</a>.\n\n'
+                'And [markdown text](https://example.org/) too.')
+
+        self.user.profile.about = html
+        self.user.profile.save()
+        response = self.client.get(profile_url)
+        self.assertContains(response, res1)
+        self.assertContains(response, res2)
+
+    def test_profile_about_with_unsafe_html(self):
+        """Assert that unsafe HTML is removed when profile about renders."""
+        profile_url = reverse('companydb_item', args=[self.username])
+        html = '<a href="javascript:alert(\'h4x0R\')">3v1l</a>'
+
+        self.user.profile.about = html
+        self.user.profile.save()
+        response = self.client.get(profile_url)
+        self.assertNotContains(response, html)
 
     def test_profile_contact_form(self):
         form_id = 'id_profile-contact-form'
