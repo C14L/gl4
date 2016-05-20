@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 
 # Import private settings.
+import re
 from os.path import dirname, abspath, exists, join
 
 from gl4.settings_private import *
@@ -231,6 +232,19 @@ MARKDOWN_DEUX_STYLES = {
         },
         "safe_mode": False,
     },
+    'user': {
+        "safe_mode": "escape",
+        "link_patterns": [(
+            re.compile(r'(granites?|marbles?|limestones?|sandstones?)', re.I),
+            r"https://www.graniteland.com/stone/type/\1"
+        ), ],
+        "extras": {
+            "code-friendly": None,
+            "cuddled-lists": None,
+            "footnotes": None,
+            "header-ids": None,
+        },
+    }
 }
 
 # --- my own settings ----------------------------------------------------------

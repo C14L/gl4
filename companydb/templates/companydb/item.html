@@ -100,7 +100,7 @@
       {% endif %}
     </div>
   {% endif %}
-  {{view_user.profile.about|markdown|bleach}}
+  {{view_user.profile.about|markdown:"user"|bleach}}
 </section>
 
 <div class="box-input" id="contact">
