@@ -155,11 +155,20 @@ def simple_filter(request, f, q, p=None):
     else:
         raise Http404
 
+    titlestone = '/stonesbrowse/{}.jpg'.format(q.slug)
+
     stones = _get_page(Stone.objects.filter(**{fk: q}), p, 60)
     return render(request, 'stonedb/filter_{}.html'.format(fk), _ctx({
         'range_pages': range(1, stones.paginator.num_pages+1),
-        'stones': stones, 'more': more, 'f': f, 'q': q, fk: q,
-        'canonical': request.path, 'selected_{}'.format(fk): q.pk}))
+        'canonical': request.path,
+        'titlestone': titlestone,
+        'stones': stones,
+        'more': more,
+        'f': f,
+        'q': q,
+        fk: q,
+        'selected_{}'.format(fk): q.pk
+    }))
 
 
 def _filter_cleanup_val(k):
@@ -239,9 +248,14 @@ def filter(request, color, country, texture, classif, p=1):
                         color and color.slug or 'all',
                         classif and classif.slug or 'all'])
 
+    titlestone = '/stonesbrowse/{}.jpg'.format('-'.join([x for x in [
+        country and country.slug, texture and texture.slug,
+        color and color.slug, classif and classif.slug] if x]))
+
     return render(request, 'stonedb/filter.html', _ctx({
         'range_pages': range(1, stones.paginator.num_pages+1),
         'canonical': canonical,
+        'titlestone': titlestone,
         'stones': stones,
         'classification': classif,
         'color': color,

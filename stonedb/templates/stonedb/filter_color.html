@@ -9,7 +9,7 @@
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}browse-stones-color{% endblock %}
+{% block body_classes %}stones browse filter color{% endblock %}
 
 {% block breadcrumb %}
 {% include 'stonedb/simple-filter-breadcrumb.html' %}
@@ -23,18 +23,22 @@
   </div>
 {% endif %}
 
-<h1>{% blocktrans with color=q.name capfirst_color=q.name|capfirst %}{{ capfirst_color }} granite and {{ color }} marble{% endblocktrans %}</h1>
+  <div class="head">
+    <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
 
-{% if q.text %}
-  {{ q.text|markdown|bleach }}
-{% else %}
-  <p>{% blocktrans with name=q.name count=stones.paginator.count %}Browse <strong>{{ count }} types of {{ name }} marble and {{name}} granite stone</strong>. Click on a stone image to see more about a particular natural stone. Find {{ name }} stone and many other colors of stone on Graniteland.{% endblocktrans %}</p>
-{% endif %}
+    <h1>{% blocktrans with color=q.name capfirst_color=q.name|capfirst %}{{ capfirst_color }} granite and {{ color }} marble{% endblocktrans %}</h1>
 
-{% include 'stonedb/partial_simple_filter_list.html'%}
+    {% if q.text %}
+      {{ q.text|markdown|bleach }}
+    {% else %}
+      <p>{% blocktrans with name=q.name count=stones.paginator.count %}Browse <strong>{{ count }} types of {{ name }} marble and {{name}} granite stone</strong>. Click on a stone image to see more about a particular natural stone. Find {{ name }} stone and many other colors of stone on Graniteland.{% endblocktrans %}</p>
+    {% endif %}
+  </div>
 
-<h2>{% blocktrans with capfirst_name=q.name|capfirst name=q.name %}{{ capfirst_name }} stone and other natural stone colors{% endblocktrans %}</h2>
+  {% include 'stonedb/partial_simple_filter_list.html'%}
 
-{% include 'stonedb/simple-filter-proplist.html' %}
+  <h2>{% blocktrans with capfirst_name=q.name|capfirst name=q.name %}{{ capfirst_name }} stone and other natural stone colors{% endblocktrans %}</h2>
+
+  {% include 'stonedb/simple-filter-proplist.html' %}
 
 {% endblock main %}

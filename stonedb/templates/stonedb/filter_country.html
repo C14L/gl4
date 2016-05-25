@@ -9,7 +9,7 @@
 
 {% block head %}{% endblock %}
 
-{% block body_classes %}browse-stones-country{% endblock %}
+{% block body_classes %}stones browse filter country{% endblock %}
 
 {% block breadcrumb %}
 {% include 'stonedb/simple-filter-breadcrumb.html' %}
@@ -23,20 +23,24 @@
   </div>
 {% endif %}
 
-<h1>{% blocktrans with country=q.name %}Types of stone from {{ country }}{% endblocktrans %}</h1>
+  <div class="head">
+    <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
 
-{% if q.text %}
-  {{ q.text|markdown|bleach }}
-{% else %}
-  <p>{% blocktrans with name=q.name %}You are viewing natural stones grouped by country {{ name }}.{% endblocktrans %}</p>
-{% endif %}
+    <h1>{% blocktrans with country=q.name %}Types of stone from {{ country }}{% endblocktrans %}</h1>
 
-<h2>{% blocktrans with count=stones.paginator.count name=q.name %}Pictures of {{ count }} stones from {{ name }}{% endblocktrans %}</h2>
+    {% if q.text %}
+      {{ q.text|markdown|bleach }}
+    {% else %}
+      <p>{% blocktrans with name=q.name %}You are viewing natural stones grouped by country {{ name }}.{% endblocktrans %}</p>
+    {% endif %}
+  </div>
 
-{% include 'stonedb/partial_simple_filter_list.html'%}
+  <h2>{% blocktrans with count=stones.paginator.count name=q.name %}Pictures of {{ count }} stones from {{ name }}{% endblocktrans %}</h2>
 
-<h2>{% blocktrans %}Natural Stone by country{% endblocktrans %}</h2>
+  {% include 'stonedb/partial_simple_filter_list.html'%}
 
-{% include 'stonedb/simple-filter-proplist.html' %}
+  <h2>{% blocktrans %}Natural Stone by country{% endblocktrans %}</h2>
+
+  {% include 'stonedb/simple-filter-proplist.html' %}
 
 {% endblock main %}

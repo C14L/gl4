@@ -22,7 +22,6 @@
 
 {% block main %}
 
-
 {% if stones|length == 0 %}
   <h1>{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}No {{ texture }} {{ color }} {{ classification }} stones from {{ country }} found{% endblocktrans %}</h1>
 
@@ -53,9 +52,13 @@
   </ul>
 
 {% else %}
-  <h1>{% blocktrans with count=stones|length texture=texture.name color=color.name classification=classification.name country=country.name %}{{ count }} {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}</h1>
+  <div class="head">
+    <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
 
-<p>{% blocktrans with count=stones|length texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{ count }} different types of {{ texture_name }} {{ color_name }} {{ classification_name }} stones from {{ country_name }}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
+    <h1>{% blocktrans with count=stones|length texture=texture.name color=color.name classification=classification.name country=country.name %}{{ count }} {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}</h1>
+
+    <p>{% blocktrans with count=stones|length texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{ count }} different types of {{ texture_name }} {{ color_name }} {{ classification_name }} stones from {{ country_name }}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
+  </div>
 
   {% if stones|length > 20 %}
     {% adsense '8587626845' 'gc resp atf stone browse 1' %}
