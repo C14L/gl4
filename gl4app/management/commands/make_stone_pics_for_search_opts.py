@@ -1,3 +1,5 @@
+from itertools import combinations, chain
+
 import shutil
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -21,10 +23,10 @@ etc.
 sd = 'stonedb/stonesimages'
 src_dir = join(settings.BASE_DIR, sd, 'stonespics')
 trg_dir = join(settings.BASE_DIR, sd, 'stonesbrowse')
+order = ['country', 'texture', 'color', 'classification']
 
 
 def copy_stone_pic(stone, kv):
-    order = ['country', 'texture', 'color', 'classification']
     kvd = dict(kv)
     src_fn = stone.get_pic_fname()
     trg_fn = '{}.jpg'.format('-'.join([kvd[x] for x in order if x in kvd]))
@@ -89,14 +91,19 @@ class Command(BaseCommand):
             ' to "stoneimages/country-texture-color-classifiction.jpg".')
 
     def handle(self, *args, **options):
-        # make_props({'country': Country.objects.all()})
-        # make_props({'color': Color.objects.all()})
-        # make_props({'classification': Classification.objects.all()})
-        # make_props({'texture': Texture.objects.all()})
-
-        make_props({
+        prop_dict = {
             'classification': Classification.objects.all(),
             'color': Color.objects.all(),
             'country': Country.objects.all(),
             'texture': Texture.objects.all(),
-        })
+        }
+
+        # Create all unique combinations of `prop_dict` keys.
+        prop_keys = list(chain.from_iterable(
+            [list(combinations(prop_dict, n+1)) for n in range(4)]))
+
+        # Fetch a sample stone for each unique combination of stone properties.
+        for prop_key in prop_keys:
+            prop_qss = {k: prop_dict[k] for k in prop_key}
+            print('--> {}'.format(prop_qss.keys()))
+            make_props(prop_qss)
