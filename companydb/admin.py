@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
 from companydb.models import Group, Pic, Project, Stock, UserProfile, Product, \
-    Country
+    Country, Spam
 
 
 class UserProfileAdmin(ModelAdmin):
@@ -29,6 +29,7 @@ class CountryAdmin(ModelAdmin):
     view_on_site = True
 
 
+admin.site.register(Spam)
 admin.site.register(Pic)
 admin.site.register(Project)
 admin.site.register(Stock)

@@ -1,21 +1,31 @@
 import json
+from datetime import datetime, timedelta
+from functools import reduce
 
 import os
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from operator import or_
 from os.path import join, dirname
 
 from mdpages.models import Article
 from stonedb.models import Stone
 from toolbox import resize_copy
+
+
+class Spam(models.Model):
+    match = models.CharField(max_length=100, primary_key=True)
+
+    def __str__(self):
+        return self.match
 
 
 class Country(models.Model):
@@ -173,7 +183,13 @@ class StockManager(CommonProjectsStocksManager):
         return self.all_public().filter(stone=stone)
 
     def all_public(self):
+        _now = datetime.utcnow()
+        _lim = _now + timedelta(days=getattr(settings, 'STOCK_EXPIRE_DAYS', 90))
+        spam = Spam.objects.all()
+        spam_qs = reduce(or_, [Q(description__icontains=q.match) for q in spam])
         return self.exclude(is_blocked=True, is_deleted=True)\
+                   .exclude(spam_qs)\
+                   .exclude(created__lt=_lim)\
                    .prefetch_related('stone', 'user', 'user__profile')
 
 
@@ -233,7 +249,10 @@ class ProjectsManager(CommonProjectsStocksManager):
         return self.all_public().filter(stones=stone)
 
     def all_public(self):
+        spam = Spam.objects.all()
+        spam_qs = reduce(or_, [Q(description__icontains=q.match) for q in spam])
         return self.exclude(is_blocked=True, is_deleted=True)\
+                   .exclude(spam_qs)\
                    .prefetch_related('user', 'user__profile')
 
 
