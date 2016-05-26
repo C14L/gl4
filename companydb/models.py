@@ -376,6 +376,15 @@ class PicManager(models.Manager):
         pic.make_sizes()
         return pic
 
+    def add_to_stone(self, user, file, stone, caption):
+        """Shortcut method to upload a picture to a stone.
+        :param user: A user instance. Picture is added to this user's profile.
+        :param file: A single picture file object from "request.FILES".
+        :param stone: Stone instance to attach the picture to.
+        :param caption: A caption string.
+        """
+        return self.add_upload(user, file, 'stones', stone.id, '', caption)
+
     def add_to_profile(self, user, file, title='', caption=''):
         """Shortcut method to upload a picture to a user profile.
         :param user: A user instance. Picture is added to this user's profile.

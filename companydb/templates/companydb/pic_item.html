@@ -29,20 +29,28 @@
   {% include 'companydb/partial_profile_options.html' %}
 
   {% if pic.module == 'projects' %}
+
     {% with 'projects' as view %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+
   {% elif pic.module == 'stock' %}
+
     {% with 'stock' as view %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
+
   {% elif pic.module == 'profile' %}
+
     {% with 'photos' as view %}{% include 'companydb/user-profile-header.html' %}{% endwith %}
-    {% if user.is_authenticated and pic.user.id == user.id %}
-    <form method="POST" action="{% url 'companydb_pic_item' pic.id %}" onsubmit="return confirm('Delete this picture?');">
-      {% csrf_token %}
-      <input type="hidden" name="_method" value="DELETE">
-      <input type="submit" value="delete this picture">
-    </form>
-    {% endif %}
+
   {% endif %}
 
+  <div style="clear: both;">
+    {% if user.is_authenticated and pic.user.id == user.id %}
+      <form method="POST" action="{% url 'companydb_pic_item' pic.id %}" onsubmit="return confirm('Delete this picture?');">
+        {% csrf_token %}
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="delete this picture">
+      </form>
+    {% endif %}
+  </div>
 
   <div id="display-foto">
     <div class="fotoitem">

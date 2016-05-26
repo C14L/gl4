@@ -249,12 +249,14 @@ MARKDOWN_DEUX_STYLES = {
 
 # --- my own settings ----------------------------------------------------------
 
+# Mdpages pagination limit
 MDPAGES_PER_PAGE = 50
 
 STONEPIC_BASE = '/stonespics/'
 
-STONES_PER_PAGE = 500  # Do not use pagination, better all on one page and then
-                       # use JS on-demand loading of images when user scrolls.
+# Do not use pagination, better all on one page and then use JS on-demand
+# loading of images when user scrolls.
+STONES_PER_PAGE = 500
 
 WATERMARK_FONT_FILENAME = join(BASE_DIR, 'Verdana.ttf')
 
@@ -265,6 +267,10 @@ COMPANY_SEARCH_OPTS_FILE = join(
 
 COMPANY_CONTACT_FROM_EMAIL = 'contact@' + SITE_DOMAIN
 
+# Companydb stock items are hidden after this many days
+STOCK_EXPIRE_DAYS = 90
+
+# TODO: translate this
 FOOTER_BROWSE_STONES = {
     'color': (
         ('beige', 'Beige natural stone'),

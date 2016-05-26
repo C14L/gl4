@@ -49,8 +49,6 @@ urlpatterns = [
         stonedb.views.simple_filter, name='stonedb_simple_filter'),
 
     # /stone/aachener-blaustein
-    # /stone/aachener-blaustein/comments
-    # /stone/aachener-blaustein/pictures
     url(r'^stone/'
         r'(?P<q>[a-zA-Z0-9_-]{1,100})$',
         stonedb.views.item, name='stonedb_item'),

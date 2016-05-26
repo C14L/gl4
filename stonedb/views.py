@@ -1,7 +1,9 @@
 from django.conf import settings
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -9,7 +11,7 @@ from django.utils.text import slugify
 from django.views.decorators.http import require_http_methods
 
 from companydb.models import Stock, Project, Pic
-from stonedb.forms import StoneSearchByNameForm
+from stonedb.forms import StoneSearchByNameForm, PicUploadForm
 from stonedb.models import Stone, Classification, Color, Country, Texture, \
     StoneName
 from toolbox import force_int
@@ -272,11 +274,26 @@ def item(request, q):
     stone = Stone.objects.filter(slug=q).first()
     if not stone:
         raise Http404
+
+    if request.method in ['POST']:
+        if not request.user.is_authenticated():
+            raise PermissionDenied
+
+        form = PicUploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            pic = request.FILES['pic']
+            caption = form.cleaned_data['caption']
+            Pic.objects.add_to_stone(request.user, pic, stone, caption)
+            messages.info(request, _('The picture is published.'))
+            return HttpResponseRedirect(request.path)
+
     stocks = Stock.objects.all_for_stone(stone)
     projects = Project.objects.all_for_stone(stone)
     pics = Pic.objects.all_for_stone(stone)
 
     return render(request, 'stonedb/item.html', _ctx({
+        'pic_upload_form': PicUploadForm(),
         'stone': stone,
         'classification': stone.classification,
         'color': stone.color,

@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static i18n gl4tags %}
+{% load crispy_forms_tags static i18n gl4tags %}
 
 {% block title %}{% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} - a {{ stone_color }} {{ stone_classification }} from {{ stone_country }}{% endblocktrans %}{% endblock %}
 
@@ -22,13 +22,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
 
 {% block main %}
 
-<h1>
-  {{ stone.name }}
-  {% if user.is_staff %}
-    <a href="{% url 'admin:stonedb_stone_change' stone.id %}" class="btn btn-default">edit</a>
-  {% endif %}
-</h1>
-
+<h1>{{ stone.name }}{% if user.is_staff %} <a href="{% url 'admin:stonedb_stone_change' stone.id %}" class="admin btn btn-default">edit</a>{% endif %}</h1>
 <p><em>
   {% blocktrans with stone_name=stone.name stone_color=stone.color.name stone_classification=stone.classification.name stone_country=stone.country.name %}{{ stone_name }} is a {{ stone_color }} {{ stone_classification }} from {{ stone_country }}.{% endblocktrans %}
 
@@ -41,7 +35,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
   {% endif %}
 </em></p>
 
-<div class="ad1">
+<div class="ad1 atf">
   {% adsense '8448026040' 'gc resp atf stone item' %}
   {% adsense '2401492445' 'gd resp atf stone item' %}
 </div>
@@ -52,7 +46,11 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
       <div class="img" style="background:url({{ stone.get_pic_medium }});"></div>
       <div class="comment">
         <h2>{% blocktrans with stone_name=stone.name %}Remarks about {{ stone_name }}{% endblocktrans %}:</h2>
-        <p>{{ stone.comment }}</p>
+        {% if stone.comment %}
+          <p>{{ stone.comment }}</p>
+        {% else %}
+          <p>{% blocktrans with stone_name=stone.name %}Currently no addition remarks on {{ stone_name }}.{% endblocktrans %}</p>
+        {% endif %}
       </div>
       <hr>
       <div class="ad2">
@@ -136,38 +134,38 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr>
           <td>
             <img src="{{ 'text-editor'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Comments about {{ stone_name }}{% endblocktrans %}">
-            <a href="#comments">
+            <a href="/contact?subject=Comment+{{ stone.name }}">
               <strong>{% blocktrans with stone_name=stone.name %}Comments about {{ stone_name }}{% endblocktrans %}</strong>
             </a>
-            {% blocktrans with stone_name=stone.name %}You know the stone {{ stone_name }} well or have a question about {{ stone_name }}, then post a comment here.{% endblocktrans %}
+            {% blocktrans with stone_name=stone.name %}You know the stone {{ stone_name }} well or have a question about {{ stone_name }}, then send us a comment here.{% endblocktrans %}
           </td>
         </tr>
         <tr>
           <td>
             <img src="{{ 'gthumb'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Photos of {{ stone_name }}{% endblocktrans %}">
             <a href="#pictures">
-              <strong>{% blocktrans with stone_name=stone.name %}Photos of {{stone_name}}{% endblocktrans %}</strong>
+              <strong>{% blocktrans with stone_name=stone.name %}Photos of {{ stone_name }}{% endblocktrans %}</strong>
             </a>
             {% blocktrans with stone_name=stone.name %}More {{ stone_name }} photos, and pictures of construction projects that use {{ stone_name }}. If you have interesting photos of {{ stone_name }}, please add them here.{% endblocktrans %}
           </td>
         </tr>
       </table>
 
-      <h2>{% blocktrans with stone_name=stone.name %}{{stone_name}} for companies{% endblocktrans %}:</h2>
+      <h2>{% blocktrans with stone_name=stone.name %}{{ stone_name }} for companies{% endblocktrans %}:</h2>
       <table class="link-table">
         <tr>
           <td>
             <img src="{{ 'file-manager'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Advertise current stock of {{ stone_name }}{% endblocktrans %}">
-            <a rel="nofollow" href="/user/stock-add.php?id={{ stone.id }}">
-              <strong>{% blocktrans with stone_name=stone.name %}Advertise current stock of {{stone_name}}{% endblocktrans %}</strong>
+            <a rel="nofollow" href="{% url 'companydb_stock_detail_new' user.username %}">
+              <strong>{% blocktrans with stone_name=stone.name %}Advertise current stock of {{ stone_name }}{% endblocktrans %}</strong>
             </a>
-            {% blocktrans with stone_name=stone.name %}Advertise your current stock of {{stone_name}} within your company's profile page on Graniteland.{% endblocktrans %}
+            {% blocktrans with stone_name=stone.name %}Advertise your current stock of {{ stone_name }} within your company's profile page on Graniteland.{% endblocktrans %}
           </td>
         </tr>
         <tr>
           <td>
             <img src="{{ 'go-home'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Publish your {{ stone_name }}-related project{% endblocktrans %}">
-            <a rel="nofollow" href="/user/stone-projects-add.php?id={{ stone.id }}">
+            <a rel="nofollow" href="{% url 'companydb_projects_detail_new' user.username %}">
               <strong>{% blocktrans with stone_name=stone.name %}Publish your {{stone_name}}-related project{% endblocktrans %}</strong>
             </a>
             {% blocktrans with stone_name=stone.name %}Advertise your {{stone_name}}-related projects on your company's profile page on Graniteland. Include photos of your projects, to show potential customers your work.{% endblocktrans %}
@@ -176,7 +174,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr>
           <td>
             <img src="{{ 'gthumb'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Submit your photo of {{ stone_name }}{% endblocktrans %}">
-            <a href="/stone/{{ stone.slug }}/pictures">
+            <a href="/stone/{{ stone.slug }}#pictures">
               <strong>{% blocktrans with stone_name=stone.name %}Submit your photo of {{stone_name}}{% endblocktrans %}</strong>
             </a>{% blocktrans with stone_name=stone.name %}You are invited to add your own {{ stone_name }} pictures here. All uploaded pictures will be linked to your company's page on Graniteland.{% endblocktrans %}
           </td>
@@ -187,8 +185,23 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
   </tr>
 </table>
 
-<div class="fotos">
-  <h2>{% blocktrans with stone_name=stone.name %}Photos of {{stone_name}}{% endblocktrans %}</h2>
+<div class="fotos" id="pictures">
+  <h2>
+    {% if user.is_authenticated %}
+      <a href="#" onclick="document.getElementById('id-pic-upload').style.display='block'; this.style.display='none'; return false;" class="btn btn-primary btn-xs" style="float:right;color:white;">
+        <i class="glyphicon glyphicon-plus"></i>
+        {% blocktrans with stone_name=stone.name %}upload a photo of {{ stone_name }}{% endblocktrans %}
+      </a>
+    {% endif %}
+    {% blocktrans with stone_name=stone.name %}Photos of {{stone_name}}{% endblocktrans %}
+  </h2>
+
+  {% if user.is_authenticated %}
+    <div id="id-pic-upload" style="display: none; margin: 10px; padding: 20px; background-color: #F3F3F3; border: 1px solid #999;">
+      {% crispy pic_upload_form %}
+    </div>
+  {% endif %}
+
   <div class="fotoslist">
     <p class="count">
       {% if pics|length = 0 %}
@@ -199,18 +212,32 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         {% blocktrans with stone_name=stone.name pics_count=pics|length %}There are {{ pics_count }} photos of {{ stone_name }} available.{% endblocktrans %}
       {% endif %}
     </p>
-    <div class="list">
-      {% for item in pics %}
-      <div class="item">
-        <a href="{% url 'companydb_pic_item' item.id %}"><img src="{{ item.url_small }}" alt=""></a>
+    {% if pics|length > 0 %}
+      <div class="list">
+        {% for item in pics %}
+        <div class="item">
+          <a href="{% url 'companydb_pic_item' item.id %}"><img src="{{ item.url_small }}" alt="{{ item.caption }}" title="{{ item.caption }}"></a>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
+    {% endif %}
   </div>
 </div>
 
 <div class="projects">
-  <h2>{% blocktrans with stone_name=stone.name count=projects|length %}{{count}} projects that used {{stone_name}}{% endblocktrans %}</h2>
+  <h2>
+    {% if user.is_authenticated %}
+      <a href="{% url 'companydb_projects_detail_new' user.username %}?stone={{ stone.slug }}" class="btn btn-primary btn-xs" style="float:right;color:white;">
+        <i class="glyphicon glyphicon-plus"></i>
+        {% blocktrans with stone_name=stone.name company_name=user.profile.name %}add {{ stone_name }} project by {{ company_name }}{% endblocktrans %}
+      </a>
+    {% endif %}
+    {%if stocks|length > 0 %}
+      {% blocktrans with stone_name=stone.name count=projects|length %}{{ count }} projects that used {{ stone_name }}{% endblocktrans %}
+    {% else %}
+      {% blocktrans with stone_name=stone.name count=projects|length %}No projects listed where {{ stone_name }} was used{% endblocktrans %}
+    {% endif %}
+  </h2>
   {% for item in projects %}
   <div class="projects-list" id="project{{ item.id }}">
 
@@ -258,7 +285,19 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
 </div>
 
 <div class="stock">
-  <h2>{% blocktrans with stone_name=stone.name count=stocks|length %}{{count}} stock items of {{stone_name}}{% endblocktrans %}</h2>
+  <h2>
+    {% if user.is_authenticated %}
+      <a href="{% url 'companydb_stock_detail_new' user.username %}?stone={{ stone.slug }}" class="btn btn-primary btn-xs" style="float:right;color:white;">
+        <i class="glyphicon glyphicon-plus"></i>
+        {% blocktrans with stone_name=stone.name company_name=user.profile.name %}add stock of {{ stone_name }} at {{ company_name }}{% endblocktrans %}
+      </a>
+    {% endif %}
+    {%if stocks|length > 0 %}
+      {% blocktrans with stone_name=stone.name count=stocks|length %}{{ count }} stock items of {{ stone_name }}{% endblocktrans %}
+    {% else %}
+      {% blocktrans with stone_name=stone.name %}Currently no stock items for {{ stone_name }}{% endblocktrans %}
+    {% endif %}
+  </h2>
 
   {% for item in stocks %}
   <div class="stock-list" id="stock{{ item.id }}">

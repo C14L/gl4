@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from django.db import models
 from django.db.models import Count
@@ -180,6 +181,9 @@ class Stone(models.Model):
 
     def get_pseudonyms(self):
         return ', '.join([x.name for x in self.pseu.all()])
+
+    def get_absolute_url(self):
+        return reverse('stonedb_item', args=[self.slug])
 
     def __str__(self):
         return self.name

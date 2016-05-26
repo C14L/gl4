@@ -443,7 +443,12 @@ def pic_item(request, id):
                 return HttpResponse()
             else:
                 messages.success(request, _('The picture was deleted.'))
-                _next = reverse('companydb_photos', args=[request.user.username])
+                if pic.module == 'stones':
+                    _next = related.get_absolute_url()
+                else:
+                    _next = reverse('companydb_photos',
+                                    args=[request.user.username])
+
                 return HttpResponseRedirect(request.POST.get('next', _next))
 
     if request.is_ajax():
