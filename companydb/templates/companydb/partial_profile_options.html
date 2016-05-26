@@ -24,12 +24,15 @@
       <div class="dropdown profile-options" style="display: inline-block;">
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          Company profile options <span class="caret"></span>
+          {% trans 'edit company profile' %} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <li><a href="{% url 'companydb_areas' user.username %}"><i class="glyphicon glyphicon-th-large"></i> {% trans 'Business areas' %}</a></li>
           <li><a href="{% url 'companydb_about' user.username %}"><i class="glyphicon glyphicon-home"></i> {% trans 'About the company' %}</a></li>
           <li><a href="{% url 'companydb_details' user.username %}"><i class="glyphicon glyphicon-earphone"></i> {% trans 'Contact information' %}</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="{% url 'companydb_projects_detail_new' user.username %}"><i class="glyphicon glyphicon-plus"></i> {% trans 'add a project' %}</a></li>
+          <li><a href="{% url 'companydb_stock_detail_new' user.username %}"><i class="glyphicon glyphicon-plus"></i> {% trans 'add a stock item' %}</a></li>
           <li role="separator" class="divider"></li>
           <li><a href="{% url 'account_email' %}"><i class="glyphicon glyphicon-envelope"></i> {% trans 'Update your Email address' %}</a></li>
           <li><a href="{% url 'account_change_password' %}"><i class="glyphicon glyphicon-lock"></i> {% trans 'Change your password' %}</a></li>
