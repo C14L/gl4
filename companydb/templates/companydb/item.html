@@ -109,8 +109,9 @@
 </div>
 
 <div class="last-seen-meta">
-  profile created: {{ view_user.date_joined|date:"SHORT_DATE_FORMAT" }}
-  {% if view_user.last_login %}&mdash; last seen: {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }}{% endif %}
+  {% if view_user.date_joined.year > 2001 %}{% trans 'profile created:' %} {{ view_user.date_joined|date:"SHORT_DATE_FORMAT" }}{% endif %}
+  &nbsp;&nbsp;&nbsp;
+  {% if view_user.last_login %}{% trans 'last seen:' %} {{ view_user.last_login|date:"SHORT_DATE_FORMAT" }}{% endif %}
 </div>
 
 {% endblock %}
