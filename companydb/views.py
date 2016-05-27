@@ -371,7 +371,7 @@ def photos(request, slug):
     page = request.GET.get('page', 1)
     form = None
     view_user = get_object_or_404(User, username=slug, is_active=True)
-    li = Pic.objects.all_for_profile(view_user)
+    li = Pic.objects.all_for_user(view_user)
     can_edit = request.user.is_authenticated() and request.user == view_user
 
     if 'POST' in (request.method, request.POST.get('_method', None)):
