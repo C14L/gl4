@@ -140,16 +140,15 @@ class UserProfile(models.Model):
 
     @property
     def stock_count(self):
-        return self.user.stock_set.all().count()
+        return Stock.objects.all_for_user(self.user).count()
 
     @property
     def project_count(self):
-        return self.user.project_set.all().count()
+        return Project.objects.all_for_user(self.user).count()
 
     @property
     def pic_count(self):
-        return Pic.objects.filter(module='profile',
-                                  module_id=self.user.id).count()
+        return Pic.objects.all_for_user(self.user).count()
 
     @property
     def title_foto_url(self):
@@ -181,6 +180,9 @@ class CommonProjectsStocks(models.Model):
 class StockManager(CommonProjectsStocksManager):
     def all_for_stone(self, stone):
         return self.all_public().filter(stone=stone)
+
+    def all_for_user(self, user):
+        return self.all_public().filter(user=user)
 
     def all_public(self):
         _now = datetime.utcnow()
@@ -247,6 +249,9 @@ class ProjectsManager(CommonProjectsStocksManager):
     def all_for_stone(self, stone):
         """Return all projects that contain "stone" in their "stones" list."""
         return self.all_public().filter(stones=stone)
+
+    def all_for_user(self, user):
+        return self.all_public().filter(user=user)
 
     def all_public(self):
         spam = Spam.objects.all()

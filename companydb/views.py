@@ -234,17 +234,18 @@ def delete(request, slug):
 def stock(request, slug):
     page = request.GET.get('page', 1)
     view_user = get_object_or_404(User, username=slug, is_active=True)
-    li = view_user.stock_set.filter(is_deleted=False, is_blocked=False)
+    stocks = Stock.objects.all_for_user(view_user)
     canonical = reverse('companydb_stock', args=[view_user.username])
     return render(request, 'companydb/stock.html', _ctx({
-        'view_user': view_user, 'stock': _get_page(li, page),
+        'view_user': view_user,
+        'stock': _get_page(stocks, page),
         'canonical': canonical}))
 
 
 def stock_detail(request, slug, pk=None):
     form = None
     user = get_object_or_404(User, username=slug)
-    view_item = Stock.objects.filter(user=user, pk=pk).first()
+    view_item = Stock.objects.all_for_user(user).filter(pk=pk).first()
     can_edit = request.user.is_authenticated() and request.user == user
 
     if not can_edit:
@@ -296,10 +297,11 @@ def stock_detail(request, slug, pk=None):
 def projects(request, slug):
     page = request.GET.get('page', 1)
     view_user = get_object_or_404(User, username=slug, is_active=True)
-    li = view_user.project_set.filter(is_deleted=False, is_blocked=False)
+    projectlist = Project.objects.all_for_user(view_user)
     canonical = reverse('companydb_projects', args=[view_user.username])
     return render(request, 'companydb/projects.html', _ctx({
-        'view_user': view_user, 'projects': _get_page(li, page),
+        'view_user': view_user,
+        'projects': _get_page(projectlist, page),
         'canonical': canonical}))
 
 
@@ -313,7 +315,7 @@ def projects_detail(request, slug, pk=None):
     """
     form = None
     user = get_object_or_404(User, username=slug)
-    view_item = Project.objects.filter(user=user, pk=pk).first()
+    view_item = Project.objects.all_for_user(user).filter(pk=pk).first()
     can_edit = request.user.is_authenticated() and request.user == user
 
     if not can_edit and not view_item:
