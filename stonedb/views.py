@@ -8,6 +8,7 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.text import slugify
+from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_http_methods
 
 from companydb.models import Stock, Project, Pic
