@@ -1,5 +1,7 @@
 import json
 from datetime import datetime, timedelta
+
+import pytz
 from functools import reduce
 
 import os
@@ -44,12 +46,16 @@ class Country(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('companydb_country', args=[self.slug, '1'])
-
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('companydb_country', args=[self.slug, '1'])
+
+    def get_admin_url(self):
+        return reverse('admin:{}_{}_change'.format(
+            self._meta.app_label, self._meta.model_name), args=[self.pk])
 
 
 class UserProfile(models.Model):
@@ -138,6 +144,10 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return reverse('companydb_item', args=[self.user.username])
 
+    def get_admin_url(self):
+        return reverse('admin:{}_{}_change'.format(
+            self._meta.app_label, self._meta.model_name), args=[self.pk])
+
     @property
     def stock_count(self):
         return Stock.objects.all_for_user(self.user).count()
@@ -175,6 +185,10 @@ class CommonProjectsStocks(models.Model):
 
     class Meta:
         abstract = True
+
+    def get_admin_url(self):
+        return reverse('admin:{}_{}_change'.format(
+            self._meta.app_label, self._meta.model_name), args=[self.pk])
 
 
 class StockManager(CommonProjectsStocksManager):
@@ -227,7 +241,13 @@ class Stock(CommonProjectsStocks):
         ordering = ('-created', )
 
     def __str__(self):
-        return '{} --> {}'.format(self.user.profile.name, self.stone.name)
+        return '{}'.format(self.pk)
+
+    @property
+    def is_public(self):
+        _now = datetime.now().replace(tzinfo=pytz.utc)
+        _lim = _now - timedelta(days=getattr(settings, 'STOCK_EXPIRE_DAYS', 90))
+        return not (self.is_blocked or self.is_deleted or self.created < _lim)
 
     def get_pics_list(self):
         return Pic.objects.all_for_stock(self)
@@ -289,13 +309,18 @@ class Project(CommonProjectsStocks):
         ordering = ('-created', )
 
     def __str__(self):
-        return '{}'.format(self.pk)
+        return '{} -> {}'.format(self.user, ', '.join(
+            [x.name for x in self.stones.all()]))
 
     def get_pics_list(self):
         return Pic.objects.all_for_project(self)
 
     def get_stones_list(self):
         return self.stones.all()
+
+    @property
+    def is_public(self):
+        return not (self.is_blocked or self.is_deleted)
 
 
 class PicManager(models.Manager):
@@ -449,6 +474,10 @@ class Pic(models.Model):  # cc__fotos
     def __str__(self):
         return '{}.{}'.format(self.id, self.ext)
 
+    def get_admin_url(self):
+        return reverse('admin:{}_{}_change'.format(
+            self._meta.app_label, self._meta.model_name), args=[self.pk])
+
     @property
     def url_thumb(self):
         return self.get_url('fotos_thumb')
@@ -580,6 +609,10 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('companydb_product', args=[self.slug, '1'])
 
+    def get_admin_url(self):
+        return reverse('admin:{}_{}_change'.format(
+            self._meta.app_label, self._meta.model_name), args=[self.pk])
+
 
 class Group(models.Model):
     name = models.CharField(max_length=30, default='', blank=False)
@@ -606,6 +639,10 @@ class Group(models.Model):
 
     def get_absolute_url(self):
         return reverse('companydb_group', args=[self.slug, '1'])
+
+    def get_admin_url(self):
+        return reverse('admin:{}_{}_change'.format(
+            self._meta.app_label, self._meta.model_name), args=[self.pk])
 
 
 @receiver(post_save, sender=User)

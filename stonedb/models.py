@@ -156,8 +156,18 @@ class Stone(models.Model):
                           ['color', 'classification', 'country'], ]
         ordering = ['name']
 
-    """Return standard file name for pictures."""
+    def __str__(self):
+        return self.name
+
+    def get_admin_url(self):
+        return reverse('admin:{}_{}_change'.format(
+            self._meta.app_label, self._meta.model_name), args=[self.id])
+
+    def get_absolute_url(self):
+        return reverse('stonedb_item', args=[self.slug])
+
     def get_pic_fname_default(self):
+        """Return standard file name for pictures."""
         return '{}.jpg'.format(self.slug)
 
     def get_pic_fname(self):
@@ -181,12 +191,6 @@ class Stone(models.Model):
 
     def get_pseudonyms(self):
         return ', '.join([x.name for x in self.pseu.all()])
-
-    def get_absolute_url(self):
-        return reverse('stonedb_item', args=[self.slug])
-
-    def __str__(self):
-        return self.name
 
 
 class StoneName(models.Model):
