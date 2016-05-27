@@ -2,25 +2,15 @@
 
 <div class="user-profile-header">
   <h1 id="about-company-title">
-    <a href="{% url 'companydb_item' view_user.username %}">
-      {% if 1 == 1 %}
-        {{view_user.profile.name}}
-      {% elif 'stock' in view %}
-        {% blocktrans with profile_name=view_user.profile.name %}Natural Stone in stock at {{profile_name}}{% endblocktrans %}
-      {% elif 'projects' in view %}
-        {% blocktrans with profile_name=view_user.profile.name %}Projects by {{profile_name}}{% endblocktrans %}
-      {% elif 'photos' in view %}
-        {% blocktrans with profile_name=view_user.profile.name %}Photos of {{profile_name}}{% endblocktrans %}
-      {% endif %}
-    </a>
+    <a href="{% url 'companydb_item' view_user.username %}">{{ view_user.profile.name }}</a>
   </h1>
 
   <div class="text-center" style="padding-bottom: 20px;">
     <div class="btn-group">
       <a class="btn btn-default{% if 'item' in view %} active{% endif %}" href="{% url 'companydb_item' view_user.username %}">{% trans 'Overview' %}</a>
-      <a class="btn btn-default{% if 'stock' in view %} active{% endif %}" href="{% url 'companydb_stock' view_user.username %}">{% blocktrans with stock_count=view_user.profile.stock_count %}Stones on Stock ({{stock_count}}){% endblocktrans %}</a>
-      <a class="btn btn-default{% if 'projects' in view %} active{% endif %}" href="{% url 'companydb_projects' view_user.username %}">{% blocktrans with project_count=view_user.profile.project_count %}Projects Showroom ({{project_count}}){% endblocktrans %}</a>
-      <a class="btn btn-default{% if 'photos' in view %} active{% endif %}" href="{% url 'companydb_photos' view_user.username %}">{% blocktrans with pic_count=view_user.profile.pic_count %}Company Photos ({{pic_count}}){% endblocktrans %}</a>
+      <a class="btn btn-default{% if 'stock' in view %} active{% endif %}" href="{% url 'companydb_stock' view_user.username %}">{% blocktrans with stock_count=view_user.profile.stock_count %}Stones on Stock ({{ stock_count }}){% endblocktrans %}</a>
+      <a class="btn btn-default{% if 'projects' in view %} active{% endif %}" href="{% url 'companydb_projects' view_user.username %}">{% blocktrans with project_count=view_user.profile.project_count %}Projects Showroom ({{ project_count }}){% endblocktrans %}</a>
+      <a class="btn btn-default{% if 'photos' in view %} active{% endif %}" href="{% url 'companydb_photos' view_user.username %}">{% blocktrans %}Company Photos{% endblocktrans %}</a>
     </div>
   </div>
 
