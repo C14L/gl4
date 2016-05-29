@@ -3,9 +3,8 @@ from mdpages.models import Article, Author, Keyword, Topic
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    # save_on_top = True
     list_display = ('title', 'topic', 'created',)
-    list_per_page = 50
+    list_filter = ('topic', )
     date_hierarchy = 'created'
     fieldsets = (
         (None, {
@@ -21,6 +20,7 @@ class ArticleAdmin(admin.ModelAdmin):
                        ('is_published', 'is_stickied', 'is_frontpage')),
         }),
     )
+    ordering = ('created', )
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user

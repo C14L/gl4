@@ -119,6 +119,3 @@ class UserProfileAdmin(admin.ModelAdmin):
 
     def user_email(self, obj):
         return obj.user.email
-        # s = '<a href="{}">{}</a>'
-        # return format_html(s.format(obj.user.get_admin_url(),
-        #                             obj.user.email))
