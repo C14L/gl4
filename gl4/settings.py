@@ -22,7 +22,7 @@ PRODUCTION = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'de'
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
 LANGUAGES = [('en', 'english'), ('de', 'deutsch'), ]
 
@@ -197,7 +197,7 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 
 # --- django-bleach ------------------------------------------------------------
 
-BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
+BLEACH_ALLOWED_TAGS = ['h1', 'h2', 'h3', 'p', 'b', 'i', 'u', 'em', 'strong', 'a']
 
 # Which HTML attributes are allowed
 BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
