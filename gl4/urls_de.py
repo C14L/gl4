@@ -185,6 +185,9 @@ if settings.DEBUG:
     urlpatterns += static('/stonespics/', document_root=join(
         settings.BASE_DIR, 'stonedb/stonesimages/stonespics'))
 
+    urlpatterns += static('/stonesbrowse/', document_root=join(
+        settings.BASE_DIR, 'stonedb/stonesimages/stonesbrowse'))
+
     urlpatterns += static('/api_static/', document_root=join(
         settings.BASE_DIR, 'api_static'))
 

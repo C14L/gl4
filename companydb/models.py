@@ -642,7 +642,7 @@ class Group(models.Model):
 
     def get_admin_url(self):
         return reverse('admin:{}_{}_change'.format(
-            self._meta.app_label, self._meta.model_name), args=[self.pk])
+            self._meta.app_label, self._meta.model_name), args=[self.id])
 
 
 @receiver(post_save, sender=User)
