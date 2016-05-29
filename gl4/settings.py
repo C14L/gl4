@@ -24,7 +24,7 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 
 LANGUAGE_CODE = 'de'
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
-LANGUAGES = [('en', 'english'), ('de', 'deutsch'), ]
+LANGUAGES = [('en', 'English'), ('de', 'Deutsch'), ]
 
 # ==============================================================================
 
@@ -246,6 +246,16 @@ MARKDOWN_DEUX_STYLES = {
         },
     }
 }
+
+# --- rosetta ------------------------------------------------------------------
+
+# ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+# YANDEX_TRANSLATE_KEY
+# AZURE_CLIENT_ID
+# AZURE_CLIENT_SECRET
+ROSETTA_EXCLUDED_APPLICATIONS = ('allauth', 'rosetta', )
+# ROSETTA_EXCLUDED_PATHS = ('/**/site-packages/**/*', )
+
 
 # --- my own settings ----------------------------------------------------------
 

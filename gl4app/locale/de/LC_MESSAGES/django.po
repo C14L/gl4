@@ -8,460 +8,498 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 06:56+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-05-29 16:45+0000\n"
+"PO-Revision-Date: 2016-05-29 17:38+0000\n"
+"Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.7.10\n"
 
-#: gl4app/context_processors.py:32 gl4app/context_processors.py:33
-#: gl4app/context_processors.py:34
+#: context_processors.py:32 context_processors.py:33 context_processors.py:34
 msgid "country"
-msgstr ""
+msgstr "Herkunftsland"
 
-#: gl4app/context_processors.py:35
+#: context_processors.py:35
 msgid "classification"
-msgstr ""
+msgstr "Steinart"
 
-#: gl4app/context_processors.py:36
+#: context_processors.py:36
 msgid "type"
-msgstr ""
+msgstr "Steinart"
 
-#: gl4app/templates/account/my_login.html:5
-#: gl4app/templates/account/my_login.html:6
-#: gl4app/templates/account/my_login.html:17
+#: templates/account/my_login.html:5 templates/account/my_login.html.py:6
+#: templates/account/my_login.html:17
 msgid "Login to Graniteland"
-msgstr ""
+msgstr "Graniteland-Logo"
 
-#: gl4app/templates/account/my_login.html:12
+#: templates/account/my_login.html:12
 msgid "Find Granite und Marble"
-msgstr ""
+msgstr "Naturstein einfach finden"
 
-#: gl4app/templates/account/my_login.html:22
+#: templates/account/my_login.html:22
 #, python-format
 msgid ""
 "Please sign in with one\n"
-"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
-"up</a>\n"
+"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign up</a>\n"
 "for a %(site_name)s account and sign in below:"
 msgstr ""
 
-#: gl4app/templates/account/my_login.html:32
+#: templates/account/my_login.html:32
 msgid "or"
-msgstr ""
+msgstr "oder"
 
-#: gl4app/templates/account/my_login.html:39
+#: templates/account/my_login.html:39
 #, python-format
 msgid ""
 "If you have not created an account yet, then please\n"
 "<a href=\"%(signup_url)s\">sign up</a> first."
 msgstr ""
 
-#: gl4app/templates/account/my_login.html:49
+#: templates/account/my_login.html:49
 msgid "Forgot Password?"
-msgstr ""
+msgstr "Passwort vergessen?"
 
-#: gl4app/templates/account/my_login.html:50
+#: templates/account/my_login.html:50
 msgid "Sign In"
-msgstr ""
+msgstr "Einloggen"
 
-#: gl4app/templates/gl4app/base.html:52
+#: templates/gl4app/base.html:54
 msgid "Graniteland - marble and granite information online."
-msgstr ""
+msgstr "Die Naturstein-Suchmaschine für Granit und Marmor"
 
-#: gl4app/templates/gl4app/base.html:53
+#: templates/gl4app/base.html:55
 msgid "Natural Stone"
-msgstr ""
+msgstr "Naturstein-Auswahl"
 
-#: gl4app/templates/gl4app/base.html:54
+#: templates/gl4app/base.html:56
 msgid "Trade shows"
-msgstr ""
+msgstr "Handelsmessen"
 
-#: gl4app/templates/gl4app/base.html:55
+#: templates/gl4app/base.html:57
 msgid "Stone Infos"
-msgstr ""
+msgstr "Fachinfos"
 
-#: gl4app/templates/gl4app/base.html:56
+#: templates/gl4app/base.html:58
 msgid "Stone Companies"
-msgstr ""
+msgstr "Naturstein-Betriebe"
 
-#: gl4app/templates/gl4app/base.html:58
+#: templates/gl4app/base.html:60
 msgid "Company profile"
-msgstr ""
+msgstr "Firmen-Profil"
 
-#: gl4app/templates/gl4app/base.html:60 gl4app/templates/gl4app/home.html:147
-#: gl4app/templates/gl4app/home.html:166 gl4app/templates/gl4app/home.html:175
+#: templates/gl4app/base.html:62 templates/gl4app/home.html.py:147
+#: templates/gl4app/home.html:166 templates/gl4app/home.html.py:175
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
-#: gl4app/templates/gl4app/base.html:68
+#: templates/gl4app/base.html:70
 msgid "All business areas"
-msgstr ""
+msgstr "Alle Branchen"
 
-#: gl4app/templates/gl4app/base.html:73
+#: templates/gl4app/base.html:75
 msgid "All products"
-msgstr ""
+msgstr "Alle Produkte"
 
-#: gl4app/templates/gl4app/base.html:78
+#: templates/gl4app/base.html:80
 msgid "All countries"
-msgstr ""
+msgstr "Alle Länder"
 
-#: gl4app/templates/gl4app/base.html:95
+#: templates/gl4app/base.html:97
 msgid "All colors"
-msgstr ""
+msgstr "Alle Farben"
 
-#: gl4app/templates/gl4app/base.html:100
+#: templates/gl4app/base.html:102
 msgid "All stone types"
-msgstr ""
+msgstr "Alle Steinarten"
 
-#: gl4app/templates/gl4app/base.html:105
+#: templates/gl4app/base.html:107
 msgid "All countries of origin"
-msgstr ""
+msgstr "Alle Herkunftsländer"
 
-#: gl4app/templates/gl4app/base.html:110
+#: templates/gl4app/base.html:112
 msgid "All textures"
-msgstr ""
+msgstr "Alle Strukturen"
 
-#: gl4app/templates/gl4app/base.html:138 gl4app/templates/gl4app/home.html:67
+#: templates/gl4app/base.html:140 templates/gl4app/home.html.py:67
 msgid "Natural stone by color"
-msgstr ""
+msgstr "Naturstein nach Farbe"
 
-#: gl4app/templates/gl4app/base.html:142 gl4app/templates/gl4app/home.html:234
+#: templates/gl4app/base.html:144 templates/gl4app/home.html.py:234
 msgid "Natural stone by country of origin"
-msgstr ""
+msgstr "Naturstein nach Herkunftsland"
 
-#: gl4app/templates/gl4app/base.html:146
+#: templates/gl4app/base.html:148
 msgid "Natural stones by type of stone"
-msgstr ""
+msgstr "Naturstein nach Steinart"
 
-#: gl4app/templates/gl4app/base.html:151
+#: templates/gl4app/base.html:153
 msgid ""
 "Please report user submitted content that violates the Terms of Service."
 msgstr ""
+"Bitte teilen Sie uns mit, wenn Sie durch Benutzer erstellte Inhalte finden, "
+"die gegen unsere Nutzungsbedingungen verstoßen."
 
-#: gl4app/templates/gl4app/base.html:151
+#: templates/gl4app/base.html:153
 msgid "Report abuse"
-msgstr ""
+msgstr "Verstoß melden"
 
-#: gl4app/templates/gl4app/base.html:152
+#: templates/gl4app/base.html:154
 msgid "Terms of Service"
-msgstr ""
+msgstr "Nutzungsbedingungen"
 
-#: gl4app/templates/gl4app/base.html:153
+#: templates/gl4app/base.html:155
 msgid "Privacy"
-msgstr ""
+msgstr "Datenschutz"
 
-#: gl4app/templates/gl4app/base.html:156
+#: templates/gl4app/base.html:158
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
-#: gl4app/templates/gl4app/base.html:158
+#: templates/gl4app/base.html:160
 msgid "Jump to the top of this page."
-msgstr ""
+msgstr "Zum Seitenanfang springen."
 
-#: gl4app/templates/gl4app/base.html:158
+#: templates/gl4app/base.html:160
 msgid "Top of page"
-msgstr ""
+msgstr "Zum Seitenanfang"
 
-#: gl4app/templates/gl4app/base.html:161
+#: templates/gl4app/base.html:163
 msgid ""
 "All information is provided without warranty of any kind and may contain "
 "errors or may be outdated.<br>It is strongly advised to contact a competent "
 "granite professional to confirm any information found on Graniteland."
 msgstr ""
+"Alle Informationen auf Graniteland werden ohne Gewähr zur Verfügung "
+"gestellt.<br>Es wird auf jeden Fall empfohlen, sich an einen Fachberater zu "
+"wenden."
 
-#: gl4app/templates/gl4app/home.html:4 gl4app/templates/gl4app/home.html:6
+#: templates/gl4app/home.html:4 templates/gl4app/home.html.py:6
 msgctxt "Homepage title"
 msgid "GRANITELAND - The Granite and Marble Search Engine"
-msgstr ""
+msgstr "Naturstein-Suchmaschine für Granit und Marmor - GRANITELAND"
 
-#: gl4app/templates/gl4app/home.html:8
+#: templates/gl4app/home.html:8
 msgid ""
-"The Granite and Marble Search Engine. Find info and pictures of 1800 natural "
-"stones, granites, marbles, limestone, travertin and other types of natural "
-"stone easily. Search our natural stone database by color or type to find the "
-"best natural stone granite and marble for your kitchen countertop or "
+"The Granite and Marble Search Engine. Find info and pictures of 1800 natural"
+" stones, granites, marbles, limestone, travertin and other types of natural "
+"stone easily. Search our natural stone database by color or type to find the"
+" best natural stone granite and marble for your kitchen countertop or "
 "flooring tiles."
 msgstr ""
+"Naturstein-Datenbank mit über 1800 Bildern und Infos zu Naturstein, Granit, "
+"Marmor, Kalkstein, und anderen Natursteinen. Graniteland ist die Naturstein-"
+"Suchmaschine für Granit und Marmor weltweit."
 
-#: gl4app/templates/gl4app/home.html:15
+#: templates/gl4app/home.html:15
 msgctxt "Homepage breadcrumb"
 msgid "Find Granite und Marble"
-msgstr ""
+msgstr "Granit und Marmor finden"
 
-#: gl4app/templates/gl4app/home.html:20
+#: templates/gl4app/home.html:20
 msgctxt "Homepage H1"
 msgid "Granite and Marble Search Engine"
-msgstr ""
+msgstr "Die Naturstein-Suchmaschine für Granit und Marmor"
 
-#: gl4app/templates/gl4app/home.html:24
+#: templates/gl4app/home.html:24
 msgid "Granite Quary"
-msgstr ""
+msgstr "Granit-Steinbruch"
 
-#: gl4app/templates/gl4app/home.html:33
+#: templates/gl4app/home.html:33
 msgid "Find Granite and Marble"
-msgstr ""
+msgstr "Naturstein einfach finden"
 
-#: gl4app/templates/gl4app/home.html:34
+#: templates/gl4app/home.html:34
 msgid ""
 "Find granite, marble and other natural stone easily. Graniteland's Natural "
 "Stone Database contains information on more than 1600 types of granite and "
-"marble. Simply select a color, country of origin or type of stone at the top "
-"of this page, and hit the \"Find Stones\" button. You will get a list of "
+"marble. Simply select a color, country of origin or type of stone at the top"
+" of this page, and hit the \"Find Stones\" button. You will get a list of "
 "natural stones that match you search options, including a picture and "
 "further details."
 msgstr ""
+"Den richtigen Naturstein zu finden ist ganz einfach. Die übersichtliche Suchfunktion erlaubt es, in unserem Natursteinkatalog schnell und unkompliziert den Naturstein zu finden, der am besten passt als Küchenarbeitsplatte, Fliesen, Waschtisch, Dusche, Küchenmöbel, usw.\n"
+"\n"
+"Im Kopfteil dieser Seite, wählen Sie bitte eine oder mehrere der Suchkriterien aus und drücken Sie den Knopf \"Suche\". Graniteland enthält Informationen zu über 1600 Natursteinen aus der ganzen Welt. Sie erhalten eine Liste mit Bildern all der Natursteine, die auf Ihre Suchkriterien passen. Suchen Sie sich in Ruhe den Naturstein aus, der Ihnen am besten gefällt."
 
-#: gl4app/templates/gl4app/home.html:36
+#: templates/gl4app/home.html:36
 msgid "Natural Stone Company Directory"
-msgstr ""
+msgstr "Naturstein-Firmen-Verzeichnis"
 
-#: gl4app/templates/gl4app/home.html:37
+#: templates/gl4app/home.html:37
 msgid ""
 "A growing directory of worldwide companies from the granite and marble "
 "business. Find wholesale granite suppliers, quarry operator companies, or a "
 "granite installers near you. If you run a granite related company business, "
 "please add your company and promote your stock items and recent projects."
 msgstr ""
+"Tragen Sie Ihren Naturstein verarbeitenden Betrieb jetzt in das Graniteland "
+"Firmenverzeichnis ein. Der Eintrag ist kostenlos. Im Graniteland Naturstein-"
+"Firmenverzeichnis finden Sie eine wachsende Zahl Natursteinlieferanten und "
+"Naturstein verarbeitender Betriebe weltweit."
 
-#: gl4app/templates/gl4app/home.html:37
+#: templates/gl4app/home.html:37
 msgid "Natural Stone Company Directory..."
-msgstr ""
+msgstr "Naturstein-Firmenverzeichnis..."
 
-#: gl4app/templates/gl4app/home.html:39
+#: templates/gl4app/home.html:39
 msgid "Granite Tradeshows"
-msgstr ""
+msgstr "Naturstein-Fachmessen"
 
-#: gl4app/templates/gl4app/home.html:40
+#: templates/gl4app/home.html:40
 msgid ""
 "We have collected information on some of the most important natural stone "
 "exhibitions and construction trade shows worldwide. If you are a granite "
 "manufacturer, an architect, a home owner, or granite trader, you can find "
 "granite exhibitions near you to visit."
 msgstr ""
+"Eine ständig aktualisierte Liste mit Naturstein-Messen und Ausstellungen "
+"rund um das Thema Baubedarf und Naturstein weltweit. Ob Naturstein-Profi "
+"oder Laie, hier können Sie einfach Naturstein-Messen in Ihrer Umgebung "
+"finden und sich über interessante Ausstellungen informieren."
 
-#: gl4app/templates/gl4app/home.html:40
+#: templates/gl4app/home.html:40
 msgid "Granite Trade Shows..."
-msgstr ""
+msgstr "Fachmessen Naturstein..."
 
-#: gl4app/templates/gl4app/home.html:42 gl4app/templates/gl4app/home.html:188
+#: templates/gl4app/home.html:42 templates/gl4app/home.html.py:188
 msgid "Granite + Marble Magazine"
-msgstr ""
+msgstr "Mehr über Naturstein"
 
-#: gl4app/templates/gl4app/home.html:43
+#: templates/gl4app/home.html:43
 msgid ""
 "More information about granite and marble is available at Graniteland's "
 "Natural Stone Magazine. We have compiled many interesting articles about "
 "granite and marble and about the international natural stone industry. Find "
-"out why some granite is expensive and other granite is cheap. And what other "
-"types of stone are there besides granite and marble."
+"out why some granite is expensive and other granite is cheap. And what other"
+" types of stone are there besides granite and marble."
 msgstr ""
+"Die Graniteland Fachartikel über Naturstein publizieren in unregelmäßigen "
+"Abständen interessante Artikel, Wissenswertes und Neuigkeiten rund um das "
+"Thema Naturstein und Natursteinverarbeitung. Die Themen der Artikel sind "
+"teilweise für Naturstein-Experten geschrieben, teilweise auch für den Laien."
 
-#: gl4app/templates/gl4app/home.html:43
+#: templates/gl4app/home.html:43
 msgid "Granite + Marble Magazine..."
-msgstr ""
+msgstr "Naturstein-Fachartikel..."
 
-#: gl4app/templates/gl4app/home.html:48
+#: templates/gl4app/home.html:48
 msgid "Current stock items"
-msgstr ""
+msgstr "Aktuelle Lagerbestände"
 
-#: gl4app/templates/gl4app/home.html:50
+#: templates/gl4app/home.html:50
 msgid ""
 "A selection of current stock items of companies listed in the Graniteland "
 "stone companies directory. For questions regarding a stock item, please "
 "contact the company directly."
 msgstr ""
+"Aktuelle Naturstein-Lagerbestände der Naturstein-Betriebe aus dem "
+"Graniteland Firmen-Verzeichnis. Bitte kontaktieren Sie die jeweilige Firma "
+"direkt für weitere Informationen."
 
-#: gl4app/templates/gl4app/home.html:55
+#: templates/gl4app/home.html:55
 #, python-format
 msgid "%(company)s has %(stone)s on stock"
-msgstr ""
+msgstr "Die Firma %(company)s hat den Naturstein %(stone)s auf Lager."
 
-#: gl4app/templates/gl4app/home.html:77
+#: templates/gl4app/home.html:77
 msgid "Beige natural stone"
-msgstr ""
+msgstr "Beiger Naturstein"
 
-#: gl4app/templates/gl4app/home.html:83
+#: templates/gl4app/home.html:83
 msgid "Blue natural stone"
-msgstr ""
+msgstr "Blauer Naturstein"
 
-#: gl4app/templates/gl4app/home.html:89
+#: templates/gl4app/home.html:89
 msgid "Brown natural stone"
-msgstr ""
+msgstr "Brauner Naturstein"
 
-#: gl4app/templates/gl4app/home.html:95
+#: templates/gl4app/home.html:95
 msgid "Yellow natural stone"
-msgstr ""
+msgstr "Gelber Naturstein"
 
-#: gl4app/templates/gl4app/home.html:101
+#: templates/gl4app/home.html:101
 msgid "Grey natural stone"
-msgstr ""
+msgstr "Grauer Naturstein"
 
-#: gl4app/templates/gl4app/home.html:111
+#: templates/gl4app/home.html:111
 msgid "Green natural stone"
-msgstr ""
+msgstr "Grüner Naturstein"
 
-#: gl4app/templates/gl4app/home.html:117
+#: templates/gl4app/home.html:117
 msgid "Pink natural stone"
-msgstr ""
+msgstr "Rosaner Naturstein"
 
-#: gl4app/templates/gl4app/home.html:123
+#: templates/gl4app/home.html:123
 msgid "Red natural stone"
-msgstr ""
+msgstr "Roter Naturstein"
 
-#: gl4app/templates/gl4app/home.html:129
+#: templates/gl4app/home.html:129
 msgid "Black natural stone"
-msgstr ""
+msgstr "Schwarzer Naturstein"
 
-#: gl4app/templates/gl4app/home.html:135
+#: templates/gl4app/home.html:135
 msgid "White natural stone"
-msgstr ""
+msgstr "Weißer Naturstein"
 
-#: gl4app/templates/gl4app/home.html:149
+#: templates/gl4app/home.html:149
 #, python-format
 msgid "Signed in as %(name)s"
-msgstr ""
+msgstr "Angemeldet als %(name)s"
 
-#: gl4app/templates/gl4app/home.html:170
+#: templates/gl4app/home.html:170
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
-#: gl4app/templates/gl4app/home.html:180 gl4app/templates/gl4app/home.html:228
+#: templates/gl4app/home.html:180 templates/gl4app/home.html.py:228
 msgid "Register now!"
-msgstr ""
+msgstr "Jetzt registrieren!"
 
-#: gl4app/templates/gl4app/home.html:181
+#: templates/gl4app/home.html:181
 msgid "Reset password"
-msgstr ""
+msgstr "Passwort vergessen?"
 
-#: gl4app/templates/gl4app/home.html:192
+#: templates/gl4app/home.html:192
 msgid "Home use"
-msgstr ""
+msgstr "Naturstein Zuhause"
 
-#: gl4app/templates/gl4app/home.html:193
+#: templates/gl4app/home.html:193
 msgid ""
-"Tipps and tricks for the installation and use of granite and marble stone at "
-"home."
+"Tipps and tricks for the installation and use of granite and marble stone at"
+" home."
 msgstr ""
+"Informationen und Wissenswertes rund um Marmor und Granit im privaten "
+"Hausbau."
 
-#: gl4app/templates/gl4app/home.html:196
+#: templates/gl4app/home.html:196
 msgid "Stone professional"
-msgstr ""
+msgstr "Naturstein Professionell"
 
-#: gl4app/templates/gl4app/home.html:197
+#: templates/gl4app/home.html:197
 msgid ""
 "Natural stone for professional builders and designers, from architecture to "
 "facade building and the installation of marble and granite flooring."
 msgstr ""
+"Naturstein für professionelle Anwender, von der Architektur über den "
+"Fassadenbau, bis hin zur Verlegung von Marmor und Granit."
 
-#: gl4app/templates/gl4app/home.html:200
+#: templates/gl4app/home.html:200
 msgid "Quary and Production"
-msgstr ""
+msgstr "Herstellung"
 
-#: gl4app/templates/gl4app/home.html:201
+#: templates/gl4app/home.html:201
 msgid ""
 "Information for natural stone companies, quarying of granite and marble, "
-"cutting of slabs and tiles, with information on machinery and current trends."
+"cutting of slabs and tiles, with information on machinery and current "
+"trends."
 msgstr ""
+"Die Rubrik zum Naturstein-Abbau, Blockbearbeitung und Plattenherstellung, "
+"mit Informationen zu Maschinen und aktuellen Bearbeitungsmethoden von "
+"Naturstein."
 
-#: gl4app/templates/gl4app/home.html:204
+#: templates/gl4app/home.html:204
 msgid "Misc"
-msgstr ""
+msgstr "Vermischtes"
 
-#: gl4app/templates/gl4app/home.html:205
+#: templates/gl4app/home.html:205
 msgid ""
 "Other natural stone related events that do not fit into any of the above "
 "topics."
 msgstr ""
+"Alles rund um das Thema Naturstein, was in keiner der anderen Kategorien "
+"einen Platz findet."
 
-#: gl4app/templates/gl4app/home.html:208
+#: templates/gl4app/home.html:208
 msgid "Graniteland Help"
-msgstr ""
+msgstr "Hilfe zu Graniteland"
 
-#: gl4app/templates/gl4app/home.html:209
+#: templates/gl4app/home.html:209
 msgid ""
 "How to use Graniteland, explains how to find quickly the right natural "
 "stone. And for stone companies, how to present your company online."
 msgstr ""
+"Wie funktioniert Graniteland, wie kann ich schnell und einfach Natursteine "
+"finden und wie präsentiere ich meine Natursteinfirma online."
 
-#: gl4app/templates/gl4app/home.html:216
+#: templates/gl4app/home.html:216
 msgid "Stone Companies online"
-msgstr ""
+msgstr "Naturstein-Betriebe Online"
 
-#: gl4app/templates/gl4app/home.html:218
+#: templates/gl4app/home.html:218
 msgid ""
-"Many companies specialized in natural stone and related products are already "
-"listed in the Graniteland Company Directory."
+"Many companies specialized in natural stone and related products are already"
+" listed in the Graniteland Company Directory."
 msgstr ""
+"Hunderte Naturstein-Unternehmen haben sich bereits im Firmenkatalog von "
+"Graniteland eingetragen, darunter viele Natursteinbetriebe aus Deutschland."
 
-#: gl4app/templates/gl4app/home.html:238
+#: templates/gl4app/home.html:238
 msgid "Granite and marble from Brazil"
-msgstr ""
+msgstr "Granit und Marmor aus Brasilien"
 
-#: gl4app/templates/gl4app/home.html:239
+#: templates/gl4app/home.html:239
 msgid "Granite and marble from China"
-msgstr ""
+msgstr "Granit und Marmor aus China"
 
-#: gl4app/templates/gl4app/home.html:240
+#: templates/gl4app/home.html:240
 msgid "Granite and marble from Germany"
-msgstr ""
+msgstr "Granit und Marmor aus Deutschland"
 
-#: gl4app/templates/gl4app/home.html:241
+#: templates/gl4app/home.html:241
 msgid "Granite and marble from France"
-msgstr ""
+msgstr "Granit und Marmor aus Frankreich"
 
-#: gl4app/templates/gl4app/home.html:242
+#: templates/gl4app/home.html:242
 msgid "Granite and marble from India"
-msgstr ""
+msgstr "Granit und Marmor aus Indien"
 
-#: gl4app/templates/gl4app/home.html:243
+#: templates/gl4app/home.html:243
 msgid "Granite and marble from Italy"
-msgstr ""
+msgstr "Granit und Marmor aus Italien"
 
-#: gl4app/templates/gl4app/home.html:244
+#: templates/gl4app/home.html:244
 msgid "Granite and marble from Spain"
-msgstr ""
+msgstr "Granit und Marmor aus Spanien"
 
-#: gl4app/templates/gl4app/home.html:245 gl4app/templates/gl4app/home.html:275
+#: templates/gl4app/home.html:245 templates/gl4app/home.html.py:275
 msgid "More"
-msgstr ""
+msgstr "Mehr"
 
-#: gl4app/templates/gl4app/home.html:252
+#: templates/gl4app/home.html:252
 msgid "Natural stone by classification"
-msgstr ""
+msgstr "Naturstein nach Steinart"
 
-#: gl4app/templates/gl4app/home.html:259
+#: templates/gl4app/home.html:259
 msgid "Granite"
-msgstr ""
+msgstr "Granit"
 
-#: gl4app/templates/gl4app/home.html:260
+#: templates/gl4app/home.html:260
 msgid "Limestone"
-msgstr ""
+msgstr "Kalkstein"
 
-#: gl4app/templates/gl4app/home.html:261
+#: templates/gl4app/home.html:261
 msgid "Marble"
-msgstr ""
+msgstr "Marmor"
 
-#: gl4app/templates/gl4app/home.html:266
+#: templates/gl4app/home.html:266
 msgid "Quartzite"
-msgstr ""
+msgstr "Quarzit"
 
-#: gl4app/templates/gl4app/home.html:267
+#: templates/gl4app/home.html:267
 msgid "Sandstone"
-msgstr ""
+msgstr "Sandstein"
 
-#: gl4app/templates/gl4app/home.html:268
+#: templates/gl4app/home.html:268
 msgid "Slate"
-msgstr ""
+msgstr "Schiefer"
 
-#: gl4app/templates/gl4app/home.html:273
+#: templates/gl4app/home.html:273
 msgid "Soapstone"
-msgstr ""
+msgstr "Speckstein"
 
-#: gl4app/templates/gl4app/home.html:274
+#: templates/gl4app/home.html:274
 msgid "Travertine"
-msgstr ""
+msgstr "Travertin"

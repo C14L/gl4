@@ -18,10 +18,10 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^accounts/login/?$',
-        gl4app.views.MyLoginView.as_view(), name='gl_login'),
-    url(r'^accounts/signup/?',
-        gl4app.views.MySignupView.as_view(), name='gl_signup'),
+    #url(r'^accounts/login/?$',
+    #    gl4app.views.MyLoginView.as_view(), name='gl_login'),
+    #url(r'^accounts/signup/?',
+    #    gl4app.views.MySignupView.as_view(), name='gl_signup'),
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^aktuelles/', include('mdpages.urls')),

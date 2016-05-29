@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 06:56+0000\n"
+"POT-Creation-Date: 2016-05-29 16:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,98 +18,95 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: tradeshowdb/templates/tradeshowdb/home.html:4
-#: tradeshowdb/templates/tradeshowdb/home.html:6
+#: templates/tradeshowdb/home.html:4 templates/tradeshowdb/home.html.py:6
 msgid "Granite and Marble Tradeshows Worldwide"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/home.html:8
+#: templates/tradeshowdb/home.html:8
 msgid ""
 "Tradeshows worldwide related to the natural stone industry. Exhibitions and "
 "fairs specialized in granite and marble products."
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/home.html:15
-#: tradeshowdb/templates/tradeshowdb/item.html:15
+#: templates/tradeshowdb/home.html:15 templates/tradeshowdb/item.html.py:15
 #, python-format
 msgid "Tradeshows %(view_year)s"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/home.html:20
+#: templates/tradeshowdb/home.html:20
 #, python-format
 msgid "Granite and Marble Tradeshows %(view_year)s"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/home.html:25
+#: templates/tradeshowdb/home.html:25
 #, python-format
 msgid "%(month)s %(view_year)s natural stone related tradeshows"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/home.html:30
-#: tradeshowdb/templates/tradeshowdb/home.html:32
+#: templates/tradeshowdb/home.html:30 templates/tradeshowdb/home.html.py:32
 #, python-format
 msgid "Tradeshow %(name)s"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/home.html:36
+#: templates/tradeshowdb/home.html:36
 #, python-format
 msgid "Starts on %(begins)s in %(city)s, %(country)s"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:29
+#: templates/tradeshowdb/item.html:29
 #, python-format
 msgid "%(name)s is a trade show in %(country)s from %(begins)s until %(ends)s."
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:35
+#: templates/tradeshowdb/item.html:35
 msgid "Name of the trade show"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:39
+#: templates/tradeshowdb/item.html:39
 msgid "Start date"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:43
+#: templates/tradeshowdb/item.html:43
 msgid "End date"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:47
+#: templates/tradeshowdb/item.html:47
 msgid "City"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:51
+#: templates/tradeshowdb/item.html:51
 msgid "Country"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:55
+#: templates/tradeshowdb/item.html:55
 msgid "Contact information"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:59
+#: templates/tradeshowdb/item.html:59
 msgid "Web site"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:65
+#: templates/tradeshowdb/item.html:65
 msgid "More information"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:67
+#: templates/tradeshowdb/item.html:67
 msgid "AUMA data sheet"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:68
+#: templates/tradeshowdb/item.html:68
 msgid "Location on OpenStreetMaps"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:69
+#: templates/tradeshowdb/item.html:69
 msgid "Search on DuckDuckGo"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:73
+#: templates/tradeshowdb/item.html:73
 msgid "Travel preparations"
 msgstr ""
 
-#: tradeshowdb/templates/tradeshowdb/item.html:74
+#: templates/tradeshowdb/item.html:74
 #, python-format
 msgid "Book a hotel in %(city)s"
 msgstr ""

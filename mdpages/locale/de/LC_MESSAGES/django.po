@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 06:56+0000\n"
+"POT-Creation-Date: 2016-05-29 16:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mdpages/templates/mdpages/article.html:15
-#: mdpages/templates/mdpages/home.html:4 mdpages/templates/mdpages/home.html:6
-#: mdpages/templates/mdpages/home.html:15
-#: mdpages/templates/mdpages/topic.html:15
+#: templates/mdpages/article.html:15 templates/mdpages/home.html.py:4
+#: templates/mdpages/home.html:6 templates/mdpages/home.html.py:15
+#: templates/mdpages/topic.html:15
 msgid "Natural Stone Magazine"
 msgstr ""
 
-#: mdpages/templates/mdpages/author.html:15
-#: mdpages/templates/mdpages/keyword.html:14
+#: templates/mdpages/article.html:39
+msgid "written by:"
+msgstr ""
+
+#: templates/mdpages/author.html:15 templates/mdpages/keyword.html.py:14
 msgid "Articles"
 msgstr ""
 
-#: mdpages/templates/mdpages/home.html:8
+#: templates/mdpages/home.html:8
 msgid ""
 "Expert texts on granite and marble related topics. The Graniteland Natural "
 "Stone Magazine has advice on granite and marble for consumers, as well as "

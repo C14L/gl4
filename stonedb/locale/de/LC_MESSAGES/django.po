@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 06:56+0000\n"
+"POT-Creation-Date: 2016-05-29 16:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,81 +18,83 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: stonedb/forms.py:18
+#: forms.py:20
 msgid "Search by stone name"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:4
-#: stonedb/templates/stonedb/filter.html:6
-#: stonedb/templates/stonedb/filter.html:8
+#: forms.py:44
+msgid "Add picture"
+msgstr ""
+
+#: templates/stonedb/filter.html:4 templates/stonedb/filter.html.py:6
+#: templates/stonedb/filter.html:8
 #, python-format
 msgid "Find %(texture)s %(color)s %(classification)s stones from %(country)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:15
+#: templates/stonedb/filter.html:15
 msgid "country"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:16
-#: stonedb/templates/stonedb/home.html:15
-#: stonedb/templates/stonedb/item.html:19
+#: templates/stonedb/filter.html:16 templates/stonedb/home.html.py:15
+#: templates/stonedb/item.html:19
 msgid "Stones"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:27
+#: templates/stonedb/filter.html:26
 #, python-format
 msgid ""
 "No %(texture)s %(color)s %(classification)s stones from %(country)s found"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:29
+#: templates/stonedb/filter.html:28
 msgid ""
 "Sorry, no stones match the search settings, but you could try one of the "
 "following similar searches:"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:32
+#: templates/stonedb/filter.html:31
 #, python-format
 msgid "all stones from %(country)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:35
+#: templates/stonedb/filter.html:34
 #, python-format
 msgid "stones with a %(texture)s texture"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:38
+#: templates/stonedb/filter.html:37
 #, python-format
 msgid "all %(classification)s type natural stones"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:41
+#: templates/stonedb/filter.html:40
 #, python-format
 msgid "all %(color)s colored stones"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:45
+#: templates/stonedb/filter.html:44
 #, python-format
 msgid "%(texture)s textured stones from %(country)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:48
+#: templates/stonedb/filter.html:47
 #, python-format
 msgid "%(color)s natural stone from %(country)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:51
+#: templates/stonedb/filter.html:50
 #, python-format
 msgid "%(color)s stones with %(texture)s texture"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:56
+#: templates/stonedb/filter.html:58
 #, python-format
 msgid ""
 "%(count)s %(texture)s %(color)s %(classification)s stones from %(country)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter.html:58
+#: templates/stonedb/filter.html:60
 #, python-format
 msgid ""
 "Browse <strong>%(count)s different types of %(texture_name)s %(color_name)s "
@@ -100,61 +102,60 @@ msgid ""
 "stone image to see more about a particular natural stone."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_classification.html:4
-#: stonedb/templates/stonedb/filter_classification.html:6
+#: templates/stonedb/filter_classification.html:4
+#: templates/stonedb/filter_classification.html:6
 #, python-format
 msgid "Browse %(name)s stones"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_classification.html:8
+#: templates/stonedb/filter_classification.html:8
 #, python-format
 msgid "Browse all %(name)s natural stones listed in Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_classification.html:26
+#: templates/stonedb/filter_classification.html:29
 #, python-format
 msgid "Browse %(classification)s stones"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_classification.html:31
+#: templates/stonedb/filter_classification.html:34
 #, python-format
 msgid ""
 "Graniteland's natural stone collection has data on a large variety of marble "
 "and granite, as well as many other types of stones, including %(tname)s "
 "stone. Note however, that in stone trade many stone types like %(name)s are "
 "grouped into either being \"marble\" or \"granite\", for being very similar. "
-"Here are 100 %(name)s stones with photos and further data."
+"Here are %(count)s %(name)s stones with photos and further data."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_classification.html:34
+#: templates/stonedb/filter_classification.html:38
 #, python-format
 msgid "Natural stone classification %(name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_classification.html:38
+#: templates/stonedb/filter_classification.html:42
 msgid "Types of natural stone / stone by classification"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_color.html:4
-#: stonedb/templates/stonedb/filter_color.html:6
-#: stonedb/templates/stonedb/filter_texture.html:4
-#: stonedb/templates/stonedb/filter_texture.html:6
+#: templates/stonedb/filter_color.html:4 templates/stonedb/filter_color.html:6
+#: templates/stonedb/filter_texture.html:4
+#: templates/stonedb/filter_texture.html:6
 #, python-format
 msgid "All %(name)s marbles and %(name)s granites"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_color.html:8
+#: templates/stonedb/filter_color.html:8
 #, python-format
 msgid ""
 "Browse all %(name)s marbles and granites with pictures listed in Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_color.html:26
+#: templates/stonedb/filter_color.html:29
 #, python-format
 msgid "%(capfirst_color)s granite and %(color)s marble"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_color.html:31
+#: templates/stonedb/filter_color.html:34
 #, python-format
 msgid ""
 "Browse <strong>%(count)s types of %(name)s marble and %(name)s granite "
@@ -163,53 +164,53 @@ msgid ""
 "Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_color.html:36
+#: templates/stonedb/filter_color.html:40
 #, python-format
 msgid "%(capfirst_name)s stone and other natural stone colors"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_country.html:4
-#: stonedb/templates/stonedb/filter_country.html:6
+#: templates/stonedb/filter_country.html:4
+#: templates/stonedb/filter_country.html:6
 #, python-format
 msgid "Browse %(name)s marbles and granites"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_country.html:8
+#: templates/stonedb/filter_country.html:8
 #, python-format
 msgid "Browse all %(name)s marbles and granites listed in Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_country.html:26
+#: templates/stonedb/filter_country.html:29
 #, python-format
 msgid "Types of stone from %(country)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_country.html:31
+#: templates/stonedb/filter_country.html:34
 #, python-format
 msgid "You are viewing natural stones grouped by country %(name)s."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_country.html:34
+#: templates/stonedb/filter_country.html:38
 #, python-format
 msgid "Pictures of %(count)s stones from %(name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_country.html:38
+#: templates/stonedb/filter_country.html:42
 msgid "Natural Stone by country"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_texture.html:8
+#: templates/stonedb/filter_texture.html:8
 #, python-format
 msgid ""
 "Browse %(name)s marbles and granites with pictures listed in Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_texture.html:26
+#: templates/stonedb/filter_texture.html:29
 #, python-format
 msgid "%(capfirst_texture)s granite and %(texture)s marble"
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_texture.html:31
+#: templates/stonedb/filter_texture.html:34
 #, python-format
 msgid ""
 "Browse <strong>%(page_count)s different types of %(name)s marble and "
@@ -218,31 +219,31 @@ msgid ""
 "Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/filter_texture.html:36
+#: templates/stonedb/filter_texture.html:40
 #, python-format
 msgid "%(name)s stone and other natural stone textures"
 msgstr ""
 
-#: stonedb/templates/stonedb/home.html:4 stonedb/templates/stonedb/home.html:6
-#: stonedb/templates/stonedb/home.html:28
+#: templates/stonedb/home.html:4 templates/stonedb/home.html.py:6
+#: templates/stonedb/home.html:28
 msgid "Marbles and Granites from around the globe"
 msgstr ""
 
-#: stonedb/templates/stonedb/home.html:8
+#: templates/stonedb/home.html:8
 msgid ""
 "Information on granite and marble from around the world, including data and "
 "pictures of thousands of natural stones, at the Graniteland online stone "
 "database."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:4 stonedb/templates/stonedb/item.html:6
+#: templates/stonedb/item.html:4 templates/stonedb/item.html.py:6
 #, python-format
 msgid ""
 "%(stone_name)s - a %(stone_color)s %(stone_classification)s from "
 "%(stone_country)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:8
+#: templates/stonedb/item.html:8
 #, python-format
 msgid ""
 "%(stone_name)s is a %(stone_color)s %(stone_classification)s from "
@@ -250,104 +251,107 @@ msgid ""
 "called a granite."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:33
+#: templates/stonedb/item.html:27
 #, python-format
 msgid ""
 "%(stone_name)s is a %(stone_color)s %(stone_classification)s from "
 "%(stone_country)s."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:37
+#: templates/stonedb/item.html:31
 #, python-format
 msgid "%(stone_name)s is a real %(stone_classification)s."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:40
+#: templates/stonedb/item.html:34
 #, python-format
 msgid ""
 "In natural stone trade, %(stone_name)s is often simply called a "
 "%(stone_simple)s."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:54
+#: templates/stonedb/item.html:48
 #, python-format
 msgid "Remarks about %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:68
+#: templates/stonedb/item.html:52
+#, python-format
+msgid "Currently no addition remarks on %(stone_name)s."
+msgstr ""
+
+#: templates/stonedb/item.html:66
 msgid "Stone Name"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:74
+#: templates/stonedb/item.html:72
 msgid "Pseudonyme"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:78
+#: templates/stonedb/item.html:76
 msgid "Main color"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:86
+#: templates/stonedb/item.html:84
 msgid "Secondary colors"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:92
+#: templates/stonedb/item.html:90
 msgid "Country of origin"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:103
+#: templates/stonedb/item.html:101
 msgid "City of origin"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:107
+#: templates/stonedb/item.html:105
 msgid "Classification"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:114
+#: templates/stonedb/item.html:112
 msgid "Availability"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:118
+#: templates/stonedb/item.html:116
 msgid "Texture"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:126
+#: templates/stonedb/item.html:124
 msgid "Maximum size"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:127
+#: templates/stonedb/item.html:125
 msgid "No data"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:130
+#: templates/stonedb/item.html:128
 msgid "Application"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:134
+#: templates/stonedb/item.html:132
 #, python-format
 msgid "More about %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:138
-#: stonedb/templates/stonedb/item.html:140
+#: templates/stonedb/item.html:136 templates/stonedb/item.html.py:138
 #, python-format
 msgid "Comments about %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:142
+#: templates/stonedb/item.html:140
 #, python-format
 msgid ""
 "You know the stone %(stone_name)s well or have a question about "
-"%(stone_name)s, then post a comment here."
+"%(stone_name)s, then send us a comment here."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:147
-#: stonedb/templates/stonedb/item.html:149
-#: stonedb/templates/stonedb/item.html:191
+#: templates/stonedb/item.html:145 templates/stonedb/item.html.py:147
+#: templates/stonedb/item.html:196
 #, python-format
 msgid "Photos of %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:151
+#: templates/stonedb/item.html:149
 #, python-format
 msgid ""
 "More %(stone_name)s photos, and pictures of construction projects that use "
@@ -355,31 +359,29 @@ msgid ""
 "them here."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:156
+#: templates/stonedb/item.html:154
 #, python-format
 msgid "%(stone_name)s for companies"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:160
-#: stonedb/templates/stonedb/item.html:162
+#: templates/stonedb/item.html:158 templates/stonedb/item.html.py:160
 #, python-format
 msgid "Advertise current stock of %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:164
+#: templates/stonedb/item.html:162
 #, python-format
 msgid ""
 "Advertise your current stock of %(stone_name)s within your company's profile "
 "page on Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:169
-#: stonedb/templates/stonedb/item.html:171
+#: templates/stonedb/item.html:167 templates/stonedb/item.html.py:169
 #, python-format
 msgid "Publish your %(stone_name)s-related project"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:173
+#: templates/stonedb/item.html:171
 #, python-format
 msgid ""
 "Advertise your %(stone_name)s-related projects on your company's profile "
@@ -387,85 +389,113 @@ msgid ""
 "customers your work."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:178
-#: stonedb/templates/stonedb/item.html:180
+#: templates/stonedb/item.html:176 templates/stonedb/item.html.py:178
 #, python-format
 msgid "Submit your photo of %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:181
+#: templates/stonedb/item.html:179
 #, python-format
 msgid ""
 "You are invited to add your own %(stone_name)s pictures here. All uploaded "
 "pictures will be linked to your company's page on Graniteland."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:195
+#: templates/stonedb/item.html:193
+#, python-format
+msgid "upload a photo of %(stone_name)s"
+msgstr ""
+
+#: templates/stonedb/item.html:208
 #, python-format
 msgid "Sorry, there are no more photos of %(stone_name)s available."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:197
+#: templates/stonedb/item.html:210
 #, python-format
 msgid "There is one photo of %(stone_name)s available."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:199
+#: templates/stonedb/item.html:212
 #, python-format
 msgid "There are %(pics_count)s photos of %(stone_name)s available."
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:213
+#: templates/stonedb/item.html:232
+#, python-format
+msgid "add %(stone_name)s project by %(company_name)s"
+msgstr ""
+
+#: templates/stonedb/item.html:236
 #, python-format
 msgid "%(count)s projects that used %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:230
+#: templates/stonedb/item.html:238
+#, python-format
+msgid "No projects listed where %(stone_name)s was used"
+msgstr ""
+
+#: templates/stonedb/item.html:257
 msgid "Published on"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:236
+#: templates/stonedb/item.html:263
 msgid "Name of natural stone"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:244
+#: templates/stonedb/item.html:271
 msgid "Project company"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:261
+#: templates/stonedb/item.html:292
+#, python-format
+msgid "add stock of %(stone_name)s at %(company_name)s"
+msgstr ""
+
+#: templates/stonedb/item.html:296
 #, python-format
 msgid "%(count)s stock items of %(stone_name)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:269
+#: templates/stonedb/item.html:298
+#, python-format
+msgid "Currently no stock items for %(stone_name)s"
+msgstr ""
+
+#: templates/stonedb/item.html:308
 msgid "Delete this stock item"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:272
+#: templates/stonedb/item.html:311
 #, python-format
 msgid "Delete all stock items by %(user)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:281
+#: templates/stonedb/item.html:320
 msgid "Added to stock on:"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:285
+#: templates/stonedb/item.html:324
 msgid "Name of natural stone:"
 msgstr ""
 
-#: stonedb/templates/stonedb/item.html:289
+#: templates/stonedb/item.html:328
 msgid "More information:"
 msgstr ""
 
-#: stonedb/templates/stonedb/stone-list-1.html:6
+#: templates/stonedb/stone-list-1.html:6
 #, python-format
 msgid "Other trade names are %(pseu)s"
 msgstr ""
 
-#: stonedb/templates/stonedb/stone-list-1.html:6
+#: templates/stonedb/stone-list-1.html:6
 #, python-format
 msgid ""
 "<span class=\"name\">%(name)s</span> is a %(color)s %(classification)s from "
 "%(country)s"
+msgstr ""
+
+#: views.py:289
+msgid "The picture is published."
 msgstr ""
