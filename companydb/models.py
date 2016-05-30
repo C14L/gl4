@@ -200,12 +200,12 @@ class StockManager(CommonProjectsStocksManager):
 
     def all_public(self):
         _now = datetime.utcnow()
-        _lim = _now + timedelta(days=getattr(settings, 'STOCK_EXPIRE_DAYS', 90))
+        _lim = _now - timedelta(days=getattr(settings, 'STOCK_EXPIRE_DAYS', 90))
         spam = Spam.objects.all()
         spam_qs = reduce(or_, [Q(description__icontains=q.match) for q in spam])
         return self.exclude(is_blocked=True, is_deleted=True)\
                    .exclude(spam_qs)\
-                   .exclude(created__lt=_lim)\
+                   .exclude(created__gt=_lim)\
                    .prefetch_related('stone', 'user', 'user__profile')
 
 
