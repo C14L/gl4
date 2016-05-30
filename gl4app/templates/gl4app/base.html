@@ -137,16 +137,21 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         <table style="width:100%" class="top">
           <tr>
             <td style="white-space:nowrap; padding:10px;">
-              <p><a href="{% url 'stonedb_property_list' 'color' %}"><strong>{% trans 'Natural stone by color' %}:</strong></a></p>
-              <p>{% for x in settings.FOOTER_BROWSE_STONES.color %}<a href="{% url 'stonedb_simple_filter' 'color' x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
+              <p><a href="{% url 'stonedb_property_list' tr_color %}"><strong>{% trans 'Natural stone by color' %}:</strong></a></p>
+              <p>
+                {% for k, v in footer_browse_stones|keyvalue:tr_color %}
+                  <a href="{% url 'stonedb_simple_filter' tr_color k %}">{{ v }}</a>
+                  <br>
+                {% endfor %}
+              </p>
             </td>
             <td style="white-space:nowrap; padding:10px;">
-              <p><a href="{% url 'stonedb_property_list' 'country' %}"><strong>{% trans 'Natural stone by country of origin' %}:</strong></a></p>
-              <p>{% for x in settings.FOOTER_BROWSE_STONES.country %}<a href="{% url 'stonedb_simple_filter' 'country' x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
+              <p><a href="{% url 'stonedb_property_list' tr_country %}"><strong>{% trans 'Natural stone by country of origin' %}:</strong></a></p>
+              <p>{% for x in footer_browse_stones|keyvalue:tr_country %}<a href="{% url 'stonedb_simple_filter' tr_country x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
             </td>
             <td style="white-space:nowrap; padding:10px;">
-              <p><a href="{% url 'stonedb_property_list' 'type' %}"><strong>{% trans 'Natural stones by type of stone' %}:</strong></a></p>
-              <p>{% for x in settings.FOOTER_BROWSE_STONES.type %}<a href="{% url 'stonedb_simple_filter' 'type' x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
+              <p><a href="{% url 'stonedb_property_list' tr_type %}"><strong>{% trans 'Natural stones by type of stone' %}:</strong></a></p>
+              <p>{% for x in footer_browse_stones|keyvalue:tr_type %}<a href="{% url 'stonedb_simple_filter' tr_type x.0 %}">{{ x.1 }}</a><br>{% endfor %}</p>
             </td>
             <td style="padding:10px;">
               <p>

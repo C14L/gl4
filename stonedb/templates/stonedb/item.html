@@ -76,7 +76,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
           <td class="title">{% trans 'Main color' %}:</td>
           <td class="data">
             {% if stone.color.slug %}
-              <a href="{% url 'stonedb_simple_filter' 'color' stone.color.slug %}">{{ stone.color.name }}</a>
+              <a href="{% url 'stonedb_simple_filter' tr_color stone.color.slug %}">{{ stone.color.name }}</a>
             {% endif %}
           </td>
         </tr>
@@ -90,10 +90,10 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
           <td class="title">{% trans 'Country of origin' %}:</td>
           <td class="data">
             {% if stone.country.slug %}
-            <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">
+            <a href="{% url 'stonedb_simple_filter' tr_country stone.country.slug %}">
               <img src="{{ stone.country.flag_path }}" style="vertical-align:middle;" alt="" title="{{ stone.stone.country.name }}">
             </a>
-            <a href="{% url 'stonedb_simple_filter' 'country' stone.country.slug %}">{{ stone.country.name }}</a>
+            <a href="{% url 'stonedb_simple_filter' tr_country stone.country.slug %}">{{ stone.country.name }}</a>
             {% endif %}
           </td>
         </tr>
@@ -105,7 +105,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
           <td class="title">{% trans 'Classification' %}:</td>
           <td class="data">
             {% if stone.classification.slug %}
-            <a href="{% url 'stonedb_simple_filter' 'type' stone.classification.slug %}">{{ stone.classification.name }}</a> {% endif %}
+            <a href="{% url 'stonedb_simple_filter' tr_type stone.classification.slug %}">{{ stone.classification.name }}</a> {% endif %}
           </td>
         </tr>
         <tr>
@@ -116,7 +116,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
           <td class="title">{% trans 'Texture' %}:</td>
           <td class="data">
             {% if stone.texture.slug %}
-            <a href="{% url 'stonedb_simple_filter' 'texture' stone.texture.slug %}">{{ stone.texture.name }}</a>
+            <a href="{% url 'stonedb_simple_filter' tr_texture stone.texture.slug %}">{{ stone.texture.name }}</a>
             {% endif %}
           </td>
         </tr>

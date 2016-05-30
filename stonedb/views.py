@@ -73,19 +73,19 @@ def redir_search_php(request):
     elif color and not (country or texture or classification):
         # only color
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'color', 'q': color.slug})
+                      kwargs={'f': settings.TR_COLOR, 'q': color.slug})
     elif country and not (color or texture or classification):
         # only country
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'country', 'q': country.slug})
+                      kwargs={'f': settings.TR_COUNTRY, 'q': country.slug})
     elif texture and not (color or country or classification):
         # only texture
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'texture', 'q': texture.slug})
+                      kwargs={'f': settings.TR_TEXTURE, 'q': texture.slug})
     elif classification and not (color or country or texture):
         # only classification
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'type', 'q': classification.slug})
+                      kwargs={'f': settings.TR_TYPE, 'q': classification.slug})
     else:
         # if there are at least two properties defined, then show filter page.
         url = reverse('stonedb_filter', kwargs={
@@ -211,11 +211,11 @@ def filter(request, color, country, texture, classif, p=1):
     elif color and not (country or texture or classif):
         # only color, go to old color page
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'color', 'q': color.slug})
+                      kwargs={'f': settings.TR_COLOR, 'q': color.slug})
     elif country and not (color or texture or classif):
         # only country, go to old country page.
         url = reverse('stonedb_simple_filter',
-                      kwargs={'f': 'country', 'q': country.slug})
+                      kwargs={'f': settings.TR_COUNTRY, 'q': country.slug})
     elif texture and not (color or country or classif):
         # only texture, there is NO old texture page, so that's okay.
         pass

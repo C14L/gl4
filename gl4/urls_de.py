@@ -40,16 +40,16 @@ urlpatterns = [
     # /stone/color
     # /stone/type
     url(r'^naturstein'
-        r'/(?P<f>color|country|type|texture)$',
+        # r'/(?P<f>color|country|type|texture)$',
+        r'/(?P<f>farbe|herkunftsland|steinart|textur)$',
         stonedb.views.property_list, name='stonedb_property_list'),
-    # r'/(?P<f>farbe|herkunftsland|steinart|textur)$',
 
     # /stone/color/blue -> naturstein/steinart/basalt
     # /stone/country/france/3
     # /stone/type/sandstone
     url(r'^naturstein'
-        r'/(?P<f>color|country|type|texture)'
-        # r'/(?P<f>farbe|herkunftsland|steinart|textur)'
+        # r'/(?P<f>color|country|type|texture)'
+        r'/(?P<f>farbe|herkunftsland|steinart|textur)'
         r'/(?P<q>[a-zA-Z0-9_-]{1,100})'
         r'(?:/(?P<p>\d{1,3}))?$',
         stonedb.views.simple_filter, name='stonedb_simple_filter'),

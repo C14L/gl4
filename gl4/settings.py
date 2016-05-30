@@ -24,10 +24,11 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 
 LANGUAGE_CODE = 'de'
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
-LANGUAGES = [
-    # ('en', 'English'),
-    ('de', 'Deutsch'),
-]
+
+if LANGUAGE_CODE == 'de':
+    LANGUAGES = [('de', 'Deutsch'), ]
+else:
+    LANGUAGES = [('en', 'English'), ]
 
 LOCALE_PATHS = (
     join(BASE_DIR, 'conf/locale'),
@@ -287,39 +288,15 @@ COMPANY_CONTACT_FROM_EMAIL = 'contact@' + SITE_DOMAIN
 # Companydb stock items are hidden after this many days
 STOCK_EXPIRE_DAYS = 90
 
-# TODO: translate this
-FOOTER_BROWSE_STONES = {
-    'color': (
-        ('beige', 'Beige natural stone'),
-        ('black', 'Black natural stone'),
-        ('blue', 'Blue natural stone'),
-        ('brown', 'Brown natural stone'),
-        ('darkgrey', 'Dark grey natural stone'),
-        ('green', 'Green natural stone'),
-        ('grey', 'Grey natural stone'),
-        ('lightgrey', 'Light grey natural stone'),
-        ('pink', 'Pink natural stone'),
-        ('red', 'Red natural stone'),
-        ('white', 'White natural stone'),
-        ('yellow', 'Yellow natural stone'),
-    ),
-    'country': (
-        ('brazil', 'Granite and marble from Brazil'),
-        ('china', 'Granite and marble from China'),
-        ('germany', 'Granite and marble from Germany'),
-        ('france', 'Granite and marble from France'),
-        ('india', 'Granite and marble from India'),
-        ('italy', 'Granite and marble from Italy'),
-        ('spain', 'Granite and marble from Spain'),
-    ),
-    'type':(
-        ('granite', 'Granite'),
-        ('limestone', 'Limestone'),
-        ('marble', 'Marble'),
-        ('quartzite', 'Quartzite'),
-        ('sandstone', 'Sandstone'),
-        ('slate', 'Slate'),
-        ('soapstone', 'Soapstone'),
-        ('travertine', 'Travertine'),
-    ),
-}
+if LANGUAGE_CODE == 'de':
+    TR_COUNTRY = 'herkunftsland'
+    TR_COLOR = 'farbe'
+    TR_TEXTURE = 'textur'
+    TR_CLASSIFICATION = 'steinart'
+    TR_TYPE = 'steinart'
+else:
+    TR_COUNTRY = 'country'
+    TR_COLOR = 'color'
+    TR_TEXTURE = 'texture'
+    TR_CLASSIFICATION = 'classification'
+    TR_TYPE = 'type'

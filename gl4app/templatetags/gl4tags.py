@@ -7,6 +7,12 @@ from os.path import join
 register = template.Library()
 
 
+@register.filter
+def keyvalue(dic, key):
+    """Use a variable as a dictionary key"""
+    return dic[key]
+
+
 @register.filter(name='picsrc')
 def picsrc(pic, size='small'):
     """Return the URL to a user uploaded media file in a give size."""
