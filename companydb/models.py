@@ -205,7 +205,7 @@ class StockManager(CommonProjectsStocksManager):
         spam_qs = reduce(or_, [Q(description__icontains=q.match) for q in spam])
         return self.exclude(is_blocked=True, is_deleted=True)\
                    .exclude(spam_qs)\
-                   .exclude(created__gt=_lim)\
+                   .exclude(created__lt=_lim)\
                    .prefetch_related('stone', 'user', 'user__profile')
 
 
