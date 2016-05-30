@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-29 16:44+0000\n"
+"POT-Creation-Date: 2016-05-30 21:25+0000\n"
 "PO-Revision-Date: 2016-05-30 09:58+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.10\n"
 
@@ -59,10 +59,8 @@ msgstr "Beginn am %(begins)s in %(city)s, %(country)s"
 
 #: templates/tradeshowdb/item.html:29
 #, python-format
-msgid ""
-"%(name)s is a trade show in %(country)s from %(begins)s until %(ends)s."
-msgstr ""
-"%(name)s ist eine Fachmesse in %(country)s vom %(begins)s bis %(ends)s"
+msgid "%(name)s is a trade show in %(country)s from %(begins)s until %(ends)s."
+msgstr "%(name)s ist eine Fachmesse in %(country)s vom %(begins)s bis %(ends)s"
 
 #: templates/tradeshowdb/item.html:35
 msgid "Name of the trade show"

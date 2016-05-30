@@ -142,35 +142,37 @@ def simple_filter(request, f, q, p=None):
     f = f.lower()
     fk = f  # filter "type" needs "classification" as filter key
 
-    if f == 'color':
+    if f == settings.TR_COLOR:
+        f_db = 'color'
         more = Color.objects.all_with_stones()
         q = get_object_or_404(Color, slug=q)
-    elif f == 'country':
+    elif f == settings.TR_COUNTRY:
+        f_db = 'country'
         more = Country.objects.all_with_stones()
         q = get_object_or_404(Country, slug=q)
-    elif f == 'texture':
+    elif f == settings.TR_TEXTURE:
+        f_db = 'texture'
         more = Texture.objects.all_with_stones()
         q = get_object_or_404(Texture, slug=q)
-    elif f == 'type':
+    elif f == settings.TR_TYPE:
+        f_db = 'classification'
         more = Classification.objects.all_with_stones()
-        fk = 'classification'
+        fk = settings.TR_CLASSIFICATION
         q = get_object_or_404(Classification, slug=q)
     else:
         raise Http404
 
     titlestone = '/stonesbrowse/{}.jpg'.format(q.slug)
 
-    stones = _get_page(Stone.objects.filter(**{fk: q}), p, 60)
-    return render(request, 'stonedb/filter_{}.html'.format(fk), _ctx({
+    stones = _get_page(Stone.objects.filter(**{f_db: q}), p, 60)
+    return render(request, 'stonedb/filter_{}.html'.format(f_db), _ctx({
         'range_pages': range(1, stones.paginator.num_pages+1),
         'canonical': request.path,
         'titlestone': titlestone,
         'stones': stones,
         'more': more,
-        'f': f,
-        'q': q,
-        fk: q,
-        'selected_{}'.format(fk): q.pk
+        'f': f, 'q': q, fk: q,
+        'selected_{}'.format(f_db): q.pk
     }))
 
 

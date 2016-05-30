@@ -34,15 +34,15 @@ def add_common_translations(request):
     return {
         'footer_browse_stones': {
             settings.TR_COLOR: (
-                (_('beige'), _('Beige natural stone')),
-                (_('black'), _('Black natural stone')),
-                (_('blue'), _('Blue natural stone')),
-                (_('brown'), _('Brown natural stone')),
-                (_('green'), _('Green natural stone')),
-                (_('grey'), _('Grey natural stone')),
-                (_('pink'), _('Pink natural stone')),
-                (_('red'), _('Red natural stone')),
-                (_('white'), _('White natural stone')),
+                (_('beige'),  _('Beige natural stone')),
+                (_('black'),  _('Black natural stone')),
+                (_('blue'),   _('Blue natural stone')),
+                (_('brown'),  _('Brown natural stone')),
+                (_('green'),  _('Green natural stone')),
+                (_('grey'),   _('Grey natural stone')),
+                (_('pink'),   _('Pink natural stone')),
+                (_('red'),    _('Red natural stone')),
+                (_('white'),  _('White natural stone')),
                 (_('yellow'), _('Yellow natural stone')),
             ),
             settings.TR_COUNTRY: (

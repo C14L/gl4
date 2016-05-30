@@ -30,10 +30,6 @@ if LANGUAGE_CODE == 'de':
 else:
     LANGUAGES = [('en', 'English'), ]
 
-LOCALE_PATHS = (
-    join(BASE_DIR, 'conf/locale'),
-)
-
 # ==============================================================================
 
 SITE_ID = 1

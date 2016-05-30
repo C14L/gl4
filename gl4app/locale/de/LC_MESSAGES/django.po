@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-29 16:45+0000\n"
-"PO-Revision-Date: 2016-05-29 17:38+0000\n"
+"POT-Creation-Date: 2016-05-30 21:26+0000\n"
+"PO-Revision-Date: 2016-05-30 22:11+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,17 +19,221 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.10\n"
 
-#: context_processors.py:32 context_processors.py:33 context_processors.py:34
-msgid "country"
-msgstr "Herkunftsland"
+#: context_processors.py:37
+msgid "beige"
+msgstr "beige"
 
-#: context_processors.py:35
-msgid "classification"
-msgstr "Steinart"
+#: context_processors.py:37 templates/gl4app/home.html.py:77
+msgid "Beige natural stone"
+msgstr "Beiger Naturstein"
 
-#: context_processors.py:36
-msgid "type"
-msgstr "Steinart"
+#: context_processors.py:38
+msgid "black"
+msgstr "schwarz"
+
+#: context_processors.py:38 templates/gl4app/home.html.py:129
+msgid "Black natural stone"
+msgstr "Schwarzer Naturstein"
+
+#: context_processors.py:39
+msgid "blue"
+msgstr "blau"
+
+#: context_processors.py:39 templates/gl4app/home.html.py:83
+msgid "Blue natural stone"
+msgstr "Blauer Naturstein"
+
+#: context_processors.py:40
+msgid "brown"
+msgstr "braun"
+
+#: context_processors.py:40 templates/gl4app/home.html.py:89
+msgid "Brown natural stone"
+msgstr "Brauner Naturstein"
+
+#: context_processors.py:41
+msgid "green"
+msgstr "gruen"
+
+#: context_processors.py:41 templates/gl4app/home.html.py:111
+msgid "Green natural stone"
+msgstr "Grüner Naturstein"
+
+#: context_processors.py:42
+msgid "grey"
+msgstr "grau"
+
+#: context_processors.py:42 templates/gl4app/home.html.py:101
+msgid "Grey natural stone"
+msgstr "Grauer Naturstein"
+
+#: context_processors.py:43
+msgid "pink"
+msgstr "rosa"
+
+#: context_processors.py:43 templates/gl4app/home.html.py:117
+msgid "Pink natural stone"
+msgstr "Rosaner Naturstein"
+
+#: context_processors.py:44
+msgid "red"
+msgstr "rot"
+
+#: context_processors.py:44 templates/gl4app/home.html.py:123
+msgid "Red natural stone"
+msgstr "Roter Naturstein"
+
+#: context_processors.py:45
+msgid "white"
+msgstr "weiss"
+
+#: context_processors.py:45 templates/gl4app/home.html.py:135
+msgid "White natural stone"
+msgstr "Weißer Naturstein"
+
+#: context_processors.py:46
+msgid "yellow"
+msgstr "gelb"
+
+#: context_processors.py:46 templates/gl4app/home.html.py:95
+msgid "Yellow natural stone"
+msgstr "Gelber Naturstein"
+
+#: context_processors.py:49
+msgid "brazil"
+msgstr "brasilien"
+
+#: context_processors.py:49 templates/gl4app/home.html.py:238
+msgid "Granite and marble from Brazil"
+msgstr "Granit und Marmor aus Brasilien"
+
+#: context_processors.py:50
+msgid "china"
+msgstr "china"
+
+#: context_processors.py:50 templates/gl4app/home.html.py:239
+msgid "Granite and marble from China"
+msgstr "Granit und Marmor aus China"
+
+#: context_processors.py:51
+msgid "germany"
+msgstr "deutschland"
+
+#: context_processors.py:51 templates/gl4app/home.html.py:240
+msgid "Granite and marble from Germany"
+msgstr "Granit und Marmor aus Deutschland"
+
+#: context_processors.py:52
+msgid "france"
+msgstr "frankreich"
+
+#: context_processors.py:52 templates/gl4app/home.html.py:241
+msgid "Granite and marble from France"
+msgstr "Granit und Marmor aus Frankreich"
+
+#: context_processors.py:53
+msgid "india"
+msgstr "indien"
+
+#: context_processors.py:53 templates/gl4app/home.html.py:242
+msgid "Granite and marble from India"
+msgstr "Granit und Marmor aus Indien"
+
+#: context_processors.py:54
+msgid "italy"
+msgstr "italien"
+
+#: context_processors.py:54 templates/gl4app/home.html.py:243
+msgid "Granite and marble from Italy"
+msgstr "Granit und Marmor aus Italien"
+
+#: context_processors.py:55
+msgid "spain"
+msgstr "spanien"
+
+#: context_processors.py:55 templates/gl4app/home.html.py:244
+msgid "Granite and marble from Spain"
+msgstr "Granit und Marmor aus Spanien"
+
+#: context_processors.py:58
+#, fuzzy
+#| msgid "Granite"
+msgid "granite"
+msgstr "Granit"
+
+#: context_processors.py:58 templates/gl4app/home.html.py:258
+msgid "Granite"
+msgstr "Granit"
+
+#: context_processors.py:59
+#, fuzzy
+#| msgid "Limestone"
+msgid "limestone"
+msgstr "Kalkstein"
+
+#: context_processors.py:59 templates/gl4app/home.html.py:259
+msgid "Limestone"
+msgstr "Kalkstein"
+
+#: context_processors.py:60
+#, fuzzy
+#| msgid "Marble"
+msgid "marble"
+msgstr "Marmor"
+
+#: context_processors.py:60 templates/gl4app/home.html.py:260
+msgid "Marble"
+msgstr "Marmor"
+
+#: context_processors.py:61
+#, fuzzy
+#| msgid "Quartzite"
+msgid "quartzite"
+msgstr "Quarzit"
+
+#: context_processors.py:61 templates/gl4app/home.html.py:265
+msgid "Quartzite"
+msgstr "Quarzit"
+
+#: context_processors.py:62
+#, fuzzy
+#| msgid "Sandstone"
+msgid "sandstone"
+msgstr "Sandstein"
+
+#: context_processors.py:62 templates/gl4app/home.html.py:266
+msgid "Sandstone"
+msgstr "Sandstein"
+
+#: context_processors.py:63
+#, fuzzy
+#| msgid "Slate"
+msgid "slate"
+msgstr "Schiefer"
+
+#: context_processors.py:63 templates/gl4app/home.html.py:267
+msgid "Slate"
+msgstr "Schiefer"
+
+#: context_processors.py:64
+#, fuzzy
+#| msgid "Soapstone"
+msgid "soapstone"
+msgstr "Speckstein"
+
+#: context_processors.py:64 templates/gl4app/home.html.py:272
+msgid "Soapstone"
+msgstr "Speckstein"
+
+#: context_processors.py:65
+#, fuzzy
+#| msgid "Travertine"
+msgid "travertine"
+msgstr "Travertin"
+
+#: context_processors.py:65 templates/gl4app/home.html.py:273
+msgid "Travertine"
+msgstr "Travertin"
 
 #: templates/account/my_login.html:5 templates/account/my_login.html.py:6
 #: templates/account/my_login.html:17
@@ -128,46 +332,46 @@ msgstr "Alle Strukturen"
 msgid "Natural stone by color"
 msgstr "Naturstein nach Farbe"
 
-#: templates/gl4app/base.html:144 templates/gl4app/home.html.py:234
+#: templates/gl4app/base.html:149 templates/gl4app/home.html.py:234
 msgid "Natural stone by country of origin"
 msgstr "Naturstein nach Herkunftsland"
 
-#: templates/gl4app/base.html:148
+#: templates/gl4app/base.html:153
 msgid "Natural stones by type of stone"
 msgstr "Naturstein nach Steinart"
 
-#: templates/gl4app/base.html:153
+#: templates/gl4app/base.html:158
 msgid ""
 "Please report user submitted content that violates the Terms of Service."
 msgstr ""
 "Bitte teilen Sie uns mit, wenn Sie durch Benutzer erstellte Inhalte finden, "
 "die gegen unsere Nutzungsbedingungen verstoßen."
 
-#: templates/gl4app/base.html:153
+#: templates/gl4app/base.html:158
 msgid "Report abuse"
 msgstr "Verstoß melden"
 
-#: templates/gl4app/base.html:154
+#: templates/gl4app/base.html:159
 msgid "Terms of Service"
 msgstr "Nutzungsbedingungen"
 
-#: templates/gl4app/base.html:155
+#: templates/gl4app/base.html:160
 msgid "Privacy"
 msgstr "Datenschutz"
 
-#: templates/gl4app/base.html:158
+#: templates/gl4app/base.html:163
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/gl4app/base.html:160
+#: templates/gl4app/base.html:165
 msgid "Jump to the top of this page."
 msgstr "Zum Seitenanfang springen."
 
-#: templates/gl4app/base.html:160
+#: templates/gl4app/base.html:165
 msgid "Top of page"
 msgstr "Zum Seitenanfang"
 
-#: templates/gl4app/base.html:163
+#: templates/gl4app/base.html:168
 msgid ""
 "All information is provided without warranty of any kind and may contain "
 "errors or may be outdated.<br>It is strongly advised to contact a competent "
@@ -305,46 +509,6 @@ msgstr ""
 msgid "%(company)s has %(stone)s on stock"
 msgstr "Die Firma %(company)s hat den Naturstein %(stone)s auf Lager."
 
-#: templates/gl4app/home.html:77
-msgid "Beige natural stone"
-msgstr "Beiger Naturstein"
-
-#: templates/gl4app/home.html:83
-msgid "Blue natural stone"
-msgstr "Blauer Naturstein"
-
-#: templates/gl4app/home.html:89
-msgid "Brown natural stone"
-msgstr "Brauner Naturstein"
-
-#: templates/gl4app/home.html:95
-msgid "Yellow natural stone"
-msgstr "Gelber Naturstein"
-
-#: templates/gl4app/home.html:101
-msgid "Grey natural stone"
-msgstr "Grauer Naturstein"
-
-#: templates/gl4app/home.html:111
-msgid "Green natural stone"
-msgstr "Grüner Naturstein"
-
-#: templates/gl4app/home.html:117
-msgid "Pink natural stone"
-msgstr "Rosaner Naturstein"
-
-#: templates/gl4app/home.html:123
-msgid "Red natural stone"
-msgstr "Roter Naturstein"
-
-#: templates/gl4app/home.html:129
-msgid "Black natural stone"
-msgstr "Schwarzer Naturstein"
-
-#: templates/gl4app/home.html:135
-msgid "White natural stone"
-msgstr "Weißer Naturstein"
-
 #: templates/gl4app/home.html:149
 #, python-format
 msgid "Signed in as %(name)s"
@@ -436,70 +600,18 @@ msgstr ""
 "Hunderte Naturstein-Unternehmen haben sich bereits im Firmenkatalog von "
 "Graniteland eingetragen, darunter viele Natursteinbetriebe aus Deutschland."
 
-#: templates/gl4app/home.html:238
-msgid "Granite and marble from Brazil"
-msgstr "Granit und Marmor aus Brasilien"
-
-#: templates/gl4app/home.html:239
-msgid "Granite and marble from China"
-msgstr "Granit und Marmor aus China"
-
-#: templates/gl4app/home.html:240
-msgid "Granite and marble from Germany"
-msgstr "Granit und Marmor aus Deutschland"
-
-#: templates/gl4app/home.html:241
-msgid "Granite and marble from France"
-msgstr "Granit und Marmor aus Frankreich"
-
-#: templates/gl4app/home.html:242
-msgid "Granite and marble from India"
-msgstr "Granit und Marmor aus Indien"
-
-#: templates/gl4app/home.html:243
-msgid "Granite and marble from Italy"
-msgstr "Granit und Marmor aus Italien"
-
-#: templates/gl4app/home.html:244
-msgid "Granite and marble from Spain"
-msgstr "Granit und Marmor aus Spanien"
-
-#: templates/gl4app/home.html:245 templates/gl4app/home.html.py:275
-msgid "More"
-msgstr "Mehr"
-
-#: templates/gl4app/home.html:252
+#: templates/gl4app/home.html:251
 msgid "Natural stone by classification"
 msgstr "Naturstein nach Steinart"
 
-#: templates/gl4app/home.html:259
-msgid "Granite"
-msgstr "Granit"
+#~ msgid "country"
+#~ msgstr "Herkunftsland"
 
-#: templates/gl4app/home.html:260
-msgid "Limestone"
-msgstr "Kalkstein"
+#~ msgid "classification"
+#~ msgstr "Steinart"
 
-#: templates/gl4app/home.html:261
-msgid "Marble"
-msgstr "Marmor"
+#~ msgid "type"
+#~ msgstr "Steinart"
 
-#: templates/gl4app/home.html:266
-msgid "Quartzite"
-msgstr "Quarzit"
-
-#: templates/gl4app/home.html:267
-msgid "Sandstone"
-msgstr "Sandstein"
-
-#: templates/gl4app/home.html:268
-msgid "Slate"
-msgstr "Schiefer"
-
-#: templates/gl4app/home.html:273
-msgid "Soapstone"
-msgstr "Speckstein"
-
-#: templates/gl4app/home.html:274
-msgid "Travertine"
-msgstr "Travertin"
+#~ msgid "More"
+#~ msgstr "Mehr"

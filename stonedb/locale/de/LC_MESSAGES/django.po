@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-29 16:43+0000\n"
-"PO-Revision-Date: 2016-05-30 09:42+0000\n"
+"POT-Creation-Date: 2016-05-30 21:25+0000\n"
+"PO-Revision-Date: 2016-05-30 22:52+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,8 @@ msgstr "Bild hinzufügen"
 #: templates/stonedb/filter.html:8
 #, python-format
 msgid "Find %(texture)s %(color)s %(classification)s stones from %(country)s"
-msgstr "Finde %(texture)s %(color)s %(classification)s-Steine aus %(country)s"
+msgstr ""
+"Finde %(texture)se %(color)se %(classification)s-Steine aus %(country)s"
 
 #: templates/stonedb/filter.html:15
 msgid "country"
@@ -47,7 +48,7 @@ msgstr "Steine"
 msgid ""
 "No %(texture)s %(color)s %(classification)s stones from %(country)s found"
 msgstr ""
-"Keine %(texture)s %(color)s %(classification)s-Steine aus %(country)s "
+"Keine %(texture)sen %(color)sen %(classification)s-Steine aus %(country)s "
 "gefunden"
 
 #: templates/stonedb/filter.html:28
@@ -235,7 +236,7 @@ msgstr ""
 #: templates/stonedb/filter_texture.html:29
 #, python-format
 msgid "%(capfirst_texture)s granite and %(texture)s marble"
-msgstr ""
+msgstr "%(capfirst_texture)ser Granit und %(texture)ser Marmor"
 
 #: templates/stonedb/filter_texture.html:34
 #, python-format
@@ -249,7 +250,7 @@ msgstr ""
 #: templates/stonedb/filter_texture.html:40
 #, python-format
 msgid "%(name)s stone and other natural stone textures"
-msgstr ""
+msgstr "%(name)ser Naturstein und andere Korngrößen"
 
 #: templates/stonedb/home.html:4 templates/stonedb/home.html.py:6
 #: templates/stonedb/home.html:28
@@ -272,7 +273,7 @@ msgid ""
 "%(stone_name)s - a %(stone_color)s %(stone_classification)s from "
 "%(stone_country)s"
 msgstr ""
-"%(stone_name)s ist ein %(stone_color)s %(stone_classification)s aus "
+"%(stone_name)s - ein %(stone_color)ser %(stone_classification)s aus "
 "%(stone_country)s"
 
 #: templates/stonedb/item.html:8
@@ -292,7 +293,7 @@ msgid ""
 "%(stone_name)s is a %(stone_color)s %(stone_classification)s from "
 "%(stone_country)s."
 msgstr ""
-"%(stone_name)s ist ein %(stone_color)s %(stone_classification)s aus "
+"%(stone_name)s ist ein %(stone_color)ser %(stone_classification)s aus "
 "%(stone_country)s."
 
 #: templates/stonedb/item.html:31
@@ -546,7 +547,7 @@ msgid ""
 "<span class=\"name\">%(name)s</span> is a %(color)s %(classification)s from "
 "%(country)s"
 msgstr ""
-"<span class=\"name\">%(name)s</span> ist ein %(color)s %(classification)s "
+"<span class=\"name\">%(name)s</span> ist ein %(color)ser %(classification)s "
 "aus %(country)s"
 
 #: views.py:289

@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-29 16:43+0000\n"
+"POT-Creation-Date: 2016-05-30 21:25+0000\n"
 "PO-Revision-Date: 2016-05-30 10:38+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.10\n"
 
@@ -231,8 +231,8 @@ msgstr "Eingesetzte Steine"
 
 #: models.py:288 templates/companydb/projects_detail.html.py:105
 msgid ""
-"Start typing the name of a stone used in the project, then select the stones"
-" from the list. Add all stones used in the project, but not more than ten."
+"Start typing the name of a stone used in the project, then select the stones "
+"from the list. Add all stones used in the project, but not more than ten."
 msgstr ""
 "Schreiben sie die ersten Buchstaben eines Stein-Namens und wählen sie dann "
 "den Stein aus der angezeigten Liste."
@@ -293,8 +293,8 @@ msgstr "Firmen-Profil löschen"
 
 #: templates/companydb/delete.html:24
 msgid ""
-"This CAN NOT be undone. Once delete, you company profile is gone and can NOT"
-" be restored."
+"This CAN NOT be undone. Once delete, you company profile is gone and can NOT "
+"be restored."
 msgstr ""
 "Kann NICHT rückgängig gemacht werden, ein gelöschtes Firmen-Profil ist WEG "
 "und kann NICHT MEHR wiederhergestellt werden."
@@ -369,8 +369,7 @@ msgstr "Naturstein-Firmen aus %(name)s"
 
 #: templates/companydb/list_by_country.html:32
 #, python-format
-msgid ""
-"There are %(count)s natural stone companies from %(name)s listed below."
+msgid "There are %(count)s natural stone companies from %(name)s listed below."
 msgstr "Es werden %(count)s Naturstein-Unternehmen aus %(name)s angezeigt."
 
 #: templates/companydb/list_by_country.html:34
@@ -496,14 +495,12 @@ msgstr "Photos von %(profile_name)s"
 
 #: templates/companydb/photos.html:41
 #, python-format
-msgid ""
-"There is currently only one photo of the company %(profile_name)s here."
+msgid "There is currently only one photo of the company %(profile_name)s here."
 msgid_plural ""
 "There are currently %(photo_count)s photos of the company %(profile_name)s "
 "here."
 msgstr[0] "Zurzeit nur ein Foto der Firma %(profile_name)s vorhanden."
-msgstr[1] ""
-"Es sind %(photo_count)s Fotos der Firma %(profile_name)s vorhanden."
+msgstr[1] "Es sind %(photo_count)s Fotos der Firma %(profile_name)s vorhanden."
 
 #: templates/companydb/photos.html:73
 msgid "An error occurred, picture could not be deleted!"
@@ -600,8 +597,7 @@ msgstr "Lagerbestände von %(name)s"
 msgid ""
 "Natural stone the company %(name)s has currently on stock in %(city)s, "
 "%(country)s."
-msgstr ""
-"Natursteine auf Lager bei der Firma %(name)s in %(city)s, %(country)s."
+msgstr "Natursteine auf Lager bei der Firma %(name)s in %(city)s, %(country)s."
 
 #: templates/companydb/stock_detail.html:4
 #: templates/companydb/stock_detail.html:6
