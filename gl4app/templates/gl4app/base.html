@@ -42,7 +42,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
     {% if settings.DEBUG %}
       <div style="position:fixed;right:0;bottom:0;padding:2px 5px;background:red;color:yellow;font:13px/1em monospace;">
         <a href="{% url 'admin:index' %}">ADMIN</a>
-        - DEBUG {{ settings.LANGUAGE_CODE }}
+        - DEBUG {{ active_language }}
       </div>
     {% else %}
     {% endif %}

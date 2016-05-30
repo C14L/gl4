@@ -3,6 +3,7 @@ from datetime import datetime
 import pytz
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import get_language
 
 from stonedb.models import Color, Country, Classification, Texture
 
@@ -22,6 +23,7 @@ def add_settings(request):
         'PRODUCTION': settings.PRODUCTION,
         'now_utc': datetime.now().replace(tzinfo=pytz.utc),
         'settings': settings,
+        'active_language': get_language(),
     }
 
 
@@ -30,8 +32,8 @@ def add_common_translations(request):
     return {
         # Used in filter and simple_filter to build URLs.
         'tr_country': _('country'),
-        'tr_color': _('country'),
-        'tr_texture': _('country'),
+        'tr_color': _('color'),
+        'tr_texture': _('texture'),
         'tr_classification': _('classification'),
         'tr_type': _('type'),
     }

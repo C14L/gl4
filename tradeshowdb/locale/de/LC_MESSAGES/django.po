@@ -9,104 +9,110 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-29 16:44+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2016-05-30 09:58+0000\n"
+"Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.7.10\n"
 
 #: templates/tradeshowdb/home.html:4 templates/tradeshowdb/home.html.py:6
 msgid "Granite and Marble Tradeshows Worldwide"
-msgstr ""
+msgstr "Weltweite Naturstein-Fachmessen"
 
 #: templates/tradeshowdb/home.html:8
 msgid ""
 "Tradeshows worldwide related to the natural stone industry. Exhibitions and "
 "fairs specialized in granite and marble products."
 msgstr ""
+"Naturstein-Fachmessen weltweit, die mit der Naturstein-Industrie im "
+"weitesten Sinne zu tun haben, sowie auf Granit und Marmor-Produkte "
+"spezialisierte Handelsmessen."
 
 #: templates/tradeshowdb/home.html:15 templates/tradeshowdb/item.html.py:15
 #, python-format
 msgid "Tradeshows %(view_year)s"
-msgstr ""
+msgstr "Fachmessen %(view_year)s"
 
 #: templates/tradeshowdb/home.html:20
 #, python-format
 msgid "Granite and Marble Tradeshows %(view_year)s"
-msgstr ""
+msgstr "Naturstein-Fachmessen %(view_year)s"
 
 #: templates/tradeshowdb/home.html:25
 #, python-format
 msgid "%(month)s %(view_year)s natural stone related tradeshows"
-msgstr ""
+msgstr "Naturstein-Messen im %(month)s %(view_year)s"
 
 #: templates/tradeshowdb/home.html:30 templates/tradeshowdb/home.html.py:32
 #, python-format
 msgid "Tradeshow %(name)s"
-msgstr ""
+msgstr "Fachmesse %(name)s"
 
 #: templates/tradeshowdb/home.html:36
 #, python-format
 msgid "Starts on %(begins)s in %(city)s, %(country)s"
-msgstr ""
+msgstr "Beginn am %(begins)s in %(city)s, %(country)s"
 
 #: templates/tradeshowdb/item.html:29
 #, python-format
-msgid "%(name)s is a trade show in %(country)s from %(begins)s until %(ends)s."
+msgid ""
+"%(name)s is a trade show in %(country)s from %(begins)s until %(ends)s."
 msgstr ""
+"%(name)s ist eine Fachmesse in %(country)s vom %(begins)s bis %(ends)s"
 
 #: templates/tradeshowdb/item.html:35
 msgid "Name of the trade show"
-msgstr ""
+msgstr "Name der Handelsmesse"
 
 #: templates/tradeshowdb/item.html:39
 msgid "Start date"
-msgstr ""
+msgstr "Beginn"
 
 #: templates/tradeshowdb/item.html:43
 msgid "End date"
-msgstr ""
+msgstr "Ende"
 
 #: templates/tradeshowdb/item.html:47
 msgid "City"
-msgstr ""
+msgstr "Stadt"
 
 #: templates/tradeshowdb/item.html:51
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #: templates/tradeshowdb/item.html:55
 msgid "Contact information"
-msgstr ""
+msgstr "Kontakt-Informationen"
 
 #: templates/tradeshowdb/item.html:59
 msgid "Web site"
-msgstr ""
+msgstr "Webseite"
 
 #: templates/tradeshowdb/item.html:65
 msgid "More information"
-msgstr ""
+msgstr "Weitere Informationen"
 
 #: templates/tradeshowdb/item.html:67
 msgid "AUMA data sheet"
-msgstr ""
+msgstr "AUMA-Datenblatt"
 
 #: templates/tradeshowdb/item.html:68
 msgid "Location on OpenStreetMaps"
-msgstr ""
+msgstr "Ort auf OpenStreetMaps"
 
 #: templates/tradeshowdb/item.html:69
 msgid "Search on DuckDuckGo"
-msgstr ""
+msgstr "In DuckDuckGo suchen"
 
 #: templates/tradeshowdb/item.html:73
 msgid "Travel preparations"
-msgstr ""
+msgstr "Reisevorbereitungen"
 
 #: templates/tradeshowdb/item.html:74
 #, python-format
 msgid "Book a hotel in %(city)s"
-msgstr ""
+msgstr "Hotel in %(city)s reservieren"

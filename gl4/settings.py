@@ -24,7 +24,14 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 
 LANGUAGE_CODE = 'de'
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
-LANGUAGES = [('en', 'English'), ('de', 'Deutsch'), ]
+LANGUAGES = [
+    # ('en', 'English'),
+    ('de', 'Deutsch'),
+]
+
+LOCALE_PATHS = (
+    join(BASE_DIR, 'conf/locale'),
+)
 
 # ==============================================================================
 
