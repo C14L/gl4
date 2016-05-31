@@ -11,8 +11,8 @@
 {% block body_classes %}{% endblock %}
 
 {% block breadcrumb %}
-<a href="/stone">Stones</a> &raquo;
-<a href="/stone/{{f}}">{{f|capfirst}}</a> &raquo;
+<a href="{% url 'stonedb_home' %}">Stones</a> &raquo;
+<a href="{% url 'stonedb_property_list' f %}">{{ f|capfirst }}</a> &raquo;
 {% endblock %}
 
 {% block main %}
@@ -36,8 +36,8 @@
 <ul class="stone-property-list">
   {% for item in items %}
     <li>
-      <a href="/stone/{{f}}/{{item.slug}}">{{item.name}} granite or marble</a>
-      <span class="count">({{item.stones__count}})</span>
+      <a href="{% url 'stonedb_simple_filter' f item.slug %}">{{ item.name }} granite or marble</a>
+      <span class="count">({{ item.stones__count }})</span>
     </li>
   {% endfor %}
 </ul>

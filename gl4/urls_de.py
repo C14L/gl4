@@ -1,3 +1,4 @@
+from django.views.generic import RedirectView
 from os.path import join
 
 from django.conf import settings
@@ -40,7 +41,6 @@ urlpatterns = [
     # /stone/color
     # /stone/type
     url(r'^naturstein'
-        # r'/(?P<f>color|country|type|texture)$',
         r'/(?P<f>farbe|herkunftsland|steinart|textur)$',
         stonedb.views.property_list, name='stonedb_property_list'),
 
@@ -48,7 +48,6 @@ urlpatterns = [
     # /stone/country/france/3
     # /stone/type/sandstone
     url(r'^naturstein'
-        # r'/(?P<f>color|country|type|texture)'
         r'/(?P<f>farbe|herkunftsland|steinart|textur)'
         r'/(?P<q>[a-zA-Z0-9_-]{1,100})'
         r'(?:/(?P<p>\d{1,3}))?$',
@@ -100,6 +99,11 @@ urlpatterns = [
         r'(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_group, name='companydb_group'),
 
+    url(r'^naturstein-betriebe/'
+        r'(?P<slug>[a-zA-Z0-9_-]{1,30})/?$',
+        RedirectView.as_view(pattern_name='companydb_group'),
+        {'p': 1}, name='companydb_group_redir'),
+
     # /companies/kitchen-countertops/1 <--[product]---
     url(r'^naturstein-produkte/'
         r'(?P<slug>[a-zA-Z0-9_-]{1,30})/'
@@ -138,7 +142,7 @@ urlpatterns = [
 
     # /company/xxxxxxxxxx/projects --> firmen/xxxxxxx/projekte
     #
-    url(r'^firmen/(?P<slug>[a-zA-Z0-9_-]{1,30})/projekte',
+    url(r'^firmen/(?P<slug>[a-zA-Z0-9_-]{1,30})/projekte/?$',
         companydb.views.projects, name='companydb_projects'),
     url(r'^firmen/(?P<slug>[a-zA-Z0-9_-]{1,30})/projekte/(?P<pk>\d+)$',
         companydb.views.projects_detail, name='companydb_projects_detail'),

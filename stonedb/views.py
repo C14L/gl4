@@ -109,15 +109,15 @@ def property_list(request, f):
     f = f.lower()
     fk = f
 
-    if f == 'color':
+    if f == settings.TR_COLOR:
         li = Color.objects.all_with_stones()
-    elif f == 'country':
+    elif f == settings.TR_COUNTRY:
         li = Country.objects.all_with_stones()
-    elif f == 'texture':
+    elif f == settings.TR_TEXTURE:
         li = Texture.objects.all_with_stones()
-    elif f in ['type', 'classification']:
+    elif f in [settings.TR_TYPE, settings.TR_CLASSIFICATION]:
         li = Classification.objects.all_with_stones()
-        fk = 'classification'
+        fk = settings.TR_CLASSIFICATION
     else:
         raise Http404
 
@@ -137,6 +137,9 @@ def simple_filter(request, f, q, p=None):
     if p == '1':
         # Don't show page 1 number in URL. Example: /stone/color/blue/1
         return HttpResponsePermanentRedirect(request.path[:-2])
+    if f == 'farbe' and q == 'grun':
+        return HttpResponsePermanentRedirect(
+            reverse('stonedb_simple_filter', kwargs={'f': f, 'q': 'gruen'}))
 
     p = p or 1  # no page number means page 1
     f = f.lower()
