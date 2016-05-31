@@ -158,7 +158,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr>
           <td>
             <img src="{{ 'file-manager'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Advertise current stock of {{ stone_name }}{% endblocktrans %}">
-            <a rel="nofollow" href="{% url 'companydb_stock_detail_new' user.username %}">
+            {% if user.username %}<a href="{% url 'companydb_stock_detail_new' user.username %}">{% else %}<a href="{% url 'gl_login' %}">{% endif %}
               <strong>{% blocktrans with stone_name=stone.name %}Advertise current stock of {{ stone_name }}{% endblocktrans %}</strong>
             </a>
             {% blocktrans with stone_name=stone.name %}Advertise your current stock of {{ stone_name }} within your company's profile page on Graniteland.{% endblocktrans %}
@@ -167,7 +167,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr>
           <td>
             <img src="{{ 'go-home'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Publish your {{ stone_name }}-related project{% endblocktrans %}">
-            <a rel="nofollow" href="{% url 'companydb_projects_detail_new' user.username %}">
+            {% if user.username %}<a href="{% url 'companydb_projects_detail_new' user.username %}">{% else %}<a href="{% url 'gl_login' %}">{% endif %}
               <strong>{% blocktrans with stone_name=stone.name %}Publish your {{stone_name}}-related project{% endblocktrans %}</strong>
             </a>
             {% blocktrans with stone_name=stone.name %}Advertise your {{stone_name}}-related projects on your company's profile page on Graniteland. Include photos of your projects, to show potential customers your work.{% endblocktrans %}
@@ -195,7 +195,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         {% blocktrans with stone_name=stone.name %}upload a photo of {{ stone_name }}{% endblocktrans %}
       </a>
     {% endif %}
-    {% blocktrans with stone_name=stone.name %}Photos of {{stone_name}}{% endblocktrans %}
+    {% blocktrans with stone_name=stone.name %}Photos of {{ stone_name }}{% endblocktrans %}
   </h2>
 
   {% if user.is_authenticated %}
@@ -234,7 +234,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         {% blocktrans with stone_name=stone.name company_name=user.profile.name %}add {{ stone_name }} project by {{ company_name }}{% endblocktrans %}
       </a>
     {% endif %}
-    {%if stocks|length > 0 %}
+    {%if projects|length > 0 %}
       {% blocktrans with stone_name=stone.name count=projects|length %}{{ count }} projects that used {{ stone_name }}{% endblocktrans %}
     {% else %}
       {% blocktrans with stone_name=stone.name count=projects|length %}No projects listed where {{ stone_name }} was used{% endblocktrans %}
@@ -247,7 +247,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
       <div class="list">
         {% for item_pic in item.get_pics_list %}
         <div class="item" id="pf{{ item_pic.id }}b">
-          <a href="{% url 'companydb_pic_item' item_pic.id %}"><img src="{{item_pic.url_small}}" alt="{{item.stone.name}} at {{item.user.profile.name}}"></a>
+          <a href="{% url 'companydb_pic_item' item_pic.id %}"><img src="{{ item_pic.url_small }}" alt="{{ item.stone.name }} at {{ item.user.profile.name }}"></a>
         </div>
         {% endfor %}
       </div>
@@ -258,28 +258,28 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr class="pub_date">
           <td class="title">{% trans 'Published on' %}:</td>
           <td class="data" id="stock-publish-date{{ item.id }}">
-            <strong>{{item.created|date:"DATE_FORMAT"}}</strong>
+            <strong>{{ item.created|date:"DATE_FORMAT" }}</strong>
           </td>
         </tr>
         <tr class="stone">
           <td class="title">{% trans 'Name of natural stone' %}:</td>
           <td class="data">
             {% for item_stone in item.get_stones_list %}
-            <a href="{% url 'stonedb_item' item_stone.id %}">{{item_stone.name}}</a>
+            <a href="{% url 'stonedb_item' item_stone.id %}">{{ item_stone.name }}</a>
             {% endfor %}
           </td>
         </tr>
         <tr class="user">
           <td class="title">{% trans 'Project company' %}:</td>
           <td class="data">
-            <strong><a href="{% url 'companydb_projects' item.user.username %}">{{item.user.profile.name}}</a></strong>
+            <strong><a href="{% url 'companydb_projects' item.user.username %}">{{ item.user.profile.name }}</a></strong>
           </td>
         </tr>
       </table>
     </div>
 
     <div class="content" id="ptx{{ item.id }}">
-      {{item.description}}
+      {{ item.description }}
     </div>
 
   </div>
@@ -318,23 +318,23 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
     <div class="header-line">
       <table class="stock-table-header-table">
         <tr>
-          <td class="pic" rowspan="3" style="background:url({{item.stone.get_pic_medium}}) center center repeat;"><!-- <a href="{% url 'stonedb_item' item.stone.slug %}">{{item.stone.name}}</a> --></td>
+          <td class="pic" rowspan="3" style="background:url({{item.stone.get_pic_medium}}) center center repeat;"><!-- <a href="{% url 'stonedb_item' item.stone.slug %}">{{ item.stone.name }}</a> --></td>
           <td class="title">{% trans 'Added to stock on:' %}</td>
-          <td class="data" id="stock-publish-date{{ item.id }}"><strong>{{item.created|date:"DATE_FORMAT"}}</strong></td>
+          <td class="data" id="stock-publish-date{{ item.id }}"><strong>{{ item.created|date:"DATE_FORMAT" }}</strong></td>
         </tr>
         <tr>
           <td class="title">{% trans 'Name of natural stone:' %}</td>
-          <td class="data"><strong><a href="{% url 'stonedb_item' item.stone.slug %}">{{item.stone.name}}</a></strong></td>
+          <td class="data"><strong><a href="{% url 'stonedb_item' item.stone.slug %}">{{ item.stone.name }}</a></strong></td>
         </tr>
         <tr>
           <td class="title">{% trans 'More information:' %}</td>
-          <td class="data"><strong><a href="{% url 'companydb_stock' item.user.username %}">{{item.user.profile.name}}</a></strong></td>
+          <td class="data"><strong><a href="{% url 'companydb_stock' item.user.username %}">{{ item.user.profile.name }}</a></strong></td>
         </tr>
       </table>
     </div>
 
     <div class="content-line" id="stx{{ item.id }}">
-      {{item.description}}
+      {{ item.description }}
     </div>
 
     <div class="fotoslist">

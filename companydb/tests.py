@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from companydb.initial_data import import_company_countries
-from companydb.models import UserProfile, Stock, Project, Group, Country
+from companydb.models import UserProfile, Stock, Project, Group, Country, Spam
 from stonedb.models import Stone
 
 
@@ -27,6 +27,7 @@ class CompanydbTestCase(TestCase):
         self.user = User.objects.create_user(*args)
         self.stone = Stone.objects.create(name='Test Stone', slug='test-stone')
         self.group = Group.objects.create(name='Test Group', slug='test-group')
+        self.spam = Spam.objects.create(match="spam word")
 
     def tearDown(self):
         if self.user and self.user.pk:
@@ -281,7 +282,7 @@ class CompanydbTestCase(TestCase):
         self.user.profile.about = html
         self.user.profile.save()
         response = self.client.get(profile_url)
-        self.assertContains(response, res1)
+        self.assertNotContains(response, res1)
         self.assertContains(response, res2)
 
     def test_profile_about_with_unsafe_html(self):
