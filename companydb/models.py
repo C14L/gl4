@@ -199,7 +199,7 @@ class StockManager(CommonProjectsStocksManager):
         return self.all_public().filter(user=user)
 
     def all_public(self):
-        _now = datetime.utcnow()
+        _now = now()
         _lim = _now - timedelta(days=getattr(settings, 'STOCK_EXPIRE_DAYS', 90))
         spam = Spam.objects.all()
         spam_qs = reduce(or_, [Q(description__icontains=q.match) for q in spam])
