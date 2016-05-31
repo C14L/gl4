@@ -19,13 +19,17 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
-    #url(r'^accounts/login/?$',
-    #    gl4app.views.MyLoginView.as_view(), name='gl_login'),
-    #url(r'^accounts/signup/?',
-    #    gl4app.views.MySignupView.as_view(), name='gl_signup'),
+    url(r'^accounts/login/?$',
+        gl4app.views.MyLoginView.as_view(), name='gl_login'),
+    url(r'^accounts/signup/?',
+        gl4app.views.MySignupView.as_view(), name='gl_signup'),
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^aktuelles/', include('mdpages.urls')),
+
+    url(r'contact$',
+        RedirectView.as_view(url='/firmen/csx#contact'),
+        name='contact'),
 
     # gl4app
     url(r'^$', gl4app.views.home, name='home'),
@@ -54,8 +58,6 @@ urlpatterns = [
         stonedb.views.simple_filter, name='stonedb_simple_filter'),
 
     # /stone/aachener-blaustein
-    # /stone/aachener-blaustein/comments
-    # /stone/aachener-blaustein/pictures
     url(r'^naturstein/'
         r'(?P<q>[a-zA-Z0-9_-]{1,100})$',
         stonedb.views.item, name='stonedb_item'),
@@ -99,6 +101,7 @@ urlpatterns = [
         r'(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_group, name='companydb_group'),
 
+    # REDIRECT: /companies/kitchen-countertops/1 <--[product]---
     url(r'^naturstein-betriebe/'
         r'(?P<slug>[a-zA-Z0-9_-]{1,30})/?$',
         RedirectView.as_view(pattern_name='companydb_group'),

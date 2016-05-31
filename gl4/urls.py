@@ -1,3 +1,4 @@
+from django.views.generic import RedirectView
 from os.path import join
 
 from django.conf import settings
@@ -9,6 +10,10 @@ import companydb.views
 import stonedb.views
 import tradeshowdb.views
 
+"""
+English language URL pattern definitions. Easier to set up here than to mix URL
+paths with other translations in locale files using i18n patterns.
+"""
 
 urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -21,6 +26,10 @@ urlpatterns = [
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^infos/', include('mdpages.urls')),
+
+    url(r'contact$',
+        RedirectView.as_view(url='/company/csx#contact'),
+        name='contact'),
 
     # gl4app
     url(r'^$', gl4app.views.home, name='home'),
@@ -87,15 +96,28 @@ urlpatterns = [
         companydb.views.redir_search, name='companydb_redir_search'),
 
     # /companies/consultancy-quality-assurance/1 <--[group]---
-    url(r'^companies/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
+    url(r'^companies/'
+        r'(?P<slug>[a-zA-Z0-9_-]{1,30})/'
+        r'(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_group, name='companydb_group'),
 
+    # REDIRECT: /companies/kitchen-countertops/1 <--[product]---
+    url(r'^companies/'
+        r'(?P<slug>[a-zA-Z0-9_-]{1,30})/?$',
+        RedirectView.as_view(pattern_name='companydb_group'),
+        {'p': 1}, name='companydb_group_redir'),
+
     # /companies/kitchen-countertops/1 <--[product]---
-    url(r'^products/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
+    url(r'^products/'
+        r'(?P<slug>[a-zA-Z0-9_-]{1,30})/'
+        r'(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_product, name='companydb_product'),
 
     # /companies/kitchen-countertops/1 <--[country]---
-    url(r'^companies/in/(?P<slug>[a-zA-Z0-9_-]{1,30})/(?P<p>[1-9][0-9]*)$',
+    url(r'^companies/'
+        r'in/'
+        r'(?P<slug>[a-zA-Z0-9_-]{1,30})/'
+        r'(?P<p>[1-9][0-9]*)$',
         companydb.views.list_by_country, name='companydb_country'),
 
     # /companies/[country|all]/[business|all]/[product|all]/1
