@@ -12,7 +12,6 @@
 {% block body_classes %}stones search filter{% endblock %}
 
 {% block breadcrumb %}
-{% blocktrans asvar tr_country %}country{% endblocktrans %}
 <a href="{% url 'stonedb_home' %}">{% trans 'Stones' %}</a> &raquo;
 {% if country %}<a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">{{ country.name }}</a> &raquo;{% endif %}
 {% if texture %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug 'all' 'all' %}">{{ texture.name }}</a> &raquo;{% endif %}
