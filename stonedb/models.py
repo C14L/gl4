@@ -7,9 +7,20 @@ from django.db import models
 from django.db.models import Count
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
-from django.utils.text import slugify
+from django.utils.text import slugify as dj_slugify
 from django.utils.timezone import now
 from os.path import join
+
+
+def slugify(s):
+    """Fix Django's slugify with some transliterations before slugifying."""
+    tr = {'ü': 'ue', 'Ü': 'ue', 'ö': 'oe', 'Ö': 'Oe', 'ä': 'ae', 'Ä': 'Ae',
+          'ß': 'ss', '_': '-', }
+
+    for k, v in tr.items():
+        s = s.replace(k, v)
+
+    return dj_slugify(s)
 
 
 class CommonStonePropertyManager(models.Manager):
