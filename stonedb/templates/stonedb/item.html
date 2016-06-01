@@ -158,7 +158,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr>
           <td>
             <img src="{{ 'file-manager'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Advertise current stock of {{ stone_name }}{% endblocktrans %}">
-            {% if user.username %}<a href="{% url 'companydb_stock_detail_new' user.username %}">{% else %}<a href="{% url 'gl_login' %}">{% endif %}
+            {% if user.username %}<a href="{% url 'companydb_stock_detail_new' user.username %}">{% else %}<a href="{% url 'account_login' %}">{% endif %}
               <strong>{% blocktrans with stone_name=stone.name %}Advertise current stock of {{ stone_name }}{% endblocktrans %}</strong>
             </a>
             {% blocktrans with stone_name=stone.name %}Advertise your current stock of {{ stone_name }} within your company's profile page on Graniteland.{% endblocktrans %}
@@ -167,7 +167,7 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
         <tr>
           <td>
             <img src="{{ 'go-home'|iconpath }}" class="link-icon" alt="{% blocktrans with stone_name=stone.name %}Publish your {{ stone_name }}-related project{% endblocktrans %}">
-            {% if user.username %}<a href="{% url 'companydb_projects_detail_new' user.username %}">{% else %}<a href="{% url 'gl_login' %}">{% endif %}
+            {% if user.username %}<a href="{% url 'companydb_projects_detail_new' user.username %}">{% else %}<a href="{% url 'account_login' %}">{% endif %}
               <strong>{% blocktrans with stone_name=stone.name %}Publish your {{stone_name}}-related project{% endblocktrans %}</strong>
             </a>
             {% blocktrans with stone_name=stone.name %}Advertise your {{stone_name}}-related projects on your company's profile page on Graniteland. Include photos of your projects, to show potential customers your work.{% endblocktrans %}

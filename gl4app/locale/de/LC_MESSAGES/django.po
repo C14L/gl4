@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-01 10:06+0000\n"
-"PO-Revision-Date: 2016-06-01 10:18+0000\n"
+"POT-Creation-Date: 2016-06-01 15:34+0000\n"
+"PO-Revision-Date: 2016-06-01 15:34+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -99,65 +99,70 @@ msgstr "gelb"
 msgid "Yellow natural stone"
 msgstr "Gelber Naturstein"
 
-#: context_processors.py:49 templates/gl4app/home.html.py:238
-msgid "brazil"
-msgstr "brasilien"
+#: context_processors.py:49
+#| msgid "brazil"
+msgid "Brazil"
+msgstr "Brasilien"
 
 #: context_processors.py:49 templates/gl4app/home.html.py:238
 msgid "Granite and marble from Brazil"
 msgstr "Granit und Marmor aus Brasilien"
 
-#: context_processors.py:50 templates/gl4app/home.html.py:239
-msgid "china"
-msgstr "china"
+#: context_processors.py:50
+#| msgid "china"
+msgid "China"
+msgstr "China"
 
 #: context_processors.py:50 templates/gl4app/home.html.py:239
 msgid "Granite and marble from China"
 msgstr "Granit und Marmor aus China"
 
-#: context_processors.py:51 templates/gl4app/home.html.py:240
-msgid "germany"
-msgstr "deutschland"
+#: context_processors.py:51
+#| msgid "germany"
+msgid "Germany"
+msgstr "Deutschland"
 
 #: context_processors.py:51 templates/gl4app/home.html.py:240
 msgid "Granite and marble from Germany"
 msgstr "Granit und Marmor aus Deutschland"
 
-#: context_processors.py:52 templates/gl4app/home.html.py:241
-msgid "france"
-msgstr "frankreich"
+#: context_processors.py:52
+#| msgid "france"
+msgid "France"
+msgstr "Frankreich"
 
 #: context_processors.py:52 templates/gl4app/home.html.py:241
 msgid "Granite and marble from France"
 msgstr "Granit und Marmor aus Frankreich"
 
-#: context_processors.py:53 templates/gl4app/home.html.py:242
-msgid "india"
-msgstr "indien"
+#: context_processors.py:53
+#| msgid "india"
+msgid "India"
+msgstr "Indien"
 
 #: context_processors.py:53 templates/gl4app/home.html.py:242
 msgid "Granite and marble from India"
 msgstr "Granit und Marmor aus Indien"
 
-#: context_processors.py:54 templates/gl4app/home.html.py:243
-msgid "italy"
-msgstr "italien"
+#: context_processors.py:54
+#| msgid "italy"
+msgid "Italy"
+msgstr "Italien"
 
 #: context_processors.py:54 templates/gl4app/home.html.py:243
 msgid "Granite and marble from Italy"
 msgstr "Granit und Marmor aus Italien"
 
-#: context_processors.py:55 templates/gl4app/home.html.py:244
-msgid "spain"
-msgstr "spanien"
+#: context_processors.py:55
+#| msgid "spain"
+msgid "Spain"
+msgstr "Spanien"
 
 #: context_processors.py:55 templates/gl4app/home.html.py:244
 msgid "Granite and marble from Spain"
 msgstr "Granit und Marmor aus Spanien"
 
 #: context_processors.py:58 templates/gl4app/home.html.py:258
-#, fuzzy
-#| msgid "Granite"
 msgid "granite"
 msgstr "Granit"
 
@@ -166,8 +171,6 @@ msgid "Granite"
 msgstr "Granit"
 
 #: context_processors.py:59 templates/gl4app/home.html.py:259
-#, fuzzy
-#| msgid "Limestone"
 msgid "limestone"
 msgstr "Kalkstein"
 
@@ -176,18 +179,14 @@ msgid "Limestone"
 msgstr "Kalkstein"
 
 #: context_processors.py:60 templates/gl4app/home.html.py:260
-#, fuzzy
-#| msgid "Marble"
 msgid "marble"
-msgstr "Marmor"
+msgstr "marmor"
 
 #: context_processors.py:60 templates/gl4app/home.html.py:260
 msgid "Marble"
 msgstr "Marmor"
 
 #: context_processors.py:61 templates/gl4app/home.html.py:265
-#, fuzzy
-#| msgid "Quartzite"
 msgid "quartzite"
 msgstr "Quarzit"
 
@@ -196,8 +195,6 @@ msgid "Quartzite"
 msgstr "Quarzit"
 
 #: context_processors.py:62 templates/gl4app/home.html.py:266
-#, fuzzy
-#| msgid "Sandstone"
 msgid "sandstone"
 msgstr "Sandstein"
 
@@ -206,8 +203,6 @@ msgid "Sandstone"
 msgstr "Sandstein"
 
 #: context_processors.py:63 templates/gl4app/home.html.py:267
-#, fuzzy
-#| msgid "Slate"
 msgid "slate"
 msgstr "Schiefer"
 
@@ -216,8 +211,6 @@ msgid "Slate"
 msgstr "Schiefer"
 
 #: context_processors.py:64 templates/gl4app/home.html.py:272
-#, fuzzy
-#| msgid "Soapstone"
 msgid "soapstone"
 msgstr "Speckstein"
 
@@ -226,8 +219,6 @@ msgid "Soapstone"
 msgstr "Speckstein"
 
 #: context_processors.py:65 templates/gl4app/home.html.py:273
-#, fuzzy
-#| msgid "Travertine"
 msgid "travertine"
 msgstr "Travertin"
 
@@ -259,8 +250,6 @@ msgid "Sign In"
 msgstr "Einloggen"
 
 #: templates/account/login.html:36
-#, fuzzy
-#| msgid "Sign In"
 msgid "Sign up"
 msgstr "Einloggen"
 
@@ -273,8 +262,6 @@ msgstr "Passwort vergessen?"
 #: templates/account/password_reset.html:16
 #: templates/account/password_reset_done.html:4
 #: templates/account/password_reset_done.html:8
-#, fuzzy
-#| msgid "Password"
 msgid "Password Reset"
 msgstr "Passwort"
 
@@ -287,8 +274,6 @@ msgstr ""
 "festzulegen."
 
 #: templates/account/password_reset.html:31
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset My Password"
 msgstr "Passwort vergessen?"
 
@@ -302,8 +287,6 @@ msgstr ""
 #: templates/account/password_reset_from_key.html:9
 #: templates/account/password_reset_from_key_done.html:4
 #: templates/account/password_reset_from_key_done.html:7
-#, fuzzy
-#| msgid "Password"
 msgid "Change Password"
 msgstr "Passwort"
 
@@ -323,8 +306,6 @@ msgstr ""
 "href=\"%(passwd_reset_url)s\">Passwort neu festzulegen</a>."
 
 #: templates/account/password_reset_from_key.html:26
-#, fuzzy
-#| msgid "Reset password"
 msgid "change password"
 msgstr "Passwort vergessen?"
 
@@ -351,8 +332,6 @@ msgstr ""
 "href=\"%(login_url)s\">Anmelden</a>"
 
 #: templates/account/signup.html:31
-#, fuzzy
-#| msgid "Sign In"
 msgid "Sign Up"
 msgstr "Einloggen"
 
@@ -600,8 +579,6 @@ msgid "Signed in as %(name)s"
 msgstr "Angemeldet als %(name)s"
 
 #: templates/gl4app/home.html:151
-#, fuzzy
-#| msgid "Sign In"
 msgid "Sign out"
 msgstr "Einloggen"
 
@@ -618,10 +595,6 @@ msgid "Reset password"
 msgstr "Passwort vergessen?"
 
 #: templates/gl4app/home.html:192
-msgid "home"
-msgstr ""
-
-#: templates/gl4app/home.html:192
 msgid "Home use"
 msgstr "Naturstein Zuhause"
 
@@ -634,12 +607,6 @@ msgstr ""
 "Hausbau."
 
 #: templates/gl4app/home.html:196
-#, fuzzy
-#| msgid "Stone professional"
-msgid "professional"
-msgstr "Naturstein Professionell"
-
-#: templates/gl4app/home.html:196
 msgid "Stone professional"
 msgstr "Naturstein Professionell"
 
@@ -650,12 +617,6 @@ msgid ""
 msgstr ""
 "Naturstein für professionelle Anwender, von der Architektur über den "
 "Fassadenbau, bis hin zur Verlegung von Marmor und Granit."
-
-#: templates/gl4app/home.html:200
-#, fuzzy
-#| msgid "All products"
-msgid "production"
-msgstr "Alle Produkte"
 
 #: templates/gl4app/home.html:200
 msgid "Quary and Production"
@@ -672,10 +633,6 @@ msgstr ""
 "Naturstein."
 
 #: templates/gl4app/home.html:204
-msgid "misc"
-msgstr ""
-
-#: templates/gl4app/home.html:204
 msgid "Misc"
 msgstr "Vermischtes"
 
@@ -686,10 +643,6 @@ msgid ""
 msgstr ""
 "Alles rund um das Thema Naturstein, was in keiner der anderen Kategorien "
 "einen Platz findet."
-
-#: templates/gl4app/home.html:208
-msgid "help"
-msgstr ""
 
 #: templates/gl4app/home.html:208
 msgid "Graniteland Help"
@@ -714,6 +667,34 @@ msgid ""
 msgstr ""
 "Hunderte Naturstein-Unternehmen haben sich bereits im Firmenkatalog von "
 "Graniteland eingetragen, darunter viele Natursteinbetriebe aus Deutschland."
+
+#: templates/gl4app/home.html:238
+msgid "brazil"
+msgstr "brasilien"
+
+#: templates/gl4app/home.html:239
+msgid "china"
+msgstr "china"
+
+#: templates/gl4app/home.html:240
+msgid "germany"
+msgstr "deutschland"
+
+#: templates/gl4app/home.html:241
+msgid "france"
+msgstr "frankreich"
+
+#: templates/gl4app/home.html:242
+msgid "india"
+msgstr "indien"
+
+#: templates/gl4app/home.html:243
+msgid "italy"
+msgstr "italien"
+
+#: templates/gl4app/home.html:244
+msgid "spain"
+msgstr "spanien"
 
 #: templates/gl4app/home.html:251
 msgid "Natural stone by classification"
