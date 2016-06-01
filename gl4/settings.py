@@ -288,15 +288,29 @@ COMPANY_CONTACT_FROM_EMAIL = 'contact@' + SITE_DOMAIN
 # Companydb stock items are hidden after this many days
 STOCK_EXPIRE_DAYS = 90
 
+# Some parts of translated URL paths that may be different from the
+# proper translation in the MO file.
 if LANGUAGE_CODE == 'de':
     TR_COUNTRY = 'herkunftsland'
     TR_COLOR = 'farbe'
     TR_TEXTURE = 'textur'
     TR_CLASSIFICATION = 'steinart'
     TR_TYPE = 'steinart'
+
+    TR_MDPAGES_HOME = 'zuhause'
+    TR_MDPAGES_PROFESSIONAL = 'professionell'
+    TR_MDPAGES_PRODUCTION = 'herstellung'
+    TR_MDPAGES_MISC = 'vermischtes'
+    TR_MDPAGES_HELP = 'hilfe'
 else:
     TR_COUNTRY = 'country'
     TR_COLOR = 'color'
     TR_TEXTURE = 'texture'
     TR_CLASSIFICATION = 'classification'
     TR_TYPE = 'type'
+
+    TR_MDPAGES_HOME = 'home'
+    TR_MDPAGES_PROFESSIONAL = 'professional'
+    TR_MDPAGES_PRODUCTION = 'production'
+    TR_MDPAGES_MISC = 'misc'
+    TR_MDPAGES_HELP = 'help'

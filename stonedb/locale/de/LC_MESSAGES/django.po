@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-30 21:25+0000\n"
-"PO-Revision-Date: 2016-05-31 10:02+0000\n"
+"PO-Revision-Date: 2016-06-01 12:07+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -160,7 +160,7 @@ msgstr "Naturstein-Sorten (petrographische Klassifikationen)"
 #: templates/stonedb/filter_texture.html:6
 #, python-format
 msgid "All %(name)s marbles and %(name)s granites"
-msgstr ""
+msgstr "Alle %(name)sen Marmore und %(name)sen Granite"
 
 #: templates/stonedb/filter_color.html:8
 #, python-format
@@ -232,6 +232,8 @@ msgstr "Granit und Marmor nach Herkunftsland"
 msgid ""
 "Browse %(name)s marbles and granites with pictures listed in Graniteland."
 msgstr ""
+"Alle bei Graniteland gelisteten %(name)sen Marmore und Granite mit Bildern "
+"durchsehen."
 
 #: templates/stonedb/filter_texture.html:29
 #, python-format
@@ -246,6 +248,9 @@ msgid ""
 "particular natural stone. Natural stone with a %(name)s texture on "
 "Graniteland."
 msgstr ""
+"Alle <strong>%(page_count)s Arten %(name)ser Marmor und %(name)ser "
+"Granit</strong>. Klicken Sie ein Natursteinbild, um weitere Informationen "
+"über den Naturstein zu sehen."
 
 #: templates/stonedb/filter_texture.html:40
 #, python-format

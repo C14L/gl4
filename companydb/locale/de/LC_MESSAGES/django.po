@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-30 21:25+0000\n"
-"PO-Revision-Date: 2016-05-31 13:07+0000\n"
+"PO-Revision-Date: 2016-06-01 12:10+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -215,7 +215,7 @@ msgstr "Produkt-Art"
 
 #: models.py:230
 msgid "Specify the product type of of your stock item."
-msgstr ""
+msgstr "Geben Sie die Produktart des Lagerbestandes an."
 
 #: models.py:233
 msgid "Total amount"
@@ -258,6 +258,8 @@ msgid ""
 "ONLY for publicly accessible buildings, provide a streetaddress of the "
 "project, where it can be visited."
 msgstr ""
+"Bitte nur Adressen von öffentlichen Gebäude angeben, die tatsächlich "
+"besucht/besichtigt werden können."
 
 #: templates/companydb/db_about.html:24
 msgid ""
@@ -420,7 +422,7 @@ msgstr ""
 #: templates/companydb/list_search.html:6
 #, python-format
 msgid "%(business)s %(product)s %(country)s"
-msgstr ""
+msgstr "%(business)s %(product)s %(country)s"
 
 #: templates/companydb/list_search.html:8
 #, python-format
@@ -557,12 +559,12 @@ msgstr "Projekte ihrer Firma hinzufügen"
 
 #: templates/companydb/projects_detail.html:71
 msgid "Delete project from company profile?"
-msgstr ""
+msgstr "Das Projekt aus dem Firmenprofil entfernen?"
 
 #: templates/companydb/projects_detail.html:74
 #: templates/companydb/stock_detail.html:82
 msgid "delete item"
-msgstr ""
+msgstr "Eintrag löschen"
 
 #: templates/companydb/projects_detail.html:76
 msgid "Edit project"

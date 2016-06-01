@@ -70,4 +70,10 @@ def add_common_translations(request):
         'tr_texture': settings.TR_TEXTURE,
         'tr_classification': settings.TR_CLASSIFICATION,
         'tr_type': settings.TR_TYPE,
+
+        'tr_mdpages_home': settings.TR_MDPAGES_HOME,
+        'tr_mdpages_professional': settings.TR_MDPAGES_PROFESSIONAL,
+        'tr_mdpages_production': settings.TR_MDPAGES_PRODUCTION,
+        'tr_mdpages_misc': settings.TR_MDPAGES_MISC,
+        'tr_mdpages_help': settings.TR_MDPAGES_HELP,
     }
