@@ -573,3 +573,10 @@ body.user.settings.areas .list .item.is-member .about { opacity: 1; }
 .ads.resp-atf-tradeshows { width: 100%; height: 90px; }
 .ads.resp-btf-tradeshows { width: 100%; height: 90px; }
 
+/* Auth boxes */
+
+body.siteauth {  }
+body.siteauth form.auth { margin: 20px auto; padding: 0; background: #E9E9E9; max-width: 500px; min-width: 300px; }
+body.siteauth form.auth p { margin: 0; padding: 10px; }
+body.siteauth form.auth p:first-of-type {  }
+

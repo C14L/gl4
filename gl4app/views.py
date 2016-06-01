@@ -2,15 +2,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 
 from companydb.models import Stock, Project
-from allauth.account.views import SignupView, LoginView
-
-
-class MySignupView(SignupView):
-    template_name = 'account/my_signup.html'
-
-
-class MyLoginView(LoginView):
-    template_name = 'account/my_login.html'
 
 
 def home(request):

@@ -68,9 +68,17 @@ INSTALLED_APPS = (
 
     'rosetta',
     'crispy_forms',
+    'bootstrapform',
     'markdown_deux',
     'django_bleach',
 
+    'gl4app',
+    'companydb',
+    'stonedb',
+    'tradeshowdb',
+    'mdpages',
+
+    # comes last so the templates can be overridden
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -108,12 +116,6 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.vk',
     # 'allauth.socialaccount.providers.weibo',
     # 'allauth.socialaccount.providers.xing',
-
-    'gl4app',
-    'companydb',
-    'stonedb',
-    'tradeshowdb',
-    'mdpages',
 )
 
 MIDDLEWARE_CLASSES = (
