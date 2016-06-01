@@ -129,6 +129,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.admindocs.middleware.XViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+
+    'gl4app.middleware.FixSomeWordInflextionsMiddleware'
 )
 
 TEMPLATES = [
