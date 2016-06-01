@@ -1,11 +1,11 @@
 {% extends 'gl4app/base.html' %}
 {% load i18n markdown_deux_tags bleach_tags gl4tags crispy_forms_tags %}
 
-{% block title %}{{view_user.profile.name}}{% endblock %}
+{% block title %}{{ view_user.profile.name }}{% endblock %}
 
-{% block title2 %}{{view_user.profile.name}}{% endblock %}
+{% block title2 %}{{ view_user.profile.name }}{% endblock %}
 
-{% block description %}{% blocktrans with profile_name=view_user.profile.name %}Company overview for {{profile_name}}.{% endblocktrans %}{% endblock %}
+{% block description %}{% blocktrans with profile_name=view_user.profile.name %}Company overview for {{ profile_name }}.{% endblocktrans %}{% endblock %}
 
 {% block head %}{% endblock %}
 
@@ -13,7 +13,7 @@
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' %}</a> &raquo;
-<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{ view_user.profile.name }}</a> &raquo;
 {% endblock %}
 
 {% block main %}
@@ -31,7 +31,7 @@
 
 <section class="profile-business-areas">
   {% for group in view_user.group_set.all %}
-    <a href="{% url 'companydb_group' group.slug '1' %}">{{group.name}}</a>{% if not forloop.last %}, {% endif %}
+    <a href="{% url 'companydb_group' group.slug '1' %}">{{ group.name }}</a>{% if not forloop.last %}, {% endif %}
   {% endfor %}
   {% if user.is_authenticated and user.id == view_user.id %}
     <a class="btn btn-default" href="{% url 'companydb_areas' user.username %}">{% trans 'edit' %}</a>
@@ -46,15 +46,15 @@
   <section class="profile-business-card">
 
     <div class="line1">
-      <div class="name">{{view_user.profile.name}}</div>
+      <div class="name">{{ view_user.profile.name }}</div>
       {% if view_user.profile.web %}
-      <div class="web"><a rel="nofollow" href="{{view_user.profile.web|fix_external_link}}">{{view_user.profile.web}}</a></div>
+      <div class="web"><a rel="nofollow" href="{{ view_user.profile.web|fix_external_link }}">{{ view_user.profile.web }}</a></div>
       {% endif %}
     </div>
 
     <dl class="line2">
       <dt>{% trans 'Contact' %}:</dt>
-      <dd>{{view_user.profile.contact}} ({{view_user.profile.contact_position}})</dd>
+      <dd>{{ view_user.profile.contact }} ({{ view_user.profile.contact_position }})</dd>
     </dl>
 
     <div class="line3">
@@ -63,9 +63,9 @@
       </a>
       <div class="profile-call-now">
         <div>{% trans 'or call at:' %}</div>
-        <div>{{view_user.profile.tel}}</div>
+        <div>{{ view_user.profile.tel }}</div>
         {% if view_user.profile.mobile %}
-        <div>{% trans 'or mobile:' %} {{view_user.profile.mobile}}</div>
+        <div>{% trans 'or mobile:' %} {{ view_user.profile.mobile }}</div>
         {% endif %}
       </div>
     </div>
@@ -73,9 +73,9 @@
     <dl class="line4">
       <dt>{% trans 'Address' %}:</dt>
       <dd>
-        {{view_user.profile.street}}, {{view_user.profile.zip}} {{view_user.profile.city}},
-        {% if view_user.profile.country_sub_name %}{{view_user.profile.country_sub_name}}, {% endif %}
-        {{view_user.profile.country_name}}
+        {{ view_user.profile.street }}, {{ view_user.profile.zip }} {{ view_user.profile.city }},
+        {% if view_user.profile.country_sub_name %}{{ view_user.profile.country_sub_name }}, {% endif %}
+        {{ view_user.profile.country_name }}
       </dd>
     </dl>
   </section>
@@ -84,7 +84,7 @@
     <div class="list">
       {% for pic in pics %}
         <div class="item">
-          <a href="{% url 'companydb_pic_item' pic.id  %}"><img src="{{pic|picsrc}}" alt="{{pic.title}}"></a>
+          <a href="{% url 'companydb_pic_item' pic.id  %}"><img src="{{ pic|picsrc }}" alt="{{ pic.title }}"></a>
         </div>
       {% endfor %}
     </div>
@@ -100,7 +100,7 @@
       {% endif %}
     </div>
   {% endif %}
-  {{view_user.profile.about|markdown:"user"|bleach}}
+  {{ view_user.profile.about|markdown:"user"|bleach }}
 </section>
 
 <div class="box-input" id="contact">

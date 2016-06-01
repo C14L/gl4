@@ -63,8 +63,8 @@
 
 {% block main %}
 
-{% include 'companydb/partial_profile_options.html' with view_user=user %}
-{# include 'companydb/user-profile-header.html' with view_user=user view='projects-detail' #}
+{% include 'companydb/partial_profile_options.html' %}
+{# include 'companydb/user-profile-header.html' with view='projects-detail' #}
 
 <div class="wrapper">
   {% if view_item and form %}

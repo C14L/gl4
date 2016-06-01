@@ -13,7 +13,7 @@
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
-<a href="{% url 'companydb_item' view_user.username %}">{{view_user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_item' view_user.username %}">{{ view_user.profile.name }}</a> &raquo;
 <a href="{% url 'companydb_stock' view_user.username %}">{% trans 'Stock' %}</a> &raquo;
 {% endblock %}
 

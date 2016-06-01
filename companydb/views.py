@@ -462,6 +462,9 @@ def pic_item(request, id):
 
 @login_required
 def db_details(request, slug):
+    if slug != request.user.username:
+        raise Http404
+
     if request.method == 'POST':
         form = CompanyDetailsForm(request.POST, instance=request.user.profile)
         if form.is_valid():
@@ -476,6 +479,9 @@ def db_details(request, slug):
 
 @login_required
 def db_about(request, slug):
+    if slug != request.user.username:
+        raise Http404
+
     if request.method == 'POST':
         form = CompanyAboutForm(request.POST, instance=request.user.profile)
         if form.is_valid():
@@ -490,6 +496,9 @@ def db_about(request, slug):
 
 @login_required
 def db_areas(request, slug):
+    if slug != request.user.username:
+        raise Http404
+
     if request.method == 'POST':
         group = get_object_or_404(Group, pk=request.POST.get('group', None))
 

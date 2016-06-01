@@ -1,9 +1,9 @@
 {% extends 'gl4app/base.html' %}
 {% load i18n static crispy_forms_tags gl4tags %}
 
-{% block title %}{{user.profile.name}}{% endblock %}
+{% block title %}{{ user.profile.name }}{% endblock %}
 
-{% block title2 %}{{user.profile.name}}{% endblock %}
+{% block title2 %}{{ user.profile.name }}{% endblock %}
 
 {% block description %}{% endblock %}
 
@@ -13,11 +13,11 @@
 
 {% block breadcrumb %}
 <a href="{% url 'companydb_home' %}">{% trans 'Natural Stone Company Directory' context 'Breadcrumb' %}</a> &raquo;
-<a href="{% url 'companydb_item' user.username %}">{{user.profile.name}}</a> &raquo;
+<a href="{% url 'companydb_item' user.username %}">{{ user.profile.name }}</a> &raquo;
 {% endblock %}
 
 {% block main %}
-  {% include 'companydb/partial_profile_options.html' with view_user=user %}
+  {% include 'companydb/partial_profile_options.html' %}
   {% include 'companydb/user-profile-header.html' with view_user=user view='item' %}
   <div class="box-input">{% crispy form %}</div>
 {% endblock %}
