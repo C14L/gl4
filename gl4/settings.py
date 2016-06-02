@@ -10,19 +10,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
-
-# Import private settings.
 import re
+from os import environ
 from os.path import dirname, abspath, exists, join
 
+# Import private settings.
 from gl4.settings_private import *
+
+# ==============================================================================
+
+LANGUAGE_CODE = environ.get('GRANITELAND_LANGUAGE', 'en')
+
+# ==============================================================================
 
 DEBUG = exists('/islocal.txt')
 PRODUCTION = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
-LANGUAGE_CODE = 'de'
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
 
 if LANGUAGE_CODE == 'de':
@@ -30,22 +35,25 @@ if LANGUAGE_CODE == 'de':
 else:
     LANGUAGES = [('en', 'English'), ]
 
-# ==============================================================================
-
 SITE_ID = 1
 APPEND_SLASH = True
 WSGI_APPLICATION = 'gl4.wsgi.application'
+ROOT_URLCONF = 'gl4.urls_{}'.format(LANGUAGE_CODE)
 
 if LANGUAGE_CODE == 'de':
     SITE_NAME = 'Graniteland.de'
     SITE_DOMAIN = 'graniteland.de'  # default canonical domain
-    ROOT_URLCONF = 'gl4.urls_de'
-    DATABASES['default']['NAME'] = 'gd_dev'
+    if DEBUG:
+        DATABASES['default']['NAME'] = 'gd_dev'
+    else:
+        DATABASES['default']['NAME'] = 'gd'
 else:
     SITE_NAME = 'Graniteland.com'
     SITE_DOMAIN = 'graniteland.com'  # default canonical domain
-    ROOT_URLCONF = 'gl4.urls'
-    DATABASES['default']['NAME'] = 'gc_dev'
+    if DEBUG:
+        DATABASES['default']['NAME'] = 'gc_dev'
+    else:
+        DATABASES['default']['NAME'] = 'gc'
 
 ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
@@ -171,13 +179,21 @@ USE_I18N = True
 USE_L10N = True
 USE_ETAGS = True
 
+# Only for development, served via Nginx in production.
 STATIC_URL = '/static/'
 STATIC_ROOT = join(BASE_DIR, 'static')
 
-# Example: "/media/en/fotos_small/21392.jpg"
+# Only for development, served via Nginx in production.
+# -- example: "/media/en/fotos_small/21392.jpg"
 MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
-MEDIA_ROOT = '/home/chris/dev-data/gl4-media/' \
-             'graniteland_media_{}/'.format(LANGUAGE_SHORT)
+
+# Upload target is language dependent
+if DEBUG:
+    MEDIA_ROOT = join('/home/chris/dev-data/gl4-media',
+                      'graniteland_media_{}'.format(LANGUAGE_SHORT))
+else:
+    MEDIA_ROOT = join(BASE_DIR, '../usercontent',
+                      'graniteland_media_{}'.format(LANGUAGE_SHORT))
 
 # --- django-autoslug settings -------------------------------------------------
 
