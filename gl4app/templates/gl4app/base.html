@@ -70,11 +70,19 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
                 <option value="">{% trans 'All business areas' %}</option>
               </select>
             </div>
+
+            {% comment %}
+
+            <!-- For now, do not show "products" selection. -->
+
             <div class="controls controls-product">
               <select class="select form-control" size="1" name="product" id="search_company_product" data-selected="{{ selected_company_product }}">
                 <option value="">{% trans 'All products' %}</option>
               </select>
             </div>
+
+            {% endcomment %}
+
             <div class="controls controls-country">
               <select class="select form-control" size="1" name="country" id="search_company_country" data-selected="{{ selected_company_country }}">
                 <option value="">{% trans 'All countries' %}</option>
