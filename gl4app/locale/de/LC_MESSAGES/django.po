@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-01 15:34+0000\n"
-"PO-Revision-Date: 2016-06-01 15:34+0000\n"
+"PO-Revision-Date: 2016-06-02 16:12+0000\n"
 "Last-Translator: b'  <me@c14l.com>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -247,11 +247,11 @@ msgstr ""
 
 #: templates/account/login.html:32
 msgid "Sign In"
-msgstr "Einloggen"
+msgstr "Anmelden"
 
 #: templates/account/login.html:36
 msgid "Sign up"
-msgstr "Einloggen"
+msgstr "Registrieren"
 
 #: templates/account/login.html:37
 msgid "Forgot Password?"
@@ -263,7 +263,7 @@ msgstr "Passwort vergessen?"
 #: templates/account/password_reset_done.html:4
 #: templates/account/password_reset_done.html:8
 msgid "Password Reset"
-msgstr "Passwort"
+msgstr "Passwort zurücksetzen"
 
 #: templates/account/password_reset.html:21
 msgid ""
@@ -275,7 +275,7 @@ msgstr ""
 
 #: templates/account/password_reset.html:31
 msgid "Reset My Password"
-msgstr "Passwort vergessen?"
+msgstr "Passwort zurücksetzen"
 
 #: templates/account/password_reset_done.html:14
 msgid "We sent you an e-mail with a link to reset your password."
@@ -288,7 +288,7 @@ msgstr ""
 #: templates/account/password_reset_from_key_done.html:4
 #: templates/account/password_reset_from_key_done.html:7
 msgid "Change Password"
-msgstr "Passwort"
+msgstr "Passwort ändern"
 
 #: templates/account/password_reset_from_key.html:9
 msgid "Bad Token"
@@ -307,7 +307,7 @@ msgstr ""
 
 #: templates/account/password_reset_from_key.html:26
 msgid "change password"
-msgstr "Passwort vergessen?"
+msgstr "Passwort ändern"
 
 #: templates/account/password_reset_from_key.html:31
 msgid "Your password is now changed."
@@ -333,7 +333,7 @@ msgstr ""
 
 #: templates/account/signup.html:31
 msgid "Sign Up"
-msgstr "Einloggen"
+msgstr "Registrieren"
 
 #: templates/gl4app/base.html:54
 msgid "Graniteland - marble and granite information online."
@@ -390,7 +390,7 @@ msgstr "Alle Herkunftsländer"
 
 #: templates/gl4app/base.html:112
 msgid "All textures"
-msgstr "Alle Strukturen"
+msgstr "Alle Texturen"
 
 #: templates/gl4app/base.html:141 templates/gl4app/home.html.py:67
 msgid "Natural stone by color"
@@ -580,7 +580,7 @@ msgstr "Angemeldet als %(name)s"
 
 #: templates/gl4app/home.html:151
 msgid "Sign out"
-msgstr "Einloggen"
+msgstr "Abmelden"
 
 #: templates/gl4app/home.html:170
 msgid "Password"
