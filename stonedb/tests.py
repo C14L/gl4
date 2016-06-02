@@ -41,27 +41,50 @@ class StonedbTestCase(TestCase):
         base = reverse('home')
 
         if lang == 'de':
-            paths += ['naturstein',
-                      'naturstein/farbe',
-                      'naturstein/herkunftsland',
-                      'naturstein/steinart',
-                      'naturstein/textur',
-                      'naturstein/herkunftsland/deutschland',
-                      'naturstein/farbe/gruen',
-                      'naturstein/farbe/weiss/2',
-                      'naturstein/textur/feinkoernig',
-                      'naturstein/steinart/marmor',
-                      'naturstein/all/all/weiss/marmor',
-                      'naturstein/italien/all/weiss/marmor',
-                      'naturstein/italien/geaedert/weiss/marmor',
-                      'naturstein/china/feinkoernig/all/granit',
-                      'naturstein/china/feinkoernig/all/all',
-                      # 'naturstein/verde-argento',
-                      ]
+            paths += [
+                'naturstein',
+                'naturstein/farbe',
+                'naturstein/herkunftsland',
+                'naturstein/steinart',
+                'naturstein/textur',
+                'naturstein/herkunftsland/deutschland',
+                'naturstein/farbe/gruen',
+                'naturstein/farbe/weiss/2',
+                'naturstein/textur/feinkoernig',
+                'naturstein/steinart/marmor',
+                'naturstein/all/all/weiss/marmor',
+                'naturstein/italien/all/weiss/marmor',
+                'naturstein/italien/geaedert/weiss/marmor',
+                'naturstein/china/feinkoernig/all/granit',
+                'naturstein/china/feinkoernig/all/all',
+                'naturstein/verde-argento',
+                'naturstein/african-lilac',
+                'naturstein/branco-ipanema',
+                'naturstein/abtswinder-sandstein-grun',
+                'naturstein/anrochter-stein',
+            ]
         else:
             paths += [
-
-                     ]
+                'stone',
+                'stone/color',
+                'stone/country',
+                'stone/type',
+                'stone/texture',
+                'stone/color/yellow',
+                'stone/country/germany',
+                'stone/country/bosnia-and-herzegovina',
+                'stone/type/marble',
+                'stone/texture/coarse-grained',
+                'stone/all/all/green/granite',
+                'stone/china/all/green/granite',
+                'stone/china/medium-grained/green/granite',
+                'stone/australia/medium-grained/all/granite',
+                'stone/australia/medium-grained/all/all',
+                'stone/post-green-g-5128',
+                'stone/balmoral-green',
+                'stone/calacatta-vagli-rosato',
+                'stone/arabescato-arni-classico',
+            ]
 
         for path in paths:
             url = base + path
