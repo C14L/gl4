@@ -96,8 +96,7 @@ class CompanydbTestCase(TestCase):
             ('companydb/item.html', reverse('companydb_item', **a), 1),
             ('companydb/projects.html', reverse('companydb_projects', **a), 1),
             ('companydb/stock.html', reverse('companydb_stock', **a), 1),
-            ('companydb/photos.html', reverse('companydb_photos', **a), 0),
-            ('companydb/contact.html', reverse('companydb_contact', **a), 0), ]
+            ('companydb/photos.html', reverse('companydb_photos', **a), 0), ]
         for p in pages:
             response = self.client.get(p[1])
             self.assertEqual(response.status_code, 200)

@@ -154,9 +154,6 @@ urlpatterns = [
     url(r'^firmen/(?P<slug>[a-zA-Z0-9_-]{1,30})/branchen$',
         companydb.views.db_areas, name='companydb_areas'),
 
-    # /company/xxxxxxxxxx/contact
-    url(r'^firmen/(?P<slug>[a-zA-Z0-9_-]{1,30})/kontakt',
-        companydb.views.contact, name='companydb_contact'),
     # /company/xxxxxxxxxx/photos
     url(r'^firmen/(?P<slug>[a-zA-Z0-9_-]{1,30})/fotos$',
         companydb.views.photos, name='companydb_photos'),
