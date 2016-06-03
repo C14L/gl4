@@ -4,6 +4,7 @@ bleach==1.4.2
 defusedxml==0.4.1
 django-allauth==0.25.2
 django-bleach==0.3.0
+django-bootstrap-form==3.2.1
 django-crispy-forms==1.6.0
 django-markdown-deux==1.0.5
 django-rosetta==0.7.10
