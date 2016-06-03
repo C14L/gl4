@@ -27,9 +27,13 @@ class Command(BaseCommand):
     help = "Import most old Graniteland data from JSON files."
     data_dir = join(dirname(settings.BASE_DIR), 'import_data')
     pics_dir = join(settings.BASE_DIR, 'stonedb/stonesimages')
-    lang = settings.LANGUAGE_SHORT
+    LANGUAGE = settings.LANGUAGE_SHORT
 
     def handle(self, *args, **options):
+        print('='*60)
+        print('  LANGUAGE: {}'.format(self.LANGUAGE))
+        print('  (use GRANITELAND_LANGAUGE=xx environment variable to set it)')
+        print('='*60)
         print('''
 This will import all old Graniteland data JSON files from the directory:
 
@@ -38,10 +42,10 @@ This will import all old Graniteland data JSON files from the directory:
 Begin dumping the old DB as JSON using phpmyadmin, then cut the one large JSON
 file into individual files, one per original DB table, using bash/sed/awk:
 
-~$ sed -i.bak -r 's#(// usr_web3_1\.\w+)$#\n\n\1\n\n#gm' usr_web3_1.json
-~$ sed -i.bak3 -z 's/\n\n\n\n//'g usr_web3_1.json
-~$ grep '^\/\/\s*usr_web3_1\.' usr_web3_1.json | \
-      sed -r 's#//\s*usr_web3_1\.##; s/\[/.json>[/1' | \
+~$ sed -i.bak -r 's#(// usr_web3_1\\.\\w+)$#\\n\\n\\1\\n\\n#gm' usr_web3_1.json
+~$ sed -i.bak3 -z 's/\\n\\n\\n\\n//'g usr_web3_1.json
+~$ grep '^\\/\\/\\s*usr_web3_1\\.' usr_web3_1.json | \
+      sed -r 's#//\\s*usr_web3_1\\.##; s/\\[/.json>[/1' | \
       awk -F '>' '{for(i=2;i<=NF;i++) print $i >> $1}'
 
 Using the individual JSON files in `import_data/*.json`, this script will
@@ -58,7 +62,6 @@ Using the individual JSON files in `import_data/*.json`, this script will
 
         ''')
         input('Please press Enter to continue...')
-
         self.import_products(force=True)
         self.import_company_countries(force=True)
         self.import_color()
@@ -78,7 +81,7 @@ Using the individual JSON files in `import_data/*.json`, this script will
 
     def walkjsondata(self, fn):
         # line = None
-        f = join(self.data_dir, '{}__{}.json'.format(self.lang, fn))
+        f = join(self.data_dir, '{}__{}.json'.format(self.LANGUAGE, fn))
         with open(f) as fh:
             for row in json.load(fh, strict=False):
                 yield row
@@ -93,7 +96,7 @@ Using the individual JSON files in `import_data/*.json`, this script will
     def import_products(self, force=False):
         if force:
             Product.objects.all().delete()
-        filename = 'products_{}.txt'.format(settings.LANGUAGE_SHORT)
+        filename = 'products_{}.txt'.format(self.LANGUAGE)
         filename = join(settings.BASE_DIR, '..', 'fixtures', filename)
         with open(filename) as fh:
             for row in fh:
@@ -127,7 +130,7 @@ Using the individual JSON files in `import_data/*.json`, this script will
             return None
 
         # Fix messed up original data. Valid string values are only
-        if settings.LANGUAGE_SHORT == 'en':
+        if self.LANGUAGE == 'en':
             # 'coarse grain', 'medium grain', 'fine grain', 'plain',
             # 'strongly veined', 'medium veined', 'light veined', 'fossiled'
             tmap = {
@@ -156,7 +159,7 @@ Using the individual JSON files in `import_data/*.json`, this script will
                 'geädert': 'veined',
                 'veined': 'veined', }
 
-        elif settings.LANGUAGE_SHORT == 'de':
+        elif self.LANGUAGE == 'de':
             # 'grobkörnig', 'mittelkörnig', 'feinkörnig', 'gleichförmig',
             # 'stark geädert', 'geädert', 'leicht geädert', 'fossil',
             tmap = {

@@ -30,6 +30,7 @@ Looking for images in "{}"
                 count_success += 1
             except FileNotFoundError as e:
                 print('[NF:{}]'.format(pic.id), end='', flush=True)
+                exit(0)
                 count_notfound += 1
             except OSError as e:
                 print('[OS:{}]'.format(pic.id), end='', flush=True)
