@@ -24,7 +24,8 @@ LANGUAGE_CODE = environ.get('GRANITELAND_LANGUAGE', 'en')
 # ==============================================================================
 
 DEBUG = exists('/islocal.txt')
-PRODUCTION = False
+PRODUCTION = not DEBUG
+SHOW_ADS = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
@@ -43,6 +44,7 @@ ROOT_URLCONF = 'gl4.urls_{}'.format(LANGUAGE_CODE)
 if LANGUAGE_CODE == 'de':
     SITE_NAME = 'Graniteland.de'
     SITE_DOMAIN = 'graniteland.de'  # default canonical domain
+    TEST_DOMAIN = 'glde.cn8.eu'
     if DEBUG:
         DATABASES['default']['NAME'] = 'gd_dev'
     else:
@@ -50,12 +52,13 @@ if LANGUAGE_CODE == 'de':
 else:
     SITE_NAME = 'Graniteland.com'
     SITE_DOMAIN = 'graniteland.com'  # default canonical domain
+    TEST_DOMAIN = 'glen.cn8.eu'
     if DEBUG:
         DATABASES['default']['NAME'] = 'gc_dev'
     else:
         DATABASES['default']['NAME'] = 'gc'
 
-ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, 'localhost']
+ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, TEST_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
 
 EMAIL_HOST = 'localhost'
@@ -185,13 +188,14 @@ STATIC_ROOT = join(BASE_DIR, 'static')
 
 # Only for development, served via Nginx in production.
 # -- example: "/media/en/fotos_small/21392.jpg"
-MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
 
 # Upload target is language dependent
 if DEBUG:
+    MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
     MEDIA_ROOT = join('/home/chris/dev-data/gl4-media',
                       'graniteland_media_{}'.format(LANGUAGE_SHORT))
 else:
+    MEDIA_URL = '/media/'
     MEDIA_ROOT = join(BASE_DIR, '../usercontent',
                       'graniteland_media_{}'.format(LANGUAGE_SHORT))
 

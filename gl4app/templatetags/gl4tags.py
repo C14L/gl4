@@ -50,7 +50,7 @@ def adsense_tag(slot, name):
     if gcgd == 'gd' and not settings.LANGUAGE_CODE.startswith('de'):
         return ''
 
-    if settings.PRODUCTION:
+    if settings.SHOW_ADS:
         params = {'gcgd': gcgd, 'clss': clss,
                   'client': client, 'slot': slot, 'name': name}
         html = '''
