@@ -1,0 +1,11 @@
+{% extends "gl4app/base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Verify profile email address" %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Verify profile email address" %}</h1>
+
+    <p>{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. If you do not receive it within a few minutes, please also check your spam folder.{% endblocktrans %}</p>
+
+{% endblock %}
