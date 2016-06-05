@@ -191,7 +191,7 @@ STATIC_ROOT = join(BASE_DIR, 'static')
 # Upload target is language dependent
 MEDIA_URL = '/media/'
 if PRODUCTION:
-    MEDIA_ROOT = join(BASE_DIR, '../usercontent',
+    MEDIA_ROOT = join(BASE_DIR, '../../usercontent',
                       'graniteland_media_{}'.format(LANGUAGE_SHORT))
 else:
     MEDIA_ROOT = join('/home/chris/dev-data/gl4-media',
