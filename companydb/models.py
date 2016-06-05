@@ -522,7 +522,7 @@ class Pic(models.Model):  # cc__fotos
         for x in Pic.SIZES:
             size_name, resize_type, max_width, max_height, watermark = x
             fname = self.get_filename(size_name)
-            print(fname)
+            # print(fname)
             # Make sure the directory exists
             os.makedirs(dirname(fname), mode=0o755, exist_ok=True)
             # Try to delete any old thumb image file
@@ -539,6 +539,8 @@ class Pic(models.Model):  # cc__fotos
                         max_width, max_height, watermark)
             os.chmod(fname, 0o644)
 
+            if not os.path.isfile(fname):
+                print("WARNING: Failed to create file {}".format(fname))
         return True
 
     def delete_file(self, size):
