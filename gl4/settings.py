@@ -45,24 +45,23 @@ if LANGUAGE_CODE == 'de':
     SITE_NAME = 'Graniteland.de'
     SITE_DOMAIN = 'graniteland.de'  # default canonical domain
     TEST_DOMAIN = 'glde.cn8.eu'
-    if DEBUG:
-        DATABASES['default']['NAME'] = 'gd_dev'
-    else:
+    if PRODUCTION:
         DATABASES['default']['NAME'] = 'gd'
+    else:
+        DATABASES['default']['NAME'] = 'gd_dev'
 else:
     SITE_NAME = 'Graniteland.com'
     SITE_DOMAIN = 'graniteland.com'  # default canonical domain
     TEST_DOMAIN = 'glen.cn8.eu'
-    if DEBUG:
-        DATABASES['default']['NAME'] = 'gc_dev'
-    else:
+    if PRODUCTION:
         DATABASES['default']['NAME'] = 'gc'
+    else:
+        DATABASES['default']['NAME'] = 'gc_dev'
 
 ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, TEST_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
 
-EMAIL_HOST = 'localhost'
-if DEBUG:
+if not PRODUCTION:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
@@ -187,16 +186,15 @@ STATIC_URL = '/static/'
 STATIC_ROOT = join(BASE_DIR, 'static')
 
 # Only for development, served via Nginx in production.
-# -- example: "/media/en/fotos_small/21392.jpg"
+# -- example: "/media/fotos_small/21392.jpg"
 
 # Upload target is language dependent
-if DEBUG:
-    MEDIA_URL = '/media/{}/'.format(LANGUAGE_SHORT)
-    MEDIA_ROOT = join('/home/chris/dev-data/gl4-media',
+MEDIA_URL = '/media/'
+if PRODUCTION:
+    MEDIA_ROOT = join(BASE_DIR, '../usercontent',
                       'graniteland_media_{}'.format(LANGUAGE_SHORT))
 else:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = join(BASE_DIR, '../usercontent',
+    MEDIA_ROOT = join('/home/chris/dev-data/gl4-media',
                       'graniteland_media_{}'.format(LANGUAGE_SHORT))
 
 # --- django-autoslug settings -------------------------------------------------
@@ -217,11 +215,12 @@ ACCOUNT_USERNAME_BLACKLIST = []
 ACCOUNT_PASSWORD_MIN_LENGTH = 4  # def: 6
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 # --- crispy forms -------------------------------------------------------------
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-CRISPY_FAIL_SILENTLY = not DEBUG
+CRISPY_FAIL_SILENTLY = PRODUCTION
 
 # --- django-bleach ------------------------------------------------------------
 

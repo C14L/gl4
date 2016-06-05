@@ -170,7 +170,7 @@ urlpatterns = [
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += [url(r'^rosetta/', include('rosetta.urls')), ]
 
-if settings.DEBUG:
+if not settings.PRODUCTION:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     from django.conf.urls.static import static
 
