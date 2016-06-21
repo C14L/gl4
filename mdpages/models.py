@@ -62,7 +62,7 @@ class ArticleManager(models.Manager):
 class Article(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
-    created = models.DateTimeField(default=now)
+    created = models.DateTimeField(default=now, db_index=True)
     user = models.ForeignKey(User)
     author = models.ForeignKey(Author, blank=True, null=True, default=None)
     keywords = models.ManyToManyField(Keyword)
@@ -80,6 +80,8 @@ class Article(models.Model):
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
         ordering = ('-created', )
+        index_together = [['is_published', 'is_frontpage', 'created'],
+                          ['topic', 'is_published', 'created'], ]
 
     def __str__(self):
         return self.title

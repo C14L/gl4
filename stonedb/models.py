@@ -93,9 +93,8 @@ class Texture(CommonStoneProperty):
 
 
 class Stone(models.Model):
-    name = models.CharField(max_length=100, default='')
-    slug = models.SlugField(max_length=100, default='',
-                            db_index=True, editable=False)
+    name = models.CharField(max_length=100, default='', db_index=True)
+    slug = models.SlugField(max_length=100, default='', editable=False)
     urlname = models.CharField(max_length=100, db_index=True,  # OLD 'urlname',
                                default='', editable=False)     # for redir only
     created = models.DateTimeField(default=now, editable=False)
@@ -121,18 +120,18 @@ class Stone(models.Model):
     lat = models.FloatField(null=True, default=None, blank=True)
     lng = models.FloatField(null=True, default=None, blank=True)
 
-    country = models.ForeignKey(Country, null=True, default=None,
-                                related_name='stones', blank=True,
-                                on_delete=models.SET_NULL)
-    texture = models.ForeignKey(Texture, null=True, default=None,
-                                related_name='stones', blank=True,
-                                on_delete=models.SET_NULL)
-    classification = models.ForeignKey(Classification, null=True, default=None,
-                                       related_name='stones', blank=True,
-                                       on_delete=models.SET_NULL)
-    color = models.ForeignKey(Color, null=True, default=None,
-                              related_name='stones', blank=True,
-                              on_delete=models.SET_NULL)
+    country = models.ForeignKey(Country, models.SET_NULL,
+                                related_name='stones', db_index=True,
+                                blank=True, null=True, default=None)
+    texture = models.ForeignKey(Texture, models.SET_NULL,
+                                related_name='stones', db_index=True,
+                                blank=True, null=True, default=None)
+    classification = models.ForeignKey(Classification, models.SET_NULL,
+                                       related_name='stones', db_index=True,
+                                       blank=True, null=True, default=None)
+    color = models.ForeignKey(Color, models.SET_NULL,
+                              related_name='stones', db_index=True,
+                              blank=True, null=True, default=None)
     secondary_colors = models.ManyToManyField(Color, blank=True)
 
     # + + +  not used, just for import verification  + + +
@@ -206,8 +205,8 @@ class Stone(models.Model):
 
 class StoneName(models.Model):
     stone = models.ForeignKey(Stone, related_name='pseu')
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, default='', db_index=True)
+    name = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=100, db_index=True, default='')
 
     class Meta:
         verbose_name = "stone name"

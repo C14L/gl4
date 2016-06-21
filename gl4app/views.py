@@ -6,12 +6,13 @@ from companydb.models import Stock, Project
 
 def home(request):
     view_users = User.objects.filter(is_active=True)\
-                     .exclude(last_login__isnull=True)\
-                     .exclude(profile__title_foto=0)\
+                     .filter(last_login__isnull=False)\
+                     .filter(profile__title_foto__gt=0)\
                      .exclude(profile__city='')\
                      .exclude(profile__country_name='')\
-                     .exclude(profile__is_blocked=True)\
-                     .exclude(profile__is_deleted=True)\
+                     .filter(profile__is_blocked=False)\
+                     .filter(profile__is_deleted=False)\
+                     .prefetch_related('profile')\
                      .order_by('last_login')[:10]
 
     stocks = []

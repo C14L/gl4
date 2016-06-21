@@ -28,6 +28,7 @@ class Tradeshow(models.Model):
         verbose_name = 'tradeshow'
         verbose_name_plural = 'tradeshows'
         ordering = ('begins', )
+        index_together = [['begins', 'ends'], ]
 
     def __str__(self):
         return self.name

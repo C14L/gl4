@@ -91,17 +91,18 @@ def search(request, country, business, product, p=1):
     business = Group.objects.filter(slug=business).first()
     product = Product.objects.filter(slug=product).first()
     country = Country.objects.filter(slug=country).first()
-    users = User.objects.filter(
-        is_active=True, profile__is_deleted=False, profile__is_blocked=False)
-
+    qs = User.objects.filter(is_active=True)\
+                     .filter(profile__is_deleted=False)\
+                     .filter(profile__is_blocked=False)\
+                     .prefetch_related('profile', 'profile__country')
     if business:
-        users = users.filter(group=business)
+        qs = qs.filter(group=business)
     if product:
-        users = users.filter(products=product)
+        qs = qs.filter(products=product)
     if country:
-        users = users.filter(profile__country=country)
+        qs = qs.filter(profile__country=country)
 
-    users = _get_page(users, p, 60)
+    users = _get_page(qs, p, 60)
     canonical = reverse('companydb_search', kwargs={
             'country': country and country.slug or 'all',
             'business': business and business.slug or 'all',
@@ -129,10 +130,12 @@ def list_by_country(request, slug, p=1):
     :return:
     """
     obj = get_object_or_404(Country, slug=slug)
-    users = User.objects.filter(
-        profile__country=obj, is_active=True,
-        profile__is_deleted=False, profile__is_blocked=False)
-    users = _get_page(users, p, 60)
+    qs = User.objects.filter(profile__country=obj)\
+                     .filter(is_active=True)\
+                     .filter(profile__is_deleted=False)\
+                     .filter(profile__is_blocked=False)\
+                     .prefetch_related('profile', 'profile__country')
+    users = _get_page(qs, p, 60)
     canonical = reverse('companydb_country', args=[obj.slug, p])
     return render(request, 'companydb/list_by_country.html', _ctx({
         'obj': obj,
@@ -152,10 +155,12 @@ def list_by_product(request, slug, p=1):
     :return:
     """
     obj = get_object_or_404(Product, slug=slug)
-    users = User.objects.filter(
-        products=obj, is_active=True,
-        profile__is_deleted=False, profile__is_blocked=False)
-    users = _get_page(users, p, 60)
+    qs = User.objects.filter(products=obj)\
+                     .filter(is_active=True)\
+                     .filter(profile__is_deleted=False)\
+                     .filter(profile__is_blocked=False)\
+                     .prefetch_related('profile', 'profile__country')
+    users = _get_page(qs, p, 60)
     canonical = reverse('companydb_product', args=[obj.slug, p])
     return render(request, 'companydb/list_by_product.html', _ctx({
         'obj': obj,
@@ -175,10 +180,11 @@ def list_by_group(request, slug, p):
     :return:
     """
     obj = get_object_or_404(Group, slug=slug)
-    users_qs = obj.members.filter(
-        is_active=True, profile__is_deleted=False, profile__is_blocked=False)\
-        .prefetch_related('profile', 'profile__country')\
-        .order_by('profile__name')
+    users_qs = obj.members.filter(is_active=True)\
+                          .filter(profile__is_deleted=False)\
+                          .filter(profile__is_blocked=False)\
+                          .order_by('profile__name')\
+                          .prefetch_related('profile', 'profile__country')
     users = _get_page(users_qs, p, 60)
     canonical = reverse('companydb_group', args=[obj.slug, p])
     return render(request, 'companydb/list_by_group.html', _ctx({

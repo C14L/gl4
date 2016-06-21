@@ -167,7 +167,9 @@ def simple_filter(request, f, q, p=None):
 
     titlestone = '/stonesbrowse/{}.jpg'.format(q.slug)
 
-    stones = _get_page(Stone.objects.filter(**{f_db: q}), p, 60)
+    stones_qs = Stone.objects.filter(**{f_db: q}).prefetch_related(
+        'color', 'classification', 'country', 'texture', 'pseu')
+    stones = _get_page(stones_qs, p, 60)
     return render(request, 'stonedb/filter_{}.html'.format(f_db), _ctx({
         'range_pages': range(1, stones.paginator.num_pages+1),
         'canonical': request.path,
@@ -233,23 +235,24 @@ def filter(request, color, country, texture, classif, p=1):
         return HttpResponsePermanentRedirect(url)
 
     # Still here? Then display the filtered results.
-    li = Stone.objects.all()
+    stones_qs = Stone.objects.all().prefetch_related(
+        'color', 'classification', 'country', 'texture', 'pseu')
 
     if color:
         color = get_object_or_404(Color, slug=color)
-        li = li.filter(color=color)
+        stones_qs = stones_qs.filter(color=color)
     if country:
         country = get_object_or_404(Country, slug=country)
-        li = li.filter(country=country)
+        stones_qs = stones_qs.filter(country=country)
     if texture:
         texture = get_object_or_404(Texture, slug=texture)
-        li = li.filter(texture=texture)
+        stones_qs = stones_qs.filter(texture=texture)
     if classif:
         classif = get_object_or_404(Classification, slug=classif)
-        li = li.filter(classification=classif)
+        stones_qs = stones_qs.filter(classification=classif)
 
     # Canonical is the URI with NO page number
-    stones = _get_page(li, p, 60)
+    stones = _get_page(stones_qs, p, 60)
     canonical = reverse('stonedb_filter', args=[
                         country and country.slug or 'all',
                         texture and texture.slug or 'all',

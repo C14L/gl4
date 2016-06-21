@@ -126,6 +126,8 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.vk',
     # 'allauth.socialaccount.providers.weibo',
     # 'allauth.socialaccount.providers.xing',
+
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (

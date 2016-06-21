@@ -31,7 +31,7 @@ class Spam(models.Model):
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=30, default='')
+    name = models.CharField(max_length=30, default='', db_index=True)
     slug = models.SlugField(max_length=30, unique=True)
     cc = models.CharField(max_length=2, default='xx',
                           unique=True, editable=False)
@@ -62,7 +62,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', primary_key=True)
     name = models.CharField(
-        max_length=100, default='', blank=False,
+        max_length=100, default='', blank=False, db_index=True,
         verbose_name=_('Company name'),
         help_text=_('The name of your company.'))
     contact = models.CharField(
@@ -132,6 +132,10 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = "Profile"
         verbose_name_plural = "Profiles"
+        index_together = [
+            ['user', 'city', 'country_name', 'is_blocked', 'is_deleted'],
+            ['user', 'is_blocked', 'is_deleted'],
+        ]
 
     def __str__(self):
         return self.name
@@ -177,7 +181,7 @@ class CommonProjectsStocksManager(models.Manager):
 
 class CommonProjectsStocks(models.Model):
     user = models.ForeignKey(User, db_index=True, editable=False)
-    created = models.DateTimeField(default=now, editable=False)  # time
+    created = models.DateTimeField(default=now, editable=False, db_index=True)
     is_blocked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_recommended = models.BooleanField(default=False)
@@ -185,6 +189,7 @@ class CommonProjectsStocks(models.Model):
 
     class Meta:
         abstract = True
+        index_together = [['created', 'is_blocked', 'is_deleted', ], ]
 
     def get_admin_url(self):
         return reverse('admin:{}_{}_change'.format(
@@ -203,9 +208,8 @@ class StockManager(CommonProjectsStocksManager):
         _lim = _now - timedelta(days=getattr(settings, 'STOCK_EXPIRE_DAYS', 90))
         spam = Spam.objects.all()
         spam_qs = reduce(or_, [Q(description__icontains=q.match) for q in spam])
-        return self.exclude(is_blocked=True, is_deleted=True)\
-                   .exclude(spam_qs)\
-                   .exclude(created__lt=_lim)\
+        return self.filter(is_blocked=False, is_deleted=False)\
+                   .filter(created__gte=_lim).exclude(spam_qs)\
                    .prefetch_related('stone', 'user', 'user__profile')
 
 
@@ -239,6 +243,7 @@ class Stock(CommonProjectsStocks):
         verbose_name = "Stock"
         verbose_name_plural = "Stocks"
         ordering = ('-created', )
+        index_together = [['stone', 'created'], ]
 
     def __str__(self):
         return '{}'.format(self.pk)
@@ -276,8 +281,7 @@ class ProjectsManager(CommonProjectsStocksManager):
     def all_public(self):
         spam = Spam.objects.all()
         spam_qs = reduce(or_, [Q(description__icontains=q.match) for q in spam])
-        return self.exclude(is_blocked=True, is_deleted=True)\
-                   .exclude(spam_qs)\
+        return self.filter(is_blocked=False, is_deleted=False).exclude(spam_qs)\
                    .prefetch_related('user', 'user__profile')
 
 
@@ -325,7 +329,7 @@ class Project(CommonProjectsStocks):
 
 class PicManager(models.Manager):
     def all_public(self):
-        return self.exclude(is_blocked=True, is_deleted=True)
+        return self.filter(is_blocked=False, is_deleted=False)
 
     def all_for_user(self, user):
         return self.all_public().filter(user=user)
@@ -445,10 +449,10 @@ class Pic(models.Model):  # cc__fotos
         ('fotos_thumb', 'cover', 200, 200, None), )
 
     user = models.ForeignKey(User, db_index=True)
-    module = models.CharField(max_length=20,
+    module = models.CharField(max_length=20, db_index=True,
                               choices=MODULE_CHOICES, default='profile')
-    module_id = models.PositiveIntegerField(default=0)
-    created = models.DateTimeField(default=now)  # time
+    module_id = models.PositiveIntegerField(default=0, db_index=True)
+    created = models.DateTimeField(default=now, db_index=True)  # time
     size = models.PositiveIntegerField(default=0)
     width = models.PositiveIntegerField(default=0)
     height = models.PositiveIntegerField(default=0)
@@ -470,6 +474,9 @@ class Pic(models.Model):  # cc__fotos
         verbose_name = "Picture"
         verbose_name_plural = "Pictures"
         ordering = ('-created', )
+        index_together = [
+            ['module_id', 'module', 'is_blocked', 'is_deleted', 'created'],
+        ]
 
     def __str__(self):
         return '{}.{}'.format(self.id, self.ext)
