@@ -19,7 +19,12 @@ from gl4.settings_private import *
 
 # ==============================================================================
 
-LANGUAGE_CODE = environ.get('GRANITELAND_LANGUAGE', 'en')
+LANGUAGE_CODE = environ.get('GRANITELAND_LANGUAGE', None)
+
+if not LANGUAGE_CODE:
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured('Language must be explicitly set in '
+                               'GRANITELAND_LANGAUGE environment variable.')
 
 # ==============================================================================
 
