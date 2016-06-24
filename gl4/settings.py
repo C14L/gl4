@@ -14,8 +14,7 @@ import re
 from os import environ
 from os.path import dirname, abspath, exists, join
 
-# Import private settings.
-from gl4.settings_private import *
+from gl4 import settings_private
 
 # ==============================================================================
 
@@ -46,6 +45,23 @@ APPEND_SLASH = True
 WSGI_APPLICATION = 'gl4.wsgi.application'
 ROOT_URLCONF = 'gl4.urls_{}'.format(LANGUAGE_CODE)
 
+ADMINS = settings_private.ADMINS
+MANAGERS = settings_private.MANAGERS
+SECRET_KEY = settings_private.SECRET_KEY
+ADSENSE_AD_CLIENT = settings_private.ADSENSE_AD_CLIENT
+
+DATABASES = {'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'HOST': 'localhost',
+    'NAME': 'graniteland',
+    'USER': 'graniteland',
+    'PASSWORD': settings_private.DATABASES_PASSWORD,
+}}
+
+if not PRODUCTION:
+    DATABASES['default']['USER'] = 'gluser'
+    DATABASES['default']['PASSWORD'] = 'pla'
+
 if LANGUAGE_CODE == 'de':
     SITE_NAME = 'Graniteland.de'
     SITE_DOMAIN = 'graniteland.de'  # default canonical domain
@@ -65,6 +81,16 @@ else:
 
 ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, TEST_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
+
+# Email config
+EMAIL_SUBJECT_PREFIX = 'El Ligue: '  # For system emails to ADMINS+MANAGERS.
+SERVER_EMAIL = settings_private.SERVER_EMAIL
+DEFAULT_FROM_EMAIL = settings_private.DEFAULT_FROM_EMAIL
+EMAIL_HOST = settings_private.EMAIL_HOST
+EMAIL_HOST_USER = settings_private.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = settings_private.EMAIL_HOST_PASSWORD
+EMAIL_PORT = 25  # not 587
+EMAIL_USE_TLS = True
 
 if not PRODUCTION:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
