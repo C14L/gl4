@@ -252,6 +252,8 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_USERNAME_MIN_LENGTH = 3
 ACCOUNT_PASSWORD_MIN_LENGTH = 4
 
+ACCOUNT_SIGNUP_FORM_CLASS = 'companydb.forms.CompanySignupForm'
+
 # --- crispy forms -------------------------------------------------------------
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

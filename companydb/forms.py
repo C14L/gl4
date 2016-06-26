@@ -1,11 +1,18 @@
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout
+from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.bootstrap import FormActions
-from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field
 
 from companydb.models import UserProfile, Pic, Project, Stock
+
+
+class CompanySignupForm(forms.Form):
+    name = forms.CharField(max_length=100, label=_('Company name'))
+
+    def signup(self, request, user):
+        pass
 
 
 class CompanyProjectForm(forms.ModelForm):

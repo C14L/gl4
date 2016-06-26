@@ -32,4 +32,37 @@
   </div>
 </form>
 
+<script>
+var pref = '{{ settings.CANONICAL_BASE }}{% url 'companydb_home' %}/'
+var nameElem = document.getElementById('id_name');
+var usernameElem = document.getElementById('id_username');
+
+usernameElem.setAttribute('readonly', 'readonly');
+usernameElem.setAttribute('placeholder', '');
+usernameElem.removeAttribute('autofocus');
+nameElem.setAttribute('autofocus', 'autofocus');
+
+var divElem = usernameElem.parentNode;
+divElem.classList.add('username-wrapper');
+
+var prefElem = document.createElement('div');
+prefElem.classList.add('pref-content');
+prefElem.appendChild(document.createTextNode(pref));
+divElem.insertBefore(prefElem, usernameElem);
+
+nameElem.addEventListener('keyup', function(event) {
+  usernameElem.value = slugify(event.target.value);
+});
+
+function slugify(s) {
+  return s.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9\-_]/g, '');
+}
+</script>
+<style>
+  .username-wrapper { display: flex; flex-flow: row nowrap; border-bottom: 1px dotted red; }
+  .pref-content { margin: 0; padding: 0; background: none; line-height: 3rem; color: #808080; }
+  #id_username { margin: 0; padding: 0; border: 0; border-radius: 0; height: auto; background: transparent; line-height: 3rem; outline: none; box-shadow: none; color: red; }
+  label[for="id_username"] { display: none; }
+</style>
+
 {% endblock %}
