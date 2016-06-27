@@ -28,6 +28,8 @@ urlpatterns = [
 
     # gl4app
     url(r'^$', gl4app.views.home, name='home'),
+    # redirect to logged in user's profile, or to home `/`
+    url(r'^u/?$', gl4app.views.user_home, name='user_home'),
 
     # stonedb
     url(r'^naturstein$',

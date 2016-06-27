@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import render
 
 from companydb.models import Stock, Project
@@ -14,7 +16,6 @@ def home(request):
                      .filter(profile__is_deleted=False)\
                      .prefetch_related('profile')\
                      .order_by('last_login')[:10]
-
     stocks = []
     # NotImplementedError: annotate() + distinct(fields) is not implemented.
     # stocks = Stock.objects.all_public().order_by('user').distinct('user')\
@@ -28,3 +29,10 @@ def home(request):
     projects = Project.objects.all_public()[:10]
     return render(request, 'gl4app/home.html', {
         'stocks': stocks, 'projects': projects, 'view_users': view_users})
+
+
+def user_home(request):
+    url = reverse('home')
+    if request.user.is_authenticated():
+        url = reverse('companydb_item', args=[request.user.username])
+    return HttpResponsePermanentRedirect(url)

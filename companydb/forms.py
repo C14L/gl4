@@ -12,7 +12,8 @@ class CompanySignupForm(forms.Form):
     name = forms.CharField(max_length=100, label=_('Company name'))
 
     def signup(self, request, user):
-        pass
+        user.profile.name = request.POST.get('name', '')
+        user.profile.save()
 
 
 class CompanyProjectForm(forms.ModelForm):
