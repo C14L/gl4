@@ -31,7 +31,7 @@
       {% adsense '9785158445' 'gc resp atf text item' %}
       {% adsense '2261891648' 'gd resp atf text item' %}
     </aside>
-    {{ article.text|markdown:"trusted"|bleach }}
+    {{ article.text|markdown:"trusted" }}
     {% if article.author and article.author.name %}
       <aside class="author">
         <p class="title">
