@@ -1,4 +1,4 @@
-{% load static i18n gl4tags %}
+{% load static i18n gl4tags cache %}
 <!DOCTYPE html>
 <html lang="{{ settings.LANGUAGE_CODE }}">
   <head>
@@ -51,11 +51,13 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
 
       <header id="header">
         <nav class="{{ tpl_search_form }}">
+          {% cache settings.TEMPLATE_CACHE_TIMEOUT site_header_nav %}
           <a id="tpl-site-logo" class="logo" href="/"><img src="{% static 'img/tt-logo-small.gif' %}" alt="{% trans 'Graniteland - marble and granite information online.' %}"></a>
           <a class="stones" href="{% url 'stonedb_home' %}">{% trans 'Natural Stone' %}</a>
           <a class="tradeshows" href="{% url 'tradeshowdb_home'%}">{% trans 'Trade shows' %}</a>
           <a class="infos" href="{% url 'mdpages_home' %}">{% trans 'Stone Infos' %}</a>
           <a class="companies" href="{% url 'companydb_home' %}">{% trans 'Stone Companies' %}</a>
+          {% endcache %}
           {% if user.is_authenticated %}
           <a class="profile-link" href="{% url 'companydb_item' user.username %}">{% trans 'Company profile' %}</a>
           {% else %}
@@ -142,6 +144,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         {% block content %}{% endblock %}
       </div>
 
+      {% cache settings.TEMPLATE_CACHE_TIMEOUT site_footer %}
       <footer>
         <table style="width:100%" class="top">
           <tr>
@@ -183,6 +186,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         </table>
         <div style="clear:left;"></div>
       </footer>
+      {% endcache %}
 
     </div><!-- /wrap -->
 

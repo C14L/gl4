@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load gl4tags i18n static %}
+{% load gl4tags i18n static cache %}
 
 {% block title %}{% trans 'GRANITELAND - The Granite and Marble Search Engine' context 'Homepage title' %}{% endblock %}
 
@@ -62,6 +62,7 @@
 </div>
 
 <div class="rightcol">
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT home_stone_color_list %}
   <div class="tbox colors">
     <div class="title">
       <a href="{% url 'stonedb_property_list' tr_color %}">{% trans 'Natural stone by color' %}</a>
@@ -141,6 +142,7 @@
       </table>
     </div>
   </div>
+  {% endcache %}
 
   {% if user.is_authenticated %}
   <div class="tbox login">
@@ -184,6 +186,7 @@
   </div>
   {% endif %}
 
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT home_mdpages_links %}
   <div class="tbox">
     <div class="title">{% trans 'Granite + Marble Magazine' %}</div>
     <div class="content staticpages">
@@ -211,7 +214,9 @@
       </ul>
     </div>
   </div>
+  {% endcache %}
 
+  {% cache 3600 home_companies_list %}
   <div class="tbox companies">
     <div class="title">{% trans 'Stone Companies online' %}</div>
     <div class="content">
@@ -228,7 +233,9 @@
       <p><a href="{{ settings.SIGNUP_URL }}">{% trans 'Register now!' %}</a></p>
     </div>
   </div>
+  {% endcache %}
 
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT home_countries_types_links %}
   <div class="tbox countries">
     <div class="title">
       <a href="{% url 'stonedb_property_list' tr_country %}">{% trans 'Natural stone by country of origin' %}</a>
@@ -277,6 +284,7 @@
       </table>
     </div>
   </div>
+  {% endcache %}
 </div>
 
 {% endblock %}

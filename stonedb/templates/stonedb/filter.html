@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load gl4tags i18n %}
+{% load gl4tags i18n cache %}
 
 {% block title %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endblock %}
 
