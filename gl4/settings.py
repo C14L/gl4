@@ -27,8 +27,9 @@ if not LANGUAGE_CODE:
 
 # ==============================================================================
 
-DEBUG = exists('/islocal.txt')
-PRODUCTION = not DEBUG
+DEVBOX = exists('/islocal.txt')
+DEBUG = True
+PRODUCTION = not DEVBOX
 SHOW_ADS = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
@@ -107,6 +108,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 'debug_toolbar',
+
     'rosetta',
     'crispy_forms',
     'bootstrapform',
@@ -157,11 +160,12 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.vk',
     # 'allauth.socialaccount.providers.weibo',
     # 'allauth.socialaccount.providers.xing',
-
-    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'gl4app.middleware.ProfilerMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -173,7 +177,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 
-    'gl4app.middleware.FixSomeWordInflextionsMiddleware'
+    'gl4app.middleware.FixSomeWordInflextionsMiddleware',
 )
 
 TEMPLATES = [
@@ -370,3 +374,24 @@ else:
     TR_MDPAGES_PRODUCTION = 'production'
     TR_MDPAGES_MISC = 'misc'
     TR_MDPAGES_HELP = 'help'
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERNAL_IPS': ['127.0.0.1', '::1'],
+    'SHOW_TOOLBAR_CALLBACK': settings_private.show_toolbar_callback,
+}
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.profiling.ProfilingPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    # 'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    # 'debug_toolbar.panels.redirects.RedirectsPanel',
+]
