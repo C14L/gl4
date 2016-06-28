@@ -1,81 +1,87 @@
 {% extends 'gl4app/base.html' %}
 {% load gl4tags i18n cache %}
 
-{% block title %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endblock %}
+{% block title %}{% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_page_head_title request.path %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endcache %}{% endblock %}
 
-{% block title2 %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endblock %}
+{% block title2 %}{% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_page_head_title2 request.path %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endcache %}{% endblock %}
 
-{% block description %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endblock %}
+{% block description %}{% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_page_head_description request.path %}{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}Find {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}{% endcache %}{% endblock %}
 
 {% block head %}{% endblock %}
 
 {% block body_classes %}stones search filter{% endblock %}
 
 {% block breadcrumb %}
-<a href="{% url 'stonedb_home' %}">{% trans 'Stones' %}</a> &raquo;
-{% if country %}<a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">{{ country.name }}</a> &raquo;{% endif %}
-{% if texture %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug 'all' 'all' %}">{{ texture.name }}</a> &raquo;{% endif %}
-{% if color %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug 'all' %}">{{ color.name }}</a> &raquo;{% endif %}
-{% if classification %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug|default:'all' classification.slug %}">{{ classification.name }}</a> &raquo;{% endif %}
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_bradcrumb request.path %}
+    <a href="{% url 'stonedb_home' %}">{% trans 'Stones' %}</a> &raquo;
+    {% if country %}<a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">{{ country.name }}</a> &raquo;{% endif %}
+    {% if texture %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug 'all' 'all' %}">{{ texture.name }}</a> &raquo;{% endif %}
+    {% if color %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug 'all' %}">{{ color.name }}</a> &raquo;{% endif %}
+    {% if classification %}<a href="{% url 'stonedb_filter' country.slug|default:'all' texture.slug|default:'all' color.slug|default:'all' classification.slug %}">{{ classification.name }}</a> &raquo;{% endif %}
+  {% endcache %}
 {% endblock %}
 
 {% block main %}
 
-{% if stones|length == 0 %}
-  <h1>{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}No {{ texture }} {{ color }} {{ classification }} stones from {{ country }} found{% endblocktrans %}</h1>
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_content request.path %}
 
-  <p>{% trans 'Sorry, no stones match the search settings, but you could try one of the following similar searches:' %}</p>
-  <ul>
-    {% if country %}<li><a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">
-      {% blocktrans with country=country.name %}all stones from {{ country }}{% endblocktrans %}
-      </a></li>{% endif %}
-    {% if texture %}<li><a href="{% url 'stonedb_simple_filter' tr_texture texture.slug %}">
-      {% blocktrans with texture=texture.name %}stones with a {{ texture }} texture{% endblocktrans %}
-      </a></li>{% endif %}
-    {% if classification %}<li><a href="{% url 'stonedb_simple_filter' tr_type classification.slug %}">
-      {% blocktrans with classification=classification.name %}all {{ classification }} type natural stones{% endblocktrans %}
-      </a></li>{% endif %}
-    {% if color %}<li><a href="{% url 'stonedb_simple_filter' tr_color color.slug %}">
-      {% blocktrans with color=color.name %}all {{ color }} colored stones{% endblocktrans %}
-      </a></li>{% endif %}
+    {% if stones|length == 0 %}
+      <h1>{% blocktrans with texture=texture.name color=color.name classification=classification.name country=country.name %}No {{ texture }} {{ color }} {{ classification }} stones from {{ country }} found{% endblocktrans %}</h1>
 
-    {% if country and texture %}<li><a href="{% url 'stonedb_filter' country.slug texture.slug 'all' 'all' %}">
-      {% blocktrans with texture=texture.name country=country.name %}{{ texture }} textured stones from {{ country }}{% endblocktrans %}
-      </a></li>{% endif %}
-    {% if country and color %}<li><a href="{% url 'stonedb_filter' country.slug 'all' color.slug 'all' %}">
-      {% blocktrans with color=color.name country=country.name %}{{ color }} natural stone from {{ country }}{% endblocktrans %}
-      </a></li>{% endif %}
-    {% if color and texture %}<li><a href="{% url 'stonedb_filter' 'all' texture.slug color.slug 'all' %}">
-      {% blocktrans with texture=texture.name color=color.name %}{{ color }} stones with {{ texture }} texture{% endblocktrans %}
-      </a></li>{% endif %}
-  </ul>
+      <p>{% trans 'Sorry, no stones match the search settings, but you could try one of the following similar searches:' %}</p>
+      <ul>
+        {% if country %}<li><a href="{% url 'stonedb_simple_filter' tr_country country.slug %}">
+          {% blocktrans with country=country.name %}all stones from {{ country }}{% endblocktrans %}
+          </a></li>{% endif %}
+        {% if texture %}<li><a href="{% url 'stonedb_simple_filter' tr_texture texture.slug %}">
+          {% blocktrans with texture=texture.name %}stones with a {{ texture }} texture{% endblocktrans %}
+          </a></li>{% endif %}
+        {% if classification %}<li><a href="{% url 'stonedb_simple_filter' tr_type classification.slug %}">
+          {% blocktrans with classification=classification.name %}all {{ classification }} type natural stones{% endblocktrans %}
+          </a></li>{% endif %}
+        {% if color %}<li><a href="{% url 'stonedb_simple_filter' tr_color color.slug %}">
+          {% blocktrans with color=color.name %}all {{ color }} colored stones{% endblocktrans %}
+          </a></li>{% endif %}
 
-{% else %}
-  <div class="head">
-    <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
+        {% if country and texture %}<li><a href="{% url 'stonedb_filter' country.slug texture.slug 'all' 'all' %}">
+          {% blocktrans with texture=texture.name country=country.name %}{{ texture }} textured stones from {{ country }}{% endblocktrans %}
+          </a></li>{% endif %}
+        {% if country and color %}<li><a href="{% url 'stonedb_filter' country.slug 'all' color.slug 'all' %}">
+          {% blocktrans with color=color.name country=country.name %}{{ color }} natural stone from {{ country }}{% endblocktrans %}
+          </a></li>{% endif %}
+        {% if color and texture %}<li><a href="{% url 'stonedb_filter' 'all' texture.slug color.slug 'all' %}">
+          {% blocktrans with texture=texture.name color=color.name %}{{ color }} stones with {{ texture }} texture{% endblocktrans %}
+          </a></li>{% endif %}
+      </ul>
 
-    <h1>{% blocktrans with count=stones|length texture=texture.name color=color.name classification=classification.name country=country.name %}{{ count }} {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}</h1>
+    {% else %}
+      <div class="head">
+        <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
 
-    <p>{% blocktrans with count=stones|length texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{ count }} different types of {{ texture_name }} {{ color_name }} {{ classification_name }} stones from {{ country_name }}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
-  </div>
+        <h1>{% blocktrans with count=stones|length texture=texture.name color=color.name classification=classification.name country=country.name %}{{ count }} {{ texture }} {{ color }} {{ classification }} stones from {{ country }}{% endblocktrans %}</h1>
 
-  {% if stones|length > 20 %}
-    {% adsense '8587626845' 'gc resp atf stone browse 1' %}
-    {% adsense '1064360047' 'gd resp atf stone browse 1' %}
-  {% endif %}
+        <p>{% blocktrans with count=stones|length texture_name=texture.name color_name=color.name classification_name=classification.name country_name=country.name %}Browse <strong>{{ count }} different types of {{ texture_name }} {{ color_name }} {{ classification_name }} stones from {{ country_name }}</strong>. Click on a stone image to see more about a particular natural stone.{% endblocktrans %}</p>
+      </div>
 
-  {% include 'stonedb/stone-list-1.html'%}
+      {% if stones|length > 20 %}
+        {% adsense '8587626845' 'gc resp atf stone browse 1' %}
+        {% adsense '1064360047' 'gd resp atf stone browse 1' %}
+      {% endif %}
 
-  {# gc resp btf stone browse 2 - ??? #}
-  {# gd resp btf stone browse 2 - 4017826443 #}
+      {% include 'stonedb/stone-list-1.html'%}
 
-  {% if stones|length > 8 %}
-    {% adsense '5494559644' 'gc resp btf stone browse 3' %}
-    {% adsense '6971292847' 'gd resp btf stone browse 3' %}
-  {% endif %}
+      {# gc resp btf stone browse 2 - ??? #}
+      {# gd resp btf stone browse 2 - 4017826443 #}
 
-  {% include 'stonedb/partial_list_prevnext.html' with simple_filter=0 %}
+      {% if stones|length > 8 %}
+        {% adsense '5494559644' 'gc resp btf stone browse 3' %}
+        {% adsense '6971292847' 'gd resp btf stone browse 3' %}
+      {% endif %}
 
-{% endif %}
+      {% include 'stonedb/partial_list_prevnext.html' with simple_filter=0 %}
+
+    {% endif %}
+
+  {% endcache %}
 
 {% endblock main %}

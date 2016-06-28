@@ -180,7 +180,7 @@ MIDDLEWARE_CLASSES = (
     'gl4app.middleware.FixSomeWordInflextionsMiddleware',
 )
 
-TEMPLATE_CACHE_TIMEOUT = 60 * 60 * 24
+TEMPLATE_CACHE_TIMEOUT = 60  # -> 1 min. // * 60 * 24 * 7  # 7 days
 
 TEMPLATES = [
     {

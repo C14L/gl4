@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load static i18n gl4tags %}
+{% load static i18n gl4tags cache %}
 
 {% block title %}{% trans 'Granite and Marble Tradeshows Worldwide' %}{% endblock %}
 
@@ -16,30 +16,32 @@
 {% endblock %}
 
 {% block main %}
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT tradeshow_home_content request.path %}
 
-<h1>{% blocktrans %}Granite and Marble Tradeshows {{ view_year }}{% endblocktrans %}</h1>
+    <h1>{% blocktrans %}Granite and Marble Tradeshows {{ view_year }}{% endblocktrans %}</h1>
 
-{% adsense 'x' 'gc resp atf tradeshows' %}
+    {% adsense 'x' 'gc resp atf tradeshows' %}
 
-{% for month in tradeshows %}
-  <h2>{% blocktrans with month=month.name %}{{ month }} {{ view_year }} natural stone related tradeshows{% endblocktrans %}</h2>
-  <div class="list">
-    {% for item in month.tradeshows %}
-        <a class="item" href="{% url 'tradeshowdb_item' view_year item.slug %}">
-          {% if item.logo %}
-            <img src="{% get_static_prefix %}tradeshow-logos/{{ item.logo }}" class="icon" alt="{% blocktrans with name=item.name %}Tradeshow {{ name }}{% endblocktrans %}">
-          {% else %}
-            <img src="{% get_static_prefix %}tradeshow-logos/nologo.png" class="icon" alt="{% blocktrans with name=item.name %}Tradeshow {{ name }}{% endblocktrans %}">
-          {% endif %}
-          <span class="name">{{ item.name }}</span>
-          <span class="aka">{{ item.aka }}</span>
-          <span class="dateplace">{% blocktrans with begins=item.begins city=item.city_name country=item.country_name %}Starts on {{ begins }} in {{ city }}, {{ country }}{% endblocktrans %}</span>
-        </a>
-      {% if forloop.counter|divisibleby:2 and not forloop.last %}</tr><tr>{% endif %}
+    {% for month in tradeshows %}
+      <h2>{% blocktrans with month=month.name %}{{ month }} {{ view_year }} natural stone related tradeshows{% endblocktrans %}</h2>
+      <div class="list">
+        {% for item in month.tradeshows %}
+            <a class="item" href="{% url 'tradeshowdb_item' view_year item.slug %}">
+              {% if item.logo %}
+                <img src="{% get_static_prefix %}tradeshow-logos/{{ item.logo }}" class="icon" alt="{% blocktrans with name=item.name %}Tradeshow {{ name }}{% endblocktrans %}">
+              {% else %}
+                <img src="{% get_static_prefix %}tradeshow-logos/nologo.png" class="icon" alt="{% blocktrans with name=item.name %}Tradeshow {{ name }}{% endblocktrans %}">
+              {% endif %}
+              <span class="name">{{ item.name }}</span>
+              <span class="aka">{{ item.aka }}</span>
+              <span class="dateplace">{% blocktrans with begins=item.begins city=item.city_name country=item.country_name %}Starts on {{ begins }} in {{ city }}, {{ country }}{% endblocktrans %}</span>
+            </a>
+          {% if forloop.counter|divisibleby:2 and not forloop.last %}</tr><tr>{% endif %}
+        {% endfor %}
+      </div>
     {% endfor %}
-  </div>
-{% endfor %}
 
-{% adsense 'x' 'gc resp atf tradeshows' %}
+    {% adsense 'x' 'gc resp atf tradeshows' %}
 
+  {% endcache %}
 {% endblock %}

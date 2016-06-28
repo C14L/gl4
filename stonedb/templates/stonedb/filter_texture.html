@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load gl4tags i18n markdown_deux_tags bleach_tags %}
+{% load gl4tags i18n markdown_deux_tags bleach_tags cache %}
 
 {% block title %}{% blocktrans with name=q.name %}All {{name}} marbles and {{name}} granites{% endblocktrans %}{% endblock %}
 
@@ -12,33 +12,33 @@
 {% block body_classes %}stones browse filter texture{% endblock %}
 
 {% block breadcrumb %}
-{% include 'stonedb/simple-filter-breadcrumb.html' %}
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_texture_bradcrumb request.path %}
+    {% include 'stonedb/simple-filter-breadcrumb.html' %}
+  {% endcache %}
 {% endblock %}
 
 {% block main %}
+  {% if user.is_staff %}
+    <div id="id-staff-links">
+      <a href="{% url 'admin:stonedb_texture_change' q.id %}">edit texture</a>
+    </div>
+  {% endif %}
 
-{% if user.is_staff %}
-  <div id="id-staff-links">
-    <a href="{% url 'admin:stonedb_texture_change' q.id %}">edit texture</a>
-  </div>
-{% endif %}
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_texture_content request.path %}
+    <div class="head">
+      <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
 
-  <div class="head">
-    <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
+      <h1>{% blocktrans with texture=q.name capfirst_texture=q.name|capfirst %}{{ capfirst_texture }} granite and {{ texture }} marble{% endblocktrans %}</h1>
+      {% if q.text %}
+        {{ q.text|markdown|bleach }}
+      {% else %}
+        <p>{% blocktrans with name=q.name page_count=stones.paginator.count %}Browse <strong>{{page_count}} different types of {{name}} marble and {{name}} granite</strong>. Click on a stone image to see more about a particular natural stone. Natural stone with a {{name}} texture on Graniteland.{% endblocktrans %}</p>
+      {% endif %}
+    </div>
+    {% include 'stonedb/partial_simple_filter_list.html'%}
 
-    <h1>{% blocktrans with texture=q.name capfirst_texture=q.name|capfirst %}{{ capfirst_texture }} granite and {{ texture }} marble{% endblocktrans %}</h1>
-
-    {% if q.text %}
-      {{ q.text|markdown|bleach }}
-    {% else %}
-      <p>{% blocktrans with name=q.name page_count=stones.paginator.count %}Browse <strong>{{page_count}} different types of {{name}} marble and {{name}} granite</strong>. Click on a stone image to see more about a particular natural stone. Natural stone with a {{name}} texture on Graniteland.{% endblocktrans %}</p>
-    {% endif %}
-  </div>
-
-{% include 'stonedb/partial_simple_filter_list.html'%}
-
-<h2>{% blocktrans with tname=q.name|capfirst %}{{ tname }} stone and other natural stone textures{% endblocktrans %}</h2>
-
-{% include 'stonedb/simple-filter-proplist.html' %}
+    <h2>{% blocktrans with tname=q.name|capfirst %}{{ tname }} stone and other natural stone textures{% endblocktrans %}</h2>
+    {% include 'stonedb/simple-filter-proplist.html' %}
+  {% endcache %}
 
 {% endblock main %}

@@ -1,5 +1,5 @@
 {% extends 'gl4app/base.html' %}
-{% load gl4tags i18n markdown_deux_tags bleach_tags %}
+{% load gl4tags i18n markdown_deux_tags bleach_tags cache %}
 
 {% block title %}{% blocktrans with name=q.name %}Browse {{name}} stones{% endblocktrans %}{% endblock %}
 
@@ -12,35 +12,35 @@
 {% block body_classes %}stones browse filter classification{% endblock %}
 
 {% block breadcrumb %}
-{% include 'stonedb/simple-filter-breadcrumb.html' %}
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_classification_bradcrumb request.path %}
+    {% include 'stonedb/simple-filter-breadcrumb.html' %}
+  {% endcache %}
 {% endblock %}
 
 {% block main %}
+  {% if user.is_staff %}
+    <div id="id-staff-links">
+      <a href="{% url 'admin:stonedb_classification_change' q.id %}">edit classification</a>
+    </div>
+  {% endif %}
 
-{% if user.is_staff %}
-  <div id="id-staff-links">
-    <a href="{% url 'admin:stonedb_classification_change' q.id %}">edit classification</a>
-  </div>
-{% endif %}
+  {% cache settings.TEMPLATE_CACHE_TIMEOUT stone_filter_classification_content request.path %}
+    <div class="head">
+      <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
 
-  <div class="head">
-    <div class="titlestone"><img src="{{ titlestone }}" alt=""></div>
+      <h1>{% blocktrans with classification=q.name capfirst_classification=q.name|capfirst %}Browse {{ classification }} stones{% endblocktrans %}</h1>
+      {% if q.text %}
+        {{ q.text|markdown|bleach }}
+      {% else %}
+        <p>{% blocktrans with count=stones|length name=q.name tname=q.name|title %}Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{ tname }} stone. Note however, that in stone trade many stone types like {{ name }} are grouped into either being "marble" or "granite", for being very similar. Here are {{ count }} {{ name }} stones with photos and further data.{% endblocktrans %}</p>
+      {% endif %}
+    </div>
 
-    <h1>{% blocktrans with classification=q.name capfirst_classification=q.name|capfirst %}Browse {{ classification }} stones{% endblocktrans %}</h1>
+    <h2>{% blocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
+    {% include 'stonedb/partial_simple_filter_list.html'%}
 
-    {% if q.text %}
-      {{ q.text|markdown|bleach }}
-    {% else %}
-      <p>{% blocktrans with count=stones|length name=q.name tname=q.name|title %}Graniteland's natural stone collection has data on a large variety of marble and granite, as well as many other types of stones, including {{ tname }} stone. Note however, that in stone trade many stone types like {{ name }} are grouped into either being "marble" or "granite", for being very similar. Here are {{ count }} {{ name }} stones with photos and further data.{% endblocktrans %}</p>
-    {% endif %}
-  </div>
-
-<h2>{% blocktrans with name=q.name %}Natural stone classification {{name}}{% endblocktrans %}</h2>
-
-{% include 'stonedb/partial_simple_filter_list.html'%}
-
-<h2>{% trans 'Types of natural stone / stone by classification' %}</h2>
-
-{% include 'stonedb/simple-filter-proplist.html' %}
+    <h2>{% trans 'Types of natural stone / stone by classification' %}</h2>
+    {% include 'stonedb/simple-filter-proplist.html' %}
+  {% endcache %}
 
 {% endblock main %}
