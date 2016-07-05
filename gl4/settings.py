@@ -28,9 +28,11 @@ if not LANGUAGE_CODE:
 # ==============================================================================
 
 DEVBOX = exists('/islocal.txt')
-DEBUG = True
+DEBUG = DEVBOX
 PRODUCTION = not DEVBOX
 SHOW_ADS = False
+ENABLE_PROFILER = True
+ENABLE_DEBUG_TOOLBAR = False
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
@@ -98,7 +100,7 @@ if not PRODUCTION:
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.sites',  # required by allauth
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -107,8 +109,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # 'debug_toolbar',
 
     'rosetta',
     'crispy_forms',
@@ -160,12 +160,9 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.vk',
     # 'allauth.socialaccount.providers.weibo',
     # 'allauth.socialaccount.providers.xing',
-)
+]
 
-MIDDLEWARE_CLASSES = (
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'gl4app.middleware.ProfilerMiddleware',
-
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -176,9 +173,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.admindocs.middleware.XViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-
     'gl4app.middleware.FixSomeWordInflextionsMiddleware',
-)
+]
+
+if ENABLE_DEBUG_TOOLBAR:
+    INSTALLED_APPS += ['debug_toolbar']
+if ENABLE_PROFILER:
+    MIDDLEWARE_CLASSES.insert(0, 'gl4app.middleware.ProfilerMiddleware')
 
 TEMPLATE_CACHE_TIMEOUT = 60  # -> 1 min. // * 60 * 24 * 7  # 7 days
 
@@ -193,7 +194,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
                 'gl4app.context_processors.add_common_translations',
                 'gl4app.context_processors.add_settings',
             ],
@@ -319,7 +319,6 @@ MARKDOWN_DEUX_STYLES = {
 # AZURE_CLIENT_SECRET
 ROSETTA_EXCLUDED_APPLICATIONS = ('allauth', 'rosetta', )
 # ROSETTA_EXCLUDED_PATHS = ('/**/site-packages/**/*', )
-
 
 # --- my own settings ----------------------------------------------------------
 
