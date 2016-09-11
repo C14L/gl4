@@ -182,6 +182,7 @@ if ENABLE_PROFILER:
     MIDDLEWARE_CLASSES.insert(0, 'gl4app.middleware.ProfilerMiddleware')
 
 TEMPLATE_CACHE_TIMEOUT = 60  # -> 1 min. // * 60 * 24 * 7  # 7 days
+TEMPLATE_FOOTER_CACHE_TIMEOUT = 60 * 60 * 24 * 30  # -> 1 month
 
 TEMPLATES = [
     {

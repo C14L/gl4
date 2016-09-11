@@ -144,7 +144,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         {% block content %}{% endblock %}
       </div>
 
-      {% cache settings.TEMPLATE_CACHE_TIMEOUT site_footer %}
+      {% cache settings.TEMPLATE_FOOTER_CACHE_TIMEOUT site_footer %}
       <footer>
         <table style="width:100%" class="top">
           <tr>
