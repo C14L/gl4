@@ -68,7 +68,7 @@ if not PRODUCTION:
 if LANGUAGE_CODE == 'de':
     SITE_NAME = 'Graniteland.de'
     SITE_DOMAIN = 'graniteland.de'  # default canonical domain
-    TEST_DOMAIN = 'glde.cn8.eu'
+    TEST_DOMAIN = 'glde.3dir.com'
     if PRODUCTION:
         DATABASES['default']['NAME'] = 'gd'
     else:
@@ -76,7 +76,7 @@ if LANGUAGE_CODE == 'de':
 else:
     SITE_NAME = 'Graniteland.com'
     SITE_DOMAIN = 'graniteland.com'  # default canonical domain
-    TEST_DOMAIN = 'glen.cn8.eu'
+    TEST_DOMAIN = 'glen.3dir.com'
     if PRODUCTION:
         DATABASES['default']['NAME'] = 'gc'
     else:
