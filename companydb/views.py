@@ -38,8 +38,8 @@ def home(request):
 
 def redir_search(request):
     """
-    Called by the header redir_search bar with GET parameters. Redirect to the proper
-    fixed URL, depending on the parameters received.
+    Called by the header redir_search bar with GET parameters. Redirect to the
+    proper fixed URL, depending on the parameters received.
 
     - Individual selections:
         > /companies/consultancy-quality-assurance/1
@@ -104,9 +104,9 @@ def search(request, country, business, product, p=1):
 
     users = _get_page(qs, p, 60)
     canonical = reverse('companydb_search', kwargs={
-            'country': country and country.slug or 'all',
-            'business': business and business.slug or 'all',
-            'product': product and product.slug or 'all', 'p': p})
+        'country': country and country.slug or 'all',
+        'business': business and business.slug or 'all',
+        'product': product and product.slug or 'all', 'p': p})
 
     return render(request, 'companydb/list_search.html', _ctx({
         'users': users,
@@ -116,7 +116,7 @@ def search(request, country, business, product, p=1):
         'selected_company_business': business and business.id,
         'selected_company_product': product and product.id,
         'selected_company_country': country and country.id,
-        'range_pages': range(1, users.paginator.num_pages+1),
+        'range_pages': range(1, users.paginator.num_pages + 1),
         'canonical': canonical}))
 
 
@@ -141,7 +141,7 @@ def list_by_country(request, slug, p=1):
         'obj': obj,
         'users': users,
         'canonical': canonical,
-        'range_pages': range(1, users.paginator.num_pages+1),
+        'range_pages': range(1, users.paginator.num_pages + 1),
         'selected_company_country': obj.id}))
 
 
@@ -166,7 +166,7 @@ def list_by_product(request, slug, p=1):
         'obj': obj,
         'users': users,
         'canonical': canonical,
-        'range_pages': range(1, users.paginator.num_pages+1),
+        'range_pages': range(1, users.paginator.num_pages + 1),
         'selected_company_product': obj.id}))
 
 
@@ -191,7 +191,7 @@ def list_by_group(request, slug, p):
         'obj': obj,
         'users': users,
         'canonical': canonical,
-        'range_pages': range(1, users.paginator.num_pages+1),
+        'range_pages': range(1, users.paginator.num_pages + 1),
         'selected_company_business': obj.id}))
 
 
@@ -205,13 +205,14 @@ def item(request, slug):
         if form.is_valid():
             recipients = [view_user.email]
             sender = settings.COMPANY_CONTACT_FROM_EMAIL
-            subject = _('Message sent from your company profile on Graniteland.')
+            subject = _('Message sent from your company profile on '
+                        'Graniteland.')
             tr_sender_name = _('Sender Name')
             tr_sender_mail = _('Sender Email')
             message = ('{}: {}\n{}: {}\n{}\n{}\n\n'.format(
                 tr_sender_name, form.cleaned_data['name'],
                 tr_sender_mail, form.cleaned_data['email'],
-                ('-'*60), form.cleaned_data['msg']))
+                ('-' * 60), form.cleaned_data['msg']))
 
             send_mail(subject, message, sender, recipients)
 
@@ -422,12 +423,14 @@ def photos(request, slug):
         'canonical': canonical}))
 
 
+# noinspection PyUnusedLocal,PyShadowingBuiltins
 def photo_redir(request, slug, id):
     pic = get_object_or_404(Pic, pk=id)
     _next = reverse('companydb_pic_item', kwargs={'id': pic.id})
     return HttpResponsePermanentRedirect(_next)
 
 
+# noinspection PyShadowingBuiltins
 def pic_item(request, id):
     pic = get_object_or_404(Pic, pk=id)
     related = None

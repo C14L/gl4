@@ -1,12 +1,15 @@
+import time
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
-from django.http import Http404, JsonResponse, HttpResponseRedirect
+from django.http import Http404, JsonResponse, HttpResponseRedirect, \
+    HttpResponse
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_http_methods
@@ -199,6 +202,7 @@ def filter(request, color, country, texture, classif, p=1):
     :param classif:
     :param p:
     """
+    __t = [time.time()]
     if p == '1':
         # Don't show page 1 number in URL.
         # Example: /stone/sandstone/blue/veined/france/1
@@ -210,7 +214,7 @@ def filter(request, color, country, texture, classif, p=1):
     country = _filter_cleanup_val(country)
     texture = _filter_cleanup_val(texture)
     classif = _filter_cleanup_val(classif)
-
+    __t.append(time.time())
     # Now redirect depending on what values we received.
     if not (color or country or texture or classif):
         # no vals at all is not possible, go to redir_search page.
@@ -230,9 +234,9 @@ def filter(request, color, country, texture, classif, p=1):
         # only classification, go to old "type" page.
         url = reverse('stonedb_simple_filter',
                       kwargs={'f': 'classif', 'q': classif.slug})
-
     if url:
         return HttpResponsePermanentRedirect(url)
+    __t.append(time.time())
 
     # Still here? Then display the filtered results.
     stones_qs = Stone.objects.all().prefetch_related(
@@ -250,6 +254,7 @@ def filter(request, color, country, texture, classif, p=1):
     if classif:
         classif = get_object_or_404(Classification, slug=classif)
         stones_qs = stones_qs.filter(classification=classif)
+    __t.append(time.time())
 
     # Canonical is the URI with NO page number
     stones = _get_page(stones_qs, p, 60)
@@ -258,12 +263,13 @@ def filter(request, color, country, texture, classif, p=1):
                         texture and texture.slug or 'all',
                         color and color.slug or 'all',
                         classif and classif.slug or 'all'])
+    __t.append(time.time())
 
     titlestone = '/stonesbrowse/{}.jpg'.format('-'.join([x for x in [
         country and country.slug, texture and texture.slug,
         color and color.slug, classif and classif.slug] if x]))
 
-    return render(request, 'stonedb/filter.html', _ctx({
+    ret = render(request, 'stonedb/filter.html', _ctx({
         'range_pages': range(1, stones.paginator.num_pages+1),
         'canonical': canonical,
         'titlestone': titlestone,
@@ -276,6 +282,15 @@ def filter(request, color, country, texture, classif, p=1):
         'selected_color': getattr(color, 'id', ''),
         'selected_country': getattr(country, 'id', ''),
         'selected_texture': getattr(texture, 'id', '')}))
+    __t.append(time.time())
+
+    __diff = [__t[i] - __t[i - 1] for i in range(1, len(__t))]
+
+    if 'timer' in request.GET:
+        x = [str(int(x * 100) / 100) for x in __diff]
+        return HttpResponse(' # '.join(x))
+    else:
+        return ret
 
 
 def item(request, q):
