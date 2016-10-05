@@ -1,4 +1,5 @@
 import time
+
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
@@ -9,7 +10,6 @@ from django.http import Http404, JsonResponse, HttpResponseRedirect, \
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_http_methods
@@ -174,7 +174,7 @@ def simple_filter(request, f, q, p=None):
         'color', 'classification', 'country', 'texture', 'pseu')
     stones = _get_page(stones_qs, p, 60)
     return render(request, 'stonedb/filter_{}.html'.format(f_db), _ctx({
-        'range_pages': range(1, stones.paginator.num_pages+1),
+        'range_pages': range(1, stones.paginator.num_pages + 1),
         'canonical': request.path,
         'titlestone': titlestone,
         'stones': stones,
@@ -191,6 +191,7 @@ def _filter_cleanup_val(k):
     return k
 
 
+# noinspection PyShadowingBuiltins
 def filter(request, color, country, texture, classif, p=1):
     """Return a list of stones for a specific color+type+origin.
 
@@ -270,7 +271,7 @@ def filter(request, color, country, texture, classif, p=1):
         color and color.slug, classif and classif.slug] if x]))
 
     ret = render(request, 'stonedb/filter.html', _ctx({
-        'range_pages': range(1, stones.paginator.num_pages+1),
+        'range_pages': range(1, stones.paginator.num_pages + 1),
         'canonical': canonical,
         'titlestone': titlestone,
         'stones': stones,

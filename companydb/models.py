@@ -1,10 +1,8 @@
 import json
 from datetime import datetime, timedelta
 
-import pytz
-from functools import reduce
-
 import os
+import pytz
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -15,6 +13,7 @@ from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from functools import reduce
 from operator import or_
 from os.path import join, dirname
 
@@ -133,7 +132,8 @@ class UserProfile(models.Model):
         verbose_name = "Profile"
         verbose_name_plural = "Profiles"
         index_together = [
-            ['user', 'city', 'country_name', 'is_blocked', 'is_deleted'],
+            ['user', 'city', 'country_name', 'title_foto',
+             'is_blocked', 'is_deleted'],
             ['user', 'is_blocked', 'is_deleted'],
         ]
 
