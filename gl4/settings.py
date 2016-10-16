@@ -23,18 +23,20 @@ LANGUAGE_CODE = environ.get('GRANITELAND_LANGUAGE', None)
 if not LANGUAGE_CODE:
     from django.core.exceptions import ImproperlyConfigured
     raise ImproperlyConfigured('Language must be explicitly set in '
-                               'GRANITELAND_LANGAUGE environment variable.')
+                               'GRANITELAND_LANGUAGE environment variable.')
 
 # ==============================================================================
+
+BASE_DIR = dirname(dirname(abspath(__file__)))
 
 DEVBOX = exists('/islocal.txt')
 DEBUG = DEVBOX
 PRODUCTION = not DEVBOX
 SHOW_ADS = False
-ENABLE_PROFILER = True
+ENABLE_PROFILER = False
 ENABLE_DEBUG_TOOLBAR = False
-
-BASE_DIR = dirname(dirname(abspath(__file__)))
+ENABLE_TIME_LOGGER = True
+TIME_LOGGER_LOGFILE = '/tmp/gl4_time_logger.log'
 
 LANGUAGE_SHORT = LANGUAGE_CODE[:2]
 
@@ -177,9 +179,14 @@ MIDDLEWARE_CLASSES = [
 ]
 
 if ENABLE_DEBUG_TOOLBAR:
+    print('ACTIVE: ENABLE_DEBUG_TOOLBAR')
     INSTALLED_APPS += ['debug_toolbar']
 if ENABLE_PROFILER:
+    print('ACTIVE: ENABLE_PROFILER')
     MIDDLEWARE_CLASSES.insert(0, 'gl4app.middleware.ProfilerMiddleware')
+if ENABLE_TIME_LOGGER:
+    print('ACTIVE: ENABLE_TIME_LOGGER')
+    MIDDLEWARE_CLASSES.insert(0, 'gl4app.middleware.ExecTimeLoggerMiddleware')
 
 TEMPLATE_CACHE_TIMEOUT = 60  # -> 1 min. // * 60 * 24 * 7  # 7 days
 TEMPLATE_FOOTER_CACHE_TIMEOUT = 60 * 60 * 24 * 30  # -> 1 month
@@ -371,7 +378,7 @@ else:
     TR_MDPAGES_MISC = 'misc'
     TR_MDPAGES_HELP = 'help'
 
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
+DEBUG_TOOLBAR_PATCH_SETTINGS = DEBUG
 DEBUG_TOOLBAR_CONFIG = {
     'INTERNAL_IPS': ['127.0.0.1', '::1'],
     'SHOW_TOOLBAR_CALLBACK': settings_private.show_toolbar_callback,
