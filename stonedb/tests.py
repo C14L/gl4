@@ -17,7 +17,7 @@ def setUpModule():
         command.import_country()
         command.init_texture()  # only deletes current entries
         command.import_stone()
-    Spam.objects.create(match="spam word")
+    Spam.objects.get_or_create(match="spam word")
 
 
 # noinspection PyPep8Naming
