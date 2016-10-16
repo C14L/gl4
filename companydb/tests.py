@@ -23,11 +23,16 @@ class CompanydbTestCase(TestCase):
         self.username = 'mainuser'
         self.email = 'mainuser@example.com'
         self.password = 'hunter2'
+
         args = [self.username, self.email, self.password]
-        self.user = User.objects.create_user(*args)
+        try:
+            self.user = User.objects.get(username=args[0])
+        except User.DoesNotExist:
+            self.user = User.objects.create_user(*args)
+
+        self.spam = Spam.objects.create(match="spam word")
         self.stone = Stone.objects.create(name='Test Stone', slug='test-stone')
         self.group = Group.objects.create(name='Test Group', slug='test-group')
-        self.spam = Spam.objects.create(match="spam word")
 
     def tearDown(self):
         if self.user and self.user.pk:

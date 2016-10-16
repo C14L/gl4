@@ -39,7 +39,7 @@ class CountryAdmin(admin.ModelAdmin):
 @admin.register(Group)  # business areas
 class GroupAdmin(admin.ModelAdmin):
     exclude = ('created', 'members', 'keywords', )
-    readonly_fields = ('count_members', 'slug', )
+    readonly_fields = ('count_members', )
     view_on_site = True
 
 

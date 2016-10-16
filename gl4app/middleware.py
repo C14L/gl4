@@ -1,3 +1,11 @@
+import sys
+import cProfile
+
+from datetime import datetime
+from django.core.exceptions import ImproperlyConfigured
+from io import StringIO
+from time import time
+from django.conf import settings
 from django.utils.translation import get_language
 
 
@@ -31,22 +39,17 @@ class FixSomeWordInflextionsMiddleware(object):
         return response
 
 
-import sys
-import cProfile
-from io import StringIO
-
-
 class ProfilerMiddleware(object):
     profiler = None
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
-        if 'prof' in request.GET:
+        if settings.ENABLE_PROFILER and 'prof' in request.GET:
             self.profiler = cProfile.Profile()
             args = (request,) + callback_args
             return self.profiler.runcall(callback, *args, **callback_kwargs)
 
     def process_response(self, request, response):
-        if 'prof' in request.GET:
+        if settings.ENABLE_PROFILER and 'prof' in request.GET:
             self.profiler.create_stats()
             out = StringIO()
             old_stdout, sys.stdout = sys.stdout, out
@@ -54,3 +57,32 @@ class ProfilerMiddleware(object):
             sys.stdout = old_stdout
             response.content = '<pre>%s</pre>' % out.getvalue()
         return response
+
+
+class ExecTimeLoggerMiddleware:
+    """Measure execution time and log to a file."""
+
+    def log(self, delta, method, path):
+        if not getattr(settings, 'ENABLE_TIME_LOGGER', False):
+            return
+
+        if not getattr(settings, 'TIME_LOGGER_LOGFILE', False):
+            raise ImproperlyConfigured('Time logger enabled but file not set.')
+
+        now = datetime.utcnow().isoformat()
+
+        with open(settings.TIME_LOGGER_LOGFILE, 'a') as fh:
+            fh.write('{} {} {} {}\n'.format(now, delta, method, path))
+
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        setattr(request, 'exec_time_logger', time())
+
+    def process_response(self, request, response):
+        if hasattr(request, 'exec_time_logger'):
+            delta = time() - request.exec_time_logger
+            self.log(delta, request.method, request.path)
+
+        return response
+
+    def process_exception(self, request, exception):
+        pass

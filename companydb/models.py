@@ -1,10 +1,8 @@
 import json
 from datetime import datetime, timedelta
 
-import pytz
-from functools import reduce
-
 import os
+import pytz
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -15,6 +13,7 @@ from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from functools import reduce
 from operator import or_
 from os.path import join, dirname
 
@@ -133,7 +132,8 @@ class UserProfile(models.Model):
         verbose_name = "Profile"
         verbose_name_plural = "Profiles"
         index_together = [
-            ['user', 'city', 'country_name', 'is_blocked', 'is_deleted'],
+            ['user', 'city', 'country_name', 'title_foto',
+             'is_blocked', 'is_deleted'],
             ['user', 'is_blocked', 'is_deleted'],
         ]
 
@@ -410,6 +410,7 @@ class PicManager(models.Manager):
         pic.make_sizes()
         return pic
 
+    # noinspection PyArgumentEqualDefault
     def add_to_stone(self, user, file, stone, caption):
         """Shortcut method to upload a picture to a stone.
         :param user: A user instance. Picture is added to this user's profile.
@@ -627,7 +628,7 @@ class Product(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=30, default='', blank=False)
     slug = models.SlugField(max_length=30, unique=True)
-    about = models.TextField(default='', blank=True)  # intro text for group page
+    about = models.TextField(default='', blank=True)  # intro txt for group page
     description = models.CharField(max_length=255, default='', blank=True)
     keywords = models.CharField(max_length=255, default='', blank=True)
     title_foto = models.CharField(max_length=100, default='', blank=True)
@@ -644,7 +645,8 @@ class Group(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if not self.slug:
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -655,6 +657,7 @@ class Group(models.Model):
             self._meta.app_label, self._meta.model_name), args=[self.id])
 
 
+# noinspection PyUnusedLocal
 @receiver(post_save, sender=User)
 def create_profile_on_user_create(sender, instance=None,
                                   created=False, **kwargs):
@@ -662,11 +665,13 @@ def create_profile_on_user_create(sender, instance=None,
         UserProfile.objects.get_or_create(user=instance)
 
 
+# noinspection PyUnusedLocal
 @receiver(pre_delete, sender=Pic)
 def delete_related_files_on_pic_delete(sender, instance, using, **kwargs):
     instance.delete_all_files()
 
 
+# noinspection PyUnusedLocal
 @receiver(post_save, sender=UserProfile)
 @receiver(post_save, sender=Group)
 def _updated_company_properties(sender, **kwargs):
