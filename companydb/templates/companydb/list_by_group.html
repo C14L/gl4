@@ -50,7 +50,7 @@
   <div class="company-list">
     {% for item in users %}
       <a href="{% url 'companydb_item' item.username %}" class="item" id="groupmemberlist{{item.id}}">
-        <span class="pic" style="background-image: url({{ item.profile.title_foto_url }})"></span>
+        <span class="pic" style="background-image: url({{ item.profile.title_foto_url|default:'/static/img/nofoto200.jpg' }})"></span>
         <span class="info">
           <span class="name">{{item.profile.name}}</span>
           <span class="location">{{ item.profile.city }}, {{ item.profile.country.name }}</span>
