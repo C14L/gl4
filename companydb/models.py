@@ -5,7 +5,7 @@ import os
 import pytz
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.db.models import Count, Q
 from django.db.models.signals import post_save, pre_delete
@@ -59,7 +59,8 @@ class Country(models.Model):
 
 class UserProfile(models.Model):
 
-    user = models.OneToOneField(User, related_name='profile', primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+            related_name='profile', primary_key=True)
     name = models.CharField(
         max_length=100, default='', blank=False, db_index=True,
         verbose_name=_('Company name'),
@@ -96,9 +97,10 @@ class UserProfile(models.Model):
         max_length=100, default='', blank=True,
         verbose_name=_('Country name'),
         help_text=_('The country your company is registered.'))
-    country = models.ForeignKey(Country, null=True, default=None, blank=True,
-                                db_index=True, verbose_name=_('Country'),
-                                help_text=_('Country the company is located.'))
+    country = models.ForeignKey(
+            Country, on_delete=models.SET_NULL, null=True, default=None,
+            blank=True, db_index=True, verbose_name=_('Country'),
+            help_text=_('Country the company is located.'))
     postal = models.TextField(default='', verbose_name=_('Postal address'))
     email = models.CharField(
         max_length=100, default='', blank=True, verbose_name=_('E-mail'),
@@ -180,7 +182,8 @@ class CommonProjectsStocksManager(models.Manager):
 
 
 class CommonProjectsStocks(models.Model):
-    user = models.ForeignKey(User, db_index=True, editable=False)
+    user = models.ForeignKey(
+            User, on_delete=models.SET_NULL, null=True, db_index=True, editable=False)
     created = models.DateTimeField(default=now, editable=False, db_index=True)
     is_blocked = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
@@ -223,7 +226,8 @@ class Stock(CommonProjectsStocks):
                         (9, _('other')), )
     DIM_USE_CUBIC = {1, 4, }
 
-    stone = models.ForeignKey(Stone, db_index=True, null=True, default=None)
+    stone = models.ForeignKey(Stone, on_delete=models.CASCADE,
+            db_index=True, null=True, default=None)
     description = models.TextField(
         default='', blank=True, verbose_name=_('Stock item description'),
         help_text=_('Add any information about the stock item here, '
@@ -449,7 +453,7 @@ class Pic(models.Model):  # cc__fotos
         ('fotos_small', 'contain', 480, 200, None),
         ('fotos_thumb', 'cover', 200, 200, None), )
 
-    user = models.ForeignKey(User, db_index=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
     module = models.CharField(max_length=20, db_index=True,
                               choices=MODULE_CHOICES, default='profile')
     module_id = models.PositiveIntegerField(default=0, db_index=True)

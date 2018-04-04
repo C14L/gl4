@@ -58,31 +58,24 @@ ADSENSE_AD_CLIENT = settings_private.ADSENSE_AD_CLIENT
 DATABASES = {'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'HOST': 'localhost',
-    'NAME': 'graniteland',
+    # 'NAME': 'graniteland',
     'USER': 'graniteland',
     'PASSWORD': settings_private.DATABASES_PASSWORD,
 }}
 
 if not PRODUCTION:
-    DATABASES['default']['USER'] = 'gluser'
     DATABASES['default']['PASSWORD'] = 'pla'
 
 if LANGUAGE_CODE == 'de':
     SITE_NAME = 'Graniteland.de'
     SITE_DOMAIN = 'graniteland.de'  # default canonical domain
     TEST_DOMAIN = 'glde.3dir.com'
-    if PRODUCTION:
-        DATABASES['default']['NAME'] = 'gd'
-    else:
-        DATABASES['default']['NAME'] = 'gd_dev'
+    DATABASES['default']['NAME'] = 'gd'
 else:
     SITE_NAME = 'Graniteland.com'
     SITE_DOMAIN = 'graniteland.com'  # default canonical domain
     TEST_DOMAIN = 'glen.3dir.com'
-    if PRODUCTION:
-        DATABASES['default']['NAME'] = 'gc'
-    else:
-        DATABASES['default']['NAME'] = 'gc_dev'
+    DATABASES['default']['NAME'] = 'gc'
 
 ALLOWED_HOSTS = ['www.' + SITE_DOMAIN, TEST_DOMAIN, 'localhost']
 CANONICAL_BASE = 'http://{}'.format(ALLOWED_HOSTS[0])
@@ -164,13 +157,12 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.xing',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.admindocs.middleware.XViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -183,10 +175,10 @@ if ENABLE_DEBUG_TOOLBAR:
     INSTALLED_APPS += ['debug_toolbar']
 if ENABLE_PROFILER:
     print('ACTIVE: ENABLE_PROFILER')
-    MIDDLEWARE_CLASSES.insert(0, 'gl4app.middleware.ProfilerMiddleware')
+    MIDDLEWARE.insert(0, 'gl4app.middleware.ProfilerMiddleware')
 if ENABLE_TIME_LOGGER:
     print('ACTIVE: ENABLE_TIME_LOGGER')
-    MIDDLEWARE_CLASSES.insert(0, 'gl4app.middleware.ExecTimeLoggerMiddleware')
+    MIDDLEWARE.insert(0, 'gl4app.middleware.ExecTimeLoggerMiddleware')
 
 TEMPLATE_CACHE_TIMEOUT = 60  # -> 1 min. // * 60 * 24 * 7  # 7 days
 TEMPLATE_FOOTER_CACHE_TIMEOUT = 60 * 60 * 24 * 30  # -> 1 month

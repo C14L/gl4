@@ -12,6 +12,12 @@ from django.utils.translation import get_language
 class FixSomeWordInflextionsMiddleware(object):
     """Some auto-added inflextions of translated words in German are off."""
 
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
+
     def process_response(self, request, response):
         if response.streaming:
             return response
@@ -42,6 +48,12 @@ class FixSomeWordInflextionsMiddleware(object):
 class ProfilerMiddleware(object):
     profiler = None
 
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
+
     def process_view(self, request, callback, callback_args, callback_kwargs):
         if settings.ENABLE_PROFILER and 'prof' in request.GET:
             self.profiler = cProfile.Profile()
@@ -59,8 +71,14 @@ class ProfilerMiddleware(object):
         return response
 
 
-class ExecTimeLoggerMiddleware:
+class ExecTimeLoggerMiddleware(object):
     """Measure execution time and log to a file."""
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
 
     def log(self, delta, method, path):
         if not getattr(settings, 'ENABLE_TIME_LOGGER', False):

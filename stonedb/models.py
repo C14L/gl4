@@ -1,7 +1,7 @@
 import json
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from django.db import models
 from django.db.models import Count
@@ -204,7 +204,8 @@ class Stone(models.Model):
 
 
 class StoneName(models.Model):
-    stone = models.ForeignKey(Stone, related_name='pseu')
+    stone = models.ForeignKey(
+            Stone, on_delete=models.SET_NULL, null=True, related_name='pseu')
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, db_index=True, default='')
 

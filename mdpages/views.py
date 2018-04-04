@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.paginator import Paginator
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 

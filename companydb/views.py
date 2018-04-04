@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, \
     HttpResponse, JsonResponse, Http404
 from django.http.response import HttpResponseBadRequest

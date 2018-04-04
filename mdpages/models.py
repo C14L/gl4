@@ -25,7 +25,7 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)[:50]
@@ -63,13 +63,15 @@ class Article(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
     created = models.DateTimeField(default=now, db_index=True)
-    user = models.ForeignKey(User)
-    author = models.ForeignKey(Author, blank=True, null=True, default=None)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL,
+            blank=True, null=True, default=None)
     keywords = models.ManyToManyField(Keyword)
     is_published = models.BooleanField(default=False)
     is_stickied = models.BooleanField(default=False)
     is_frontpage = models.BooleanField(default=False)
-    topic = models.ForeignKey(Topic, blank=True, null=True, default=None)
+    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL,
+            blank=True, null=True, default=None)
     teaser = models.TextField(default='', blank=True)
     description = models.TextField(default='', blank=True)
     text = models.TextField(default='', blank=True)

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404, JsonResponse, HttpResponseRedirect, \
     HttpResponse
 from django.http import HttpResponsePermanentRedirect

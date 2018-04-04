@@ -17,7 +17,7 @@ paths with other translations in locale files using i18n patterns.
 
 urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^aktuelles/', include('mdpages.urls')),

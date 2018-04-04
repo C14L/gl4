@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import RelatedOnlyFieldListFilter
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.forms import CheckboxSelectMultiple, TextInput, Textarea
 from django.utils.safestring import mark_safe
