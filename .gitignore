@@ -1,7 +1,7 @@
 # More in: ~/dev/global-settings/.gitignore
 
 ___**
-
+stonedb/stonesimages/
 gl4/settings_private.py
 NOTES
 .idea/
