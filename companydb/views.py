@@ -253,7 +253,7 @@ def stock_detail(request, slug, pk=None):
     form = None
     user = get_object_or_404(User, username=slug)
     view_item = Stock.objects.all_for_user(user).filter(pk=pk).first()
-    can_edit = request.user.is_authenticated() and request.user == user
+    can_edit = request.user.is_authenticated and request.user == user
 
     if not can_edit:
         if request.method not in ['GET', 'HEAD', 'OPTIONS']:
@@ -323,7 +323,7 @@ def projects_detail(request, slug, pk=None):
     form = None
     user = get_object_or_404(User, username=slug)
     view_item = Project.objects.all_for_user(user).filter(pk=pk).first()
-    can_edit = request.user.is_authenticated() and request.user == user
+    can_edit = request.user.is_authenticated and request.user == user
 
     if not can_edit and not view_item:
         # Needs auth to see /new page.
@@ -381,7 +381,7 @@ def photos(request, slug):
     form = None
     view_user = get_object_or_404(User, username=slug, is_active=True)
     li = Pic.objects.all_for_user(view_user)
-    can_edit = request.user.is_authenticated() and request.user == view_user
+    can_edit = request.user.is_authenticated and request.user == view_user
 
     if 'POST' in (request.method, request.POST.get('_method', None)):
         if not can_edit:
@@ -447,7 +447,7 @@ def pic_item(request, id):
     elif pic.module == 'pages':
         related = get_object_or_404(Article, pk=pic.module_id)
 
-    if request.user.is_authenticated() and request.user.id == pic.user.id:
+    if request.user.is_authenticated and request.user.id == pic.user.id:
         if 'DELETE' in (request.method, request.POST.get('_method', None)):
             pic.delete()
             if request.is_ajax():

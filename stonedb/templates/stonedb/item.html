@@ -206,9 +206,9 @@ body { background: url({{ stone.get_pic_medium }}) top left repeat; }
 
   <div class="fotoslist">
     <p class="count">
-      {% if pics|length = 0 %}
+      {% if pics|length == 0 %}
         {% blocktrans with stone_name=stone.name %}Sorry, there are no more photos of {{ stone_name }} available.{% endblocktrans %}
-      {% elif pics|length = 1 %}
+      {% elif pics|length == 1 %}
         {% blocktrans with stone_name=stone.name %}There is one photo of {{ stone_name }} available.{% endblocktrans %}
       {% elif pics|length > 1 %}
         {% blocktrans with stone_name=stone.name pics_count=pics|length %}There are {{ pics_count }} photos of {{ stone_name }} available.{% endblocktrans %}
