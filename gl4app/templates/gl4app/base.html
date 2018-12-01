@@ -10,12 +10,12 @@
 
     {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
     <link rel="icon" type="image/png" href="/icon.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css">
+    <link rel="stylesheet" xxx="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.cssXXXXXX">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="{% static 'base-lt-750.css' %}" media="only screen and (max-width: 750px)">
 
-    {% if settings.PRODUCTION %}
+    {% if settings.PRODUCTION and settings.ENABLE_TRACKING %}
       <script>
 
 window.google_analytics_uacct='UA-273063-3';
@@ -66,6 +66,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         </nav>
 
         {% if tpl_search_form == 'companies' %}
+
           <form method="get" action="{% url 'companydb_redir_search' %}" id="tpl-search-form" class="company-search">
             <div class="controls controls-business">
               <select class="select form-control" size="1" name="business" id="search_company_business" data-selected="{{ selected_company_business }}">
@@ -92,7 +93,9 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             </div>
             <input type="submit" value="&gt;" class="btn btn-submit">
           </form>
+
         {% elif tpl_search_form == 'tradeshows' %}
+
           <div class="yearswitch">
             <div class="switchgroup">
               {% for year in years %}
@@ -100,7 +103,9 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
               {% endfor %}
             </div>
           </div>
+
         {% else %}
+
           <form method="get" action="{% url 'stonedb_redir_search_php' %}" id="tpl-search-form" class="stone-search">
             <div class="controls controls-color">
               <select class="select form-control" size="1" name="color" id="search_color" data-selected="{{ selected_color }}">
@@ -124,6 +129,7 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
             </div>
             <input type="submit" value="&gt;" class="btn btn-submit">
           </form>
+
         {% endif %}
       </header>
 
@@ -200,12 +206,67 @@ if (typeof(l.href)=='string') setTimeout('document.location="'+l.href+'"',100);
         return false;
       });
     }
+
+    const searchFormElem = document.getElementById('tpl-search-form');
+    const stoneSearchPropsUrl = `{% url 'stonedb_api_properties' %}`;
+    searchFormElem.querySelector('input[type="submit"]').remove();
+
+    if (searchFormElem && searchFormElem.classList.contains('company-search')) {
+
+      console.log('Found company searchFormElem -----> ', searchFormElem);
+
+      window.fetch(stoneSearchPropsUrl).then(response => {
+        if (!response.ok) {
+          throw new Error('HTTP error: ' + response.status);
+        }
+        return response.json();
+      }).then(data => {
+        ['color', 'classification', 'country', 'texture'].forEach(topic => {
+            let topicp = (topic == 'classification') ? 'type' : topic;
+            let topicObj = document.getElementById('search_' + topicp);
+            let selected = topicObj.getAttribute('data-selected');
+            let s = '';
+            data[topic].forEach(opt => {
+              let sel = (selected == opt.id) ? ' selected="selected"' : '';
+              s += '<option value="' + opt.id + '"' + sel + '>' + opt.name + '</option>';
+            });
+            topicObj.innerHTML += s;
+        });
+        searchFormElem.querySelectorAll('select').forEach(elem => elem.addEventListener('change', ev => searchFormElem.submit()));
+      });
+
+    } else
+    if (searchFormElem && searchFormElem.classList.contains('stone-search')) {
+
+      console.log('Found stone searchFormElem -----> ', searchFormElem);
+
+      window.fetch(stoneSearchPropsUrl).then(response => {
+        if (!response.ok) {
+          throw new Error('HTTP error: ' + response.status);
+        }
+        return response.json();
+      }).then(data => {
+        ['color', 'classification', 'country', 'texture'].forEach(topic => {
+            let topicp = (topic == 'classification') ? 'type' : topic;
+            let topicObj = document.getElementById('search_' + topicp);
+            let selected = topicObj.getAttribute('data-selected');
+            let s = '';
+            data[topic].forEach(opt => {
+              let sel = (selected == opt.id) ? ' selected="selected"' : '';
+              s += '<option value="' + opt.id + '"' + sel + '>' + opt.name + '</option>';
+            });
+            topicObj.innerHTML += s;
+        });
+        searchFormElem.querySelectorAll('select').forEach(elem => elem.addEventListener('change', ev => searchFormElem.submit()));
+      });
+    }
+
     </script>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-    <script src="{% static 'base.js' %}"></script>
+    <script xxx="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script xxx="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
+    <script xxx="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
+    <script xxx="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <script xxx="{% static 'base.js' %}"></script>
 
     {% block foot %}{% endblock %}
   </body>
