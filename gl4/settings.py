@@ -184,7 +184,7 @@ if PRODUCTION:
     d = '../../usercontent'
     MEDIA_ROOT = join(BASE_DIR, d, 'graniteland_media_{}'.format(LANGUAGE_SHORT))
 else:
-    d = '/space01/dev-data/graniteland/usercontent'
+    d = '/space01/devdata/graniteland/usercontent'
     MEDIA_ROOT = join(d, 'graniteland_media_{}'.format(LANGUAGE_SHORT))
 
 # --- django-autoslug settings -------------------------------------------------
