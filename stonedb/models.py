@@ -12,6 +12,9 @@ from django.utils.timezone import now
 from os.path import join
 
 
+STONE_PROPERTIES = None
+
+
 def slugify(s):
     """Fix Django's slugify with some transliterations before slugifying."""
     tr = {'ü': 'ue', 'Ü': 'ue', 'ö': 'oe', 'Ö': 'Oe', 'ä': 'ae', 'Ä': 'Ae',
@@ -227,15 +230,17 @@ class StoneName(models.Model):
 @receiver(post_delete, sender=Texture)
 def _updated_stone_property(sender, **kwargs):
     """
-    If any searchable property is changed, rebuild the JSON file that is used
-    for the stone redir_search UI.
+    If any searchable property is changed, rebuild properties.
     """
-    update_stone_properties()
+    get_stone_properties(refresh=True)
 
 
-def update_stone_properties():
-    li = {m.__name__.lower(): list(m.objects.all_with_stones().values('id',
-          'slug', 'name')) for m in (Classification, Color, Country, Texture)}
+def get_stone_properties(refresh=False):
+    global STONE_PROPERTIES
 
-    with open(settings.STONE_SEARCH_OPTS_FILE, 'wt', encoding='utf-8') as fh:
-        json.dump(li, fh)
+    if not STONE_PROPERTIES or refresh:
+        STONE_PROPERTIES = {
+            m.__name__.lower(): list(m.objects.all_with_stones().values('id', 'slug', 'name'))
+            for m in (Classification, Color, Country, Texture)
+        }
+    return STONE_PROPERTIES

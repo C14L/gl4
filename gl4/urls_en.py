@@ -71,6 +71,9 @@ urlpatterns = [
     url(r'api/redir_search/stones/',
         stonedb.views.api_search, name='stonedb_api_search'),
 
+    url(r'api/stone_properties.json',
+        stonedb.views.api_stone_properties, name='stonedb_api_properties'),
+
     # tradeshowdb
 
     url(r'^tradeshows/?$',

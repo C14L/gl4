@@ -17,7 +17,7 @@ from django.views.decorators.http import require_http_methods
 from companydb.models import Stock, Project, Pic
 from stonedb.forms import StoneSearchByNameForm, PicUploadForm
 from stonedb.models import Stone, Classification, Color, Country, Texture, \
-    StoneName
+    StoneName, get_stone_properties
 from toolbox import force_int
 
 FILTER_URL_NO_VALUE = 'all'
@@ -370,3 +370,8 @@ def api_search(request):
                 .prefetch_related('stone')[:limit])
 
     return JsonResponse({'items': sorted(li, key=lambda x: x['name'])[:limit]})
+
+
+@require_http_methods(["GET"])
+def api_stone_properties(request):
+    return JsonResponse(get_stone_properties())
