@@ -17,7 +17,7 @@ idna==2.6
 markdown2==2.3.5
 microsofttranslator==0.8
 oauthlib==2.0.7
-Pillow==5.0.0
+Pillow==6.2.0
 pkg-resources==0.0.0
 polib==1.1.0
 psycopg2==2.7.4
