@@ -1,8 +1,14 @@
-import json
-from datetime import datetime, timedelta
+# pylint: disable=E1101
 
+import json
 import os
 import pytz
+
+from datetime import datetime, timedelta
+from functools import reduce
+from operator import or_
+from os.path import join, dirname
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -13,9 +19,6 @@ from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
-from functools import reduce
-from operator import or_
-from os.path import join, dirname
 
 from mdpages.models import Article
 from stonedb.models import Stone
@@ -59,8 +62,8 @@ class Country(models.Model):
 
 class UserProfile(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE,
-            related_name='profile', primary_key=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profile', primary_key=True)
     name = models.CharField(
         max_length=100, default='', blank=False, db_index=True,
         verbose_name=_('Company name'),
@@ -76,8 +79,7 @@ class UserProfile(models.Model):
     slogan = models.CharField(
         max_length=255, default='', blank=True,
         verbose_name=_('Company slogan'),
-        help_text=_('A very short sentence that expresses '
-                    'the company focus and values.'))
+        help_text=_('A very short sentence that expresses the company focus and values.'))
     street = models.CharField(
         max_length=100, default='', blank=True, verbose_name=_('Street'),
         help_text=_('The physical address of the company.'))
@@ -134,8 +136,7 @@ class UserProfile(models.Model):
         verbose_name = "Profile"
         verbose_name_plural = "Profiles"
         index_together = [
-            ['user', 'city', 'country_name', 'title_foto',
-             'is_blocked', 'is_deleted'],
+            ['user', 'city', 'country_name', 'title_foto', 'is_blocked', 'is_deleted'],
             ['user', 'is_blocked', 'is_deleted'],
         ]
 

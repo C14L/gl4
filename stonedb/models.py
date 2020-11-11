@@ -1,15 +1,15 @@
 import json
 
-from django.conf import settings
-from django.urls import reverse
+from os.path import join
 
+from django.conf import settings
 from django.db import models
 from django.db.models import Count
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils.text import slugify as dj_slugify
 from django.utils.timezone import now
-from os.path import join
 
 
 STONE_PROPERTIES = None

@@ -140,7 +140,7 @@ def simple_filter(request, f, q, p=None):
     if p == '1':
         # Don't show page 1 number in URL. Example: /stone/color/blue/1
         return HttpResponsePermanentRedirect(request.path[:-2])
-    if f == 'farbe' and q == 'grun':
+    if settings.LANGUAGE_CODE == 'de' and f == 'farbe' and q == 'grun':
         return HttpResponsePermanentRedirect(
             reverse('stonedb_simple_filter', kwargs={'f': f, 'q': 'gruen'}))
 
@@ -170,18 +170,24 @@ def simple_filter(request, f, q, p=None):
 
     titlestone = '/stonesbrowse/{}.jpg'.format(q.slug)
 
-    stones_qs = Stone.objects.filter(**{f_db: q}).prefetch_related(
-        'color', 'classification', 'country', 'texture', 'pseu')
+    stones_qs = Stone.objects\
+        .filter(**{f_db: q})\
+        .prefetch_related('color', 'classification', 'country', 'texture', 'pseu')
+
     stones = _get_page(stones_qs, p, 60)
-    return render(request, 'stonedb/filter_{}.html'.format(f_db), _ctx({
+
+    context = {
         'range_pages': range(1, stones.paginator.num_pages + 1),
         'canonical': request.path,
         'titlestone': titlestone,
         'stones': stones,
         'more': more,
-        'f': f, 'q': q, fk: q,
+        'f': f,
+        'q': q,
+        '{}'.format(fk): q,
         'selected_{}'.format(f_db): q.pk
-    }))
+    }
+    return render(request, 'stonedb/filter_{}.html'.format(f_db), context)
 
 
 def _filter_cleanup_val(k):

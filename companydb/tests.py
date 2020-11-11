@@ -1,6 +1,8 @@
+# pylint: disable=E1101
+
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.urls import reverse
 
 from companydb.initial_data import import_company_countries
 from companydb.models import UserProfile, Stock, Project, Group, Country, Spam
@@ -153,7 +155,7 @@ class CompanydbTestCase(TestCase):
                 'mobile': 'r8oiuqgehldjflakdh',
                 'web': 'wfyeloufkdhlfjs', }
         response = self.client.post(url, data=data, follow=True)
-        for k, v in data.items():
+        for v in data.values():
             self.assertContains(response, v)
 
     def test_only_auth_user_can_add_edit_delete_stock(self):
