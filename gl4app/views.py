@@ -55,6 +55,6 @@ def home(request):
 
 def user_home(request):
     url = reverse('home')
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         url = reverse('companydb_item', args=[request.user.username])
     return HttpResponsePermanentRedirect(url)

@@ -307,7 +307,7 @@ def item(request, q):
         raise Http404
 
     if request.method in ['POST']:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise PermissionDenied
 
         form = PicUploadForm(request.POST, request.FILES)

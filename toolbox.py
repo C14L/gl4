@@ -6,9 +6,7 @@ import pytz
 import re
 
 from datetime import date, datetime
-from PIL import Image, ImageFont, ImageDraw
 from django.conf import settings
-# from typing import Union --> Py3.5
 
 from django.utils.timezone import utc
 
@@ -19,74 +17,6 @@ def get_login_url(request):
 
 def resize_copy(raw_fname: str, target_fname: str, resize_type: str,
                 max_w: int, max_h: int, watermark: bool=None) -> bool:
-    """
-    Make a resized JPEG copy of the image with file name "raw_fname" and write
-    the resulting image data to a file named "target_fname".
-
-    The resulting image will be not larger than "max_w x max_h" pixels and is
-    resized to either "contain" the original image completely and have some
-    empty areas on the target image, or to "cover" the target image completely
-    by cropping parts of the original image.
-
-    :param raw_fname: Full file name of raw image.
-    :param target_fname: Full file name of target image.
-    :param resize_type: Either "cover" or "contain", like CSS3.
-    :param max_w: Maximum width of target image.
-    :param max_h: Maximum height of target image.
-    :param watermark: Optional. If True, add settings.SITE_NAME as watermark.
-    """
-    file_type = 'JPEG'
-    # raw_fh.seek(0)
-    im = Image.open(raw_fname).convert('RGBA')
-
-    # Original image size.
-    curr_w, curr_h = im.size
-
-    # Resize either "cover" or "contain".
-    if resize_type == 'cover':
-        # Same as CSS3, cover the entire target image and crop
-        w = int(max_w)
-        h = int(max(curr_h * max_w / curr_w, 1))
-        cx2, cy2 = 0, int((h - max_h) / 2)  # part to crop
-        if h < max_h:
-            h = int(max_h)
-            w = int(max(curr_w * max_h / curr_h, 1))
-            cx2, cy2 = int((w - max_w) / 2), 0  # part to crop
-        im = im.resize((w, h), Image.ANTIALIAS).crop((cx2, cy2, w-cx2, h-cy2))
-        im.load()  # load() is necessary after crop
-
-    elif resize_type == 'contain':
-        # First calc to fit the width. Then check to see if height is still
-        # too large, and if so, calc again to fit height.
-        #
-        # max_w, max_h: this is the target.
-        # curr_w, curr_h: this is the current situation.
-        if curr_w > max_w:
-            curr_h = int(max(curr_h * max_w / curr_w, 1))
-            curr_w = int(max_w)
-        if curr_h > max_h:
-            curr_w = int(max(curr_w * max_h / curr_h, 1))
-            curr_h = int(max_h)
-        im = im.resize((curr_w, curr_h), Image.ANTIALIAS)
-
-    else:
-        raise ValueError('No such resize_type "{}".'.format(resize_type))
-
-    if watermark:
-        font_fname = getattr(settings, 'WATERMARK_FONT_FILENAME',
-                             '/usr/share/fonts/truetype/freefont/FreeSans.ttf')
-        txt = settings.SITE_NAME
-        font = ImageFont.truetype(font_fname, 16)
-        im_tx_dark = Image.new('RGBA', im.size, (32, 32, 32, 0))
-        im_tx_light = Image.new('RGBA', im.size, (255, 255, 255, 0))
-        draw_ctx_dark = ImageDraw.Draw(im_tx_dark)
-        draw_ctx_light = ImageDraw.Draw(im_tx_light)
-        draw_ctx_dark.text((12, 12), txt, font=font, fill=(32, 32, 32, 192))
-        draw_ctx_light.text((10, 10), txt, font=font, fill=(255, 255, 255, 192))
-        im = Image.alpha_composite(im, im_tx_dark)
-        im = Image.alpha_composite(im, im_tx_light)
-
-    im.save(target_fname, file_type)
     return True
 
 
